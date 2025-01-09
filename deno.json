@@ -1,0 +1,22 @@
+{
+  "tasks": {
+    "build": "deno task version.ts ; deno task docs ; deno task compile",
+    "version.ts": "deno run --allow-read --allow-write --allow-run ./bldutils/mk_version.ts",
+    "compile": "deno compile --allow-read --allow-write --allow-run --output ./bin/cmt cmt.ts",
+    "docs": "deno task cmt.1.md ; deno task manpages",
+    "cmt.1.md": "deno run cmt.ts --help > cmt.1.md",
+    "manpages": "deno run --allow-read --allow-write --allow-run ./bldutils/mk_manpage.ts cmt 1",
+    "website": " deno task index.html ; deno task user_manual.html ; deno task cmt.1.html ; deno task about.html ; deno task INSTALL.html",
+    "index.html": "deno run --allow-read --allow-write ./bldutils/mk_html.ts README.md index.html",
+    "user_manual.html": "deno run --allow-read --allow-write ./bldutils/mk_html.ts user_manual.md",
+    "about.html": "deno run --allow-read --allow-write ./bldutils/mk_html.ts about.md",
+    "INSTALL.html": "deno run --allow-read --allow-write ./bldutils/mk_html.ts INSTALL.md"
+  },
+  "imports": {
+    "@libs/markdown": "jsr:@libs/markdown@^2.0.2",
+    "@std/assert": "jsr:@std/assert@^1.0.10",
+    "@std/cli": "jsr:@std/cli@^1.0.9",
+    "@std/path": "jsr:@std/path@^1.0.8",
+    "handlebars": "npm:handlebars@^4.7.8"
+  }
+}
