@@ -13,7 +13,7 @@ So why is this significant?  The metadata held in our CodeMeta JSON file is very
 The following files are common in my projects and other's projects at Caltech Library.
 
 - CITATION.cff
-- about.md, about.html
+- about.md
 - version.go, version.py, version.js, version.ts
 - page templates for the project website
 
@@ -25,7 +25,7 @@ Right now my build processes require Pandoc. Pandoc isn't something that most de
 
 # Implementation
 
-CM Tools is implemented as a [TypeScript]() program compiled using [Deno](). TypeScript was chosen because it is a superset of JavaScript which is one of the most common programming langauges in the early 21st century.  Deno provide easy cross platform compilation for our supported operating systems -- macOS, Windows and Linux. Deno and TypeScript together provide many of the advantages of our Go based utilities with the advantage of a large part of the Library, Archives and Museum developer communities that could potentially contribute.
+CM Tools is implemented as a [TypeScript](https://typescriptlang.org) program compiled using [Deno](https://deno.com). TypeScript was chosen because it is a superset of JavaScript which is one of the most common programming langauges in the early 21st century.  Deno provide easy cross platform compilation for our supported operating systems -- macOS, Windows and Linux. Deno and TypeScript together provide many of the advantages of our Go based utilities with the advantage of a large part of the Library, Archives and Museum developer communities that could potentially contribute.
 
 The architecture of CM Tools is a series of small TypeScript files
 

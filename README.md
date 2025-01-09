@@ -58,7 +58,7 @@ cmt codemeta.json page.tmpl
 
 ## Additional Project Documentation
 
-- [user manual](user_manual.html)
-- [installation](INSTALL.html)
+- [user manual](user_manual.md)
+- [installation](INSTALL.md)
 - [license](LICENSE)
 
