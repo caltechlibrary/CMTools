@@ -18,7 +18,7 @@ maintainer:
     given-names: R. S.
     orcid: "https://orcid.org/0000-0003-0900-6903"
 repository-code: "git+https://github.com/caltechlibrary/CMTools"
-version: 0.0.1
+version: 0.0.2
 
 operating-system:
   - Linux
@@ -34,7 +34,7 @@ keywords:
 About this software
 ===================
 
-## CMTools 0.0.1
+## CMTools 0.0.2
 
 ### Authors
 
