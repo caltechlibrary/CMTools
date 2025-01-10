@@ -43,6 +43,9 @@
         }
     ],
     "dateCreated": "2025-01-07",
+	"dateReleased": "2025-01-10",
+	"releaseNotes": "A proof of concept in user codemeta.json in your build process",
+	"dateModified": "2025-01-10",
     "description": "CM Tools provides codemeta tooling for codemeta crosswalks and tooling to use the codemeta.json in a build process.",
     "funder": {
         "id": "https://ror.org/5dxps055",
@@ -50,7 +53,8 @@
     },
     "keywords": [
         "software development",
-        "metadata"
+        "metadata",
+		"code generation"
     ],
     "name": "CMTools",
     "operatingSystem": [
@@ -62,7 +66,7 @@
     "relatedLink": "https://caltechlibrary.github.io/CMTools",
     "runtimePlatform": "Deno",
     "softwareRequirements": "Deno >= 2.1.5",
-    "version": "0.0.0",
+    "version": "0.0.1",
     "developmentStatus": "concept",
     "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues"
 }

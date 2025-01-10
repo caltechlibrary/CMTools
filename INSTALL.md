@@ -3,16 +3,32 @@ Installation for development of **CMTools**
 
 **CMTools** is an experimental, proof of concept, set of tools for TypeScript, JavaScript, Python or Go programming projects. It provides a `cmt` command line program.
 
-Compiled binaries are not provided at this time.
+Quick install with curl or irm
+------------------------------
 
-Required software
------------------
+There is an experimental installer.sh script that can be run with the following command to install latest table release. This may work for macOS, Linux and if you’re using Windows with the Unix subsystem. This would be run from your shell (e.g. Terminal on macOS).
+
+~~~shell
+curl https://caltechlibrary.github.io/CMTools/installer.sh | sh
+~~~
+
+This will install `cmt` in your `$HOME/bin` directory.
+
+If you are running Windows 10 or 11 use the Powershell command below.
+
+~~~ps1
+irm https://caltechlibrary.github.io/CMTools/installer.ps1 | iex
+~~~
+
+Installing from source
+----------------------
+
+### Required software
 
 1. Git (to clone the cold repository on GitHub)
 2. Deno >= 2.1.4
 
-Compiling **CMTools**
----------------------
+### Compiling **CMTools**
 
 Deno is used to compile the TypeScript and dependent JavaScript files into an executable.
 
@@ -34,6 +50,8 @@ You can check to make sure `cmt` works for your system. The compiled version is 
 mkdir -p $HOME/bin
 export PATH="$HOME/bin:$PATH"
 cp bin/cmt $HOME/bin/
+export MANPATH="$MANPATH:$HOME/man"
+cp -vR man $HOME/
 ~~~
 
 ### Manual install for Windows via Powershell
@@ -44,6 +62,3 @@ $PATH = [Environment]::GetEnvironmentVariable("PATH")
 [Environment]::SetEnvironmentVariable("PATH", "$PATH;$HOME/bin")
 copy ./bin/cmt.exe $HOME/bin/
 ~~~
-
-
-

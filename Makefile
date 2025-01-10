@@ -65,11 +65,11 @@ $(MAN_PAGES_1): .FORCE
 	mkdir -p man/man1
 	pandoc $@.md --from markdown --to man -s >man/man1/$@
 
-CITATION.cff: codemeta.json .FORCE
-	./bin/cmt codemeta.json CITATION.cff
+CITATION.cff: codemeta.json
+	deno task CITATION.cff
 
-about.md: codemeta.json .FORCE
-	./bin/cmt codemeta.json about.md
+about.md: codemeta.json
+	deno task about.md
 
 status:
 	git status
@@ -98,7 +98,11 @@ install: compile .FORCE
 	mkdir -p "${HOME}/bin"
 	cp -v "./bin/cmt$(EXT)" "${HOME}/bin"
 	cp -vR "./man" "${HOME}/"
-	
+
+uninstall: .FORCE
+	rm "${HOME}/bin/cmt$(EXT)"
+	rm man/man1/cmt.1
+
 installer.sh: .FORCE
 	@echo '' | pandoc --metadata title="Installer" --metadata git_org_or_person="$(GIT_GROUP)" --metadata-file codemeta.json --template codemeta-bash-installer.tmpl >installer.sh
 	chmod 775 installer.sh

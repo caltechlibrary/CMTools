@@ -91,7 +91,7 @@ export async function transform(
 export function renderTemplate(obj: object, tmpl: string): string | undefined {
   const template = Handlebars.compile(tmpl);
   if (template === undefined) {
-    console.log(`templated failed to compile, ${tmpl}`);
+    console.log(`templates failed to compile, ${tmpl}`);
     return undefined;
   }
   return template(obj);
@@ -212,7 +212,7 @@ type: software
 {{#if license}}license-url: {{license}}{{/if}}
 {{#if operatingSystem}}operating-system:{{#each operatingSystem}}
   - {{.}}{{/each}}{{/if}}
-{{#if programmingLanguage}}programming-langauge:{{#each programmingLanguage}}
+{{#if programmingLanguage}}programming-language:{{#each programmingLanguage}}
   - {{.}}{{/each}}{{/if}}
 {{#if keywords}}keywords:
 {{#each keywords}}
@@ -264,7 +264,7 @@ About this software
 {{/each}}{{/if}}
 
 {{#if otherSoftwareRequirements}}
-### Software Requiremets
+### Software Requirements
 
 {{#each otherSoftwareRequirements}}
 - {{.}}
@@ -274,7 +274,7 @@ About this software
 const hbsTemplateText = `<html lang="en-US">
 <head>
     <title>{{project_name}}</title>
-    <link rel="stylesheet" href="css/site.css">
+    <link rel="stylesheet" href="/css/site.css">
 </head>
 <body>
 <nav>

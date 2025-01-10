@@ -18,23 +18,23 @@ maintainer:
     given-names: R. S.
     orcid: "https://orcid.org/0000-0003-0900-6903"
 repository-code: "git+https://github.com/caltechlibrary/CMTools"
-version: 0.0.0
+version: 0.0.1
 
 operating-system:
   - Linux
   - Windows
   - macOS
-programming-langauge:
+programming-language:
   - TypeScript
 keywords:
-  - software development  - metadata
+  - software development  - metadata  - code generation
 
 ---
 
 About this software
 ===================
 
-## CMTools 0.0.0
+## CMTools 0.0.1
 
 ### Authors
 
@@ -66,7 +66,7 @@ CM Tools provides codemeta tooling for codemeta crosswalks and tooling to use th
 - macOS
 
 
-### Software Requiremets
+### Software Requirements
 
 - Deno &gt;&#x3D; 2.1.5
 
