@@ -51,7 +51,7 @@ compile: .FORCE
 check: .FORCE
 	deno task check
 
-version.ts: codemeta.json .FORCE
+version.ts: codemeta.json
 	deno task version.ts
 
 format: $(shell ls -1 *.ts | grep -v version.ts | grep -v deps.ts)
@@ -94,6 +94,11 @@ htdocs: .FORCE
 test: .FORCE
 	deno task test
 
+install: compile .FORCE
+	mkdir -p "${HOME}/bin"
+	cp -v "./bin/cmt$(EXT)" "${HOME}/bin"
+	cp -vR "./man" "${HOME}/"
+	
 installer.sh: .FORCE
 	@echo '' | pandoc --metadata title="Installer" --metadata git_org_or_person="$(GIT_GROUP)" --metadata-file codemeta.json --template codemeta-bash-installer.tmpl >installer.sh
 	chmod 775 installer.sh

@@ -14,6 +14,5 @@ Deno.test('test transform', async function() {
     const obj = JSON.parse(src);
     cm.fromObject(obj);
     let txt: string | undefined = transform(cm, filename);
-    console.log(`DEBUG txt -> ${txt} <-- obj ${JSON.stringify(obj)}`);
     assertNotEquals(txt, undefined, `transform(cm, "${filename}")`);
 });

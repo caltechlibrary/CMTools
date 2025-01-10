@@ -1,6 +1,6 @@
-%cmt(1) user manual | version 0.0.0 f516ad2
+%cmt(1) user manual | version 0.0.0 0b843be
 % R. S. Doiel
-% 2025-01-09
+% 
 
 # NAME
 
@@ -8,7 +8,9 @@ cmt
 
 # SYNOPSIS
 
-cmt [OPTIONS] INPUT_NAME [OUTPUT_NAME]
+cmt INPUT_NAME [OPTIONS]
+cmt INPUT_NAME [OUTPUT_NAME] [OPTIONS]
+cmt INPUT_NAME [OUTPUT_NAME OUTPUT_NAME ...] [OPTIONS]
 
 # DESCRIPTION
 
@@ -23,6 +25,8 @@ cmt can be used to generate various code artifacts including the following.
 
 # OPTIONS
 
+Options come as the last paramter(s) on the command line.
+
 -h, --help
 : display help
 
@@ -35,6 +39,9 @@ cmt can be used to generate various code artifacts including the following.
 -f, --format
 : output format to use when piping the output to another programming.
 
+-d, --deno
+: update the deno.json file tasks based on output files requested.
+
 # EXAMPLES
 
 Here's an example of rendering `CITATION.cff` from a `codemeta.json` file. The second version
@@ -42,7 +49,7 @@ shows how to use the format option.
 
 ~~~
 cmt codemeta.json CITATION.cff
-cmt codemeta.json --format cff >CITATION.cff
+cmt codemeta.json --format=cff >CITATION.cff
 ~~~
 
 Here's an example of rendering `version.ts`, `version.py`, and `version.go` from `codemeta.json` file.
@@ -59,4 +66,20 @@ Here's an example of generating an "about.md" file from the CodeMeta file.
 cmt codemeta.json about.md
 ~~~
 
+You can also just stack the output files you need one after another.
+This is an example of creating the files to bootstrap a TypeScript project.
+
+~~~
+cmt codemeta.json about.md CITATION.cff verison.ts
+~~~
+
+The "--deno" option can trail the above command to update the deno.json file
+with a set of tasks to update the files you have specified.
+
+~~~
+cmt codemeta.json about.md CITATION.cff verison.ts --deno
+~~~
+
+This will create a "gen-code" task that will rebuild those files based on
+the current contents of the codemeta.json file.
 

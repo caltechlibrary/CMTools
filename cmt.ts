@@ -1,5 +1,4 @@
 import { parseArgs } from "@std/cli";
-import * as path from "@std/path";
 import { licenseText, releaseDate, releaseHash, version } from "./version.ts";
 import { fmtHelp, helpText } from "./helptext.ts";
 import { CodeMeta } from "./codemeta.ts";
@@ -43,14 +42,15 @@ async function main() {
     Deno.exit(1);
   }
   let format = app.format;
-  let denoTasks = app.deno;
   let inputName: string = (args.length > 0) ? `${args.shift()}` : "";
-  let outputName: string = (args.length > 0) ? `${args.shift()}` : "";
+  let outputNames: string[] = [];
+  for (let outputName of args) {
+    outputNames.push(`${outputName}`);
+  } 
   if (inputName === "") {
     console.log("error: missing filepath to codemeta.json");
     Deno.exit(1);
   }
-
   let src: string = await Deno.readTextFile(inputName);
   let obj: object = {};
   try {
@@ -65,28 +65,63 @@ async function main() {
     console.log(`failed to process ${inputName} object`);
     Deno.exit(1);
   }
-  if (outputName !== "") {
-    format = getFormatFromExt(outputName, app.format);
-    /*
-    console.log(
-      `DEBUG getFormatFromExt("${outputName}", "${app.format}") -> ${format}`,
-    );
-    */
-  }
-  if (!isSupportedFormat(format)) {
-    console.log(`unsupported format, "${format}"`);
-    Deno.exit(1);
-  }
-  //console.log(`DEBUG output format "${format}"`);
-  let txt: string | undefined = await transform(cm, format);
-  if (txt === undefined) {
-    console.log(`unsupported transform, "${format}"`);
-    Deno.exit(1);
-  }
-  if (outputName === "") {
+  if (outputNames.length === 0) {
+    if (!isSupportedFormat(format)) {
+      console.log(`unsupported format, "${format}"`);
+      Deno.exit(1);
+    }
+    let txt: string | undefined = await transform(cm, format);
+    if (txt === undefined) {
+      console.log(`unsupported transform, "${format}"`);
+      Deno.exit(1);
+    }
     console.log(txt);
-  } else {
+    Deno.exit(0);
+  }
+  let denoTasks: {[ key: string]: string } = {};
+  for (let outputName of outputNames) {
+    format = getFormatFromExt(outputName, app.format);
+    if (!isSupportedFormat(format)) {
+      console.log(`unsupported format, "${format}"`);
+      Deno.exit(1);
+    }
+    let txt: string | undefined = await transform(cm, format);
+    if (txt === undefined) {
+      console.log(`unsupported transform, "${format}"`);
+      Deno.exit(1);
+    }
     Deno.writeTextFile(outputName, txt);
+    if (app.deno) {
+      denoTasks[outputName] = `${appName} ${inputName} ${outputName}`;
+    }
+  }
+  // Handle updating the deno.json file.
+  if (app.deno) {
+    let src = await Deno.readTextFile("deno.json");
+    if (src === undefined) {
+      src = `{"tasks":{}}`;
+    }
+    let denoJSON = JSON.parse(src);
+    let genCodeTasks: string[] = [];
+    if (denoJSON.tasks === undefined) {
+      denoJSON.tasks = {};
+    }
+    for (let taskName of Object.keys(denoTasks)) {
+      denoJSON.tasks[taskName] = denoTasks[taskName];
+      genCodeTasks.push(`deno task ${taskName}`);
+    }
+    if (genCodeTasks.length > 0) {
+      denoJSON.tasks["gen-code"] = genCodeTasks.join(' ; ');
+    }
+    // Update deno.json file.
+    //FIXME: backup deno.json if exists.
+    try {
+      await Deno.copyFile("deno.json", "deno.json.bak");
+    } catch(err) {
+      console.log(`failed to backup deno.json aborting, ${err}`);
+      Deno.exit(1);
+    }
+    Deno.writeTextFile("deno.json", JSON.stringify(denoJSON, null, 2));
   }
 }
 

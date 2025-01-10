@@ -32,8 +32,6 @@ export async function gitOrgOrPerson(): Promise<string> {
   // NOTE: Group directory is a fall back git there is no remote in the Git config
   const groupDir: string = path.basename(path.join(Deno.cwd(), "../"));
   const remoteOriginURL: string | undefined = await getRemoteOriginURL();
-  //console.log(`DEBUG groupDir "${groupDir}"`);
-  //console.log(`DEBUG remoteOriginURL "${remoteOriginURL}"`);
   // QUESTION: should I get the URL from the Git repo config or from CodeMeta?
   const u = URL.parse(
     remoteOriginURL.replace("git@github.com:", "https://github.com/"),

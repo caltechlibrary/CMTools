@@ -1,7 +1,7 @@
 {
   "tasks": {
     "build": "deno task version.ts ; deno task docs ; deno task compile",
-    "version.ts": "deno run --allow-read --allow-write --allow-run ./bldutils/mk_version.ts",
+    "version.ts": "cmt codemeta.json version.ts",
     "compile": "deno compile --allow-read --allow-write --allow-run --output ./bin/cmt cmt.ts",
     "docs": "deno task cmt.1.md ; deno task manpages",
     "cmt.1.md": "deno run cmt.ts --help > cmt.1.md",
@@ -10,7 +10,11 @@
     "index.html": "deno run --allow-read --allow-write ./bldutils/mk_html.ts README.md index.html",
     "user_manual.html": "deno run --allow-read --allow-write ./bldutils/mk_html.ts user_manual.md",
     "about.html": "deno run --allow-read --allow-write ./bldutils/mk_html.ts about.md",
-    "INSTALL.html": "deno run --allow-read --allow-write ./bldutils/mk_html.ts INSTALL.md"
+    "INSTALL.html": "deno run --allow-read --allow-write ./bldutils/mk_html.ts INSTALL.md",
+    "about.md": "cmt codemeta.json about.md",
+    "CITATION.cff": "cmt codemeta.json CITATION.cff",
+    "page.tmpl": "cmt codemeta.json page.tmpl",
+    "gen-code": "deno task version.ts ; deno task about.md ; deno task CITATION.cff ; deno task page.tmpl"
   },
   "imports": {
     "@libs/markdown": "jsr:@libs/markdown@^2.0.2",

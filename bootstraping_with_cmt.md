@@ -72,25 +72,18 @@ cmt codemeta.json about.md page.tmpl CITATION.cff version.ts
 
 NOTE: You can invidual create the files using `cmt` like this.
 
-~~~shell
-cmt codemeta.json about.md
-cmt codemeta.json page.tmpl
-cmt codemeta.json CITATION.cff
-cmt codemeta.json version.ts
-~~~
-
-For deno projects you can also generate tasks to manage your project with the `--gen-tasks`
-option.
+For deno projects you can also generate tasks to manage your project with the `--deno`
+option as the last command line parameter.
 
 ~~~shell
-cmt codemeta.json deno.json
+cmt codemeta.json version.ts about.md CITATION.cff --deno
 ~~~
+
+This would result in a deno.json task element like the following.
 
 ~~~json
 {
     "tasks": {
-        "build": "deno task gen-code ; deno task compile",
-        "compile": "deno compile --allow-read --allow-write -o bin/app app.ts",
         "gen-code": "deno task version.ts ; deno task about.md ; deno task CITATION.cff",
         "version.ts": "cmt codemeta.json version.ts",
         "about.md": "cmt codemeta.json about.ts",
@@ -99,6 +92,4 @@ cmt codemeta.json deno.json
 }
 ~~~
 
-This means I can skip Makefile to build the app completely and gain the ability to build the project in Windows command prompt or Powershell too. The build command becomes `deno task build`.
-
-Automating the addition adding tasks to your deno.json is possible. Only the executable name and specific TypeScript filename holding your main function is needed.
+This means I can run `deno task gen-code` to update these files when I update my codemeta.json.
