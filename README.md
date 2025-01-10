@@ -1,9 +1,9 @@
 
 # CodeMeta Tools
 
-CMTools provides a simple command line tool called `cmt` that can be used to generate project files and artifacts based on the contents of your "codemeta.json" file and hash information of your Git repository holding your software project. CodeMeta Tools is a project focused on leveraging CodeMeta data, directory name and Git repo information for building and release software written in Python, Go, JavaScript or TypeScript. It was motivated by the practices in Caltech Library's Digital Development Group.
+[CodeMeta](https://codemeta.github.io) Tools provides a simple command line tool called `cmt` that can be used to generate project files and artifacts. The project focuses on leveraging CodeMeta data, directory name and Git repo information for building and release software written in Python, Go, JavaScript or TypeScript. It was motivated by the practices in Caltech Library's Digital Development Group.
 
-The tool is intended to be run from the project root directory. It takes the path of to a codemeta.json file and the target file to generate.  Using the file's extension it will generated the file based on the contents of the codemeta.json file along with directory name and Git repository information. The tool can generate the following project files.
+The tool is intended to be run from the project root directory. `cmt` expects the file path of your codemeta.json file as well as one or more target files to be generated. The target file's extension determines the generated content. The tool can generate the following project files based on the contents of the codemeta.json file.
 
 - CITATION.cff
 - version.ts, version.js, version.go or version.py
@@ -38,7 +38,7 @@ The codemeta file contains sufficient information to rendering an about page for
 cmt codemeta.json about.md
 ~~~
 
-## Create a project handlebars template
+## Create a simple project handlebars template
 
 A handlebars template can be generated from the codemeta.json as well.
 

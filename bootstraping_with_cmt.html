@@ -1,7 +1,7 @@
 <html lang="en-US">
 <head>
     <title>CMTools</title>
-    <link rel="stylesheet" href="css/site.css">
+    <link rel="stylesheet" href="/css/site.css">
 </head>
 <body>
 <nav>
@@ -18,9 +18,9 @@
 </nav>
 <section>
 <h1
-id="bootstraping-a-typescript-project-with-codemeta-tools">Bootstraping
+id="bootstrapping-a-typescript-project-with-codemeta-tools">Bootstrapping
 a TypeScript project with CodeMeta Tools</h1>
-<p>While Deno provides most tooling for bootstraping a TypeScript
+<p>While Deno provides most tooling for bootstrapping a TypeScript
 project there are some things it doesn’t handle directly. In my Caltech
 Library project I like to include a CITATION.cff, about.md and have a
 simple Pandoc template for generating the website for the project. These
@@ -56,7 +56,7 @@ firefox https://codemeta.github.io/codemeta-generator/
 micro codemeta.json
 # create an about page from the codemeta.json contents
 micro about.md
-# copy then edit a pandoc template for building website
+# copy then edit a Pandoc template for building website
 cp ../&lt;SOME_OTHER_PROJECT&gt;/page.tmpl ./
 micro page.tmpl
 codemeta2cff
@@ -68,7 +68,7 @@ make version.ts</code></pre>
 be improved using GitHub repository templates but I’ve found those to be
 more work then just grinding through the project setup. Relying on Make
 means I can’t develop on a Windows machine without resorting to the
-Linux Subsytem for Windows. Do while Go and Deno make it easy to cross
+Linux Subsystem for Windows. Do while Go and Deno make it easy to cross
 compile the build process isn’t cross platform.</p>
 <h2
 id="simplifying-the-bootstrap-using-deno-tasks-and-codemeta-tools">Simplifying
@@ -94,32 +94,24 @@ micro codemeta.json</code></pre>
 <code>--gen-project</code> option. For TypeScript that would look
 like.</p>
 <pre class="shell"><code>cmt codemeta.json about.md page.tmpl CITATION.cff version.ts</code></pre>
-<p>NOTE: You can invidual create the files using <code>cmt</code> like
+<p>NOTE: You can individual create the files using <code>cmt</code> like
 this.</p>
-<pre class="shell"><code>cmt codemeta.json about.md
-cmt codemeta.json page.tmpl
-cmt codemeta.json CITATION.cff
-cmt codemeta.json version.ts</code></pre>
 <p>For deno projects you can also generate tasks to manage your project
-with the <code>--gen-tasks</code> option.</p>
-<pre class="shell"><code>cmt codemeta.json deno.json</code></pre>
-<div class="sourceCode" id="cb6"><pre
-class="sourceCode json"><code class="sourceCode json"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;tasks&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;build&quot;</span><span class="fu">:</span> <span class="st">&quot;deno task gen-code ; deno task compile&quot;</span><span class="fu">,</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;compile&quot;</span><span class="fu">:</span> <span class="st">&quot;deno compile --allow-read --allow-write -o bin/app app.ts&quot;</span><span class="fu">,</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;gen-code&quot;</span><span class="fu">:</span> <span class="st">&quot;deno task version.ts ; deno task about.md ; deno task CITATION.cff&quot;</span><span class="fu">,</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;version.ts&quot;</span><span class="fu">:</span> <span class="st">&quot;cmt codemeta.json version.ts&quot;</span><span class="fu">,</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;about.md&quot;</span><span class="fu">:</span> <span class="st">&quot;cmt codemeta.json about.ts&quot;</span><span class="fu">,</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;CITATION.cff&quot;</span><span class="fu">:</span> <span class="st">&quot;cmt codemeta.json CITATION.cff&quot;</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
-<p>This means I can skip Makefile to build the app completely and gain
-the ability to build the project in Windows command prompt or Powershell
-too. The build command becomes <code>deno task build</code>.</p>
-<p>Automating the addition adding tasks to your deno.json is possible.
-Only the executable name and specific TypeScript filename holding your
-main function is needed.</p>
+with the <code>--deno</code> option as the last command line
+parameter.</p>
+<pre class="shell"><code>cmt codemeta.json version.ts about.md CITATION.cff --deno</code></pre>
+<p>This would result in a deno.json task element like the following.</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;tasks&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;gen-code&quot;</span><span class="fu">:</span> <span class="st">&quot;deno task version.ts ; deno task about.md ; deno task CITATION.cff&quot;</span><span class="fu">,</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;version.ts&quot;</span><span class="fu">:</span> <span class="st">&quot;cmt codemeta.json version.ts&quot;</span><span class="fu">,</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;about.md&quot;</span><span class="fu">:</span> <span class="st">&quot;cmt codemeta.json about.ts&quot;</span><span class="fu">,</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;CITATION.cff&quot;</span><span class="fu">:</span> <span class="st">&quot;cmt codemeta.json CITATION.cff&quot;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p>This means I can run <code>deno task gen-code</code> to update these
+files when I update my codemeta.json.</p>
 </section>
 </body>
 </html>

@@ -13,8 +13,7 @@
     "INSTALL.html": "deno run --allow-read --allow-write ./bldutils/mk_html.ts INSTALL.md",
     "about.md": "cmt codemeta.json about.md",
     "CITATION.cff": "cmt codemeta.json CITATION.cff",
-    "page.tmpl": "cmt codemeta.json page.tmpl",
-    "gen-code": "deno task version.ts ; deno task about.md ; deno task CITATION.cff ; deno task page.tmpl"
+    "gen-code": "deno task version.ts ; deno task about.md ; deno task CITATION.cff "
   },
   "imports": {
     "@libs/markdown": "jsr:@libs/markdown@^2.0.2",

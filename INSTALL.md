@@ -1,7 +1,7 @@
-Installation for development of **cmtools**
+Installation for development of **CMTools**
 ===========================================
 
-**cmtools** is an experimental, proof of concept, set of tools for TypeScript, JavaScript, Python or Go programming projects. It provides a `cmt` command line program.
+**CMTools** is an experimental, proof of concept, set of tools for TypeScript, JavaScript, Python or Go programming projects. It provides a `cmt` command line program.
 
 Compiled binaries are not provided at this time.
 
@@ -11,10 +11,10 @@ Required software
 1. Git (to clone the cold repository on GitHub)
 2. Deno >= 2.1.4
 
-Compiling **cmtools**
+Compiling **CMTools**
 ---------------------
 
-Deno is used to compile the TypeScript and dependant JavaScript files into an executable.
+Deno is used to compile the TypeScript and dependent JavaScript files into an executable.
 
 1. Install handlebars via Deno
 2. Use Deno's task to build project

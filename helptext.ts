@@ -40,7 +40,7 @@ targeting your Python, Go, JavaScript or TypeScript build process.
 
 # OPTIONS
 
-Options come as the last paramter(s) on the command line.
+Options come as the last parameter(s) on the command line.
 
 -h, --help
 : display help
@@ -87,14 +87,14 @@ You can also just stack the output files you need one after another.
 This is an example of creating the files to bootstrap a TypeScript project.
 
 ~~~
-{app_name} codemeta.json about.md CITATION.cff verison.ts
+{app_name} codemeta.json about.md CITATION.cff version.ts
 ~~~
 
 The "--deno" option can trail the above command to update the deno.json file
 with a set of tasks to update the files you have specified.
 
 ~~~
-{app_name} codemeta.json about.md CITATION.cff verison.ts --deno
+{app_name} codemeta.json about.md CITATION.cff version.ts --deno
 ~~~
 
 This will create a "gen-code" task that will rebuild those files based on

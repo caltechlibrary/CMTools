@@ -2,9 +2,9 @@
 title: Bootstrapping with CodeMeta Tools
 ---
 
-# Bootstraping a TypeScript project with CodeMeta Tools
+# Bootstrapping a TypeScript project with CodeMeta Tools
 
-While Deno provides most tooling for bootstraping a TypeScript project there are some things it doesn't handle directly.  In my Caltech Library project I like to include a CITATION.cff, about.md and have a simple Pandoc template for generating the website for the project.  These can all be accomplished with CodeMeta Tools' `cmt` command.
+While Deno provides most tooling for bootstrapping a TypeScript project there are some things it doesn't handle directly.  In my Caltech Library project I like to include a CITATION.cff, about.md and have a simple Pandoc template for generating the website for the project.  These can all be accomplished with CodeMeta Tools' `cmt` command.
 
 ## Typical Tasks
 
@@ -34,7 +34,7 @@ firefox https://codemeta.github.io/codemeta-generator/
 micro codemeta.json
 # create an about page from the codemeta.json contents
 micro about.md
-# copy then edit a pandoc template for building website
+# copy then edit a Pandoc template for building website
 cp ../<SOME_OTHER_PROJECT>/page.tmpl ./
 micro page.tmpl
 codemeta2cff
@@ -44,7 +44,7 @@ micro Makefile
 make version.ts
 ~~~
 
-Now I am ready to start code the project. The copy edit approach can be improved using GitHub repository templates but I've found those to be more work then just grinding through the project setup.  Relying on Make means I can't develop on a Windows machine without resorting to the Linux Subsytem for Windows. Do while Go and Deno make it easy to cross compile the build process isn't cross platform.
+Now I am ready to start code the project. The copy edit approach can be improved using GitHub repository templates but I've found those to be more work then just grinding through the project setup.  Relying on Make means I can't develop on a Windows machine without resorting to the Linux Subsystem for Windows. Do while Go and Deno make it easy to cross compile the build process isn't cross platform.
 
 ## Simplifying the bootstrap using Deno tasks and CodeMeta Tools
 
@@ -70,7 +70,7 @@ that would look like.
 cmt codemeta.json about.md page.tmpl CITATION.cff version.ts
 ~~~
 
-NOTE: You can invidual create the files using `cmt` like this.
+NOTE: You can individual create the files using `cmt` like this.
 
 For deno projects you can also generate tasks to manage your project with the `--deno`
 option as the last command line parameter.
