@@ -3,6 +3,7 @@ export interface PersonOrOrganizationInterface {
   toObject(): object;
 }
 
+
 export class PersonOrOrganization implements PersonOrOrganizationInterface {
   // ORCID is use for person id
   id: string = "";
@@ -30,7 +31,13 @@ export class PersonOrOrganization implements PersonOrOrganizationInterface {
 
   fromObject(obj: { [key: string]: any }): boolean {
     this.id = (obj["id"] === undefined) ? "" : obj["id"];
+    if (this.id === "") {
+      this.id = (obj["@id"] === undefined) ? "" : obj["@id"];
+    }
     this.type = (obj["type"] === undefined) ? "" : obj["type"];
+    if (this.type === "") {
+      this.type = (obj["@type"] === undefined) ? "" : obj["@type"];
+    }
     this.name = (obj["name"] === undefined) ? "" : obj["name"];
     this.givenName = (obj["givenName"] === undefined) ? "" : obj["givenName"];
     this.familyName = (obj["familyName"] === undefined)
@@ -42,4 +49,29 @@ export class PersonOrOrganization implements PersonOrOrganizationInterface {
     this.email = (obj["email"] === undefined) ? "" : obj["email"];
     return true;
   }
+}
+
+export function normalizePersonOrOrgList(obj: object | string): PersonOrOrganization[] {
+  const oType = Object.prototype.toString.call(obj);
+  let p: PersonOrOrganization = new PersonOrOrganization();
+  let l: PersonOrOrganization[] = [];
+  switch (oType) {
+    case "[object Array]":
+      for (let item of Object.values(obj)) {
+        p = new PersonOrOrganization();
+        p.fromObject(item);
+        l.push(p);
+      }
+      break;
+    case "[object Object]":
+      p.fromObject(obj as Object);
+      l.push(p);
+      break;
+    case "[object String]":
+      p.type = "Person";
+      p.name = obj.toString();
+      l.push(p)
+      break;
+  }
+  return l;
 }

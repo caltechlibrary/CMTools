@@ -121,7 +121,10 @@ async function main() {
       console.log(`failed to backup deno.json aborting, ${err}`);
       Deno.exit(1);
     }
-    Deno.writeTextFile("deno.json", JSON.stringify(denoJSON, null, 2));
+	src = JSON.stringify(denoJSON, null, 2);
+	if (src !== undefined) {
+    	Deno.writeTextFile("deno.json", src);
+	}
   }
 }
 

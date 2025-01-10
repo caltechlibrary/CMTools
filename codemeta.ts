@@ -1,5 +1,5 @@
 // codemeta.ts is a part of cmtools.  It describes a Codemeta object.
-import { PersonOrOrganization } from "./person_or_organization.ts";
+import { PersonOrOrganization, normalizePersonOrOrgList } from "./person_or_organization.ts";
 
 export interface CodeMetaInterface {
   atContext: string;
@@ -91,19 +91,20 @@ export class CodeMeta implements CodeMetaInterface {
       this.author = [];
     } else {
       //FIXME: if this is NOT an array I need to write code to handle it here.
-      this.author = obj["author"];
+      const oType = Object.prototype.toString.call(obj["author"]); 
+      this.author = normalizePersonOrOrgList(obj['author']);
     }
     if (obj["contributor"] === undefined) {
       this.contributor = [];
     } else {
       //FIXME: if this is NOT an array I need to write code to handle it here.
-      this.contributor = obj["contributor"];
+      this.contributor = normalizePersonOrOrgList(obj["contributor"]);
     }
     if (obj["maintainer"] === undefined) {
       this.maintainer = [];
     } else {
       //FIXME: if this is NOT an array I need to write code to handle it here.
-      this.maintainer = obj["maintainer"];
+      this.maintainer = normalizePersonOrOrgList(obj["maintainer"]);
     }
     this.codeRepository = (obj["codeRepository"] === undefined)
       ? ""
