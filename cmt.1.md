@@ -1,4 +1,4 @@
-%cmt(1) user manual | version 0.0.0 
+%cmt(1) user manual | version 0.0.0 f516ad2
 % R. S. Doiel
 % 2025-01-09
 

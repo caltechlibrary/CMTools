@@ -3,7 +3,7 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 type: software
-title: "cmtools"
+title: "CMTools"
 abstract: "CM Tools provides codemeta tooling for codemeta crosswalks and tooling to use the codemeta.json in a build process."
 authors:
   - family-names: Doiel
@@ -17,8 +17,8 @@ maintainer:
   - family-names: Doiel
     given-names: R. S.
     orcid: "https://orcid.org/0000-0003-0900-6903"
-repository-code: "git+https://github.com/caltechlibrary/cmtools"
-version: 0.0.1
+repository-code: "git+https://github.com/caltechlibrary/CMTools"
+version: 0.0.0
 
 operating-system:
   - Linux
@@ -34,7 +34,7 @@ keywords:
 About this software
 ===================
 
-## cmtools 0.0.1
+## CMTools 0.0.0
 
 ### Authors
 
@@ -51,8 +51,8 @@ About this software
 CM Tools provides codemeta tooling for codemeta crosswalks and tooling to use the codemeta.json in a build process.
 
 
-- GitHub: <git+https://github.com/caltechlibrary/cmtools>
-- Issues: <git+https://github.com/caltechlibrary/cmtools/issues>
+- GitHub: <git+https://github.com/caltechlibrary/CMTools>
+- Issues: <git+https://github.com/caltechlibrary/CMTools/issues>
 
 ### Programming languages
 

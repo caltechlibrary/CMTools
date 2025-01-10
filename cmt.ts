@@ -3,8 +3,7 @@ import * as path from "@std/path";
 import { licenseText, releaseDate, releaseHash, version } from "./version.ts";
 import { fmtHelp, helpText } from "./helptext.ts";
 import { CodeMeta } from "./codemeta.ts";
-import { isSupportedFormat, getFormatFromExt, transform } from "./transform.ts";
-
+import { getFormatFromExt, isSupportedFormat, transform } from "./transform.ts";
 
 async function main() {
   const appName = "cmt";
@@ -14,12 +13,14 @@ async function main() {
       license: "l",
       version: "v",
       format: "f",
+      deno: "d",
     },
     default: {
       help: false,
       version: false,
       license: false,
       format: "",
+      deno: false,
     },
   });
   const args = app._;
@@ -42,6 +43,7 @@ async function main() {
     Deno.exit(1);
   }
   let format = app.format;
+  let denoTasks = app.deno;
   let inputName: string = (args.length > 0) ? `${args.shift()}` : "";
   let outputName: string = (args.length > 0) ? `${args.shift()}` : "";
   if (inputName === "") {
@@ -65,13 +67,17 @@ async function main() {
   }
   if (outputName !== "") {
     format = getFormatFromExt(outputName, app.format);
-    console.log(`DEBUG getFormatFromExt("${outputName}", "${app.format}") -> ${format}`);
+    /*
+    console.log(
+      `DEBUG getFormatFromExt("${outputName}", "${app.format}") -> ${format}`,
+    );
+    */
   }
   if (!isSupportedFormat(format)) {
     console.log(`unsupported format, "${format}"`);
     Deno.exit(1);
   }
-  console.log(`DEBUG output format "${format}"`);
+  //console.log(`DEBUG output format "${format}"`);
   let txt: string | undefined = await transform(cm, format);
   if (txt === undefined) {
     console.log(`unsupported transform, "${format}"`);

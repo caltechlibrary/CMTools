@@ -17,7 +17,20 @@
 </ul>
 </nav>
 <section>
-${body}
+<h1 id="project-search">project search</h1>
+<link href="./pagefind/pagefind-ui.css" rel="stylesheet">
+<script src="./pagefind/pagefind-ui.js" type="text/javascript"></script>
+<div id="search">
+
+</div>
+<script>
+    window.addEventListener('DOMContentLoaded', (event) => {
+        new PagefindUI({ 
+            element: "#search",
+            baseUrl: "./"
+        });
+    });
+</script>
 </section>
 </body>
 </html>

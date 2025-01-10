@@ -12,7 +12,8 @@ export function fmtHelp(
     );
 }
 
-export const helpText = `%{app_name}(1) user manual | version {version} {release_hash}
+export const helpText =
+  `%{app_name}(1) user manual | version {version} {release_hash}
 % R. S. Doiel
 % {release_date}
 
@@ -22,6 +23,7 @@ export const helpText = `%{app_name}(1) user manual | version {version} {release
 
 # SYNOPSIS
 
+{app_name} [OPTIONS] INPUT_NAME
 {app_name} [OPTIONS] INPUT_NAME [OUTPUT_NAME]
 
 # DESCRIPTION
@@ -48,6 +50,10 @@ targeting your Python, Go, JavaScript or TypeScript build process.
 
 -f, --format
 : output format to use when piping the output to another programming.
+
+--gen-project PROG_LANGUAGE
+: this will generate all the files for a project that has the given programming language (e.g.
+"python", "go", "typescript", "javascript").
 
 # EXAMPLES
 

@@ -1,79 +1,88 @@
 import * as path from "@std/path";
-import Handlebars from 'npm:handlebars';
+import Handlebars from "npm:handlebars";
 import { CodeMeta } from "./codemeta.ts";
 import { gitOrgOrPerson, gitReleaseHash } from "./gitcmds.ts";
 
 export function getFormatFromExt(
-    filename: string | undefined,
-    defaultFormat: string,
-  ): string {
-    if (filename !== undefined) {
-      switch (path.extname(filename)) {
-        case ".cff":
-          return "cff";
-        case ".ts":
-          return "ts";
-        case ".go":
-          return "go";
-        case ".py":
-          return "py";
-        case ".md":
-          return "md";
-        case ".hbs":
-          return "hbs";
-        case ".tmpl":
-          return "pdtmpl"
-        case ".pdtmpl":
-          return "pdtmpl"
-        }
+  filename: string | undefined,
+  defaultFormat: string,
+): string {
+  if (filename !== undefined) {
+    switch (path.extname(filename)) {
+      case ".cff":
+        return "cff";
+      case ".ts":
+        return "ts";
+      case ".go":
+        return "go";
+      case ".py":
+        return "py";
+      case ".md":
+        return "md";
+      case ".hbs":
+        return "hbs";
+      case ".tmpl":
+        return "pdtmpl";
+      case ".pdtmpl":
+        return "pdtmpl";
     }
-    return defaultFormat;
   }
-  
-export function isSupportedFormat(format: string | undefined): boolean {
-    if (format === undefined) {
-        return false;
-    }
-    return [ "cff", "ts", "go", "py", "md", "hbs", "pdtmpl" ].indexOf(format) > -1;
+  return defaultFormat;
 }
 
-export async function transform(cm: CodeMeta, format: string): Promise<string | undefined> {
+export function isSupportedFormat(format: string | undefined): boolean {
+  if (format === undefined) {
+    return false;
+  }
+  return ["cff", "ts", "go", "py", "md", "hbs", "pdtmpl"].indexOf(format) > -1;
+}
+
+export async function transform(
+  cm: CodeMeta,
+  format: string,
+): Promise<string | undefined> {
   if (!isSupportedFormat(format)) {
     return undefined;
   }
-  let obj: { [ key: string ]: any } = cm.toObject();
-  obj['project_name'] = path.basename(Deno.cwd());
-  obj['releaseHash'] = await gitReleaseHash();
+  let obj: { [key: string]: any } = cm.toObject();
+  obj["project_name"] = path.basename(Deno.cwd());
+  obj["releaseHash"] = await gitReleaseHash();
   //obj['git_org_or_person'] = await gitOrgOrPerson();
-  let licenseText: string = '';
+  let licenseText: string = "";
   try {
     licenseText = await Deno.readTextFile("LICENSE");
   } catch (err) {
     console.log(`warning: missing license file, ${err}`);
-    licenseText = '';
+    licenseText = "";
   }
   if (licenseText !== undefined && licenseText !== "") {
-    obj['licenseText'] = licenseText;
+    obj["licenseText"] = licenseText;
   }
-  if (cm.codeRepository !== '') {
-    obj['repositoryLink'] = cm.codeRepository.replace('git+https', 'https');
+  if (cm.codeRepository !== "") {
+    obj["repositoryLink"] = cm.codeRepository.replace("git+https", "https");
   }
 
   switch (format) {
     case "cff":
       return renderTemplate(obj, cffTemplateText);
     case "ts":
-        return renderTemplate(obj, tsTemplateText);
+      return renderTemplate(obj, tsTemplateText);
     case "go":
-        return renderTemplate(obj, goTemplateText);
+      return renderTemplate(obj, goTemplateText);
     case "py":
-        return renderTemplate(obj, pyTemplateText);
+      return renderTemplate(obj, pyTemplateText);
     case "md":
-        return renderTemplate(obj, mdTemplateText);
+      return renderTemplate(obj, mdTemplateText);
     case "hbs":
-        return renderTemplate(obj, hbsTemplateText)?.replace('$$content$$', '{{{content}}}');
+      return renderTemplate(obj, hbsTemplateText)?.replace(
+        "$$content$$",
+        "{{{content}}}",
+      );
     case "pdtmpl": // render as Pandoc template
-      return renderTemplate(obj, hbsTemplateText)?.replace('$$content$$', '$content$');
+      return renderTemplate(obj, hbsTemplateText)?.replace(
+        "$$content$$",
+        "${body}",
+      );
     default:
       return undefined;
   }
@@ -123,9 +132,9 @@ const tsTemplateText = `// {{name}} version and license information.
 export const version = '{{version}}',
 releaseDate = '{{releaseDate}}',
 releaseHash = '{{releaseHash}}'{{#if licenseText}},
-licenseText = `+"`"+`
+licenseText = ` + "`" + `
 {{licenseText}}
-`+"`{{/if}};\n";
+` + "`{{/if}};\n";
 
 const pyTemplateText = `# {{name}} version and license information.
 
@@ -153,9 +162,9 @@ const (
     // ReleaseHash, the Git hash when version.go was generated
     ReleaseHash = "{{releaseHash}}"
 {{#if licenseText}}
-    LicenseText = `+"`"+`
+    LicenseText = ` + "`" + `
 {{licenseText}}
-`+"`"+`{{/if}}
+` + "`" + `{{/if}}
 )
 
 // FmtHelp lets you process a text block with simple curly brace markup.

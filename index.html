@@ -1,0 +1,79 @@
+<html lang="en-US">
+<head>
+    <title>CMTools</title>
+    <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<nav>
+<ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="index.html">README</a></li>
+    <li><a href="LICENSE">LICENSE</a></li>
+    <li><a href="INSTALL.html">INSTALL</a></li>
+    <li><a href="user_manual.html">User Manual</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="search.html">Search</a></li>
+    <li><a href="https://github.com/caltechlibrary/CMTools">GitHub</a></li>
+</ul>
+</nav>
+<section>
+<h1 id="codemeta-tools">CodeMeta Tools</h1>
+<p>CMTools provides a simple command line tool called <code>cmt</code>
+that can be used to generate project files and artifacts based on the
+contents of your “codemeta.json” file and hash information of your Git
+repository holding your software project. CodeMeta Tools is a project
+focused on leveraging CodeMeta data, directory name and Git repo
+information for building and release software written in Python, Go,
+JavaScript or TypeScript. It was motivated by the practices in Caltech
+Library’s Digital Development Group.</p>
+<p>The tool is intended to be run from the project root directory. It
+takes the path of to a codemeta.json file and the target file to
+generate. Using the file’s extension it will generated the file based on
+the contents of the codemeta.json file along with directory name and Git
+repository information. The tool can generate the following project
+files.</p>
+<ul>
+<li>CITATION.cff</li>
+<li>version.ts, version.js, version.go or version.py</li>
+<li>about.md</li>
+<li>page.hbs (handlebars template) or page.tmpl (Pandoc template)</li>
+</ul>
+<h2 id="create-a-version-file-for-typescript-go-and-python">Create a
+version file for TypeScript, Go and Python</h2>
+<p>The <code>cmt</code> command can render a version file suitable for
+TypeScript, JavaScript, Go and Python projects. The version file will
+contain version name, release hash, release date and license
+information. Here’s an example of rendering a “version.ts” for the
+CMTools project.</p>
+<pre class="shell"><code>cmt codemeta.json version.ts</code></pre>
+<p>For Go you would do,</p>
+<pre class="shell"><code>cmt codemeta.json version.go</code></pre>
+<p>and for Python.</p>
+<pre class="shell"><code>cmt codemeta.json version.py</code></pre>
+<h2 id="creating-an-about.md">Creating an about.md</h2>
+<p>The codemeta file contains sufficient information to rendering an
+about page for your project. Rendering a Markdown document for that
+purpose can be done with the following.</p>
+<pre class="shell"><code>cmt codemeta.json about.md</code></pre>
+<h2 id="create-a-project-handlebars-template">Create a project
+handlebars template</h2>
+<p>A handlebars template can be generated from the codemeta.json as
+well.</p>
+<pre class="shell"><code>cmt codemeta.json page.hbs</code></pre>
+<p>This Handlebars template then can be used along with a handlebars
+template script to build the website from your repository.</p>
+<h2 id="create-a-project-pandoc-template">Create a project Pandoc
+template</h2>
+<p>A Pandoc template can be generated from the codemeta.json as
+well.</p>
+<pre><code>cmt codemeta.json page.tmpl</code></pre>
+<h2 id="additional-project-documentation">Additional Project
+Documentation</h2>
+<ul>
+<li><a href="user_manual.html">user manual</a></li>
+<li><a href="INSTALL.html">installation</a></li>
+<li><a href="LICENSE">license</a></li>
+</ul>
+</section>
+</body>
+</html>
