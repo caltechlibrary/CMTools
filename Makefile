@@ -131,7 +131,8 @@ distribute_docs: website man setup_dist
 	@cp CITATION.cff dist/
 	@cp *.1.md dist/
 	@cp INSTALL.md dist/
-	@cp deployment.md dist/
+	@cp approach_and_implementation.md dist/
+	@cp bootstrapping_with_cmt.md dist/
 	@cp -vR man dist/
 
 dist/Linux-x86_64: .FORCE

@@ -13,7 +13,12 @@
     "INSTALL.html": "deno run --allow-read --allow-write ./bldutils/mk_html.ts INSTALL.md",
     "about.md": "cmt codemeta.json about.md",
     "CITATION.cff": "cmt codemeta.json CITATION.cff",
-    "gen-code": "deno task version.ts ; deno task about.md ; deno task CITATION.cff "
+    "gen-code": "deno task version.ts ; deno task about.md ; deno task CITATION.cff ",
+    "release_linux_x86_64": "deno compile --allow-import --allow-read --allow-run --output dist/bin/cmt --target x86_64-unknown-linux-gnu cmt.ts ",
+    "release_linux_aarch64": "deno compile --allow-import --allow-read --allow-run --output dist/bin/cmt --target aarch64-unknown-linux-gnu cmt.ts",
+    "release_macos_x86_64": "deno compile --allow-import --allow-read --allow-run --output dist/bin/cmt --target x86_64-apple-darwin cmt.ts",
+    "release_macos_aarch64": "deno compile --allow-import --allow-read --allow-run --output dist/bin/cmt --target aarch64-apple-darwin cmt.ts",
+    "release_windows_x86_64": "deno compile --allow-import --allow-read --allow-run --output dist/bin/cmt.exe --target x86_64-pc-windows-msvc cmt.ts"
   },
   "imports": {
     "@libs/markdown": "jsr:@libs/markdown@^2.0.2",

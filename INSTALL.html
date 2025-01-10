@@ -22,13 +22,26 @@ development of <strong>CMTools</strong></h1>
 <p><strong>CMTools</strong> is an experimental, proof of concept, set of
 tools for TypeScript, JavaScript, Python or Go programming projects. It
 provides a <code>cmt</code> command line program.</p>
-<p>Compiled binaries are not provided at this time.</p>
-<h2 id="required-software">Required software</h2>
+<h2 id="quick-install-with-curl-or-irm">Quick install with curl or
+irm</h2>
+<p>There is an experimental installer.sh script that can be run with the
+following command to install latest table release. This may work for
+macOS, Linux and if you’re using Windows with the Unix subsystem. This
+would be run from your shell (e.g. Terminal on macOS).</p>
+<pre class="shell"><code>curl https://caltechlibrary.github.io/CMTools/installer.sh | sh</code></pre>
+<p>This will install <code>cmt</code> in your <code>$HOME/bin</code>
+directory.</p>
+<p>If you are running Windows 10 or 11 use the Powershell command
+below.</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode ps1"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">irm</span> https<span class="op">://</span>caltechlibrary<span class="op">.</span><span class="fu">github</span><span class="op">.</span><span class="fu">io</span><span class="op">/</span>CMTools<span class="op">/</span>installer<span class="op">.</span><span class="fu">ps1</span> <span class="op">|</span> <span class="fu">iex</span></span></code></pre></div>
+<h2 id="installing-from-source">Installing from source</h2>
+<h3 id="required-software">Required software</h3>
 <ol type="1">
 <li>Git (to clone the cold repository on GitHub)</li>
 <li>Deno &gt;= 2.1.4</li>
 </ol>
-<h2 id="compiling-cmtools">Compiling <strong>CMTools</strong></h2>
+<h3 id="compiling-cmtools">Compiling <strong>CMTools</strong></h3>
 <p>Deno is used to compile the TypeScript and dependent JavaScript files
 into an executable.</p>
 <ol type="1">
@@ -45,14 +58,16 @@ path.</p>
 <h3 id="manual-install-on-posix">Manual install on POSIX</h3>
 <pre class="shell"><code>mkdir -p $HOME/bin
 export PATH=&quot;$HOME/bin:$PATH&quot;
-cp bin/cmt $HOME/bin/</code></pre>
+cp bin/cmt $HOME/bin/
+export MANPATH=&quot;$MANPATH:$HOME/man&quot;
+cp -vR man $HOME/</code></pre>
 <h3 id="manual-install-for-windows-via-powershell">Manual install for
 Windows via Powershell</h3>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode ps1"><code class="sourceCode powershell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>mkdir <span class="va">$HOME</span><span class="op">/</span>bin</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="va">$PATH</span> <span class="op">=</span> <span class="op">[</span>Environment<span class="op">]::</span>GetEnvironmentVariable<span class="op">(</span><span class="st">&quot;PATH&quot;</span><span class="op">)</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="op">[</span>Environment<span class="op">]::</span>SetEnvironmentVariable<span class="op">(</span><span class="st">&quot;PATH&quot;</span><span class="op">,</span> <span class="st">&quot;</span><span class="va">$PATH</span><span class="st">;</span><span class="va">$HOME</span><span class="st">/bin&quot;</span><span class="op">)</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">copy</span> <span class="op">./</span>bin<span class="op">/</span>cmt<span class="op">.</span><span class="fu">exe</span> <span class="va">$HOME</span><span class="op">/</span>bin<span class="op">/</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode ps1"><code class="sourceCode powershell"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>mkdir <span class="va">$HOME</span><span class="op">/</span>bin</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="va">$PATH</span> <span class="op">=</span> <span class="op">[</span>Environment<span class="op">]::</span>GetEnvironmentVariable<span class="op">(</span><span class="st">&quot;PATH&quot;</span><span class="op">)</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="op">[</span>Environment<span class="op">]::</span>SetEnvironmentVariable<span class="op">(</span><span class="st">&quot;PATH&quot;</span><span class="op">,</span> <span class="st">&quot;</span><span class="va">$PATH</span><span class="st">;</span><span class="va">$HOME</span><span class="st">/bin&quot;</span><span class="op">)</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">copy</span> <span class="op">./</span>bin<span class="op">/</span>cmt<span class="op">.</span><span class="fu">exe</span> <span class="va">$HOME</span><span class="op">/</span>bin<span class="op">/</span></span></code></pre></div>
 </section>
 </body>
 </html>
