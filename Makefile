@@ -167,7 +167,7 @@ dist/Windows-x86_64: .FORCE
 
 dist/Windows-aarch64: .FORCE
 	@mkdir -p dist/bin
-	deno task release_windows_x86_64
+	deno task release_windows_v86_64 #deno task release_windows_aarch64 <-- switch to native when Deno supports Windows ARM64
 	@cd dist && zip -r $(PROJECT)-v$(VERSION)-Windows-aarch64.zip LICENSE codemeta.json CITATION.cff *.md bin/*
 	@rm -fR dist/bin
 
