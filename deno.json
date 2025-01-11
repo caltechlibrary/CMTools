@@ -18,7 +18,8 @@
     "release_linux_aarch64": "deno compile  --allow-read --allow-write --allow-run --output dist/bin/cmt --target aarch64-unknown-linux-gnu cmt.ts",
     "release_macos_x86_64": "deno compile   --allow-read --allow-write --allow-run --output dist/bin/cmt --target x86_64-apple-darwin cmt.ts",
     "release_macos_aarch64": "deno compile  --allow-read --allow-write --allow-run --output dist/bin/cmt --target aarch64-apple-darwin cmt.ts",
-    "release_windows_x86_64": "deno compile --allow-read --allow-write --allow-run --output dist/bin/cmt.exe --target x86_64-pc-windows-msvc cmt.ts"
+    "release_windows_x86_64": "deno compile --allow-read --allow-write --allow-run --output dist/bin/cmt.exe --target x86_64-pc-windows-msvc cmt.ts",
+	"release_windows_aarch64": "deno compile --allow-read --allow-write --allow-run --ouput dist/bin/cmt.exe --target aarch64-pc-windows-msvc cmt.ts"
   },
   "imports": {
     "@libs/markdown": "jsr:@libs/markdown@^2.0.2",
