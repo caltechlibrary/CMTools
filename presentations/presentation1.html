@@ -161,6 +161,23 @@ class="slide section level1">
 <li>start documenting and coding your project (the real work)</li>
 </ol>
 </div>
+<div id="proposed-setup" class="slide section level1">
+<h1>Proposed setup</h1>
+<ol style="list-style-type: decimal">
+<li>go to GitHub</li>
+<li>clone template repository</li>
+<li>edit <strong>three</strong> artifacts (e.g. README, INSTALL,
+codemeta.json)</li>
+<li>generate artifacts with CMTools</li>
+<li>start documenting and coding your project (the real work)</li>
+</ol>
+</div>
+<div id="why-is-five-steps-better-than-four"
+class="slide section level1">
+<h1>Why is five steps better than four?</h1>
+<p>The generated artifacts can be maintained with the same command that
+generated them. This means they can easily be kept up to date.</p>
+</div>
 <div id="project-maintenance-old-way" class="slide section level1">
 <h1>Project maintenance, old way</h1>
 <blockquote>
@@ -173,47 +190,45 @@ busy)</li>
 <li>inconsistent, yield lower quality docs and code</li>
 </ul>
 </div>
-<div id="proposed-setup" class="slide section level1">
-<h1>Proposed setup</h1>
-<ol style="list-style-type: decimal">
-<li>go to GitHub</li>
-<li>clone repository (e.g. a lightweight template repo with just
-codemeta.json, README and INSTALL docs)</li>
-<li>edit artifacts (e.g. README, INSTALL, codemeta.json)</li>
-<li>generate automated artifacts with CMTools</li>
-<li>start documenting and coding your project (the real work)</li>
-</ol>
+<div id="proposed-maintenance-cycle" class="slide section level1">
+<h1>Proposed maintenance cycle</h1>
+<ul>
+<li>Python,
+<code>cmt codemeta.json CITATION.cff about.md version.py</code></li>
+<li>Go,
+<code>cmt codemeta.json CITATION.cff about.md version.go</code></li>
+<li>JavaScript,
+<code>cmt codemeta.json CITATION.cff about.md version.js</code></li>
+<li>TypeScript,
+<code>cmt codemeta.json CITATION.cff about.md version.js</code></li>
+</ul>
+<p>One command versus hand editing!</p>
 </div>
-<div id="why-is-five-steps-better-than-four"
+<div id="what-files-does-cmt-currently-manage"
 class="slide section level1">
-<h1>Why is five steps better than four?</h1>
-<p>The generated artifacts can be maintained with the same command that
-generated them. This means they can easily be kept up to date.</p>
-</div>
-<div id="proposed-maintenance" class="slide section level1">
-<h1>Proposed maintenance</h1>
-<p>Example command for a Python project</p>
-<pre><code>cmt codemeta.json CITATION.cff about.md version.py</code></pre>
-<p>versus opening each file and manually editing them.</p>
-</div>
-<div id="what-files-does-cmt-manage" class="slide section level1">
-<h1>What files does <code>cmt</code> manage?</h1>
+<h1>What files does <code>cmt</code> currently manage?</h1>
 <ul>
 <li>CITATION.cff</li>
 <li>about.md</li>
-<li>version.(ts|go|js|py) (version info for your program or
-library)</li>
-<li>page.(tmpl|hbs) (Pandoc or Handlebars project template)</li>
+<li>version.(ts|go|js|py)</li>
+<li>page.(tmpl|hbs)</li>
 </ul>
+<p>NOTE: <code>cmt</code> can manage <code>cmt</code> specific tasks</p>
 </div>
-<div id="just-a-beginning" class="slide section level1">
-<h1>Just a beginning …</h1>
+<div id="what-could-cmt-also-manage" class="slide section level1">
+<h1>What could <code>cmt</code> also manage?</h1>
 <p>CodeMeta file could be used to generate</p>
 <ul>
 <li>README.md</li>
 <li>INSTALL.md</li>
 <li>install scripts for Windows, macOS and Linux</li>
+<li>.gitignore</li>
 </ul>
+</div>
+<div id="what-else" class="slide section level1">
+<h1>What else?</h1>
+<p>CodeMeta <code>.otherRequiredSoftware</code> attribute could be used
+to check if your dev environment is setup correctly.</p>
 </div>
 <div id="codemeta-as-part-of-your-build-process"
 class="slide section level1">
@@ -223,7 +238,7 @@ you’re trying to import it into the data repository. A better approach
 is to have the codemeta file actually be part of your build and release
 process. That way version information is consistent and specific. It can
 also be easily reflected in the documentation of your project’s website.
-Having/maintaining a project website becomes trivial each to you do a
+Having/maintaining a project website becomes trivial for each new
 release.</p>
 </div>
 <div id="template-were-a-good-start-but" class="slide section level1">
@@ -251,8 +266,22 @@ to you home “bin” directory</li>
 <p>For macOS and Linux</p>
 <pre class="shell"><code>curl -L https://caltechlibrary.github.io/CMTools/installer.sh | sh</code></pre>
 <p>For Windows (using Powershell)</p>
-<div class="sourceCode" id="cb3"><pre
-class="sourceCode ps1"><code class="sourceCode powershell"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">irm</span> https<span class="op">://</span>caltechlibrary<span class="op">.</span><span class="fu">github</span><span class="op">.</span><span class="fu">io</span><span class="op">/</span>CMTools<span class="op">/</span>installer<span class="op">.</span><span class="fu">ps1</span> <span class="op">|</span> <span class="fu">iex</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode ps1"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">irm</span> https<span class="op">://</span>caltechlibrary<span class="op">.</span><span class="fu">github</span><span class="op">.</span><span class="fu">io</span><span class="op">/</span>CMTools<span class="op">/</span>installer<span class="op">.</span><span class="fu">ps1</span> <span class="op">|</span> <span class="fu">iex</span></span></code></pre></div>
+</div>
+<div id="reference-links" class="slide section level1">
+<h1>Reference links</h1>
+<ul>
+<li>CMTools: <a href="https://caltechlibrary.github.io/CMTools"
+class="uri">https://caltechlibrary.github.io/CMTools</a></li>
+<li>on GitHub: <a href="https://github.com/caltechlibrary/CMTools"
+class="uri">https://github.com/caltechlibrary/CMTools</a></li>
+<li>CodeMeta: <a href="https://codemeta.github.io"
+class="uri">https://codemeta.github.io</a></li>
+<li>Deno: <a href="https://deno.com"
+class="uri">https://deno.com</a></li>
+</ul>
+<p>Thank you!</p>
 </div>
 </body>
 </html>

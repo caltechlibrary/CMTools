@@ -87,8 +87,10 @@ One command versus hand editing!
 
 - CITATION.cff
 - about.md
-- version.(ts|go|js|py) (version info for your program or library)
-- page.(tmpl|hbs) (Pandoc or Handlebars project template)
+- version.(ts|go|js|py)
+- page.(tmpl|hbs)
+
+NOTE: `cmt` can manage `cmt` specific tasks
 
 # What could `cmt` also manage?
 
@@ -99,13 +101,13 @@ CodeMeta file could be used to generate
 - install scripts for Windows, macOS and Linux
 - .gitignore
 
-# What else could CodeMeta help with?
+# What else?
 
-The `otherRequiredSoftware` attribute could be used to check if your dev environment is setup correctly.
+CodeMeta `.otherRequiredSoftware` attribute could be used to check if your dev environment is setup correctly.
 
 # CodeMeta as part of your build process
 
-Many times it's easy to forget to update your CodeMeta file until you're trying to import it into the data repository.  A better approach is to have the codemeta file actually be part of your build and release process. That way version information is consistent and specific. It can also be easily reflected in the documentation of your project's website. Having/maintaining a project website becomes trivial each to you do a release.
+Many times it's easy to forget to update your CodeMeta file until you're trying to import it into the data repository.  A better approach is to have the codemeta file actually be part of your build and release process. That way version information is consistent and specific. It can also be easily reflected in the documentation of your project's website. Having/maintaining a project website becomes trivial for each new release.
 
 # Template were a good start but ...
 
@@ -136,3 +138,12 @@ For Windows (using Powershell)
 ~~~ps1
 irm https://caltechlibrary.github.io/CMTools/installer.ps1 | iex
 ~~~
+
+# Reference links
+
+- CMTools: <https://caltechlibrary.github.io/CMTools>
+- on GitHub: <https://github.com/caltechlibrary/CMTools>
+- CodeMeta: <https://codemeta.github.io>
+- Deno: <https://deno.com>
+
+Thank you!
