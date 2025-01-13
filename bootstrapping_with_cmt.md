@@ -1,5 +1,9 @@
 ---
 title: Bootstrapping with CodeMeta Tools
+keywords:
+  - codemeta
+  - build
+  - release
 ---
 
 # Bootstrapping a TypeScript project with CodeMeta Tools
@@ -7,6 +11,8 @@ title: Bootstrapping with CodeMeta Tools
 While Deno provides most tooling for bootstrapping a TypeScript project there are some things it doesn't handle directly.  In my Caltech Library project I like to include a CITATION.cff, about.md and have a simple Pandoc template for generating the website for the project.  These can all be accomplished with CodeMeta Tools' `cmt` command.
 
 ## Typical Tasks
+
+In the old days I'd so this for a TypeScript project setup.
 
 1. create a directory to hold your project change into that directory
 2. Run `git init` in the directory
@@ -44,11 +50,13 @@ micro Makefile
 make version.ts
 ~~~
 
-Now I am ready to start code the project. The copy edit approach can be improved using GitHub repository templates but I've found those to be more work then just grinding through the project setup.  Relying on Make means I can't develop on a Windows machine without resorting to the Linux Subsystem for Windows. Do while Go and Deno make it easy to cross compile the build process isn't cross platform.
+Now I am ready to start code the project. The copy edit approach can be improved using GitHub repository templates but I've found editing often took as long as just writing the documents from scratch (exception is LICENSE file). Additionally relying on Makefile means to develop on Windows I must install a whole POSIX stack or limit myself to using the Linux Subsystem for Windows. While both Go and Deno both are good at cross compilation if the rest of your build environment requires POSIX then that forces you to POSIX for basic development. This is less than ideal.
 
 ## Simplifying the bootstrap using Deno tasks and CodeMeta Tools
 
 Steps one through four remaining the same. Step five is easy as using the [CodeMeta Generator](https://codemeta.github.io/codemeta-generator/). Steps six through nine in the past have meant either copying and editing scripts to generate the content or manually creating the content. With `cmt` you just need to run a single command for each of the targeted files. Here's the steps adjusted to use cmt.
+
+The basic steps.
 
 ~~~shell
 mkdir myproject && cd myproject
@@ -63,7 +71,7 @@ firefox https://codemeta.github.io/codemeta-generator/
 micro codemeta.json
 ~~~
 
-Now you can generate the rest using `cmt` and the `--gen-project` option. For TypeScript
+Now you shortcut the rest of the effort using generated content with `cmt`. For TypeScript
 that would look like.
 
 ~~~shell

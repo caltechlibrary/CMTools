@@ -27,6 +27,7 @@ simple Pandoc template for generating the website for the project. These
 can all be accomplished with CodeMeta Tools’ <code>cmt</code>
 command.</p>
 <h2 id="typical-tasks">Typical Tasks</h2>
+<p>In the old days I’d so this for a TypeScript project setup.</p>
 <ol type="1">
 <li>create a directory to hold your project change into that
 directory</li>
@@ -65,11 +66,14 @@ codemeta2cff
 micro Makefile
 make version.ts</code></pre>
 <p>Now I am ready to start code the project. The copy edit approach can
-be improved using GitHub repository templates but I’ve found those to be
-more work then just grinding through the project setup. Relying on Make
-means I can’t develop on a Windows machine without resorting to the
-Linux Subsystem for Windows. Do while Go and Deno make it easy to cross
-compile the build process isn’t cross platform.</p>
+be improved using GitHub repository templates but I’ve found editing
+often took as long as just writing the documents from scratch (exception
+is LICENSE file). Additionally relying on Makefile means to develop on
+Windows I must install a whole POSIX stack or limit myself to using the
+Linux Subsystem for Windows. While both Go and Deno both are good at
+cross compilation if the rest of your build environment requires POSIX
+then that forces you to POSIX for basic development. This is less than
+ideal.</p>
 <h2
 id="simplifying-the-bootstrap-using-deno-tasks-and-codemeta-tools">Simplifying
 the bootstrap using Deno tasks and CodeMeta Tools</h2>
@@ -80,6 +84,7 @@ copying and editing scripts to generate the content or manually creating
 the content. With <code>cmt</code> you just need to run a single command
 for each of the targeted files. Here’s the steps adjusted to use
 cmt.</p>
+<p>The basic steps.</p>
 <pre class="shell"><code>mkdir myproject &amp;&amp; cd myproject
 git init
 deno init
@@ -90,9 +95,8 @@ micro README.md INSTALL.md LICENSE
 firefox https://codemeta.github.io/codemeta-generator/
 # paste the result into my codemeta.json file
 micro codemeta.json</code></pre>
-<p>Now you can generate the rest using <code>cmt</code> and the
-<code>--gen-project</code> option. For TypeScript that would look
-like.</p>
+<p>Now you shortcut the rest of the effort using generated content with
+<code>cmt</code>. For TypeScript that would look like.</p>
 <pre class="shell"><code>cmt codemeta.json about.md page.tmpl CITATION.cff version.ts</code></pre>
 <p>NOTE: You can individual create the files using <code>cmt</code> like
 this.</p>
