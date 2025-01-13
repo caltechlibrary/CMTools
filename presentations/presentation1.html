@@ -132,8 +132,8 @@ processes
 <h1>Why CodeMeta?</h1>
 <ul>
 <li>CodeMeta is a maturing spec supporting metadata about projects</li>
-<li>We use it already in our import process for software to our data
-repository</li>
+<li>We already use it when we import software to our <a
+href="https://data.caltech.edu">data repository</a></li>
 <li>It is a superset of CITATION.cff used for search and discovery on
 GitHub</li>
 </ul>
@@ -155,10 +155,11 @@ class="slide section level1">
 <div id="project-setup-old-way" class="slide section level1">
 <h1>Project setup, old way</h1>
 <ol style="list-style-type: decimal">
-<li>create a directory</li>
+<li>go to GitHub</li>
 <li>clone a template repository to get basic software artifacts</li>
-<li>edit all the artifact (tedious, often not done)</li>
-<li>start documenting and coding your project (the real work)</li>
+<li>edit <strong>all</strong> the artifact (tedious, often not
+done)</li>
+<li>start documenting and coding the project (the real work)</li>
 </ol>
 </div>
 <div id="proposed-setup" class="slide section level1">
@@ -166,17 +167,18 @@ class="slide section level1">
 <ol style="list-style-type: decimal">
 <li>go to GitHub</li>
 <li>clone template repository</li>
-<li>edit <strong>three</strong> artifacts (e.g. README, INSTALL,
-codemeta.json)</li>
+<li>edit <strong>three</strong> artifacts (e.g. codemeta.json, README,
+INSTALL)</li>
 <li>generate artifacts with CMTools</li>
-<li>start documenting and coding your project (the real work)</li>
+<li>start documenting and coding the project (the real work)</li>
 </ol>
 </div>
 <div id="why-is-five-steps-better-than-four"
 class="slide section level1">
 <h1>Why is five steps better than four?</h1>
 <p>The generated artifacts can be maintained with the same command that
-generated them. This means they can easily be kept up to date.</p>
+generated them.</p>
+<p>The artifact are easy to keep up to date.</p>
 </div>
 <div id="project-maintenance-old-way" class="slide section level1">
 <h1>Project maintenance, old way</h1>
@@ -184,25 +186,35 @@ generated them. This means they can easily be kept up to date.</p>
 <p>Go through each artifact and edit it</p>
 </blockquote>
 <ul>
-<li>Very tedious</li>
-<li>often incompletely accomplished due to oversight (we’re all
-busy)</li>
-<li>inconsistent, yield lower quality docs and code</li>
+<li>very tedious</li>
+<li>often incomplete done</li>
+<li>lower quality -&gt; higher maintainence</li>
 </ul>
 </div>
 <div id="proposed-maintenance-cycle" class="slide section level1">
 <h1>Proposed maintenance cycle</h1>
+<p>One command for each supported langauge:</p>
 <ul>
-<li>Python,
-<code>cmt codemeta.json CITATION.cff about.md version.py</code></li>
-<li>Go,
-<code>cmt codemeta.json CITATION.cff about.md version.go</code></li>
-<li>JavaScript,
-<code>cmt codemeta.json CITATION.cff about.md version.js</code></li>
-<li>TypeScript,
-<code>cmt codemeta.json CITATION.cff about.md version.js</code></li>
+<li>Python
+<ul>
+<li><code>cmt codemeta.json CITATION.cff about.md version.py</code></li>
+</ul></li>
+<li>Go
+<ul>
+<li><code>cmt codemeta.json CITATION.cff about.md version.go</code></li>
+</ul></li>
+<li>JavaScript
+<ul>
+<li><code>cmt codemeta.json CITATION.cff about.md version.js</code></li>
+</ul></li>
+<li>TypeScript
+<ul>
+<li><code>cmt codemeta.json CITATION.cff about.md version.js</code></li>
+</ul></li>
 </ul>
+<blockquote>
 <p>One command versus hand editing!</p>
+</blockquote>
 </div>
 <div id="what-files-does-cmt-currently-manage"
 class="slide section level1">
@@ -213,10 +225,20 @@ class="slide section level1">
 <li>version.(ts|go|js|py)</li>
 <li>page.(tmpl|hbs)</li>
 </ul>
-<p>NOTE: <code>cmt</code> can manage <code>cmt</code> specific tasks</p>
 </div>
-<div id="what-could-cmt-also-manage" class="slide section level1">
-<h1>What could <code>cmt</code> also manage?</h1>
+<div id="cmt-and-deno-tasks" class="slide section level1">
+<h1><code>cmt</code> and Deno tasks</h1>
+<ul>
+<li><code>cmt</code> can manage <code>cmt</code> Deno tasks</li>
+<li>Deno tasks can be used to build non-Deno projects
+<ul>
+<li>Deno works the same on Windows, macOS and Linux</li>
+</ul></li>
+</ul>
+</div>
+<div id="what-could-codemetacmtools-also-manage"
+class="slide section level1">
+<h1>What could CodeMeta/CMTools also manage?</h1>
 <p>CodeMeta file could be used to generate</p>
 <ul>
 <li>README.md</li>
@@ -268,6 +290,13 @@ to you home “bin” directory</li>
 <p>For Windows (using Powershell)</p>
 <div class="sourceCode" id="cb2"><pre
 class="sourceCode ps1"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">irm</span> https<span class="op">://</span>caltechlibrary<span class="op">.</span><span class="fu">github</span><span class="op">.</span><span class="fu">io</span><span class="op">/</span>CMTools<span class="op">/</span>installer<span class="op">.</span><span class="fu">ps1</span> <span class="op">|</span> <span class="fu">iex</span></span></code></pre></div>
+</div>
+<div id="something-to-consider" class="slide section level1">
+<h1>Something to consider</h1>
+<blockquote>
+<p>Software lives longer than expected, long lived software requires
+maintainence</p>
+</blockquote>
 </div>
 <div id="reference-links" class="slide section level1">
 <h1>Reference links</h1>

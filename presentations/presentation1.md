@@ -33,7 +33,7 @@ Example: about Markdown page, CITATION.cff, version files
 # Why CodeMeta?
 
 - CodeMeta is a maturing spec supporting metadata about projects
-- We use it already in our import process for software to our data repository
+- We already use it when we import software to our [data repository](https://data.caltech.edu)
 - It is a superset of CITATION.cff used for search and discovery on GitHub
 
 # What problem does CMTools assist with?
@@ -49,39 +49,47 @@ In the old days ....
 
 # Project setup, old way
 
-1. create a directory
+1. go to GitHub
 2. clone a template repository to get basic software artifacts
-3. edit all the artifact (tedious, often not done)
-4. start documenting and coding your project (the real work)
+3. edit **all** the artifact (tedious, often not done)
+4. start documenting and coding the project (the real work)
 
 # Proposed setup
 
 1. go to GitHub
 2. clone template repository
-3. edit **three** artifacts (e.g. README, INSTALL, codemeta.json)
+3. edit **three** artifacts (e.g. codemeta.json, README, INSTALL)
 4. generate artifacts with CMTools
-5. start documenting and coding your project (the real work)
+5. start documenting and coding the project (the real work)
 
 # Why is five steps better than four?
 
-The generated artifacts can be maintained with the same command that generated them. This means they can easily be kept up to date.
+The generated artifacts can be maintained with the same command that generated them. 
+
+The artifact are easy to keep up to date.
 
 # Project maintenance, old way
 
 > Go through each artifact and edit it
 
-- Very tedious
-- often incompletely accomplished due to oversight (we're all busy)
-- inconsistent, yield lower quality docs and code
+- very tedious
+- often incomplete done
+- lower quality -> higher maintainence
 
 # Proposed maintenance cycle
 
-- Python, `cmt codemeta.json CITATION.cff about.md version.py`
-- Go, `cmt codemeta.json CITATION.cff about.md version.go`
-- JavaScript, `cmt codemeta.json CITATION.cff about.md version.js`
-- TypeScript, `cmt codemeta.json CITATION.cff about.md version.js`
+One command for each supported langauge:
 
-One command versus hand editing!
+- Python
+  - `cmt codemeta.json CITATION.cff about.md version.py`
+- Go
+  - `cmt codemeta.json CITATION.cff about.md version.go`
+- JavaScript
+  - `cmt codemeta.json CITATION.cff about.md version.js`
+- TypeScript
+  -  `cmt codemeta.json CITATION.cff about.md version.js`
+
+> One command versus hand editing!
 
 # What files does `cmt` currently manage?
 
@@ -90,9 +98,13 @@ One command versus hand editing!
 - version.(ts|go|js|py)
 - page.(tmpl|hbs)
 
-NOTE: `cmt` can manage `cmt` specific tasks
+# `cmt` and Deno tasks
 
-# What could `cmt` also manage?
+- `cmt` can manage `cmt` Deno tasks
+- Deno tasks can be used to build non-Deno projects
+  - Deno works the same on Windows, macOS and Linux
+
+# What could CodeMeta/CMTools also manage?
 
 CodeMeta file could be used to generate 
 
@@ -122,8 +134,9 @@ CMTools highly experimental. Build from source.
 1. Install [deno](https://deno.com/)
 2. Clone the [CMTools](https://github.com/caltechlibrary/CMTools)
 3. Change into the cloned directory
-4. Run `deno task build`
-5. Copy the resulting `bin/cmt` or `bin/cmt.exe` to you home "bin" directory
+4. Run `deno install npm:handlebars`
+5. Run `deno task build`
+6. Copy the resulting `bin/cmt` or `bin/cmt.exe` to you home "bin" directory
 
 # Or quick install
 
@@ -138,6 +151,11 @@ For Windows (using Powershell)
 ~~~ps1
 irm https://caltechlibrary.github.io/CMTools/installer.ps1 | iex
 ~~~
+
+# Something to consider
+
+> Software lives longer than expected,
+> long lived software requires maintainence
 
 # Reference links
 
