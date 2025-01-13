@@ -80,6 +80,7 @@ save:
 
 website: $(HTML_PAGES) .FORCE
 	make -f website.mak
+	cd presentations && make || exit 1
 
 presentations: .FORCE
 	cd presentations && make || exit 1

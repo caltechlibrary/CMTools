@@ -13,6 +13,8 @@ export function getFormatFromExt(
         return "cff";
       case ".ts":
         return "ts";
+      case ".js":
+        return "js"
       case ".go":
         return "go";
       case ".py":
@@ -34,8 +36,11 @@ export function isSupportedFormat(format: string | undefined): boolean {
   if (format === undefined) {
     return false;
   }
-  return ["cff", "ts", "go", "py", "md", "hbs", "pdtmpl"].indexOf(format) > -1;
+  return ["cff", "ts", "js", "go", "py", "md", "hbs", "pdtmpl"].indexOf(format) > -1;
 }
+
+// FIXME: need to handle the special case renderings for README.md,
+// INSTALL.md and the installer scripts.
 
 export async function transform(
   cm: CodeMeta,
@@ -66,6 +71,8 @@ export async function transform(
     case "cff":
       return renderTemplate(obj, cffTemplateText);
     case "ts":
+      return renderTemplate(obj, tsTemplateText);
+    case "js":
       return renderTemplate(obj, tsTemplateText);
     case "go":
       return renderTemplate(obj, goTemplateText);
