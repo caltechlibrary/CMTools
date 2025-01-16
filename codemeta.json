@@ -53,8 +53,9 @@
         "type": "Organization"
     },
     "keywords": [
-        "software development",
-        "metadata",
+		"codemeta",
+		"cff",
+        "software",
 		"code generation"
     ],
     "name": "CMTools",
