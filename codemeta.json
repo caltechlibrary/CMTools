@@ -43,10 +43,10 @@
         }
     ],
     "dateCreated": "2025-01-07",
-    "version": "0.0.3",
+    "version": "0.0.4",
 	"releaseNotes": "A proof of concept in user codemeta.json in your build process, added missing version.js support",
-	"dateReleased": "2025-01-13",
-	"dateModified": "2025-01-13",
+	"datePubished": "2025-01-15",
+	"dateModified": "2025-01-15",
     "description": "CM Tools provides codemeta tooling for codemeta crosswalks and tooling to use the codemeta.json in a build process.",
     "funder": {
         "id": "https://ror.org/5dxps055",

@@ -12,7 +12,7 @@
     "about.html": "deno run --allow-read --allow-write ./bldutils/mk_html.ts about.md",
     "INSTALL.html": "deno run --allow-read --allow-write ./bldutils/mk_html.ts INSTALL.md",
     "about.md": "cmt codemeta.json about.md",
-    "CITATION.cff": "cmt codemeta.json CITATION.cff",
+    "CITATION.cff": "deno run --allow-read --allow-write --allow-run cmt.ts codemeta.json CITATION.cff",
     "gen-code": "deno task version.ts ; deno task about.md ; deno task CITATION.cff ",
     "release_linux_x86_64": "deno compile   --allow-read --allow-write --allow-run --output dist/bin/cmt --target x86_64-unknown-linux-gnu cmt.ts",
     "release_linux_aarch64": "deno compile  --allow-read --allow-write --allow-run --output dist/bin/cmt --target aarch64-unknown-linux-gnu cmt.ts",
@@ -26,6 +26,7 @@
     "@std/assert": "jsr:@std/assert@^1.0.10",
     "@std/cli": "jsr:@std/cli@^1.0.9",
     "@std/path": "jsr:@std/path@^1.0.8",
+    "@std/yaml": "jsr:@std/yaml@^1.0.5",
     "handlebars": "npm:handlebars@^4.7.8"
   }
 }

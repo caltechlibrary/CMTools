@@ -93,7 +93,9 @@ htdocs: .FORCE
 	deno task transpile
 
 test: .FORCE
-	deno task test
+	deno test codemeta_test.ts --allow-import --allow-read
+	deno test person_or_organization_test.ts --allow-read
+	deno test transform_test.ts --allow-read --allow-run
 
 install: compile .FORCE
 	mkdir -p "${HOME}/bin"

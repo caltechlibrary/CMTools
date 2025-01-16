@@ -1,4 +1,5 @@
 import * as path from "@std/path";
+import * as yaml from "@std/yaml";
 import Handlebars from "npm:handlebars";
 import { CodeMeta } from "./codemeta.ts";
 import { gitOrgOrPerson, gitReleaseHash } from "./gitcmds.ts";
@@ -69,7 +70,13 @@ export async function transform(
 
   switch (format) {
     case "cff":
-      return renderTemplate(obj, cffTemplateText);
+      // Handlebars template is leaving blank link artifacts.
+      // haven't figure out why. temp work around.
+      let cffSrc: string | undefined = await renderTemplate(obj, cffTemplateText);
+      if (cffSrc === undefined) {
+        cffSrc = '';
+      }
+      return yaml.stringify(yaml.parse(`${cffSrc}`));
     case "ts":
       return renderTemplate(obj, tsTemplateText);
     case "js":
@@ -115,23 +122,20 @@ type: software
   - family-names: {{familyName}}
     given-names: {{givenName}}
     orcid: "{{id}}"{{/each}}{{/if}}
-{{#if contributor}}contributors:
-{{#each contributor}}
-  - family-names: {{familyName}}
-    given-names: {{givenName}}
-    {{#if id}}orcid: "{{id}}"{{/if}}{{/each}}{{/if}}
-{{#if maintainer}}maintainers:
+{{#if maintainer}}contacts:
 {{#each maintainer}}
   - family-names: {{familyName}}
     given-names: {{givenName}}
-    {{#if id}}orcid: "{{id}}"{{/if}}{{/each}}{{/if}}
+    orcid: "{{id}}"{{/each}}{{/if}}
 {{#if codeRepository}}repository-code: "{{codeRepository}}"{{/if}}
 {{#if version}}version: {{version}}{{/if}}
-{{#if license}}license-url: "{{license}}"{{/if}}
-{{#if keywords}}keywords:
-{{#each keywords}}
-  - {{.}}{{/each}}{{/if}}
 {{#if datePublished}}date-released: {{datePublished}}{{/if}}
+{{#if identifier}}doi: {{identifier}}{{/if}}
+{{#if license}}license-url: "{{license}}"{{/if}}{{#if keywords}}
+keywords:
+{{#each keywords}}
+  - {{.}}
+{{/each}}{{/if}}
 `;
 
 const tsTemplateText = `// {{name}} version and license information.
@@ -141,7 +145,7 @@ releaseDate = '{{releaseDate}}',
 releaseHash = '{{releaseHash}}'{{#if licenseText}},
 licenseText = ` + "`" + `
 {{licenseText}}
-` + "`{{/if}};\n";
+` + "`{{/if}};";
 
 const pyTemplateText = `# {{name}} version and license information.
 
@@ -270,10 +274,10 @@ About this software
 - {{.}}
 {{/each}}{{/if}}
 
-{{#if otherSoftwareRequirements}}
+{{#if softwareRequirements}}
 ### Software Requirements
 
-{{#each otherSoftwareRequirements}}
+{{#each softwareRequirements}}
 - {{.}}
 {{/each}}{{/if}}
 `;

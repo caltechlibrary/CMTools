@@ -1,10 +1,11 @@
 import { assertEquals, assertNotEquals } from "@std/assert";
-import { isSupportedFormat, transform } from "./transform.ts";
+import { getFormatFromExt, isSupportedFormat, transform } from "./transform.ts";
 import { CodeMeta } from "./codemeta.ts";
 
 Deno.test('test isSupportedFormat', async function() {
     const filename = "CITATION.cff";
-    assertEquals(isSupportedFormat(filename), true, `for isSupportedFormat("${filename}")`);
+    const fmt = getFormatFromExt(filename, "");
+    assertEquals(isSupportedFormat(fmt), true, `for isSupportedFormat(getFormatFromExt("${filename}"))`);
 });
 
 Deno.test('test transform', async function() {
@@ -13,6 +14,6 @@ Deno.test('test transform', async function() {
     const src = await Deno.readTextFile("./codemeta.json");
     const obj = JSON.parse(src);
     cm.fromObject(obj);
-    let txt: string | undefined = await transform(cm, filename);
+    let txt: string | undefined = await transform(cm, getFormatFromExt(filename, ""));
     assertNotEquals(txt, undefined, `transform(cm, "${filename}")`);
 });

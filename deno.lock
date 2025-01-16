@@ -9,6 +9,7 @@
     "jsr:@std/path@^1.0.8": "1.0.8",
     "jsr:@std/text@1": "1.0.9",
     "jsr:@std/yaml@1": "1.0.5",
+    "jsr:@std/yaml@^1.0.5": "1.0.5",
     "npm:handlebars@*": "4.7.8",
     "npm:handlebars@^4.7.8": "4.7.8",
     "npm:hastscript@9": "9.0.0",
@@ -41,7 +42,7 @@
       "dependencies": [
         "jsr:@libs/typing",
         "jsr:@std/text",
-        "jsr:@std/yaml",
+        "jsr:@std/yaml@1",
         "npm:hastscript",
         "npm:rehype-autolink-headings",
         "npm:rehype-highlight",
@@ -2388,6 +2389,7 @@
       "jsr:@std/assert@^1.0.10",
       "jsr:@std/cli@^1.0.9",
       "jsr:@std/path@^1.0.8",
+      "jsr:@std/yaml@^1.0.5",
       "npm:handlebars@^4.7.8"
     ]
   }

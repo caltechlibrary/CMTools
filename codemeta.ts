@@ -9,18 +9,19 @@ export interface CodeMetaInterface {
 
 export class CodeMeta implements CodeMetaInterface {
   atContext: string = "https://doi.org/10.5063/schema/codemeta-2.0";
+  doi: string = "";
   type: string = "";
   version: string = "";
   applicationCategory: string = "";
   author: PersonOrOrganization[] = [];
   codeRepository: string = "";
   dateCreated: string = "";
-  dateModified: string = "";
+  dateModified: string = ""; // dateModified holds the most recent released
+  datePublished: string = ""; // Date something is released date in cff file, in CodeMeta geneator this the value from "first published" field
   name: string = "";
   description: string = "";
-  creationDate: string = "";
-  firstRelease: string = "";
-  license: string = "";
+  license: string = ""; // .license in output codemeta, should be a url to text of license
+  licenseText?: string = ""; // This is an optional field that can hold the text of the license
   uniqueIdentifier: string = "";
   keywords: string[] = [];
   funding: string = "";
@@ -33,7 +34,7 @@ export class CodeMeta implements CodeMetaInterface {
   programmingLanguage: string[] = [];
   runtimePlatform: string[] = [];
   operatingSystem: string[] = [];
-  otherSoftwareRequirements: string[] = [];
+  softwareRequirements: string[] = [];
   versionNumber: string = "";
   releaseDate: string = "";
   modifiedDate: string = "";
@@ -45,6 +46,7 @@ export class CodeMeta implements CodeMetaInterface {
   developmentStatus: string = "";
   isSourceCodeOf: string = "";
   isPartOf: string = "";
+  identifier: string = "";
 
   toObject(): object {
     return {
@@ -57,16 +59,18 @@ export class CodeMeta implements CodeMetaInterface {
       maintainer: this.maintainer,
       dateCreated: this.dateCreated,
       dateModified: this.dateModified,
+	    datePublished: this.datePublished,
       description: this.description,
       funder: this.funder,
       funding: this.funding,
       keywords: this.keywords,
       name: this.name,
+      license: this.license,
       operatingSystem: this.operatingSystem,
       programmingLanguage: this.programmingLanguage,
       relatedLink: this.relatedLink,
       runtimePlatform: this.runtimePlatform,
-      otherSoftwareRequirements: this.otherSoftwareRequirements,
+      softwareRequirements: this.softwareRequirements,
       version: this.version,
       developmentStatus: this.developmentStatus,
       issueTracker: this.issueTracker,
@@ -75,18 +79,24 @@ export class CodeMeta implements CodeMetaInterface {
       referencePublication: this.referencePublication,
       isSourceCodeOf: this.isSourceCodeOf,
       isPartOf: this.isPartOf,
+      identifier: this.identifier,
     };
   }
 
   fromObject(obj: { [key: string]: any }): boolean {
     //FIXME: need to handle prior codemeta version import
     this.atContext = (obj["@context"] === undefined)
-      ? "https://doi.org/10.5063/schema/codemeta-2.0"
+      ? "https://w3id.org/codemeta/3.0"
       : obj["@context"];
     this.type = (obj["type"] === undefined) ? "" : obj["type"];
     this.applicationCategory = (obj["applicationCategory"] === undefined)
       ? ""
       : obj["applicationCategory"];
+	if (obj["identifier"] === undefined) {
+		this.identifier = "";
+	} else {
+		this.identifier = obj["identifier"];
+	}
     if (obj["author"] === undefined) {
       this.author = [];
     } else {
@@ -94,6 +104,22 @@ export class CodeMeta implements CodeMetaInterface {
       const oType = Object.prototype.toString.call(obj["author"]); 
       this.author = normalizePersonOrOrgList(obj['author']);
     }
+	if (obj["license"] === undefined) {
+		this.license = "";
+	} else {
+		// This field should be a URL
+		try {
+			const u = URL.parse(obj["license"]);
+			if (u !== null) {
+				this.license = obj["license"];
+			} else {
+				this.license = "";
+				this.licenseText = obj["license"];
+			}
+		} catch (err) {
+			this.license = "";
+		}
+	}
     if (obj["contributor"] === undefined) {
       this.contributor = [];
     } else {
@@ -142,13 +168,13 @@ export class CodeMeta implements CodeMetaInterface {
       ? ""
       : obj["runtimePlatform"];
     if (obj["softwareRequirements"] === undefined) {
-      this.otherSoftwareRequirements = [];
+      this.softwareRequirements = [];
     } else {
       if (typeof (obj["softwareRequirements"]) === "string") {
-        this.otherSoftwareRequirements = [];
-        this.otherSoftwareRequirements.push(obj["softwareRequirements"]);
+        this.softwareRequirements = [];
+        this.softwareRequirements.push(obj["softwareRequirements"]);
       } else {
-        this.otherSoftwareRequirements = obj["softwareRequirements"];
+        this.softwareRequirements = obj["softwareRequirements"];
       }
     }
     this.version = (obj["version"] === undefined) ? "" : obj["version"];

@@ -9,11 +9,11 @@ Deno.test('test fromObject', async function() {
 	let cm = new CodeMeta();
 	assertNotEquals(obj['name'], undefined);
 	assertEquals(cm.fromObject(obj), true, "expected fromObject to return true");
-	let expected = "cmtools";
+	let expected = "CMTools";
 	assertEquals(cm.name, expected, `expected "cmtools", got "${cm.name}" -> ${src}`);
 	assertEquals(cm.description, obj['description']);
 	assertEquals(cm.developmentStatus, obj['developmentStatus']);
-	assertEquals(cm.author.length, 2);
+	assertEquals(cm.author.length, 1);
 	let author = cm.author[0];
 	assertEquals(validateORCID(author.id),true);
 	assertNotEquals(author.affiliation, undefined);
