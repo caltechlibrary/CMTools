@@ -27,7 +27,7 @@ operating-system:
 programming-language:
   - TypeScript
 keywords:
-  - software development  - metadata  - code generation
+  - codemeta  - cff  - software  - code generation
 
 ---
 

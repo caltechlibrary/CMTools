@@ -57,6 +57,14 @@ output format to use when piping the output to another programming.
 update the deno.json file tasks based on output files requested.
 </dd>
 </dl>
+<h1 id="environment">ENVIRONMENT</h1>
+<p>cmt relies on the environment for the value of EDITOR. This holds for
+POSIX shells as well as Powershell on Windows. If EDITOR is set and you
+use the editor option then the value will be written to a temp file and
+saved to your CodeMeta JSON file on update.</p>
+<p>If the EDITOR value is empty the default editor is micro available
+from <a href="https://micro-editor.github.io/"
+class="uri">https://micro-editor.github.io/</a>.</p>
 <h1 id="examples">EXAMPLES</h1>
 <p>Here’s an example of rendering <code>CITATION.cff</code> from a
 <code>codemeta.json</code> file. The second version shows how to use the
@@ -81,7 +89,7 @@ deno.json file with a set of tasks to update the files you have
 specified.</p>
 <pre><code>cmt codemeta.json about.md CITATION.cff version.ts --deno</code></pre>
 <p>This will create a “gen-code” task that will rebuild those files
-based on the current contents of the codemeta.json file.</p>
+based on the current contents of the CodeMeta file.</p>
 </section>
 </body>
 </html>

@@ -16,6 +16,7 @@ contacts:
 repository-code: 'git+https://github.com/caltechlibrary/CMTools'
 version: 0.0.4
 keywords:
-  - software development
-  - metadata
+  - codemeta
+  - cff
+  - software
   - code generation

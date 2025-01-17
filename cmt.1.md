@@ -1,4 +1,4 @@
-%cmt(1) user manual | version 0.0.4 8d9ac4c
+%cmt(1) user manual | version 0.0.4 5ab97a3
 % R. S. Doiel
 % 
 
@@ -42,6 +42,16 @@ Options come as the last parameter(s) on the command line.
 -d, --deno
 : update the deno.json file tasks based on output files requested.
 
+# ENVIRONMENT
+
+cmt relies on the environment for the value of EDITOR. This holds for
+POSIX shells as well as Powershell on Windows. If EDITOR is set and you use
+the editor option then the value will be written to a temp file and saved to
+your CodeMeta JSON file on update.
+
+If the EDITOR value is empty the default editor is micro available from
+<https://micro-editor.github.io/>.
+
 # EXAMPLES
 
 Here's an example of rendering `CITATION.cff` from a `codemeta.json` file. The second version
@@ -81,5 +91,5 @@ cmt codemeta.json about.md CITATION.cff version.ts --deno
 ~~~
 
 This will create a "gen-code" task that will rebuild those files based on
-the current contents of the codemeta.json file.
+the current contents of the CodeMeta file.
 

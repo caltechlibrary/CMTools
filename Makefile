@@ -5,9 +5,9 @@ PROJECT = CMTools
 
 PACKAGE = CMTools
 
-PROGRAMS = cmt
+PROGRAMS = cmt cme
 
-TS_MODS = cmt.ts codemeta.ts gitcmds.ts helptext.ts person_or_organization.ts transform.ts
+TS_MODS = cmt.ts cme.ts codemeta.ts gitcmds.ts helptext.ts person_or_organization.ts transform.ts
 
 GIT_GROUP = caltechlibrary
 
@@ -93,9 +93,8 @@ htdocs: .FORCE
 	deno task transpile
 
 test: .FORCE
-	deno test codemeta_test.ts --allow-import --allow-read
-	deno test person_or_organization_test.ts --allow-read
-	deno test transform_test.ts --allow-read --allow-run
+	deno task test
+	deno task editor_test.ts
 
 install: compile .FORCE
 	mkdir -p "${HOME}/bin"
@@ -140,37 +139,37 @@ distribute_docs: website man setup_dist
 
 dist/Linux-x86_64: .FORCE
 	@mkdir -p dist/bin
-	deno task release_linux_x86_64
+	deno task dist_linux_x86_64
 	@cd dist && zip -r $(PROJECT)-v$(VERSION)-Linux-x86_64.zip LICENSE codemeta.json CITATION.cff *.md bin/*
 	@rm -fR dist/bin
 
 dist/Linux-aarch64: .FORCE
 	@mkdir -p dist/bin
-	deno task release_linux_aarch64
+	deno task dist_linux_aarch64
 	@cd dist && zip -r $(PROJECT)-v$(VERSION)-Linux-aarch64.zip LICENSE codemeta.json CITATION.cff *.md bin/*
 	@rm -fR dist/bin
 
 dist/macOS-x86_64: .FORCE
 	@mkdir -p dist/bin
-	deno task release_macos_x86_64
+	deno task dist_macos_x86_64
 	@cd dist && zip -r $(PROJECT)-v$(VERSION)-macOS-x86_64.zip LICENSE codemeta.json CITATION.cff *.md bin/*
 	@rm -fR dist/bin
 
 dist/macOS-arm64: .FORCE
 	@mkdir -p dist/bin
-	deno task release_macos_aarch64
+	deno task dist_macos_aarch64
 	@cd dist && zip -r $(PROJECT)-v$(VERSION)-macOS-arm64.zip LICENSE codemeta.json CITATION.cff *.md bin/*
 	@rm -fR dist/bin
 
 dist/Windows-x86_64: .FORCE
 	@mkdir -p dist/bin
-	deno task release_windows_x86_64
+	deno task dist_windows_x86_64
 	@cd dist && zip -r $(PROJECT)-v$(VERSION)-Windows-x86_64.zip LICENSE codemeta.json CITATION.cff *.md bin/*
 	@rm -fR dist/bin
 
 dist/Windows-aarch64: .FORCE
 	@mkdir -p dist/bin
-	deno task release_windows_v86_64 #deno task release_windows_aarch64 <-- switch to native when Deno supports Windows ARM64
+	deno task dist_windows_v86_64 #deno task dist_windows_aarch64 <-- switch to native when Deno supports Windows ARM64
 	@cd dist && zip -r $(PROJECT)-v$(VERSION)-Windows-aarch64.zip LICENSE codemeta.json CITATION.cff *.md bin/*
 	@rm -fR dist/bin
 

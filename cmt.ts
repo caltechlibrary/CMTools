@@ -1,6 +1,6 @@
 import { parseArgs } from "@std/cli";
 import { licenseText, releaseDate, releaseHash, version } from "./version.ts";
-import { fmtHelp, helpText } from "./helptext.ts";
+import { fmtHelp, cmtHelpText } from "./helptext.ts";
 import { CodeMeta } from "./codemeta.ts";
 import { getFormatFromExt, isSupportedFormat, transform } from "./transform.ts";
 
@@ -25,7 +25,7 @@ async function main() {
   const args = app._;
 
   if (app.help) {
-    console.log(fmtHelp(helpText, appName, version, releaseDate, releaseHash));
+    console.log(fmtHelp(cmtHelpText, appName, version, releaseDate, releaseHash));
     Deno.exit(0);
   }
   if (app.license) {

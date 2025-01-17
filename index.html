@@ -20,23 +20,47 @@
 <h1 id="codemeta-tools">CodeMeta Tools</h1>
 <p><a href="https://codemeta.github.io">CodeMeta</a> Tools provides a
 simple command line tool called <code>cmt</code> that can be used to
-generate project files and artifacts. The project focuses on leveraging
-CodeMeta data, directory name and Git repo information for building and
-release software written in Python, Go, JavaScript or TypeScript. It was
-motivated by the practices in Caltech Library’s Digital Development
-Group.</p>
-<p>The tool is intended to be run from the project root directory.
+generate project files and artifacts. It also provides a tool called
+<code>cme</code> to edit and manage the CodeMeta file. The project
+focuses on leveraging CodeMeta data, directory name and Git repo
+information for building and release software written in Python, Go,
+JavaScript or TypeScript. It was motivated by the practices in Caltech
+Library’s Digital Development Group.</p>
+<p>The tools are intended to be run from the project root directory.
 <code>cmt</code> expects the file path of your codemeta.json file as
 well as one or more target files to be generated. The target file’s
 extension determines the generated content. The tool can generate the
-following project files based on the contents of the codemeta.json
-file.</p>
+following project files based on the contents of the codemeta.json file.
+<code>cme</code> expects the file path of your codemeta.json file and
+optionally the attributes of the CodeMeta object you wish to manage.</p>
+<p><code>cme</code> is used to create manage “codemeta.json”.
+<code>cmt</code> is used to generate the following.</p>
 <ul>
 <li>CITATION.cff</li>
 <li>version.ts, version.js, version.go or version.py</li>
 <li>about.md</li>
 <li>page.hbs (handlebars template) or page.tmpl (Pandoc template)</li>
 </ul>
+<h2 id="create-and-manage-your-file">Create and manage your file</h2>
+<p><code>cme</code> is for managing your “codemeta.json” file. Using the
+“interactive” option it will prompt for the various top level attributes
+and allow you to set them. For complex list attributes like “author”,
+“contributor”, “maintainer” you can enter those using YAML notation.
+Here’s an example of setting up to use <code>cme</code> to create and
+edit the “codemeta.json” file.</p>
+<pre class="shell"><code># Set our EDITOR environment variable
+export EDITOR=micro
+cme -e -i codemeta.json</code></pre>
+<p>The will let you iterate over the top level CodeMeta object
+attributes. For multi line or list attributes your favorate editor will
+be used to create or update the values.</p>
+<p>Here’s an example of updating the version and
+<code>.releaseNotes</code> attributes (I assume you have the EDITOR
+environment variable already set).</p>
+<pre class="shell"><code>cme -e codemeta.json version releaseNotes</code></pre>
+<p>Since the version is short you’ll just be prompted to type in a new
+version string. You release notes maybe longer so for that you’ll drop
+into your editor.</p>
 <h2 id="create-a-version-file-for-typescript-go-and-python">Create a
 version file for TypeScript, Go and Python</h2>
 <p>The <code>cmt</code> command can render a version file suitable for
