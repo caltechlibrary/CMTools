@@ -3,6 +3,7 @@ import { licenseText, releaseDate, releaseHash, version } from "./version.ts";
 import { fmtHelp, cmeHelpText } from "./helptext.ts";
 import { CodeMeta, CodeMetaTerms } from "./codemeta.ts";
 import type { AttributeType } from "./codemeta.ts";
+import { editCodeMetaTerm } from "./editor.ts";
 
 function getAttributeNames(terms: AttributeType[]): string[] {
   let names: string[] = [];
@@ -84,7 +85,7 @@ async function main() {
     Deno.exit(1);
   }
   let src: string = await Deno.readTextFile(inputName);
-  let obj: object = {};
+  let obj: {[key: string]: any} = {};
   try {
     obj = JSON.parse(src);
   } catch (err) {
@@ -97,9 +98,11 @@ async function main() {
     console.log(`failed to process ${inputName} object`);
     Deno.exit(1);
   }
-  if (attributeNames.length === 0) {
-    for (let attr of attributeNames) {
-      console.log(`DEBUG edit attr: ${attr}`);
+  if (attributeNames.length > 0) {
+    for (let name of attributeNames) {
+      if (! editCodeMetaTerm(cm, name)) {
+          console.log(`WARNING: failed to update ${name}`)
+      }
     }
     Deno.exit(0);
   }

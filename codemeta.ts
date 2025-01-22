@@ -31,6 +31,7 @@ export class AttributeType implements AttributeTypeInterface {
   }
 }
 
+
 // Top level terms attribute from https://codemeta.github.io/terms/
 // NOTE: This is a subset of all attributes to explore the proof of concept usage of cmt and cme.
 export const CodeMetaTerms: AttributeType[] = [ 
@@ -81,12 +82,13 @@ export const CodeMetaAttributes: AttributeType[] = [
 
 export interface CodeMetaInterface {
   atContext: string;
-  toObject(): object;
-  fromObject(obj: object): boolean;
+  toObject(): {[key: string]: string};
+  fromObject(obj: {[key: string]: string}): boolean;
+  patchObject(obj: {[key: string]: string}): boolean;
 }
 
 export class CodeMeta implements CodeMetaInterface {
-  atContext: string = "https://doi.org/10.5063/schema/codemeta-2.0";
+  atContext: string = "https://w3id.org/codemeta/3.0";
   identifier: string = "";
   type: string = "";
   version: string = "";
@@ -103,7 +105,7 @@ export class CodeMeta implements CodeMetaInterface {
   licenseText?: string = ""; // This is an optional field that can hold the text of the license
   keywords: string[] = [];
   funding: string = "";
-  funder: PersonOrOrganization | undefined;
+  funder: PersonOrOrganization[] = [];
   issueTracker: string = "";
   relatedLink: string[] = [];
   programmingLanguage: string[] = [];
@@ -114,38 +116,40 @@ export class CodeMeta implements CodeMetaInterface {
   releaseNotes: string = "";
   developmentStatus: string = "";
 
-  toObject(): object {
-    return {
-      "@context": this.atContext,
-      "type": this.type,
-      codeRepository: this.codeRepository,
-      author: this.author,
-      contributor: this.contributor,
-      maintainer: this.maintainer,
-      dateCreated: this.dateCreated,
-      dateModified: this.dateModified,
-	    datePublished: this.datePublished,
-      description: this.description,
-      funder: this.funder,
-      funding: this.funding,
-      keywords: this.keywords,
-      name: this.name,
-      license: this.license,
-      operatingSystem: this.operatingSystem,
-      programmingLanguage: this.programmingLanguage,
-      relatedLink: this.relatedLink,
-      runtimePlatform: this.runtimePlatform,
-      softwareRequirements: this.softwareRequirements,
-      version: this.version,
-      developmentStatus: this.developmentStatus,
-      issueTracker: this.issueTracker,
-      downloadUrl: this.downloadUrl,
-      releaseNotes: this.releaseNotes,
-      identifier: this.identifier,
-    };
+  toObject(): {[key: string]: any} {
+    //FIXME: Only build an `{[key: string]: string}` minimal object
+    let obj: {[key: string]: any} = {};
+    obj["@context"] = this.atContext;
+    obj["type"] = this.type;
+    (this.codeRepository !== "") ? obj["codeRepository"] = this.codeRepository : '';
+    (this.author.length > 0) ? obj["author"] = this.author : [];
+    (this.contributor.length > 0) ? obj["contributor"] = this.contributor: [];
+    (this.maintainer.length > 0) ? obj["maintainer"] = this.maintainer: [];
+    (this.dateCreated !== "") ? obj["dateCreated"] = this.dateCreated: '';
+    (this.dateModified !== "") ? obj["dateModified"] = this.dateModified: '';
+    (this.datePublished !== "") ? obj["datePublished"] = this.datePublished: '';
+    (this.description !== "") ? obj["description"] = this.description : '';
+    (this.funder.length > 0) ? obj["funder"] = this.funder: [];
+    (this.funding !== "") ? obj["funding"] = this.funding: '';
+    (this.keywords.length > 0) ? obj["keywords"] = this.keywords: [];
+    (this.name !== "") ? obj["name"] = this.name: '';
+    (this.license !== "") ? obj['license'] = this.license: '';
+    (this.operatingSystem.length > 0) ? obj["operatingSystem"] = this.operatingSystem: [];
+    (this.programmingLanguage.length > 0) ? obj['programmingLanguage'] = this.programmingLanguage: [];
+    (this.relatedLink.length > 0) ? obj['relatedLink'] = this.relatedLink : [];
+    (this.runtimePlatform.length > 0) ? obj['runtimePlatform'] =  this.runtimePlatform: [];
+    (this.softwareRequirements.length > 0) ? obj['softwareRequirements'] = this.softwareRequirements: [];
+    (this.version !== "") ? obj['version'] = this.version : '';
+    (this.developmentStatus !== '') ? obj['developmentStatus'] = this.developmentStatus: '';
+    (this.issueTracker !== '') ? obj['issueTracker'] = this.issueTracker: '';
+    (this.downloadUrl !== '') ? obj['downloadUrl'] = this.downloadUrl: '';
+    (this.releaseNotes !== '') ? obj['releaseNotes'] = this.releaseNotes: '';
+    (this.identifier !== '') ? obj['identifier'] = this.identifier: '';
+    return obj;
   }
 
   fromObject(obj: { [key: string]: any }): boolean {
+    //FIXME: obj
     //FIXME: need to handle prior codemeta version import
     this.atContext = (obj["@context"] === undefined)
       ? "https://w3id.org/codemeta/3.0"
@@ -251,4 +255,114 @@ export class CodeMeta implements CodeMetaInterface {
       : obj["releaseNotes"];
     return true;
   }
+
+  patchObject(obj: { [key: string]: any }): boolean {
+    //FIXME: obj
+    //FIXME: need to handle prior codemeta version import
+    this.atContext = (obj["@context"] === undefined)
+      ? this.atContext
+      : obj["@context"];
+    this.type = (obj["type"] === undefined) ? this.type : obj["type"];
+    if (obj["identifier"] === undefined) {
+      // do nothing.
+    } else {
+      this.identifier = obj["identifier"];
+    }
+    if (obj["author"] === undefined) {
+      // do nothing.
+    } else {
+      //FIXME: if this is NOT an array I need to write code to handle it here.
+      const oType = Object.prototype.toString.call(obj["author"]); 
+      this.author = normalizePersonOrOrgList(obj['author']);
+    }
+    if (obj["license"] === undefined) {
+      // do nothing.
+    } else {
+      // This field should be a URL
+      try {
+        const u = URL.parse(obj["license"]);
+        if (u !== null) {
+          this.license = obj["license"];
+        } else {
+          // do nothing.
+          this.license = "";
+          this.licenseText = obj["license"];
+        }
+      } catch (err) {
+        // do nothing.
+      }
+    }
+    if (obj["contributor"] === undefined) {
+      // do nothing.
+    } else {
+      //FIXME: if this is NOT an array I need to write code to handle it here.
+      this.contributor = normalizePersonOrOrgList(obj["contributor"]);
+    }
+    if (obj["maintainer"] === undefined) {
+      // do nothing.
+    } else {
+      //FIXME: if this is NOT an array I need to write code to handle it here.
+      this.maintainer = normalizePersonOrOrgList(obj["maintainer"]);
+    }
+    this.codeRepository = (obj["codeRepository"] === undefined)
+      ? this.codeRepository
+      : obj["codeRepository"];
+    this.dateCreated = (obj["dateCreated"] === undefined)
+      ? this.dateCreated
+      : obj["dateCreated"];
+    this.dateModified = (obj["dateModified"] === undefined)
+      ? this.dateModified
+      : obj["dateModified"];
+    this.description = (obj["description"] === undefined)
+      ? this.description
+      : obj["description"];
+    this.funder = (obj["funder"] === undefined) ? this.funder : obj["funder"];
+    this.funding = (obj["funding"] == undefined) ? this.funding : obj["funding"];
+    this.keywords = (obj["keywords"] === undefined) ? this.keywords : obj["keywords"];
+    this.name = (obj["name"] === undefined) ? this.name : obj["name"];
+    this.operatingSystem = (obj["operatingSystem"] === undefined)
+      ? this.operatingSystem
+      : obj["operatingSystem"];
+    if (obj["programmingLanguage"] === undefined) {
+      // do nothing.
+    } else {
+      this.programmingLanguage = (this.programmingLanguage === undefined) ? [] : this.programmingLanguage;
+      if (typeof obj["programmingLanguage"] === "string") {
+        this.programmingLanguage.push(obj["programmingLanguage"]);
+      } else {
+        this.programmingLanguage = obj["programmingLanguage"];
+      }
+    }
+    this.relatedLink = (obj["relatedLink"] === undefined)
+      ? this.relatedLink
+      : obj["relatedLink"];
+    this.runtimePlatform = (obj["runtimePlatform"] === undefined)
+      ? this.runtimePlatform
+      : obj["runtimePlatform"];
+    if (obj["softwareRequirements"] === undefined) {
+      // do nothing.
+    } else {
+      this.softwareRequirements = (this.softwareRequirements === undefined) ? [] : this.softwareRequirements; 
+      if (typeof (obj["softwareRequirements"]) === "string") {
+        this.softwareRequirements.push(obj["softwareRequirements"]);
+      } else {
+        this.softwareRequirements = obj["softwareRequirements"];
+      }
+    }
+    this.version = (obj["version"] === undefined) ? this.version : obj["version"];
+    this.developmentStatus = (obj["developmentStatus"] === undefined)
+      ? this.developmentStatus
+      : obj["developmentStatus"];
+    this.issueTracker = (obj["issueTracker"] === undefined)
+      ? this.issueTracker
+      : obj["issueTracker"];
+    this.downloadUrl = (obj["downloadUrl"] === undefined)
+      ? this.downloadUrl
+      : obj["downloadUrl"];
+    this.releaseNotes = (obj["releaseNotes"] === undefined)
+      ? this.releaseNotes
+      : obj["releaseNotes"];
+    return true;
+  }
 }
+

@@ -1,3 +1,15 @@
+import { CodeMeta, CodeMetaTerms, AttributeType } from './codemeta.ts';
+
+function getAttributeByName(name: string): AttributeType | undefined {
+    for (let attr of CodeMetaTerms) {
+      if (attr.name === name) {
+        return attr;
+      }
+    }
+    return undefined
+  }
+  
+  
 // editFile takes an editor name and filename. It runs the editor using the
 // filename (e.g. micro, nano, code) and returns success or failure based on
 // the the exit status code. If the exit statuss is zero then true is return,
@@ -44,4 +56,85 @@ export async function editTempData(val: string): Promise<string | undefined> {
         return txt;
     }
     return undefined;
+}
+
+export function editCodeMetaTerm(cm: CodeMeta, name: string): boolean {
+    const attr = getAttributeByName(name);
+    // Prompt and get value back as string
+    // Inspect the attribute and determine what to of value
+    // Use CodeMeta patchObject similar to fromObject but for simple
+    // attribute update.
+    if (attr === undefined) {
+      return false;
+    }
+
+    console.log(`DEBUG attribute name: ${name}`);
+    let val: string | null = prompt(`Enter ${name}: `, '');
+    if (val === null) return false;
+    const obj: {[key: string]: any} = {};
+    if (setObjectFromString(obj, name, val, attr.type) === false) {
+      console.log(`DEBUG obj type -> ${attr.type}, name -> ${name}, val -> ${val}`);
+      return  false;
+    }
+    console.log(`DEBUG updating obj[${name}] -> ${obj[name]}`);
+    console.log(`DEBUG edit ${name} attr: ${attr}`);    
+    return cm.patchObject(obj);     
+}
+
+export function setObjectFromString(obj: {[key: string]: any}, key: string, val: string, data_type: string): boolean {
+  let n: number = 0;
+  let dt: Date;
+  let u: URL | null;
+
+
+  switch (data_type) {
+    case "text":
+      obj[key] = val;
+      break;
+    case "url":
+      u = URL.parse(val);
+      if (u === null) return false;
+      obj[key] = u;
+      break;
+    case "number": 
+      n = (new Number(val)).valueOf();
+      if (isNaN(n)) return false;
+      obj[key] = n;
+      break;
+    case "date":
+      dt = new Date(val);
+      if (isNaN(dt.valueOf())) return false;
+      obj[key] = dt;
+    case "text_or_url":
+      u = URL.parse(val);
+      if (u === null) {
+        obj[key] = val;
+      } else {
+        obj[key] = u;
+      }
+      break;
+    case "number_or_text":
+      n = (new Number(val)).valueOf();
+      if (isNaN(n)) {
+        obj[key] = val;
+      } else {
+        obj[key] = n;
+      }
+      break;
+    case "property_value_or_url":
+      obj[key] = val;
+      break;
+    case "text_list":
+      return false; // FIXME: NOT IMPLEMENT
+      break;
+    case "url_list":
+      return false; // FIXME: NOT IMPLEMENT
+      break;
+    case "person_or_organization_list":
+      //FIXME: need to parse a complex YAML expression from text.
+      return false; // FIXME: NOT IMPLEMENT
+      break;
+  }
+  // Unsupported conversion
+  return false;
 }
