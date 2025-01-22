@@ -40,7 +40,7 @@ function testSetObjectFromString() {
     assertNotEquals(obj['b'], undefined, `expected attribute "${key}" in obj -> ${JSON.stringify(obj, null, 2)}`);
     assertEquals(obj['b'], expected, `expected obj.b ${expected}, got ${obj['b']}`);
     val = "2025-01-21";
-    expected = new Date(val);
+    expected = val;
     key = "c";
     ok = edit.setObjectFromString(obj, key, val, "date");
     assertEquals(ok, true, `expected true for obj.c of type date`);

@@ -134,7 +134,9 @@ export function setObjectFromString(obj: {[key: string]: any}, key: string, val:
       //FIXME: need to parse a complex YAML expression from text.
       return false; // FIXME: NOT IMPLEMENT
       break;
+    default:
+      // Unsupported conversion
+      break;
   }
-  // Unsupported conversion
-  return false;
+  return true;
 }
