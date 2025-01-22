@@ -45,7 +45,23 @@ function testSetObjectFromString() {
     ok = edit.setObjectFromString(obj, key, val, "date");
     assertEquals(ok, true, `expected true for obj.c of type date`);
     assertNotEquals(obj['c'], undefined, `expected attribute "${key}" in obj -> ${JSON.stringify(obj, null, 2)}`);
-    assertEquals(obj['c'], expected, `expected obj.c ${expected}, got ${obj['b']}`);
+    assertEquals(obj['c'], expected, `expected obj.c ${expected}, got ${obj['c']}`);
+    val = "https://doi.org/10.1089/ast.2023.0002"
+    expected = URL.parse(val);
+    key = "d";
+    ok = edit.setObjectFromString(obj, key, val, "url");
+    assertEquals(ok, true, `expected true for obj.d of type url`);
+    assertNotEquals(obj['d'], undefined, `expected attribute "${key}" in obj -> ${JSON.stringify(obj, null, 2)}`);
+    assertEquals(obj['d'], expected, `expected obj.d ${expected}, got ${obj['d']}`);
+    expected = [ "one", "two", "three"]
+    val = `- one
+- two
+- three`;
+    key = "e";
+    ok = edit.setObjectFromString(obj, key, val, "text_list");
+    assertEquals(ok, true, `expected true for obj.e of type text_list`);
+    assertNotEquals(obj['e'], undefined, `expected attribute "${key}" in obj -> ${JSON.stringify(obj, null, 2)}`);
+    assertEquals(obj['e'], expected, `expected obj.d ${expected}, got ${obj['e']}`);
 }
 
 async function main() {

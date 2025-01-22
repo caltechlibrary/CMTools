@@ -1,4 +1,5 @@
 import { CodeMeta, CodeMetaTerms, AttributeType } from './codemeta.ts';
+import * as yaml from "@std/yaml";
 
 function getAttributeByName(name: string): AttributeType | undefined {
     for (let attr of CodeMetaTerms) {
@@ -125,10 +126,28 @@ export function setObjectFromString(obj: {[key: string]: any}, key: string, val:
       obj[key] = val;
       break;
     case "text_list":
-      return false; // FIXME: NOT IMPLEMENT
+      let data: string[];
+      try {
+        data = yaml.parse(val) as unknown as string[];
+      } catch (err) {
+        return false;
+      }
+      obj[key] = data;      
       break;
     case "url_list":
-      return false; // FIXME: NOT IMPLEMENT
+      try {
+        data = yaml.parse(val) as unknown as string[];
+      } catch (err) {
+        return false;
+      }
+      let l: URL[] = [];
+      for (let item of data) {
+        let u: URL | null = URL.parse(item);
+        if (u !== null) {
+          l.push(u);
+        }
+      }
+      obj[key] = l;
       break;
     case "person_or_organization_list":
       //FIXME: need to parse a complex YAML expression from text.
