@@ -8,11 +8,11 @@ description: Caltech Library Digital Development Group presentation
 urlcolor: blue
 linkstyle: bold
 aspectratio: 169
-createDate: 2024-01-13
-updateDate: 2024-01-13
+createDate: 2025-01-13
+updateDate: 2025-01-13
 pubDate: TBD
 place: TBD
-date: 2024-01-13
+date: 2025-01-13
 section-titles: false
 toc: true
 keywords: [ "CodeMeta", "projects", "build" ]
