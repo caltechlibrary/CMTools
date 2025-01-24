@@ -282,7 +282,8 @@ About this software
 {{/each}}{{/if}}
 `;
 
-const hbsTemplateText = `<html lang="en-US">
+const hbsTemplateText = `<!DOCTYPE html>
+<html lang="en-US">
 <head>
     <title>{{project_name}}</title>
     <link rel="stylesheet" href="/css/site.css">

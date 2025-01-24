@@ -42,9 +42,9 @@
             "givenName": "R. S."
         }
     ],
-    "version": "0.0.4",
-	"releaseNotes": "A proof of concept in user codemeta.json in your build process, added missing version.js support",
-	"dateModified": "2025-01-16",
+    "version": "0.0.5",
+	"releaseNotes": "A proof of concept in user codemeta.json in your build process, fixed page.tmpl generation",
+	"dateModified": "2025-01-24",
     "dateCreated": "2025-01-07",
 	"datePubished": "2025-01-09",
     "description": "CM Tools provides codemeta tooling for codemeta crosswalks and tooling to use the codemeta.json in a build process.",
