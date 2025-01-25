@@ -90,7 +90,7 @@ async function main() {
   try {
     src = await Deno.readTextFile(inputName);
   } catch (err) {
-    console.log(err.toString());
+    console.log(`${err}`);
     if (confirm(`Create ${inputName}?`)) {
       src = '{}';
     } else {

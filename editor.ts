@@ -59,7 +59,7 @@ export async function editTempData(val: string): Promise<string | undefined> {
     return undefined;
 }
 
-export async function editCodeMetaTerm(cm: CodeMeta, name: string, useEditor: boolean): boolean {
+export async function editCodeMetaTerm(cm: CodeMeta, name: string, useEditor: boolean): Promise<boolean> {
     const attr = getAttributeByName(name);
     // Prompt and get value back as string
     // Inspect the attribute and determine what to of value
@@ -94,11 +94,27 @@ export async function editCodeMetaTerm(cm: CodeMeta, name: string, useEditor: bo
     return false;
 }
 
-export function getStringFromObject(obj: {[key : string]: any}, key: string): Promise<string|undefined> {
+export function getStringFromObject(obj: {[key : string]: any}, key: string): string | undefined {
   if (obj[key] === undefined) {
     return undefined;
   }
-  return yaml.stringify(obj[key]);
+  let val: any = obj[key];
+  if (val === undefined) {
+    return undefined;
+  }
+  let src: string;
+  try {
+    src = yaml.stringify(val);
+  } catch (err) {
+    console.log(`${err} -> ${val}`);
+  }
+  try {
+    src = JSON.stringify(val, null, 2);
+  } catch (err) {
+    console.log(`${err} -> ${val}`);
+    return undefined;
+  }
+  return src;
 }
 
 export function setObjectFromString(obj: {[key: string]: any}, key: string, val: string, data_type: string): boolean {
