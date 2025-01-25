@@ -1,4 +1,5 @@
 import { CodeMeta, CodeMetaTerms, AttributeType } from './codemeta.ts';
+import { PersonOrOrganization } from './person_or_organization.ts';
 import * as yaml from "@std/yaml";
 
 function getAttributeByName(name: string): AttributeType | undefined {
@@ -106,13 +107,13 @@ export function getStringFromObject(obj: {[key : string]: any}, key: string): st
   try {
     src = yaml.stringify(val);
   } catch (err) {
-    console.log(`${err} -> ${val}`);
-  }
-  try {
-    src = JSON.stringify(val, null, 2);
-  } catch (err) {
-    console.log(`${err} -> ${val}`);
-    return undefined;
+    console.log(`YAML ERROR: ${err} -> ${val}`);
+    try {
+      src = JSON.stringify(val, null, 2);
+    } catch (err) {
+      console.log(`JSON ERROR: ${err} -> ${val}`);
+      return undefined;
+    }
   }
   return src;
 }
@@ -121,6 +122,8 @@ export function setObjectFromString(obj: {[key: string]: any}, key: string, val:
   let n: number = 0;
   let dt: Date;
   let u: URL | null;
+  let textData: string[] = [];
+  let personData: PersonOrOrganization[] = [];
 
 
   switch (data_type) {
@@ -161,32 +164,42 @@ export function setObjectFromString(obj: {[key: string]: any}, key: string, val:
       obj[key] = val;
       break;
     case "text_list":
-      let data: string[];
       try {
-        data = yaml.parse(val) as unknown as string[];
+        textData = yaml.parse(val) as unknown as string[];
       } catch (err) {
         return false;
       }
-      obj[key] = data;      
+      obj[key] = textData;      
       break;
     case "url_list":
       try {
-        data = yaml.parse(val) as unknown as string[];
+        textData = yaml.parse(val) as unknown as string[];
       } catch (err) {
+        console.log(`YAML ERROR: ${err} -> ${val}`);
         return false;
       }
-      let l: URL[] = [];
-      for (let item of data) {
+      let list_of_url: URL[] = [];
+      for (let item of textData) {
         let u: URL | null = URL.parse(item);
         if (u !== null) {
-          l.push(u);
+          list_of_url.push(u);
         }
       }
-      obj[key] = l;
+      obj[key] = list_of_url;
       break;
     case "person_or_organization_list":
-      //FIXME: need to parse a complex YAML expression from text.
-      return false; // FIXME: NOT IMPLEMENT
+      try {
+        personData = yaml.parse(val) as unknown as PersonOrOrganization[];
+      } catch (err) {
+        console.log(`YAML ERROR: ${err} -> ${val}`);
+        try {
+          personData = JSON.parse(val) as unknown as PersonOrOrganization[];
+        } catch (err) {
+          console.log(`JSON ERROR: ${err} -> ${val}`);
+          return false;
+        }
+      }
+      obj[key] = personData;
       break;
     default:
       // Unsupported conversion
