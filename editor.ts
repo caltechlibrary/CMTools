@@ -59,7 +59,7 @@ export async function editTempData(val: string): Promise<string | undefined> {
     return undefined;
 }
 
-export function editCodeMetaTerm(cm: CodeMeta, name: string): boolean {
+export async function editCodeMetaTerm(cm: CodeMeta, name: string, useEditor: boolean): boolean {
     const attr = getAttributeByName(name);
     // Prompt and get value back as string
     // Inspect the attribute and determine what to of value
@@ -68,18 +68,37 @@ export function editCodeMetaTerm(cm: CodeMeta, name: string): boolean {
     if (attr === undefined) {
       return false;
     }
-
-    console.log(`DEBUG attribute name: ${name}`);
-    let val: string | null = prompt(`Enter ${name}: `, '');
-    if (val === null) return false;
     const obj: {[key: string]: any} = {};
-    if (setObjectFromString(obj, name, val, attr.type) === false) {
-      console.log(`DEBUG obj type -> ${attr.type}, name -> ${name}, val -> ${val}`);
-      return  false;
+    const curVal: string | undefined = getStringFromObject(cm.toObject(), name);
+    let val: string | undefined = undefined;
+    console.log(`Default: ${name}: ${curVal}`);
+    if (useEditor) {
+      if (confirm(`Edit ${name}?`)) {
+        const eVal = (curVal === undefined) ? '': curVal;
+        val = await editTempData(eVal);
+      }
+    } else {
+      let pVal: string | null = prompt(`Update ${name} (press enter for default): `, '');
+      if (pVal === null) { 
+        val = undefined; 
+      } else {
+        val = pVal;
+      }
     }
-    console.log(`DEBUG updating obj[${name}] -> ${obj[name]}`);
-    console.log(`DEBUG edit ${name} attr: ${attr}`);    
-    return cm.patchObject(obj);     
+    if (val !== undefined && val !== '') {
+      if (setObjectFromString(obj, name, val.trim(), attr.type) === false) {
+        return  false;
+      }
+      return cm.patchObject(obj);
+    }
+    return false;
+}
+
+export function getStringFromObject(obj: {[key : string]: any}, key: string): Promise<string|undefined> {
+  if (obj[key] === undefined) {
+    return undefined;
+  }
+  return yaml.stringify(obj[key]);
 }
 
 export function setObjectFromString(obj: {[key: string]: any}, key: string, val: string, data_type: string): boolean {

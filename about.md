@@ -68,5 +68,5 @@ CM Tools provides codemeta tooling for codemeta crosswalks and tooling to use th
 
 ### Software Requirements
 
-- Deno &gt;&#x3D; 2.1.5
+- Deno &gt;&#x3D; 2.1.7
 

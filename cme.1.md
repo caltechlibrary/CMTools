@@ -1,24 +1,24 @@
 
-%cmt(1) user manual | version 0.0.5 0b72313
+%cme(1) user manual | version 0.0.5 9c3b07d
 % R. S. Doiel
 % 
 
 # NAME
 
-cmt
+cme
 
 # SYNOPSIS
 
-cmt [OPTIONS] CODEMETA_JSON
-cmt [OPTIONS] CODEMETA_JSON ATTRIBUTE_NAME [ATTRIBUTE_NAME ...]
+cme [OPTIONS] CODEMETA_JSON
+cme [OPTIONS] CODEMETA_JSON ATTRIBUTE_NAME [ATTRIBUTE_NAME ...]
 
 # DESCRIPTION
 
-cmt is a CodeMeta file editing tool.  When called with only the CODEMETA_JSON filename
+cme is a CodeMeta file editing tool.  When called with only the CODEMETA_JSON filename
 it will read in the CodeMeta file, report any errors, extrapolate values if needed. It will
 then display a pretty printed normalized version of your CodeMeta file.
 
-cmt will also let you modify specific attributes in a CodeMeta file. It does this by
+cme will also let you modify specific attributes in a CodeMeta file. It does this by
 reading the CodeMeta file and prompting you to type in the value. If you use the editor
 option it'll launch your editor use it to set the value saving changes are saved back to
 the CodeMeta file.
@@ -64,18 +64,18 @@ required software, etc.  The "-i" means edit all top level attributes
 sequentially.
 
 ~~~
-cmt -e -i codemeta.json
+cme -e -i codemeta.json
 ~~~
 
 Set the version number in your codemeta.json file and add/replace the `.releaseNotes`.
 
 ~~~
-cmt -e codemeta.json version releaseNotes
+cme -e codemeta.json version releaseNotes
 ~~~
 
 Add authors to your codemeta.json using the "micro" editor.  NOTE: you enter authors as YAML.
 
 ~~~
-cmt -e codemeta.json authors
+cme -e codemeta.json authors
 ~~~
 

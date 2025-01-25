@@ -14,7 +14,7 @@ function getAttributeNames(terms: AttributeType[]): string[] {
 }
 
 async function main() {
-  const appName = "cmt";
+  const appName = "cme";
   const app = parseArgs(Deno.args, {
     alias: {
       help: "h",
@@ -59,13 +59,14 @@ async function main() {
     }
     Deno.exit(0);
   }
+  console.log(`DEBUG checking arg count -> ${args.length}`);
   if (args.length < 1) {
     console.log(`USAGE: ${appName} [OPTIONS] INPUT_NAME [OUTPUT_NAME]`);
     Deno.exit(1);
   }
   let inputName: string = (args.length > 0) ? `${args.shift()}` : "";
   let attributeNames: string[] = [];
-  if (app.interactive) {
+  if (app.interactive || args.length === 0) {
     attributeNames = codeMetaTermNames;
   }
   for (let val of args) {
@@ -84,7 +85,18 @@ async function main() {
     console.log("error: missing filepath to codemeta.json");
     Deno.exit(1);
   }
-  let src: string = await Deno.readTextFile(inputName);
+  console.log(`DEBUG inputName -> ${inputName}, attributeNames -> ${attributeNames}`);
+  let src: string = '';
+  try {
+    src = await Deno.readTextFile(inputName);
+  } catch (err) {
+    console.log(err.toString());
+    if (confirm(`Create ${inputName}?`)) {
+      src = '{}';
+    } else {
+      Deno.exit(1);
+    }
+  }
   let obj: {[key: string]: any} = {};
   try {
     obj = JSON.parse(src);
@@ -100,9 +112,21 @@ async function main() {
   }
   if (attributeNames.length > 0) {
     for (let name of attributeNames) {
-      if (! editCodeMetaTerm(cm, name)) {
+      console.log(`DEBUG editCodeMetaTerm(cm, ${name}, ${app.editor})`);
+      if (! await editCodeMetaTerm(cm, name, app.editor)) {
           console.log(`WARNING: failed to update ${name}`)
       }
+    }
+    src = JSON.stringify(cm.toObject(), null, 2);
+    console.log(src);
+    if (confirm(`Write to ${inputName}`)) {
+      // Check if file exists then write out new version.
+      try {
+        await Deno.copyFile(inputName, `${inputName}.bak`);
+      } catch (err) {
+        // No file exists, skip backup.
+      }
+      await Deno.writeTextFile(inputName, src);
     }
     Deno.exit(0);
   }

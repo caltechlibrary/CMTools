@@ -35,7 +35,7 @@ export class AttributeType implements AttributeTypeInterface {
 // Top level terms attribute from https://codemeta.github.io/terms/
 // NOTE: This is a subset of all attributes to explore the proof of concept usage of cmt and cme.
 export const CodeMetaTerms: AttributeType[] = [ 
-  new AttributeType("name", "text", "Type of software application, e.g. 'Game, Multimedia'."),
+  new AttributeType("name", "text", "Name for type of software application, e.g. 'Game, Multimedia'."),
   new AttributeType("description", "text", "A description of the item."),
   new AttributeType("author", "person_or_organization_list", "The author of this content or rating. Please note that author is special in that HTML 5 provides a special mechanism for indicating authorship via the rel tag. That is equivalent to this and may be used interchangeably. (enter as YAML list)"),
   new AttributeType("contributor", "person_or_organization_list", "A secondary contributor to the CreativeWork or Event. (enter as YAML list)"),
@@ -82,15 +82,15 @@ export const CodeMetaAttributes: AttributeType[] = [
 
 export interface CodeMetaInterface {
   atContext: string;
-  toObject(): {[key: string]: string};
-  fromObject(obj: {[key: string]: string}): boolean;
+  toObject(): {[key: string]: any };
+  fromObject(obj: {[key: string]: any }): boolean;
   patchObject(obj: {[key: string]: string}): boolean;
 }
 
 export class CodeMeta implements CodeMetaInterface {
   atContext: string = "https://w3id.org/codemeta/3.0";
   identifier: string = "";
-  type: string = "";
+  type: string = "SoftwareSourceCode";
   version: string = "";
   author: PersonOrOrganization[] = [];
   contributor: PersonOrOrganization[] = [];
@@ -118,33 +118,33 @@ export class CodeMeta implements CodeMetaInterface {
 
   toObject(): {[key: string]: any} {
     //FIXME: Only build an `{[key: string]: string}` minimal object
-    let obj: {[key: string]: any} = {};
+    let obj: {[key: string]: any } = {};
     obj["@context"] = this.atContext;
     obj["type"] = this.type;
-    (this.codeRepository !== "") ? obj["codeRepository"] = this.codeRepository : '';
-    (this.author.length > 0) ? obj["author"] = this.author : [];
-    (this.contributor.length > 0) ? obj["contributor"] = this.contributor: [];
-    (this.maintainer.length > 0) ? obj["maintainer"] = this.maintainer: [];
-    (this.dateCreated !== "") ? obj["dateCreated"] = this.dateCreated: '';
-    (this.dateModified !== "") ? obj["dateModified"] = this.dateModified: '';
-    (this.datePublished !== "") ? obj["datePublished"] = this.datePublished: '';
-    (this.description !== "") ? obj["description"] = this.description : '';
-    (this.funder.length > 0) ? obj["funder"] = this.funder: [];
-    (this.funding !== "") ? obj["funding"] = this.funding: '';
-    (this.keywords.length > 0) ? obj["keywords"] = this.keywords: [];
-    (this.name !== "") ? obj["name"] = this.name: '';
-    (this.license !== "") ? obj['license'] = this.license: '';
-    (this.operatingSystem.length > 0) ? obj["operatingSystem"] = this.operatingSystem: [];
-    (this.programmingLanguage.length > 0) ? obj['programmingLanguage'] = this.programmingLanguage: [];
-    (this.relatedLink.length > 0) ? obj['relatedLink'] = this.relatedLink : [];
-    (this.runtimePlatform.length > 0) ? obj['runtimePlatform'] =  this.runtimePlatform: [];
-    (this.softwareRequirements.length > 0) ? obj['softwareRequirements'] = this.softwareRequirements: [];
-    (this.version !== "") ? obj['version'] = this.version : '';
-    (this.developmentStatus !== '') ? obj['developmentStatus'] = this.developmentStatus: '';
-    (this.issueTracker !== '') ? obj['issueTracker'] = this.issueTracker: '';
-    (this.downloadUrl !== '') ? obj['downloadUrl'] = this.downloadUrl: '';
-    (this.releaseNotes !== '') ? obj['releaseNotes'] = this.releaseNotes: '';
-    (this.identifier !== '') ? obj['identifier'] = this.identifier: '';
+    (this.codeRepository === "") ? '' : obj["codeRepository"] = this.codeRepository;
+    (this.author === undefined || this.author.length === 0) ? '': obj["author"] = this.author;
+    (this.contributor === undefined || this.contributor.length === 0) ? '' : obj["contributor"] = this.contributor;
+    (this.maintainer === undefined || this.maintainer.length === 0) ? '': obj["maintainer"] = this.maintainer;
+    (this.dateCreated === "") ? '' : obj["dateCreated"] = this.dateCreated;
+    (this.dateModified === "") ? '': obj["dateModified"] = this.dateModified;
+    (this.datePublished === "") ? '': obj["datePublished"] = this.datePublished;
+    (this.description === "") ? '': obj["description"] = this.description;
+    (this.funder === undefined || this.funder.length === 0) ? '': obj["funder"] = this.funder;
+    (this.funding === "") ? '': obj["funding"] = this.funding;
+    (this.keywords === undefined || this.keywords.length === 0) ? [] : obj["keywords"] = this.keywords ;
+    (this.name === "") ? '': obj["name"] = this.name;
+    (this.license === "") ? '' : obj['license'] = this.license;
+    (this.operatingSystem === undefined || this.operatingSystem.length === 0) ? '': obj["operatingSystem"] = this.operatingSystem;
+    (this.programmingLanguage === undefined || this.programmingLanguage.length === 0) ? '': obj['programmingLanguage'] = this.programmingLanguage;
+    (this.relatedLink === undefined || this.relatedLink.length === 0) ? '': obj['relatedLink'] = this.relatedLink;
+    (this.runtimePlatform === undefined || this.runtimePlatform.length === 0) ? '': obj['runtimePlatform'] =  this.runtimePlatform;
+    (this.softwareRequirements === undefined || this.softwareRequirements.length === 0) ? '' : obj['softwareRequirements'] = this.softwareRequirements;
+    (this.version === "") ? '': obj['version'] = this.version;
+    (this.developmentStatus === '') ? '': obj['developmentStatus'] = this.developmentStatus;
+    (this.issueTracker === '') ? '': obj['issueTracker'] = this.issueTracker;
+    (this.downloadUrl === '') ? '': obj['downloadUrl'] = this.downloadUrl;
+    (this.releaseNotes === '') ? '': obj['releaseNotes'] = this.releaseNotes;
+    (this.identifier === '') ? '': obj['identifier'] = this.identifier;
     return obj;
   }
 
@@ -154,7 +154,7 @@ export class CodeMeta implements CodeMetaInterface {
     this.atContext = (obj["@context"] === undefined)
       ? "https://w3id.org/codemeta/3.0"
       : obj["@context"];
-    this.type = (obj["type"] === undefined) ? "" : obj["type"];
+    this.type = (obj["type"] === undefined) ? "SoftwareSourceCode" : obj["type"];
     if (obj["identifier"] === undefined) {
       this.identifier = "";
     } else {
@@ -262,7 +262,7 @@ export class CodeMeta implements CodeMetaInterface {
     this.atContext = (obj["@context"] === undefined)
       ? this.atContext
       : obj["@context"];
-    this.type = (obj["type"] === undefined) ? this.type : obj["type"];
+    this.type = (obj["type"] === undefined) ? "SoftwareSourceCode" : obj["type"];
     if (obj["identifier"] === undefined) {
       // do nothing.
     } else {

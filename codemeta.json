@@ -67,7 +67,7 @@
     "programmingLanguage": "TypeScript",
     "relatedLink": "https://caltechlibrary.github.io/CMTools",
     "runtimePlatform": "Deno",
-    "softwareRequirements": "Deno >= 2.1.5",
+    "softwareRequirements": "Deno >= 2.1.7",
     "developmentStatus": "concept",
     "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues"
 }
