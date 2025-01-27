@@ -18,19 +18,19 @@
 </ul>
 </nav>
 <section>
-<p>%cmt(1) user manual | version 0.0.4 9f7c725 % R. S. Doiel %</p>
+<p>%cme(1) user manual | version 0.0.6 e83d1f5 % R. S. Doiel %</p>
 <h1 id="name">NAME</h1>
-<p>cmt</p>
+<p>cme</p>
 <h1 id="synopsis">SYNOPSIS</h1>
-<p>cmt <a href="#options">OPTIONS</a> CODEMETA_JSON cmt <a
+<p>cme <a href="#options">OPTIONS</a> CODEMETA_JSON cme <a
 href="#options">OPTIONS</a> CODEMETA_JSON ATTRIBUTE_NAME [ATTRIBUTE_NAME
 …]</p>
 <h1 id="description">DESCRIPTION</h1>
-<p>cmt is a CodeMeta file editing tool. When called with only the
+<p>cme is a CodeMeta file editing tool. When called with only the
 CODEMETA_JSON filename it will read in the CodeMeta file, report any
 errors, extrapolate values if needed. It will then display a pretty
 printed normalized version of your CodeMeta file.</p>
-<p>cmt will also let you modify specific attributes in a CodeMeta file.
+<p>cme will also let you modify specific attributes in a CodeMeta file.
 It does this by reading the CodeMeta file and prompting you to type in
 the value. If you use the editor option it’ll launch your editor use it
 to set the value saving changes are saved back to the CodeMeta file.</p>
@@ -59,7 +59,7 @@ display license
 <dt>-e, –editor</dt>
 <dd>
 use the editor specified by the EDITOR environment name. If EDITOR is
-unset it will fallback to standard input.
+not set then micro editor is envoked.
 </dd>
 <dt>-i, –interactive</dt>
 <dd>
@@ -77,13 +77,13 @@ variable EDITOR will be used to invoke your editor for editing multi
 line CodeMeta attributes like author, contributor, maintainer, keywords,
 required software, etc. The “-i” means edit all top level attributes
 sequentially.</p>
-<pre><code>cmt -e -i codemeta.json</code></pre>
+<pre><code>cme -e -i codemeta.json</code></pre>
 <p>Set the version number in your codemeta.json file and add/replace the
 <code>.releaseNotes</code>.</p>
-<pre><code>cmt -e codemeta.json version releaseNotes</code></pre>
+<pre><code>cme -e codemeta.json version releaseNotes</code></pre>
 <p>Add authors to your codemeta.json using the “micro” editor. NOTE: you
 enter authors as YAML.</p>
-<pre><code>cmt -e codemeta.json authors</code></pre>
+<pre><code>cme -e codemeta.json authors</code></pre>
 </section>
 </body>
 </html>
