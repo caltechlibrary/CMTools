@@ -1,6 +1,7 @@
 import { CodeMeta, CodeMetaTerms, AttributeType } from './codemeta.ts';
 import { PersonOrOrganization } from './person_or_organization.ts';
 import * as yaml from "@std/yaml";
+import { type StringifyOptions, type ParseOptions } from "@std/yaml/"
 
 function getAttributeByName(name: string): AttributeType | undefined {
     for (let attr of CodeMetaTerms) {
@@ -16,15 +17,16 @@ function getAttributeByName(name: string): AttributeType | undefined {
 // filename (e.g. micro, nano, code) and returns success or failure based on
 // the the exit status code. If the exit statuss is zero then true is return,
 // otherwise false is returned.
-export async function editFile(editor: string, filename: string): Promise<boolean> {
+export async function editFile(editor: string, filename: string): Promise<{ok: boolean, text: string}> {
+    const decoder = new TextDecoder();
     const command = new Deno.Command(editor, { args: [filename] });
     const { code, stdout, stderr } = await command.output();
+    let txt = decoder.decode(stdout);
     if (code === 0) {
-        return true;
+        return { ok: true, text: txt };
     }
-    console.log((new TextDecoder()).decode(stdout));
-    console.log((new TextDecoder()).decode(stderr));
-    return false;
+    txt = decoder.decode(stderr);
+    return { ok: false, text: txt };
 }
 
 // getEditorFromEnv looks at the environment variable and returns the value of EDITOR
@@ -37,27 +39,40 @@ export function getEditorFromEnv(): string {
     return editor;
 }
 
+function pickEditor(): string {
+  let editor = getEditorFromEnv();
+  if (editor === '') {
+    editor = 'micro';
+  }
+  return editor;
+}
+
 // editTempData will take data in string form, write it
 // to a temp file, open the temp file for editing and
 // return the result. If a problem occurs then an undefined
 // value is returns otherwise is the contents of the text file
 // as a string.
-export async function editTempData(val: string): Promise<string | undefined> {
-    let editor = getEditorFromEnv();
-    if (editor === '') {
-        editor = 'micro';
-    }
-    const tmpFilename = await Deno.makeTempFile();
+export async function editTempData(val: string): Promise<string> {
+    let editor = pickEditor();
+    const tmpFilename = await Deno.makeTempFile({dir: "./", prefix: "cme_", suffix: ".tmp"});
     if (val !== "") {
         await Deno.writeTextFile(tmpFilename, val);
     }
-    if (await editFile(editor, tmpFilename)) {
+    let res = await editFile(editor, tmpFilename);
+    await Deno.remove(tmpFilename);
+    if (res.ok) {
+        /* NOTE: string seems to return as standard out response to exiting the temp file.
         // Read back string
-        const txt = await Deno.readTextFile(tmpFilename);
-        await Deno.remove(tmpFilename);
-        return txt;
+        console.log(`DEBUG Deno.readTextFile("${tmpFilename}")`);
+        let txt = await Deno.readTextFile(tmpFilename);
+        if (txt === undefined || txt === '') {
+          txt = res.text;
+        }
+        console.log(`DEBUG editTempData -> ${txt}`);
+        */
+        return res.text;
     }
-    return undefined;
+    return val;
 }
 
 export async function editCodeMetaTerm(cm: CodeMeta, name: string, useEditor: boolean): Promise<boolean> {
@@ -70,50 +85,79 @@ export async function editCodeMetaTerm(cm: CodeMeta, name: string, useEditor: bo
       return false;
     }
     const obj: {[key: string]: any} = {};
-    const curVal: string | undefined = getStringFromObject(cm.toObject(), name);
+    let curVal: string | undefined = '';
+    curVal = getStringFromObject(cm.toObject(), name);
     let val: string | undefined = undefined;
     console.log(`Default: ${name}: ${curVal}`);
     if (useEditor) {
       if (confirm(`Edit ${name}?`)) {
         const eVal = (curVal === undefined) ? '': curVal;
+        console.log(`DEBUG await editTempData("${eVal}")`);
         val = await editTempData(eVal);
+        console.log(`DEBUG await editTempData(${eVal}) -> ${val}`);
       }
     } else {
-      let pVal: string | null = prompt(`Update ${name} (press enter for default): `, '');
+      let pVal: string | null = '';
+      if ([ "author", "maintainer", "contributor", "funder" ].indexOf(name) > -1) {
+        console.log("Type a period '.' on an empty line when done.");
+        let decoder = new TextDecoder();
+        let lines: string[] = [];
+        let txt: string | null = '';
+        while (txt !== null && txt.trim() !== ".") {
+          txt = prompt('');
+          if (txt !== null && txt.trim() !== ".") {
+            lines.push(txt);
+          }
+        }
+        txt = lines.join('\n').trim();
+        if (txt === '') {
+          pVal = null;
+        } else {
+          pVal = txt;
+        }
+      } else {
+        pVal = prompt(`Update ${name} (press enter for default): `, '');
+      }
       if (pVal === null) { 
         val = undefined; 
       } else {
         val = pVal;
       }
     }
-    if (val !== undefined && val !== '') {
-      if (setObjectFromString(obj, name, val.trim(), attr.type) === false) {
-        return  false;
-      }
-      return cm.patchObject(obj);
+    if (val === undefined || val === '') {
+      return false;
     }
-    return false;
+    if (setObjectFromString(obj, name, val.trim(), attr.type) === false) {
+      return  false;
+    }
+    return cm.patchObject(obj);
 }
 
 export function getStringFromObject(obj: {[key : string]: any}, key: string): string | undefined {
   if (obj[key] === undefined) {
     return undefined;
   }
-  let val: any = obj[key];
+  let val: string | number | any[] = obj[key];
   if (val === undefined) {
     return undefined;
   }
-  let src: string;
-  try {
-    src = yaml.stringify(val);
-  } catch (err) {
-    console.log(`YAML ERROR: ${err} -> ${val}`);
+  let src: string | undefined = undefined;
+  if ([ "author", "contributor", "maintainer", "funder", "keywords", "operatingSystem" ].indexOf(key) > -1) {
     try {
-      src = JSON.stringify(val, null, 2);
+      let yamlOpt: StringifyOptions = {};
+      yamlOpt.skipInvalid = true;
+      src = yaml.stringify(val, yamlOpt);
     } catch (err) {
-      console.log(`JSON ERROR: ${err} -> ${val}`);
-      return undefined;
-    }
+      console.log(`YAML ERROR: ${err} -> ${val}, editing as JSON`);
+      try {
+        src = JSON.stringify(val, null, 2);
+      } catch (err) {
+        console.log(`JSON ERROR: ${err} -> ${val}`);
+        return undefined;
+      }
+    }  
+  } else if (obj[key] !== undefined) {
+    src = obj[key] as unknown as string;
   }
   return src;
 }
@@ -124,7 +168,9 @@ export function setObjectFromString(obj: {[key: string]: any}, key: string, val:
   let u: URL | null;
   let textData: string[] = [];
   let personData: PersonOrOrganization[] = [];
+  let objData: { [key: string]: any} = {};
 
+  console.log(`DEBUG setObjectFromString("${obj}", "${key}", "${val}", "${data_type}")`);
 
   switch (data_type) {
     case "text":
@@ -187,9 +233,23 @@ export function setObjectFromString(obj: {[key: string]: any}, key: string, val:
       }
       obj[key] = list_of_url;
       break;
+    case "person_or_organization":
+      try {
+        objData = yaml.parse(val + "\n") as unknown as PersonOrOrganization;
+      } catch (err) {
+        console.log(`YAML ERROR: ${err} -> ${val}`);
+        try {
+          objData = JSON.parse(val) as unknown as PersonOrOrganization;
+        } catch (err) {
+          console.log(`JSON ERROR: ${err} -> ${val}`);
+          return false;
+        }
+      }
+      obj[key] = objData;
+      break;
     case "person_or_organization_list":
       try {
-        personData = yaml.parse(val) as unknown as PersonOrOrganization[];
+        personData = yaml.parse(val + "\n") as unknown as PersonOrOrganization[];
       } catch (err) {
         console.log(`YAML ERROR: ${err} -> ${val}`);
         try {

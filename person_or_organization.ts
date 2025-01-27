@@ -18,35 +18,31 @@ export class PersonOrOrganization implements PersonOrOrganizationInterface {
   email: string = "";
 
   toObject(): object {
-    return {
-      id: this.id,
-      type: this.type,
-      name: this.name,
-      givenName: this.givenName,
-      familyName: this.familyName,
-      affiliation: this.affiliation,
-      email: this.email,
-    };
+    let obj: {[key: string]: any} = {};
+    (this.id === undefined || this.id.length === 0) ? '': obj["id"] = this.id;
+    (this.type === undefined || this.type.trim().length === 0) ? '': obj["type"] = this.type;
+    (this.name === undefined || this.name.trim().length === 0) ? '': obj["name"] = this.name;
+    (this.givenName === undefined || this.givenName.length === 0) ? '': obj["givenName"] = this.givenName;
+    (this.familyName === undefined || this.familyName.length === 0) ? '': obj["familyName"] = this.familyName;
+    (this.affiliation === undefined) ? '': obj["affiliation"] = this.affiliation;
+    (this.email === undefined || this.email.length === 0) ? '': obj['email'] = this.email;
+    return obj;
   }
 
   fromObject(obj: { [key: string]: any }): boolean {
-    this.id = (obj["id"] === undefined) ? "" : obj["id"];
+    (obj["id"] === undefined) ? "" : this.id = obj["id"].trim();
     if (this.id === "") {
-      this.id = (obj["@id"] === undefined) ? "" : obj["@id"];
+      (obj["@id"] === undefined) ? "" : this.id = obj["@id"].trim();
     }
-    this.type = (obj["type"] === undefined) ? "" : obj["type"];
+    (obj["type"] === undefined) ? "" : this.type = obj["type"].trim();
     if (this.type === "") {
-      this.type = (obj["@type"] === undefined) ? "" : obj["@type"];
+      (obj["@type"] === undefined) ? "" : this.type = obj["@type"].trim();
     }
-    this.name = (obj["name"] === undefined) ? "" : obj["name"];
-    this.givenName = (obj["givenName"] === undefined) ? "" : obj["givenName"];
-    this.familyName = (obj["familyName"] === undefined)
-      ? ""
-      : obj["familyName"];
-    this.affiliation = (obj["affiliation"] === undefined)
-      ? undefined
-      : obj["affiliation"];
-    this.email = (obj["email"] === undefined) ? "" : obj["email"];
+    (obj["name"] === undefined) ? "" : this.name = obj["name"].trim();
+    (obj["givenName"] === undefined) ? "" : this.givenName = obj["givenName"].trim();
+    (obj["familyName"] === undefined) ? "" : this.familyName = obj["familyName"].trim();
+    (obj["affiliation"] === undefined) ? '' : this.affiliation = obj["affiliation"];
+    (obj["email"] === undefined) ? "" : this.email = obj["email"].trim();
     return true;
   }
 }
@@ -54,24 +50,38 @@ export class PersonOrOrganization implements PersonOrOrganizationInterface {
 export function normalizePersonOrOrgList(obj: object | string): PersonOrOrganization[] {
   const oType = Object.prototype.toString.call(obj);
   let p: PersonOrOrganization = new PersonOrOrganization();
-  let l: PersonOrOrganization[] = [];
+  let l: {[key: string]: any}[] = [];
   switch (oType) {
     case "[object Array]":
       for (let item of Object.values(obj)) {
         p = new PersonOrOrganization();
         p.fromObject(item);
-        l.push(p);
+        if (p.type === "") {
+          if (p.name === "") {
+            p.type = "Person";
+          } else if (p.familyName === "" && p.givenName === "" ){
+            p.type = "Organization";
+          }
+        }
+        l.push(p.toObject());
       }
       break;
     case "[object Object]":
       p.fromObject(obj as Object);
-      l.push(p);
+      if (p.type === "") {
+        if (p.name === "") {
+          p.type = "Person";
+        } else if (p.familyName === "" && p.givenName === "" ){
+          p.type = "Organization";
+        }
+      }
+      l.push(p.toObject());
       break;
     case "[object String]":
       p.type = "Person";
-      p.name = obj.toString();
-      l.push(p)
+      p.name = obj.toString().trim();
+      l.push(p.toObject());
       break;
   }
-  return l;
+  return l as unknown as PersonOrOrganization[];
 }

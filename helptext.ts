@@ -159,7 +159,7 @@ edit it.
 
 -e, --editor
 : use the editor specified by the EDITOR environment name.
-If EDITOR is unset it will fallback to standard input.
+If EDITOR is not set then micro editor is envoked.
 
 -i, --interactive
 : interactively create a CodeMeta file by stepping through
