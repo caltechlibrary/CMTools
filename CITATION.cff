@@ -14,7 +14,8 @@ contacts:
     given-names: R. S.
     orcid: 'https://orcid.org/0000-0003-0900-6903'
 repository-code: 'git+https://github.com/caltechlibrary/CMTools'
-version: 0.0.5
+version: 0.0.6
+license-url: 'https://data.caltech.edu/LICENSE'
 keywords:
   - codemeta
   - cff

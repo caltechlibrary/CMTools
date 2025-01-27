@@ -1,73 +1,77 @@
 {
-    "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
-    "type": "SoftwareSourceCode",
-    "applicationCategory": "software development",
-    "author": [
-        {
-            "id": "https://orcid.org/0000-0003-0900-6903",
-            "type": "Person",
-            "affiliation": {
-                "id": "https://ror.org/05dxps055",
-                "type": "Organization"
-            },
-            "email": "rsdoiel@caltech.edu",
-            "familyName": "Doiel",
-            "givenName": "R. S."
-        }
-    ],
-    "codeRepository": "git+https://github.com/caltechlibrary/CMTools",
-    "contributor": [
-		{
-        "id": "https://orcid.org/0000-0001-9266-5146",
-        "type": "Person",
-        "affiliation": {
-            "id": "https://ror.org/5dxps055",
-            "type": "Organization"
-        },
-        "email": "tmorrell@caltech.edu",
-        "familyName": "Morrell",
-        "givenName": "Tom"
-       }
-	],
-    "maintainer": [
-        {
-            "id": "https://orcid.org/0000-0003-0900-6903",
-            "type": "Person",
-            "affiliation": {
-                "id": "https://ror.org/05dxps055",
-                "type": "Organization"
-            },
-            "email": "rsdoiel@caltech.edu",
-            "familyName": "Doiel",
-            "givenName": "R. S."
-        }
-    ],
-    "version": "0.0.5",
-	"releaseNotes": "A proof of concept in user codemeta.json in your build process, fixed page.tmpl generation",
-	"dateModified": "2025-01-24",
-    "dateCreated": "2025-01-07",
-	"datePubished": "2025-01-09",
-    "description": "CM Tools provides codemeta tooling for codemeta crosswalks and tooling to use the codemeta.json in a build process.",
-    "funder": {
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "type": "SoftwareSourceCode",
+  "codeRepository": "git+https://github.com/caltechlibrary/CMTools",
+  "author": [
+    {
+      "id": "https://orcid.org/0000-0003-0900-6903",
+      "type": "Person",
+      "givenName": "R. S.",
+      "familyName": "Doiel",
+      "affiliation": {
+        "id": "https://ror.org/05dxps055",
+        "type": "Organization"
+      },
+      "email": "rsdoiel@caltech.edu"
+    }
+  ],
+  "contributor": [
+    {
+      "id": "https://orcid.org/0000-0001-9266-5146",
+      "type": "Person",
+      "givenName": "Tom",
+      "familyName": "Morrell",
+      "affiliation": {
         "id": "https://ror.org/5dxps055",
         "type": "Organization"
-    },
-    "keywords": [
-		"codemeta",
-		"cff",
-        "software",
-		"code generation"
-    ],
-    "name": "CMTools",
-    "operatingSystem": [
-        "Linux",
-        "Windows",
-        "macOS"
-    ],
-    "programmingLanguage": "TypeScript",
-    "relatedLink": "https://caltechlibrary.github.io/CMTools",
-    "runtimePlatform": "Deno",
-    "softwareRequirements": "Deno >= 2.1.7",
-    "developmentStatus": "concept",
-    "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues"
+      },
+      "email": "tmorrell@caltech.edu"
+    }
+  ],
+  "maintainer": [
+    {
+      "id": "https://orcid.org/0000-0003-0900-6903",
+      "type": "Person",
+      "givenName": "R. S.",
+      "familyName": "Doiel",
+      "affiliation": {
+        "id": "https://ror.org/05dxps055",
+        "type": "Organization"
+      },
+      "email": "rsdoiel@caltech.edu"
+    }
+  ],
+  "dateCreated": "2025-01-07",
+  "dateModified": "2025-01-27",
+  "description": "CM Tools provides codemeta tooling for codemeta crosswalks and tooling to use the codemeta.json in a build process.",
+  "funder": {
+    "id": "https://ror.org/5dxps055",
+    "type": "Organization",
+    "name": "Caltech Library"
+  },
+  "keywords": [
+    "codemeta",
+    "cff",
+    "software",
+    "code generation"
+  ],
+  "name": "CMTools",
+  "license": "https://data.caltech.edu/LICENSE",
+  "operatingSystem": [
+    "Linux",
+    "Windows",
+    "macOS"
+  ],
+  "programmingLanguage": [
+    "TypeScript"
+  ],
+  "relatedLink": "https://caltechlibrary.github.io/CMTools",
+  "runtimePlatform": "Deno",
+  "softwareRequirements": [
+    "Deno >= 2.1.7"
+  ],
+  "version": "0.0.6",
+  "developmentStatus": "concept",
+  "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues",
+  "releaseNotes": "A proof of concept CodeMeta tooling, edit codemeta.json and building code artifacts"
 }

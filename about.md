@@ -18,8 +18,8 @@ maintainer:
     given-names: R. S.
     orcid: "https://orcid.org/0000-0003-0900-6903"
 repository-code: "git+https://github.com/caltechlibrary/CMTools"
-version: 0.0.5
-
+version: 0.0.6
+license-url: https://data.caltech.edu/LICENSE
 operating-system:
   - Linux
   - Windows
@@ -34,7 +34,7 @@ keywords:
 About this software
 ===================
 
-## CMTools 0.0.5
+## CMTools 0.0.6
 
 ### Authors
 
@@ -50,7 +50,7 @@ About this software
 
 CM Tools provides codemeta tooling for codemeta crosswalks and tooling to use the codemeta.json in a build process.
 
-
+- License: <https://data.caltech.edu/LICENSE>
 - GitHub: <git+https://github.com/caltechlibrary/CMTools>
 - Issues: <git+https://github.com/caltechlibrary/CMTools/issues>
 
