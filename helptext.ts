@@ -111,8 +111,7 @@ This will create a "gen-code" task that will rebuild those files based on
 the current contents of the CodeMeta file.
 `;
 
-export const cmeHelpText: string = `
-%{app_name}(1) user manual | version {version} {release_hash}
+export const cmeHelpText: string = `%{app_name}(1) user manual | version {version} {release_hash}
 % R. S. Doiel
 % {release_date}
 

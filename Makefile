@@ -96,7 +96,7 @@ test: .FORCE
 	deno task test
 	deno task editor_test.ts
 
-install: compile .FORCE
+install: build man .FORCE
 	mkdir -p "${HOME}/bin"
 	cp -v "./bin/cmt$(EXT)" "${HOME}/bin"
 	cp -vR "./man" "${HOME}/"
