@@ -1,4 +1,4 @@
-%cme(1) user manual | version 0.0.7 8d92ba1
+%cme(1) user manual | version 0.0.8 bacea12
 % R. S. Doiel
 % 
 
@@ -8,8 +8,9 @@ cme
 
 # SYNOPSIS
 
-cme [OPTIONS] CODEMETA_JSON
-cme [OPTIONS] CODEMETA_JSON ATTRIBUTE_NAME [ATTRIBUTE_NAME ...]
+cme CODEMETA_JSON [OPTION ...] 
+
+cme CODEMETA_JSON ATTRIBUTE_NAME [ATTRIBUTE_NAME ...] [OPTION ...]
 
 # DESCRIPTION
 
@@ -32,7 +33,7 @@ Two date fields are set if they are not previously set, "dateCreated" and "dateM
 "dateModified" is updated each time you change something in the CodeMeta file unless you explicitly
 edit it.
 
-# OPTIONS
+# OPTION
 
 -h, --help
 : display help
@@ -44,37 +45,34 @@ edit it.
 : display license
 
 -e, --editor
-: use the editor specified by the EDITOR environment name.
-If EDITOR is not set then micro editor is envoked.
+: use Micro Editor edit value. Micro Editor is a cross platform
+text editor available from <https://micro-editor.github.io/>.
 
--i, --interactive
-: interactively create a CodeMeta file by stepping through
-the top level variables.
-
--a, --attributes
-: list the top level attribute names available for editing.
+-all, --attributes
+: interactively create or edit a CodeMeta file by stepping through
+the top level attributes.
 
 # EXAMPLES
 
 Create a new CodeMeta file. In the following example the environment
 variable EDITOR will be used to invoke your editor for editing multi line
 CodeMeta attributes like author, contributor, maintainer, keywords,
-required software, etc.  The "-i" means edit all top level attributes
+required software, etc.  The "--all" means edit all top level attributes
 sequentially.
 
 ~~~
-cme -e -i codemeta.json
+cme codemeta.json  -e --all 
 ~~~
 
 Set the version number in your codemeta.json file and add/replace the `.releaseNotes`.
 
 ~~~
-cme -e codemeta.json version releaseNotes
+cme codemeta.json version releaseNotes -e
 ~~~
 
 Add authors to your codemeta.json using the "micro" editor.  NOTE: you enter authors as YAML.
 
 ~~~
-cme -e codemeta.json authors
+cme codemeta.json authors -e
 ~~~
 

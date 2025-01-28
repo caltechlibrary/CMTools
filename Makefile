@@ -99,6 +99,7 @@ test: .FORCE
 install: build man .FORCE
 	mkdir -p "${HOME}/bin"
 	cp -v "./bin/cmt$(EXT)" "${HOME}/bin"
+	cp -v "./bin/cme$(EXT)" "${HOME}/bin"
 	cp -vR "./man" "${HOME}/"
 
 uninstall: .FORCE

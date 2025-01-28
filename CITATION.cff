@@ -7,13 +7,15 @@ abstract: "CM Tools provides codemeta tooling for codemeta crosswalks and toolin
 authors:
   - family-names: Doiel
     given-names: R. S.
-    orcid: "https://orcid.org/0000-0003-0900-6903"
+    orcid: https://orcid.org/0000-0003-0900-6903
+
 contacts:
   - family-names: Doiel
     given-names: R. S.
-    orcid: "https://orcid.org/0000-0003-0900-6903"
+    orcid: https://orcid.org/0000-0003-0900-6903
+
 repository-code: "git+https://github.com/caltechlibrary/CMTools"
-version: 0.0.7
+version: 0.0.8
 date-released: 2025-01-27
 
 license-url: "https://data.caltech.edu/LICENSE"

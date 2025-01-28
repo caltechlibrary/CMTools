@@ -114,13 +114,17 @@ type: software
 {{#if author}}authors:
 {{#each author}}
   - family-names: {{familyName}}
-    given-names: {{givenName}}
-    orcid: "{{id}}"{{/each}}{{/if}}
+    given-names: {{givenName}}{{#if id}}
+    orcid: {{id}}{{/if}}{{#if email}}
+    email: {{email}}{{/if}}
+{{/each}}{{/if}}
 {{#if maintainer}}contacts:
 {{#each maintainer}}
   - family-names: {{familyName}}
-    given-names: {{givenName}}
-    orcid: "{{id}}"{{/each}}{{/if}}
+    given-names: {{givenName}}{{#if id}}
+    orcid: {{id}}{{/if}}{{#if email}}
+    email: {{email}}{{/if}}
+{{/each}}{{/if}}
 {{#if codeRepository}}repository-code: "{{codeRepository}}"{{/if}}
 {{#if version}}version: {{version}}{{/if}}
 {{#if datePublished}}date-released: {{datePublished}}{{/if}}
@@ -190,39 +194,43 @@ func FmtHelp(src string, appName string, version string, releaseDate string, rel
 
 `;
 
-const mdTemplateText = `
----
-cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
-type: software
-{{#if name}}title: "{{name}}"{{/if}}
+const mdTemplateText = `---
+{{#if name}}title: {{name}}{{/if}}
 {{#if description}}abstract: "{{description}}"{{/if}}
 {{#if author}}authors:
 {{#each author}}
-  - family-names: {{familyName}}
-    given-names: {{givenName}}
-    {{#if id}}orcid: "{{id}}"{{/if}}{{/each}}{{/if}}
+  - family_name: {{familyName}}
+    given_name: {{givenName}}{{#if id}}
+    orcid: {{id}}{{/if}}
+{{/each}}{{/if}}
 {{#if contributor}}contributor:
 {{#each contributor}}
-  - family-names: {{familyName}}
-    given-names: {{givenName}}
-    {{#if id}}orcid: "{{id}}"{{/if}}{{/each}}{{/if}}
+  - family_name: {{familyName}}
+    given_name: {{givenName}}{{#if id}}
+    orcid: {{id}}{{/if}}
+{{/each}}{{/if}}
 {{#if maintainer}}maintainer:
 {{#each maintainer}}
-  - family-names: {{familyName}}
-    given-names: {{givenName}}
-    {{#if id}}orcid: "{{id}}"{{/if}}{{/each}}{{/if}}
-{{#if codeRepository}}repository-code: "{{codeRepository}}"{{/if}}
+  - family_name: {{familyName}}
+    given_name: {{givenName}}{{#if id}}
+    orcid: {{id}}{{/if}}
+{{/each}}{{/if}}
+{{#if codeRepository}}repository_code: {{codeRepository}}{{/if}}
 {{#if version}}version: {{version}}{{/if}}
-{{#if license}}license-url: {{license}}{{/if}}
-{{#if operatingSystem}}operating-system:{{#each operatingSystem}}
-  - {{.}}{{/each}}{{/if}}
-{{#if programmingLanguage}}programming-language:{{#each programmingLanguage}}
-  - {{.}}{{/each}}{{/if}}
+{{#if license}}license_url: {{license}}{{/if}}
+{{#if operatingSystem}}operating_system:
+{{#each operatingSystem}}
+  - {{.}}
+{{/each}}{{/if}}
+{{#if programmingLanguage}}programming_language:
+{{#each programmingLanguage}}
+  - {{.}}
+{{/each}}{{/if}}
 {{#if keywords}}keywords:
 {{#each keywords}}
-  - {{.}}{{/each}}{{/if}}
-{{#if datePublished}}date-released: {{datePublished}}{{/if}}
+  - {{.}}
+{{/each}}{{/if}}
+{{#if datePublished}}date_released: {{datePublished}}{{/if}}
 ---
 
 About this software

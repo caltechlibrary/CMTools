@@ -1,40 +1,45 @@
-
 ---
-cff-version: 1.2.0
-message: "If you use this software, please cite it as below."
-type: software
-title: "CMTools"
+title: CMTools
 abstract: "CM Tools provides codemeta tooling for codemeta crosswalks and tooling to use the codemeta.json in a build process."
 authors:
-  - family-names: Doiel
-    given-names: R. S.
-    orcid: "https://orcid.org/0000-0003-0900-6903"
+  - family_name: Doiel
+    given_name: R. S.
+    orcid: https://orcid.org/0000-0003-0900-6903
+
 contributor:
-  - family-names: Morrell
-    given-names: Tom
-    orcid: "https://orcid.org/0000-0001-9266-5146"
+  - family_name: Morrell
+    given_name: Tom
+    orcid: https://orcid.org/0000-0001-9266-5146
+
 maintainer:
-  - family-names: Doiel
-    given-names: R. S.
-    orcid: "https://orcid.org/0000-0003-0900-6903"
-repository-code: "git+https://github.com/caltechlibrary/CMTools"
-version: 0.0.7
-license-url: https://data.caltech.edu/LICENSE
-operating-system:
+  - family_name: Doiel
+    given_name: R. S.
+    orcid: https://orcid.org/0000-0003-0900-6903
+
+repository_code: git+https://github.com/caltechlibrary/CMTools
+version: 0.0.8
+license_url: https://data.caltech.edu/LICENSE
+operating_system:
   - Linux
   - Windows
   - macOS
-programming-language:
-  - TypeScript
-keywords:
-  - codemeta  - cff  - software  - code generation
 
+programming_language:
+  - TypeScript
+
+keywords:
+  - codemeta
+  - cff
+  - software
+  - code generation
+
+date_released: 2025-01-27
 ---
 
 About this software
 ===================
 
-## CMTools 0.0.7
+## CMTools 0.0.8
 
 ### Authors
 

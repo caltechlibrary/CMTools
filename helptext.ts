@@ -121,8 +121,9 @@ export const cmeHelpText: string = `%{app_name}(1) user manual | version {versio
 
 # SYNOPSIS
 
-{app_name} [OPTIONS] CODEMETA_JSON
-{app_name} [OPTIONS] CODEMETA_JSON ATTRIBUTE_NAME [ATTRIBUTE_NAME ...]
+{app_name} CODEMETA_JSON [OPTION ...] 
+
+{app_name} CODEMETA_JSON ATTRIBUTE_NAME [ATTRIBUTE_NAME ...] [OPTION ...]
 
 # DESCRIPTION
 
@@ -145,7 +146,7 @@ Two date fields are set if they are not previously set, "dateCreated" and "dateM
 "dateModified" is updated each time you change something in the CodeMeta file unless you explicitly
 edit it.
 
-# OPTIONS
+# OPTION
 
 -h, --help
 : display help
@@ -157,37 +158,34 @@ edit it.
 : display license
 
 -e, --editor
-: use the editor specified by the EDITOR environment name.
-If EDITOR is not set then micro editor is envoked.
+: use Micro Editor edit value. Micro Editor is a cross platform
+text editor available from <https://micro-editor.github.io/>.
 
--i, --interactive
-: interactively create a CodeMeta file by stepping through
-the top level variables.
-
--a, --attributes
-: list the top level attribute names available for editing.
+-all, --attributes
+: interactively create or edit a CodeMeta file by stepping through
+the top level attributes.
 
 # EXAMPLES
 
 Create a new CodeMeta file. In the following example the environment
 variable EDITOR will be used to invoke your editor for editing multi line
 CodeMeta attributes like author, contributor, maintainer, keywords,
-required software, etc.  The "-i" means edit all top level attributes
+required software, etc.  The "--all" means edit all top level attributes
 sequentially.
 
 ~~~
-{app_name} -e -i codemeta.json
+{app_name} codemeta.json  -e --all 
 ~~~
 
 Set the version number in your codemeta.json file and add/replace the `+"`.releaseNotes`"+`.
 
 ~~~
-{app_name} -e codemeta.json version releaseNotes
+{app_name} codemeta.json version releaseNotes -e
 ~~~
 
 Add authors to your codemeta.json using the "micro" editor.  NOTE: you enter authors as YAML.
 
 ~~~
-{app_name} -e codemeta.json authors
+{app_name} codemeta.json authors -e
 ~~~
 `;

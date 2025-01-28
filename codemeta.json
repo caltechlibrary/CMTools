@@ -71,8 +71,8 @@
   "softwareRequirements": [
     "Deno >= 2.1.7"
   ],
-  "version": "0.0.7",
+  "version": "0.0.8",
   "developmentStatus": "concept",
   "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues",
-  "releaseNotes": "Improved CITATION.cff generation, fix issue #4"
+  "releaseNotes": "improve text prompts, minor bug fixes."
 }

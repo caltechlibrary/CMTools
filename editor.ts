@@ -3,6 +3,9 @@ import { PersonOrOrganization } from './person_or_organization.ts';
 import * as yaml from "@std/yaml";
 import { type StringifyOptions, type ParseOptions } from "@std/yaml/"
 
+// editor.ts assumes Micro Editor in order to simplify testing.
+let editor = 'micro';
+
 function getAttributeByName(name: string): AttributeType | undefined {
     for (let attr of CodeMetaTerms) {
       if (attr.name === name) {
@@ -29,31 +32,12 @@ export async function editFile(editor: string, filename: string): Promise<{ok: b
     return { ok: false, text: txt };
 }
 
-// getEditorFromEnv looks at the environment variable and returns the value of EDITOR
-// is set. Otherwise it returns an empty string.
-export function getEditorFromEnv(): string {
-    const editor = Deno.env.get("EDITOR");
-    if (editor === undefined) {
-        return '';
-    }
-    return editor;
-}
-
-function pickEditor(): string {
-  let editor = getEditorFromEnv();
-  if (editor === '') {
-    editor = 'micro';
-  }
-  return editor;
-}
-
 // editTempData will take data in string form, write it
 // to a temp file, open the temp file for editing and
 // return the result. If a problem occurs then an undefined
 // value is returns otherwise is the contents of the text file
 // as a string.
 export async function editTempData(val: string): Promise<string> {
-    let editor = pickEditor();
     const tmpFilename = await Deno.makeTempFile({dir: "./", prefix: "cme_", suffix: ".tmp"});
     if (val !== "") {
         await Deno.writeTextFile(tmpFilename, val);
@@ -106,7 +90,7 @@ export async function editCodeMetaTerm(cm: CodeMeta, name: string, useEditor: bo
           pVal = txt;
         }
       } else {
-        pVal = prompt(`Update ${name} (press enter for default): `, '');
+        pVal = prompt(`Enter ${name} (press enter, to accept current value): `, '');
       }
       if (pVal === null) { 
         val = undefined; 

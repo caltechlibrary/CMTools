@@ -22,8 +22,7 @@ async function main() {
       version: "v",
       format: "f",
       editor: "e",
-      attributes: "a",
-      interactive: "i",
+      attributes: "all",
     },
     default: {
       help: false,
@@ -31,7 +30,6 @@ async function main() {
       license: false,
       editor: false,
       attributes: false,
-      interactive: false,
     },
   });
   const args = app._;
@@ -73,7 +71,7 @@ async function main() {
     if (attributeNames.indexOf(attr) === -1) {
       // Make sure the attirubute name makes sense, if not exits without doing anything.
       if (codeMetaTermNames.indexOf(attr) === -1) {
-        console.log(`ERROR: "${attr}" is not a supported CodeMeta 3 term, aborting`);
+        console.log(`ERROR: "${attr}" is not a supported CodeMeta attribute, aborting`);
         Deno.exit(1);
       }
       attributeNames.push(`${attr}`);
