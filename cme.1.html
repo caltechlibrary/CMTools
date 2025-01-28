@@ -18,13 +18,11 @@
 </ul>
 </nav>
 <section>
-<p>%cme(1) user manual | version 0.0.7 cc1f8d1 % R. S. Doiel %</p>
 <h1 id="name">NAME</h1>
 <p>cme</p>
 <h1 id="synopsis">SYNOPSIS</h1>
-<p>cme <a href="#options">OPTIONS</a> CODEMETA_JSON cme <a
-href="#options">OPTIONS</a> CODEMETA_JSON ATTRIBUTE_NAME [ATTRIBUTE_NAME
-…]</p>
+<p>cme CODEMETA_JSON [OPTION …]</p>
+<p>cme CODEMETA_JSON ATTRIBUTE_NAME [ATTRIBUTE_NAME …] [OPTION …]</p>
 <h1 id="description">DESCRIPTION</h1>
 <p>cme is a CodeMeta file editing tool. When called with only the
 CODEMETA_JSON filename it will read in the CodeMeta file, report any
@@ -42,7 +40,7 @@ available to edit in the order you’ve requested them to be edited.</p>
 <p>Two date fields are set if they are not previously set, “dateCreated”
 and “dateModified”. The “dateModified” is updated each time you change
 something in the CodeMeta file unless you explicitly edit it.</p>
-<h1 id="options">OPTIONS</h1>
+<h1 id="option">OPTION</h1>
 <dl>
 <dt>-h, –help</dt>
 <dd>
@@ -58,32 +56,29 @@ display license
 </dd>
 <dt>-e, –editor</dt>
 <dd>
-use the editor specified by the EDITOR environment name. If EDITOR is
-not set then micro editor is envoked.
+use Micro Editor edit value. Micro Editor is a cross platform text
+editor available from <a href="https://micro-editor.github.io/"
+class="uri">https://micro-editor.github.io/</a>.
 </dd>
-<dt>-i, –interactive</dt>
+<dt>-all, –attributes</dt>
 <dd>
-interactively create a CodeMeta file by stepping through the top level
-variables.
-</dd>
-<dt>-a, –attributes</dt>
-<dd>
-list the top level attribute names available for editing.
+interactively create or edit a CodeMeta file by stepping through the top
+level attributes.
 </dd>
 </dl>
 <h1 id="examples">EXAMPLES</h1>
 <p>Create a new CodeMeta file. In the following example the environment
 variable EDITOR will be used to invoke your editor for editing multi
 line CodeMeta attributes like author, contributor, maintainer, keywords,
-required software, etc. The “-i” means edit all top level attributes
+required software, etc. The “–all” means edit all top level attributes
 sequentially.</p>
-<pre><code>cme -e -i codemeta.json</code></pre>
+<pre><code>cme codemeta.json  -e --all </code></pre>
 <p>Set the version number in your codemeta.json file and add/replace the
 <code>.releaseNotes</code>.</p>
-<pre><code>cme -e codemeta.json version releaseNotes</code></pre>
+<pre><code>cme codemeta.json version releaseNotes -e</code></pre>
 <p>Add authors to your codemeta.json using the “micro” editor. NOTE: you
 enter authors as YAML.</p>
-<pre><code>cme -e codemeta.json authors</code></pre>
+<pre><code>cme codemeta.json authors -e</code></pre>
 </section>
 </body>
 </html>

@@ -1,4 +1,4 @@
-%cmt(1) user manual | version 0.0.8 bacea12
+%cmt(1) user manual | version 0.0.8 bac56af
 % R. S. Doiel
 % 
 
