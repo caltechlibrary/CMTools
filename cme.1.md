@@ -1,5 +1,5 @@
 
-%cme(1) user manual | version 0.0.7 cc1f8d1
+%cme(1) user manual | version 0.0.7 be259aa
 % R. S. Doiel
 % 
 

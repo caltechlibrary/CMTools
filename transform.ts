@@ -102,7 +102,6 @@ export function renderTemplate(obj: {[key: string]: any}, tmpl: string): string 
     console.log(`templates failed to compile, ${tmpl}`);
     return undefined;
   }
-  console.log(`DEBUG renderTemplate -> datePublished -> ${obj["datePublished"]}`);
   return template(obj);
 }
 

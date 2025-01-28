@@ -61,15 +61,7 @@ export async function editTempData(val: string): Promise<string> {
     let res = await editFile(editor, tmpFilename);
     await Deno.remove(tmpFilename);
     if (res.ok) {
-        /* NOTE: string seems to return as standard out response to exiting the temp file.
-        // Read back string
-        console.log(`DEBUG Deno.readTextFile("${tmpFilename}")`);
-        let txt = await Deno.readTextFile(tmpFilename);
-        if (txt === undefined || txt === '') {
-          txt = res.text;
-        }
-        console.log(`DEBUG editTempData -> ${txt}`);
-        */
+        // NOTE: string is returned via standard out not the text of the file.
         return res.text;
     }
     return val;
@@ -92,9 +84,7 @@ export async function editCodeMetaTerm(cm: CodeMeta, name: string, useEditor: bo
     if (useEditor) {
       if (confirm(`Edit ${name}?`)) {
         const eVal = (curVal === undefined) ? '': curVal;
-        console.log(`DEBUG await editTempData("${eVal}")`);
         val = await editTempData(eVal);
-        console.log(`DEBUG await editTempData(${eVal}) -> ${val}`);
       }
     } else {
       let pVal: string | null = '';
@@ -169,8 +159,6 @@ export function setObjectFromString(obj: {[key: string]: any}, key: string, val:
   let textData: string[] = [];
   let personData: PersonOrOrganization[] = [];
   let objData: { [key: string]: any} = {};
-
-  console.log(`DEBUG setObjectFromString("${obj}", "${key}", "${val}", "${data_type}")`);
 
   switch (data_type) {
     case "text":

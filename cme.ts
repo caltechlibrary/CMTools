@@ -59,7 +59,6 @@ async function main() {
     }
     Deno.exit(0);
   }
-  console.log(`DEBUG checking arg count -> ${args.length}`);
   if (args.length < 1) {
     console.log(`USAGE: ${appName} [OPTIONS] INPUT_NAME [OUTPUT_NAME]`);
     Deno.exit(1);
@@ -85,7 +84,6 @@ async function main() {
     console.log("error: missing filepath to codemeta.json");
     Deno.exit(1);
   }
-  console.log(`DEBUG inputName -> ${inputName}, attributeNames -> ${attributeNames}`);
   let src: string = '';
   try {
     src = await Deno.readTextFile(inputName);
@@ -112,7 +110,6 @@ async function main() {
   }
   if (attributeNames.length > 0) {
     for (let name of attributeNames) {
-      console.log(`DEBUG editCodeMetaTerm(cm, ${name}, ${app.editor})`);
       if (! await editCodeMetaTerm(cm, name, app.editor)) {
           console.log(`WARNING: failed to update ${name}`)
       }
