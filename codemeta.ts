@@ -125,9 +125,9 @@ export class CodeMeta implements CodeMetaInterface {
     (this.author === undefined || this.author.length === 0) ? '': obj["author"] = this.author;
     (this.contributor === undefined || this.contributor.length === 0) ? '' : obj["contributor"] = this.contributor;
     (this.maintainer === undefined || this.maintainer.length === 0) ? '': obj["maintainer"] = this.maintainer;
-    (this.dateCreated === "") ? '' : obj["dateCreated"] = this.dateCreated;
-    (this.dateModified === "") ? '': obj["dateModified"] = this.dateModified;
-    (this.datePublished === "") ? '': obj["datePublished"] = this.datePublished;
+    (this.dateCreated === "") ? '' : obj["dateCreated"] = normalizeDateFormat(this.dateCreated);
+    (this.dateModified === "") ? '': obj["dateModified"] = normalizeDateFormat(this.dateModified);
+    (this.datePublished === "") ? '': obj["datePublished"] = normalizeDateFormat(this.datePublished);
     (this.description === "") ? '': obj["description"] = this.description;
     (this.funder === undefined || this.funder.length === 0) ? '': obj["funder"] = this.funder;
     (this.funding === "") ? '': obj["funding"] = this.funding;
@@ -195,25 +195,18 @@ export class CodeMeta implements CodeMetaInterface {
       //FIXME: if this is NOT an array I need to write code to handle it here.
       this.maintainer = normalizePersonOrOrgList(obj["maintainer"]);
     }
-    this.codeRepository = (obj["codeRepository"] === undefined)
+    (obj["codeRepository"] === undefined) ? "": this.codeRepository = obj["codeRepository"];
+    (obj["dateCreated"] === undefined) ? "" : this.dateCreated = normalizeDateFormat(obj["dateCreated"]);
+    (obj["dateModified"] === undefined) ? "" : this.dateModified = normalizeDateFormat(obj["dateModified"]);
+    (obj["datePublished"] === undefined) ? "" : this.datePublished = normalizeDateFormat(obj["datePublished"]);
+    (obj["description"] === undefined) ? "" : this.description =  obj["description"];
+    (obj["funder"] === undefined) ? "" : this.funder = obj["funder"];
+    (obj["funding"] == undefined) ? "" : this.funding = obj["funding"];
+    (obj["keywords"] === undefined) ? [] : this.keywords = obj["keywords"];
+    (obj["name"] === undefined) ? "" : this.name = obj["name"];
+    (obj["operatingSystem"] === undefined)
       ? ""
-      : obj["codeRepository"];
-    this.dateCreated = (obj["dateCreated"] === undefined)
-      ? ""
-      : obj["dateCreated"];
-    this.dateModified = (obj["dateModified"] === undefined)
-      ? ""
-      : obj["dateModified"];
-    this.description = (obj["description"] === undefined)
-      ? ""
-      : obj["description"];
-    this.funder = (obj["funder"] === undefined) ? "" : obj["funder"];
-    this.funding = (obj["funding"] == undefined) ? "" : obj["funding"];
-    this.keywords = (obj["keywords"] === undefined) ? [] : obj["keywords"];
-    this.name = (obj["name"] === undefined) ? "" : obj["name"];
-    this.operatingSystem = (obj["operatingSystem"] === undefined)
-      ? ""
-      : obj["operatingSystem"];
+      : this.operatingSystem = obj["operatingSystem"];
     if (obj["programmingLanguage"] === undefined) {
       this.programmingLanguage = [];
     } else {
@@ -224,12 +217,8 @@ export class CodeMeta implements CodeMetaInterface {
         this.programmingLanguage = obj["programmingLanguage"];
       }
     }
-    this.relatedLink = (obj["relatedLink"] === undefined)
-      ? ""
-      : obj["relatedLink"];
-    this.runtimePlatform = (obj["runtimePlatform"] === undefined)
-      ? ""
-      : obj["runtimePlatform"];
+    (obj["relatedLink"] === undefined) ? "" : this.relatedLink = obj["relatedLink"];
+    (obj["runtimePlatform"] === undefined) ? "" : this.runtimePlatform = obj["runtimePlatform"];
     if (obj["softwareRequirements"] === undefined) {
       this.softwareRequirements = [];
     } else {
@@ -240,29 +229,27 @@ export class CodeMeta implements CodeMetaInterface {
         this.softwareRequirements = obj["softwareRequirements"];
       }
     }
-    this.version = (obj["version"] === undefined) ? "" : obj["version"];
-    this.developmentStatus = (obj["developmentStatus"] === undefined)
+    (obj["version"] === undefined) ? "" : this.version = obj["version"];
+    (obj["developmentStatus"] === undefined)
       ? ""
-      : obj["developmentStatus"];
-    this.issueTracker = (obj["issueTracker"] === undefined)
+      : this.developmentStatus = obj["developmentStatus"];
+    (obj["issueTracker"] === undefined)
       ? ""
-      : obj["issueTracker"];
-    this.downloadUrl = (obj["downloadUrl"] === undefined)
+      : this.issueTracker = obj["issueTracker"];
+    (obj["downloadUrl"] === undefined)
       ? ""
-      : obj["downloadUrl"];
-    this.releaseNotes = (obj["releaseNotes"] === undefined)
+      : this.downloadUrl = obj["downloadUrl"];
+    (obj["releaseNotes"] === undefined)
       ? ""
-      : obj["releaseNotes"];
+      : this.releaseNotes = obj["releaseNotes"];
     return true;
   }
 
   patchObject(obj: { [key: string]: any }): boolean {
     //FIXME: obj
     //FIXME: need to handle prior codemeta version import
-    this.atContext = (obj["@context"] === undefined)
-      ? this.atContext
-      : obj["@context"];
-    this.type = (obj["type"] === undefined) ? "SoftwareSourceCode" : obj["type"];
+    (obj["@context"] === undefined) ? this.atContext : this.atContext = obj["@context"];
+    (obj["type"] === undefined) ? this.type = "SoftwareSourceCode" : this.type = obj["type"];
     if (obj["identifier"] === undefined) {
       // do nothing.
     } else {
@@ -304,65 +291,81 @@ export class CodeMeta implements CodeMetaInterface {
       //FIXME: if this is NOT an array I need to write code to handle it here.
       this.maintainer = normalizePersonOrOrgList(obj["maintainer"]);
     }
-    this.codeRepository = (obj["codeRepository"] === undefined)
-      ? this.codeRepository
-      : obj["codeRepository"];
-    this.dateCreated = (obj["dateCreated"] === undefined)
-      ? this.dateCreated
-      : obj["dateCreated"];
-    this.dateModified = (obj["dateModified"] === undefined)
-      ? this.dateModified
-      : obj["dateModified"];
-    this.description = (obj["description"] === undefined)
-      ? this.description
-      : obj["description"];
-    this.funder = (obj["funder"] === undefined) ? this.funder : obj["funder"];
-    this.funding = (obj["funding"] == undefined) ? this.funding : obj["funding"];
-    this.keywords = (obj["keywords"] === undefined) ? this.keywords : obj["keywords"];
-    this.name = (obj["name"] === undefined) ? this.name : obj["name"];
-    this.operatingSystem = (obj["operatingSystem"] === undefined)
-      ? this.operatingSystem
+    (obj["codeRepository"] === undefined)
+      ? ''
+      : this.codeRepository = obj["codeRepository"];
+    (obj["dateCreated"] === undefined)
+      ? ''
+      : this.dateCreated = obj["dateCreated"];
+    (obj["dateModified"] === undefined)
+      ? ''
+      : this.dateModified = obj["dateModified"];
+    (obj["datePublished"] === undefined)
+      ? ''
+      : this.datePublished = obj["datePublished"];
+    (obj["description"] === undefined)
+      ? ''
+      : this.description = obj["description"];
+    (obj["funder"] === undefined) ? '' : this.funder = obj["funder"];
+    (obj["funding"] == undefined) ? '' : this.funding = obj["funding"];
+    (obj["keywords"] === undefined) ? '' : this.keywords = obj["keywords"];
+    (obj["name"] === undefined) ? '' : this.name = obj["name"];
+    (obj["operatingSystem"] === undefined)
+      ? ''
       : obj["operatingSystem"];
     if (obj["programmingLanguage"] === undefined) {
       // do nothing.
     } else {
-      this.programmingLanguage = (this.programmingLanguage === undefined) ? [] : this.programmingLanguage;
+      (this.programmingLanguage === undefined) ? this.programmingLanguage = [] : '';
       if (typeof obj["programmingLanguage"] === "string") {
         this.programmingLanguage.push(obj["programmingLanguage"]);
       } else {
         this.programmingLanguage = obj["programmingLanguage"];
       }
     }
-    this.relatedLink = (obj["relatedLink"] === undefined)
-      ? this.relatedLink
-      : obj["relatedLink"];
-    this.runtimePlatform = (obj["runtimePlatform"] === undefined)
-      ? this.runtimePlatform
-      : obj["runtimePlatform"];
+    (obj["relatedLink"] === undefined) ? '' : this.relatedLink = obj["relatedLink"];
+    (obj["runtimePlatform"] === undefined) ? '' : this.runtimePlatform = obj["runtimePlatform"];
     if (obj["softwareRequirements"] === undefined) {
       // do nothing.
     } else {
-      this.softwareRequirements = (this.softwareRequirements === undefined) ? [] : this.softwareRequirements; 
+      (this.softwareRequirements === undefined) ? this.softwareRequirements = [] : ''; 
       if (typeof (obj["softwareRequirements"]) === "string") {
         this.softwareRequirements.push(obj["softwareRequirements"]);
       } else {
         this.softwareRequirements = obj["softwareRequirements"];
       }
     }
-    this.version = (obj["version"] === undefined) ? this.version : obj["version"];
-    this.developmentStatus = (obj["developmentStatus"] === undefined)
-      ? this.developmentStatus
-      : obj["developmentStatus"];
-    this.issueTracker = (obj["issueTracker"] === undefined)
-      ? this.issueTracker
-      : obj["issueTracker"];
-    this.downloadUrl = (obj["downloadUrl"] === undefined)
-      ? this.downloadUrl
-      : obj["downloadUrl"];
-    this.releaseNotes = (obj["releaseNotes"] === undefined)
-      ? this.releaseNotes
-      : obj["releaseNotes"];
+    (obj["version"] === undefined) ? '' : this.version = obj["version"];
+    (obj["developmentStatus"] === undefined)
+      ? ''
+      : this.developmentStatus = obj["developmentStatus"];
+    (obj["issueTracker"] === undefined)
+      ? ''
+      : this.issueTracker = obj["issueTracker"];
+    (obj["downloadUrl"] === undefined)
+      ? ''
+      : this.downloadUrl = obj["downloadUrl"];
+    (obj["releaseNotes"] === undefined)
+      ? ''
+      : this.releaseNotes = obj["releaseNotes"];
     return true;
   }
 }
 
+function normalizeDateFormat(x: string | Date): string {
+  let d: Date;
+  if (Object.prototype.toString.call(x) === '[object Date]') {
+    d = x as unknown as Date;
+  } else {
+    d = new Date(x);
+  }
+  return yyyymmdd(d);
+}
+
+function yyyymmdd(d: Date): string {
+  const year = d.getFullYear();
+  const month = `${d.getMonth() + 1}`.padStart(2, '0');
+  const day = `${d.getDate() + 1}`.padStart(2, '0');
+  const s = `${year}-${(month)}-${day}`;
+  return s;
+}

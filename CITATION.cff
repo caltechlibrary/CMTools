@@ -1,23 +1,25 @@
+
 cff-version: 1.2.0
-message: 'If you use this software, please cite it as below.'
+message: "If you use this software, please cite it as below."
 type: software
 title: CMTools
-abstract: >-
-  CM Tools provides codemeta tooling for codemeta crosswalks and tooling to use
-  the codemeta.json in a build process.
+abstract: "CM Tools provides codemeta tooling for codemeta crosswalks and tooling to use the codemeta.json in a build process."
 authors:
   - family-names: Doiel
     given-names: R. S.
-    orcid: 'https://orcid.org/0000-0003-0900-6903'
+    orcid: "https://orcid.org/0000-0003-0900-6903"
 contacts:
   - family-names: Doiel
     given-names: R. S.
-    orcid: 'https://orcid.org/0000-0003-0900-6903'
-repository-code: 'git+https://github.com/caltechlibrary/CMTools'
-version: 0.0.6
-license-url: 'https://data.caltech.edu/LICENSE'
+    orcid: "https://orcid.org/0000-0003-0900-6903"
+repository-code: "git+https://github.com/caltechlibrary/CMTools"
+version: 0.0.7
+date-released: 2025-01-27
+
+license-url: "https://data.caltech.edu/LICENSE"
 keywords:
   - codemeta
   - cff
   - software
   - code generation
+

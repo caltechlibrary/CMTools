@@ -43,6 +43,7 @@
   ],
   "dateCreated": "2025-01-07",
   "dateModified": "2025-01-27",
+  "datePublished": "2025-01-27",
   "description": "CM Tools provides codemeta tooling for codemeta crosswalks and tooling to use the codemeta.json in a build process.",
   "funder": {
     "id": "https://ror.org/5dxps055",
@@ -70,8 +71,8 @@
   "softwareRequirements": [
     "Deno >= 2.1.7"
   ],
-  "version": "0.0.6",
+  "version": "0.0.7",
   "developmentStatus": "concept",
   "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues",
-  "releaseNotes": "A proof of concept CodeMeta tooling, edit codemeta.json and building code artifacts"
+  "releaseNotes": "Improved CITATION.cff generation, fix issue #4"
 }

@@ -70,13 +70,7 @@ export async function transform(
 
   switch (format) {
     case "cff":
-      // Handlebars template is leaving blank link artifacts.
-      // haven't figure out why. temp work around.
-      let cffSrc: string | undefined = await renderTemplate(obj, cffTemplateText);
-      if (cffSrc === undefined) {
-        cffSrc = '';
-      }
-      return yaml.stringify(yaml.parse(`${cffSrc}`));
+      return renderTemplate(obj, cffTemplateText);
     case "ts":
       return renderTemplate(obj, tsTemplateText);
     case "js":
@@ -102,12 +96,13 @@ export async function transform(
   }
 }
 
-export function renderTemplate(obj: object, tmpl: string): string | undefined {
+export function renderTemplate(obj: {[key: string]: any}, tmpl: string): string | undefined {
   const template = Handlebars.compile(tmpl);
   if (template === undefined) {
     console.log(`templates failed to compile, ${tmpl}`);
     return undefined;
   }
+  console.log(`DEBUG renderTemplate -> datePublished -> ${obj["datePublished"]}`);
   return template(obj);
 }
 
