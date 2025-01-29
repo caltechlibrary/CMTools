@@ -22,7 +22,7 @@ if [ "$YES_NO" = "y" ]; then
 
 Now goto repo release and finalize draft.
 
-	${REPL_URL}
+	${REPO_URL}
 
 EOT
 
