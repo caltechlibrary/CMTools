@@ -7,6 +7,7 @@
 - [cme](cme.1.md) command
   - Top Level [Attribute Names](codemeta_attributes.md)
 - Presentations
-  - [Proof of concept](presentations/presentation1.html)
+  - [Proof of concept](presentations/presentation1.md)
+  - [cmt and cme](presentations/presentation2.md)
 - [Someday, maybe](someday_maybe.md), a hypthetical roadmap
 

@@ -56,23 +56,18 @@ display license
 </dd>
 <dt>-e, –editor</dt>
 <dd>
-use Micro Editor edit value. Micro Editor is a cross platform text
-editor available from <a href="https://micro-editor.github.io/"
+use Micro Editor to edit attributes. Micro Editor is a cross platform
+text editor available from <a href="https://micro-editor.github.io/"
 class="uri">https://micro-editor.github.io/</a>.
-</dd>
-<dt>-all, –attributes</dt>
-<dd>
-interactively create or edit a CodeMeta file by stepping through the top
-level attributes.
 </dd>
 </dl>
 <h1 id="examples">EXAMPLES</h1>
 <p>Create a new CodeMeta file. In the following example the environment
 variable EDITOR will be used to invoke your editor for editing multi
 line CodeMeta attributes like author, contributor, maintainer, keywords,
-required software, etc. The “–all” means edit all top level attributes
-sequentially.</p>
-<pre><code>cme codemeta.json  -e --all </code></pre>
+required software, etc. If no attribute names are included then you will
+be prompt for each attribute.</p>
+<pre><code>cme codemeta.json -e</code></pre>
 <p>Set the version number in your codemeta.json file and add/replace the
 <code>.releaseNotes</code>.</p>
 <pre><code>cme codemeta.json version releaseNotes -e</code></pre>

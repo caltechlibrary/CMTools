@@ -2,29 +2,37 @@
 import * as path from "@std/path";
 
 export async function gitReleaseHash(): Promise<string> {
+  const options: string[] = [
+    "log",
+    "--pretty=format:%h",
+    "-n",
+    "1",
+  ]; 
   const command = new Deno.Command("git", {
-    args: [
-      "log",
-      "--pretty=format:%h",
-      "-n",
-      "1",
-    ],
+    args: options,
   });
   const { code, stdout, stderr } = await command.output();
-  console.assert(code === 0);
+  if (code > 0) {
+    console.log(`"git ${options.join(' ')}" exited with ${code}`);
+    return '';
+  }
   return (new TextDecoder()).decode(stdout);
 }
 
 async function getRemoteOriginURL(): Promise<string> {
+  const options: string[] = [
+    "config",
+    "--get",
+    "remote.origin.url",
+  ];
   const command = new Deno.Command("git", {
-    args: [
-      "config",
-      "--get",
-      "remote.origin.url",
-    ],
+    args: options,
   });
   const { code, stdout, stderr } = await command.output();
-  console.assert(code === 0);
+  if (code > 0) {
+    console.log(`"git ${options.join(' ')}" exited with ${code}`);
+    return '';
+  }
   return (new TextDecoder()).decode(stdout);
 }
 

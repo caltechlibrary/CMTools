@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="R. S. Doiel, rsdoiel@caltech.edu" />
+  <meta name="date" content="2025-01-29" />
+  <meta name="keywords" content="CodeMeta, projects, build" />
+  <title>CMTools: cme and cmt</title>
+  <style type="text/css">
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+  </style>
+  <link rel="stylesheet" type="text/css" media="screen, projection, print"
+    href="https://www.w3.org/Talks/Tools/Slidy2/styles/slidy.css" />
+  <script src="https://www.w3.org/Talks/Tools/Slidy2/scripts/slidy.js"
+    charset="utf-8" type="text/javascript"></script>
+</head>
+<body>
+<div class="slide titlepage">
+  <h1 class="title">CMTools: cme and cmt</h1>
+  <p class="author">
+R. S. Doiel, <a href="mailto:rsdoiel@caltech.edu"
+class="email">rsdoiel@caltech.edu</a>
+  </p>
+  <p class="institute">
+<p>Caltech Library, Digital Library Development</p>
+  </p>
+  <p class="date">2025-01-29</p>
+</div>
+<div class="slide" id="TOC">
+
+</div>
+<div id="what-is-cmtools" class="slide section level1">
+<h1>What is CMTools?</h1>
+<p>CMTools provides a means of generating and maintain various software
+artifacts based on the contents of your <a
+href="https://codemeta.github.io">CodeMeta</a> file.</p>
+<p>CMTools includes</p>
+<dl>
+<dt><code>cmt</code></dt>
+<dd>
+A codemeta tranformer tool
+</dd>
+<dt><code>cme</code></dt>
+<dd>
+A proof of concept codemeta editor
+</dd>
+</dl>
+</div>
+<div id="codemeta-editor-cme" class="slide section level1">
+<h1>CodeMeta Editor, <code>cme</code></h1>
+<ul>
+<li>Create a CodeMeta 3 file</li>
+<li>Normalize a CodeMeta file to CodeMeta 3</li>
+<li>Edit the values in CodeMeta file</li>
+</ul>
+</div>
+<div id="getting-prepared-for-our-project" class="slide section level1">
+<h1>Getting prepared for our project</h1>
+<ul>
+<li>Install Deno (this will demonstration is for a TypeScript
+project)</li>
+<li>Install CMTools</li>
+</ul>
+</div>
+<div id="install-deno" class="slide section level1">
+<h1>Install Deno</h1>
+<p>macOS, Linux</p>
+<pre class="shell"><code>curl -fsSL https://deno.land/install.sh | sh</code></pre>
+<p>Windows</p>
+<pre class="shell"><code>irm https://deno.land/install.ps1 | iex</code></pre>
+</div>
+<div id="installing-cmtools" class="slide section level1">
+<h1>Installing CMTools</h1>
+<p>macOS, Linux</p>
+<pre class="shell"><code>curl -L https://caltechlibrary.github.io/CMTools/installer.sh | sh</code></pre>
+<p>Windows</p>
+<pre class="shell"><code>irm https://caltechlibrary.github.io/CMTools/installer.ps1 | iex</code></pre>
+</div>
+<div id="after-install" class="slide section level1">
+<h1>After install</h1>
+<p>Open your terminal or Powershell and try the following.</p>
+<pre class="shell"><code>cme --help
+cmt --help</code></pre>
+</div>
+<div id="create-a-new-cmtools-driven-project"
+class="slide section level1">
+<h1>Create a new CMTools driven project</h1>
+<ul>
+<li>Create a directory and change into it</li>
+<li>Initialize Git and Deno</li>
+<li>Create a “LICENSE” file</li>
+<li>Create a new <code>codemeta.json</code> file</li>
+<li>Create initial project files</li>
+</ul>
+</div>
+<div id="create-a-directory-and-change-into-it"
+class="slide section level1">
+<h1>create a directory and change into it</h1>
+<p>Our project is going to be called “foo”.</p>
+<pre class="shell"><code>mkdir foo
+cd foo</code></pre>
+</div>
+<div id="initialize-git-and-deno" class="slide section level1">
+<h1>initialize Git and Deno</h1>
+<pre class="shell"><code>git init
+deno init</code></pre>
+</div>
+<div id="create-a-license-file" class="slide section level1">
+<h1>Create a “LICENSE” file</h1>
+<p>Caltech Library’s default software license.</p>
+<pre class="shell"><code>curl -L -O https://raw.githubusercontent.com/caltechlibrary/template/refs/heads/main/LICENSE</code></pre>
+<p>or see <a href="https://spdx.org/licenses/"
+class="uri">https://spdx.org/licenses/</a></p>
+</div>
+<div id="create-a-new-codemeta.json-file" class="slide section level1">
+<h1>Create a new <code>codemeta.json</code> file</h1>
+<p>This demo <code>cme</code> uses the Micro Editor to edit fields.</p>
+<pre class="shell"><code>cme codemeta.json</code></pre>
+</div>
+<div id="complex-attributes" class="slide section level1">
+<h1>Complex attributes</h1>
+<p>Some attributes need to be entered as YAML.</p>
+<ul>
+<li>author, contributor, maintainer</li>
+<li>operatingSystem, softwareRequired</li>
+<li>keywords</li>
+</ul>
+</div>
+<div id="create-initial-project-files" class="slide section level1">
+<h1>Create initial project files</h1>
+<p>“foo” is a TypeScript project so we can use <code>cmt</code> to
+create “version.ts” file as well as the usual “CITATION.cff” and
+“about.md”.</p>
+<pre class="shell"><code>cmt codemeta.json CITATION.cff about.md version.ts</code></pre>
+</div>
+<div id="now-youre-ready-to-build-your-own-foo"
+class="slide section level1">
+<h1>Now you’re ready to build your own “foo”</h1>
+<p>From here developing your project is unique but you can keep the
+generated files up to date by repeating the command.</p>
+<pre class="shell"><code>cmt codemeta.json CITATION.cff about.md version.ts</code></pre>
+</div>
+<div id="updating-version-datemodified-datepublished-and-releasenotes"
+class="slide section level1">
+<h1>Updating version, dateModified, datePublished and releaseNotes</h1>
+<pre class="shell"><code>cme codemeta.json version dateModified datePublished releaseNotes</code></pre>
+</div>
+<div id="micro-editor-option" class="slide section level1">
+<h1>Micro Editor option</h1>
+<ul>
+<li>See <a href="https://micro-editor.github.io"
+class="uri">https://micro-editor.github.io</a></li>
+<li>Use the “-e” option to use the editor</li>
+<li>Example editing the description</li>
+</ul>
+<pre class="shell"><code>cme codemeta.json description -e</code></pre>
+</div>
+<div id="something-to-consider" class="slide section level1">
+<h1>Something to consider</h1>
+<blockquote>
+<p>Software lives longer than expected, long lived software requires
+maintainence</p>
+</blockquote>
+</div>
+<div id="reference-links" class="slide section level1">
+<h1>Reference links</h1>
+<ul>
+<li>CMTools: <a href="https://caltechlibrary.github.io/CMTools"
+class="uri">https://caltechlibrary.github.io/CMTools</a></li>
+<li>on GitHub: <a href="https://github.com/caltechlibrary/CMTools"
+class="uri">https://github.com/caltechlibrary/CMTools</a></li>
+<li>CodeMeta: <a href="https://codemeta.github.io"
+class="uri">https://codemeta.github.io</a></li>
+<li>Deno: <a href="https://deno.com"
+class="uri">https://deno.com</a></li>
+</ul>
+<p>Thank you!</p>
+</div>
+</body>
+</html>

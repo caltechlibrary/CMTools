@@ -97,7 +97,14 @@ async function main() {
   }
   // Handle updating the deno.json file.
   if (app.deno) {
-    let src = await Deno.readTextFile("deno.json");
+    let src: string | undefined = undefined;
+    let doBackup: boolean = true;
+    try {
+      src = await Deno.readTextFile("deno.json");
+    } catch (err) {
+      console.warn(`creating deno.json`);
+      doBackup = false;
+    }
     if (src === undefined) {
       src = `{"tasks":{}}`;
     }
@@ -114,17 +121,18 @@ async function main() {
       denoJSON.tasks["gen-code"] = genCodeTasks.join(' ; ');
     }
     // Update deno.json file.
-    //FIXME: backup deno.json if exists.
-    try {
-      await Deno.copyFile("deno.json", "deno.json.bak");
-    } catch(err) {
-      console.log(`failed to backup deno.json aborting, ${err}`);
-      Deno.exit(1);
+    if (doBackup) {
+      try {
+        await Deno.copyFile("deno.json", "deno.json.bak");
+      } catch(err) {
+        console.log(`failed to backup deno.json aborting, ${err}`);
+        Deno.exit(1);
+      }
     }
-	src = JSON.stringify(denoJSON, null, 2);
-	if (src !== undefined) {
-    	Deno.writeTextFile("deno.json", src);
-	}
+    src = JSON.stringify(denoJSON, null, 2);
+    if (src !== undefined) {
+        Deno.writeTextFile("deno.json", src);
+    }
   }
 }
 
