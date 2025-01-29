@@ -52,40 +52,28 @@ class="email">rsdoiel@caltech.edu</a>
 <p>CMTools provides a means of generating and maintain various software
 artifacts based on the contents of your <a
 href="https://codemeta.github.io">CodeMeta</a> file.</p>
-<p>CMTools includes</p>
 <dl>
-<dt><code>cmt</code></dt>
-<dd>
-A CodeMeta transformer tool
-</dd>
 <dt><code>cme</code></dt>
 <dd>
 A proof of concept CodeMeta editor
 </dd>
+<dt><code>cmt</code></dt>
+<dd>
+A CodeMeta transformer tool
+</dd>
 </dl>
 </div>
-<div id="codemeta-editor-cme" class="slide section level1">
-<h1>CodeMeta Editor, <code>cme</code></h1>
-<ul>
-<li>Create a CodeMeta 3 file</li>
-<li>Normalize a CodeMeta file to CodeMeta 3</li>
-<li>Edit the values in CodeMeta file</li>
-</ul>
+<div id="quick-tutorial" class="slide section level1">
+<h1>Quick tutorial</h1>
+<p>You can follow along using Terminal (macOS, Linux) or Powershell
+(Windows).</p>
 </div>
-<div id="getting-prepared-for-our-project" class="slide section level1">
-<h1>Getting prepared for our project</h1>
+<div id="getting-prepared" class="slide section level1">
+<h1>Getting prepared</h1>
 <ul>
-<li>Install Deno (this will demonstration is for a TypeScript
-project)</li>
 <li>Install CMTools</li>
 </ul>
-</div>
-<div id="install-deno" class="slide section level1">
-<h1>Install Deno</h1>
-<p>macOS, Linux</p>
-<pre class="shell"><code>curl -fsSL https://deno.land/install.sh | sh</code></pre>
-<p>Windows</p>
-<pre class="shell"><code>irm https://deno.land/install.ps1 | iex</code></pre>
+<p>NOTE: requires curl or irm.</p>
 </div>
 <div id="installing-cmtools" class="slide section level1">
 <h1>Installing CMTools</h1>
@@ -96,19 +84,18 @@ project)</li>
 </div>
 <div id="after-install" class="slide section level1">
 <h1>After install</h1>
-<p>Open your terminal or Powershell and try the following.</p>
-<pre class="shell"><code>cme --help
-cmt --help</code></pre>
+<p>In your Terminal or Powershell session skim the docs.</p>
+<pre class="shell"><code>cme --help | more
+cmt --help | more</code></pre>
 </div>
 <div id="create-a-new-cmtools-driven-project"
 class="slide section level1">
 <h1>Create a new CMTools driven project</h1>
 <ul>
 <li>Create a directory and change into it</li>
-<li>Initialize Git and Deno</li>
 <li>Create a “LICENSE” file</li>
 <li>Create a new <code>codemeta.json</code> file</li>
-<li>Create initial project files</li>
+<li>Create project files</li>
 </ul>
 </div>
 <div id="create-a-directory-and-change-into-it"
@@ -118,23 +105,21 @@ class="slide section level1">
 <pre class="shell"><code>mkdir foo
 cd foo</code></pre>
 </div>
-<div id="initialize-git-and-deno" class="slide section level1">
-<h1>initialize Git and Deno</h1>
-<pre class="shell"><code>git init
-deno init</code></pre>
-</div>
 <div id="create-a-license-file" class="slide section level1">
 <h1>Create a “LICENSE” file</h1>
-<p>Caltech Library’s default software license.</p>
+<p>Example uses Caltech Library’s software license.</p>
+<p>macOS and Linux</p>
 <pre class="shell"><code>curl -L -O https://raw.githubusercontent.com/caltechlibrary/template/refs/heads/main/LICENSE</code></pre>
-<p>or see <a href="https://spdx.org/licenses/"
-class="uri">https://spdx.org/licenses/</a></p>
+<p>Windows</p>
+<pre class="shell"><code>irm https://raw.githubusercontent.com/caltechlibrary/template/refs/heads/main/LICENSE -OutFile LICENSE</code></pre>
+<p>NOTE: license is required to create “version.ts”.</p>
 </div>
 <div id="create-a-new-codemeta.json-file" class="slide section level1">
 <h1>Create a new <code>codemeta.json</code> file</h1>
-<p>This demo <code>cme</code>. Some attributes just prompt for a value.
-Complex ones let you type in YAML. Follow the prompts.</p>
+<p>Use <code>cme</code>.</p>
 <pre class="shell"><code>cme codemeta.json</code></pre>
+<p>Follow the prompts. Complex attributes will require YAML
+notation.</p>
 </div>
 <div id="complex-attributes" class="slide section level1">
 <h1>Complex attributes</h1>
@@ -148,31 +133,18 @@ Complex ones let you type in YAML. Follow the prompts.</p>
 <div id="create-initial-project-files" class="slide section level1">
 <h1>Create initial project files</h1>
 <p>“foo” is a TypeScript project so we can use <code>cmt</code> to
-create “version.ts” file as well as the usual “CITATION.cff” and
-“about.md”.</p>
-<pre class="shell"><code>cmt codemeta.json CITATION.cff about.md version.ts</code></pre>
+create “version.ts”, CITATION.cff and about.md.</p>
+<pre class="shell"><code>cmt codemeta.json version.ts CITATION.cff about.md</code></pre>
 </div>
-<div id="now-youre-ready-to-build-your-own-foo"
-class="slide section level1">
-<h1>Now you’re ready to build your own “foo”</h1>
-<p>From here developing your project is unique but you can keep the
-generated files up to date by repeating the command.</p>
-<pre class="shell"><code>cmt codemeta.json CITATION.cff about.md version.ts</code></pre>
-</div>
-<div id="updating-version-datemodified-datepublished-and-releasenotes"
-class="slide section level1">
-<h1>Updating version, dateModified, datePublished and releaseNotes</h1>
+<div id="updating-codemeta-attributes" class="slide section level1">
+<h1>Updating CodeMeta attributes</h1>
+<p>version, dateModified, datePublished and releaseNotes</p>
 <pre class="shell"><code>cme codemeta.json version dateModified datePublished releaseNotes</code></pre>
 </div>
-<div id="micro-editor-option" class="slide section level1">
-<h1>Micro Editor option</h1>
-<ul>
-<li>See <a href="https://micro-editor.github.io"
-class="uri">https://micro-editor.github.io</a></li>
-<li>Use the “-e” option to use the editor</li>
-<li>Example editing the description</li>
-</ul>
-<pre class="shell"><code>cme codemeta.json description -e</code></pre>
+<div id="updating-other-files" class="slide section level1">
+<h1>Updating other files</h1>
+<p>Update the artifacts just like we created them.</p>
+<pre class="shell"><code>cmt codemeta.json CITATION.cff about.md version.ts</code></pre>
 </div>
 <div id="something-to-consider" class="slide section level1">
 <h1>Something to consider</h1>

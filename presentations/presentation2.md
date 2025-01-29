@@ -23,38 +23,21 @@ url: "https://caltechlibrary.github.io/CMTools/presentation"
 
 CMTools provides a means of generating and maintain various software artifacts based on the contents of your [CodeMeta](https://codemeta.github.io) file.
 
-CMTools includes
+`cme`
+: A proof of concept CodeMeta editor
 
 `cmt`
 : A CodeMeta transformer tool
 
-`cme`
-: A proof of concept CodeMeta editor
+# Quick tutorial
 
-# CodeMeta Editor, `cme`
+You can follow along using Terminal (macOS, Linux) or Powershell (Windows).
 
-- Create a CodeMeta 3 file
-- Normalize a CodeMeta file to CodeMeta 3
-- Edit the values in CodeMeta file
+# Getting prepared
 
-# Getting prepared for our project
+- Install CMTools 
 
-- Install Deno (this will demonstration is for a TypeScript project)
-- Install CMTools
-
-# Install Deno
-
-macOS, Linux
-
-~~~shell
-curl -fsSL https://deno.land/install.sh | sh
-~~~
-
-Windows
-
-~~~shell
-irm https://deno.land/install.ps1 | iex
-~~~
+NOTE: requires curl or irm.
 
 # Installing CMTools
 
@@ -72,20 +55,19 @@ irm https://caltechlibrary.github.io/CMTools/installer.ps1 | iex
 
 # After install
 
-Open your terminal or Powershell and try the following.
+In your Terminal or Powershell session skim the docs.
 
 ~~~shell
-cme --help
-cmt --help
+cme --help | more
+cmt --help | more
 ~~~
 
 # Create a new CMTools driven project
 
 - Create a directory and change into it
-- Initialize Git and Deno
 - Create a "LICENSE" file
 - Create a new `codemeta.json` file
-- Create initial project files
+- Create project files
 
 # create a directory and change into it
 
@@ -96,32 +78,33 @@ mkdir foo
 cd foo
 ~~~
 
-# initialize Git and Deno
-
-~~~shell
-git init
-deno init
-~~~
-
 # Create a "LICENSE" file
 
-Caltech Library's default software license.
+Example uses Caltech Library's software license.
+
+macOS and Linux
 
 ~~~shell
 curl -L -O https://raw.githubusercontent.com/caltechlibrary/template/refs/heads/main/LICENSE
 ~~~
 
-or see <https://spdx.org/licenses/>
+Windows
+
+~~~shell
+irm https://raw.githubusercontent.com/caltechlibrary/template/refs/heads/main/LICENSE -OutFile LICENSE
+~~~
+
+NOTE: license is required to create "version.ts".
 
 # Create a new `codemeta.json` file
 
-This demo `cme`. Some attributes just
-prompt for a value. Complex ones let you
-type in YAML. Follow the prompts.
+Use `cme`. 
 
 ~~~shell
 cme codemeta.json
 ~~~
+
+Follow the prompts. Complex attributes will require YAML notation.
 
 # Complex attributes
 
@@ -134,36 +117,26 @@ Some attributes need to be entered as YAML.
 # Create initial project files
 
 "foo" is a TypeScript project so we can use `cmt` to
-create "version.ts" file as well as the usual
-"CITATION.cff" and "about.md".
+create "version.ts", CITATION.cff and about.md.
 
 ~~~shell
-cmt codemeta.json CITATION.cff about.md version.ts
+cmt codemeta.json version.ts CITATION.cff about.md
 ~~~
 
-# Now you're ready to build your own "foo"
+# Updating CodeMeta attributes
 
-From here developing your project is unique but you can keep the
-generated files up to date by repeating the command.
-
-~~~shell
-cmt codemeta.json CITATION.cff about.md version.ts
-~~~
-
-# Updating version, dateModified, datePublished and releaseNotes
+version, dateModified, datePublished and releaseNotes
 
 ~~~shell
 cme codemeta.json version dateModified datePublished releaseNotes
 ~~~
 
-# Micro Editor option
+# Updating other files
 
-- See <https://micro-editor.github.io>
-- Use the "-e" option to use the editor
-- Example editing the description
+Update the artifacts just like we created them.
 
 ~~~shell
-cme codemeta.json description -e
+cmt codemeta.json CITATION.cff about.md version.ts
 ~~~
 
 # Something to consider
