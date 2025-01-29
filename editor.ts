@@ -72,8 +72,8 @@ export async function editCodeMetaTerm(cm: CodeMeta, name: string, useEditor: bo
       }
     } else {
       let pVal: string | null = '';
-      if ([ "author", "maintainer", "contributor", "funder", "softwareRequirements", "programmingLanguage" ].indexOf(name) > -1) {
-        console.log(`Enter YAML for ${name} and period '.' on an empty line when done.`);
+      if ([ "author", "maintainer", "contributor", "funder", "softwareRequirements", "programmingLanguage", "keywords" ].indexOf(name) > -1) {
+        console.log(`Enter YAML for ${name}. Enter period '.' on an empty line when done.`);
         let decoder = new TextDecoder();
         let lines: string[] = [];
         let txt: string | null = '';
@@ -83,6 +83,7 @@ export async function editCodeMetaTerm(cm: CodeMeta, name: string, useEditor: bo
             lines.push(txt);
           }
         }
+        //FIXME: Need to distinguish from "no change" and "remove value(s)"
         txt = lines.join('\n').trim();
         if (txt === '') {
           pVal = null;
@@ -116,7 +117,7 @@ export function getStringFromObject(obj: {[key : string]: any}, key: string): st
     return undefined;
   }
   let src: string | undefined = undefined;
-  if ([ "author", "contributor", "maintainer", "funder", "keywords", "operatingSystem" ].indexOf(key) > -1) {
+  if ([ "author", "contributor", "maintainer", "funder", "keywords", "operatingSystem", "softwareRequired" ].indexOf(key) > -1) {
     try {
       let yamlOpt: StringifyOptions = {};
       yamlOpt.skipInvalid = true;
