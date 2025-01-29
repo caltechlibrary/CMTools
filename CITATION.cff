@@ -18,7 +18,7 @@ contacts:
 
 repository-code: "git+https://github.com/caltechlibrary/CMTools"
 version: 0.0.9
-date-released: 2025-01-27
+date-released: 2025-01-28
 
 license-url: "https://data.caltech.edu/LICENSE"
 keywords:

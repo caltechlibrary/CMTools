@@ -42,8 +42,8 @@
     }
   ],
   "dateCreated": "2025-01-07",
-  "dateModified": "2025-01-27",
-  "datePublished": "2025-01-27",
+  "dateModified": "2025-01-28",
+  "datePublished": "2025-01-28",
   "description": "CM Tools provides codemeta tooling for codemeta crosswalks and tooling to use the codemeta.json in a build process.",
   "funder": {
     "id": "https://ror.org/5dxps055",
