@@ -1,4 +1,4 @@
-%cmt(1) user manual | version 0.0.10 b2104d6
+%cmt(1) user manual | version 0.0.10 77b3fcd
 % R. S. Doiel
 % 2025-01-29
 

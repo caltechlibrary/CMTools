@@ -72,8 +72,8 @@ export async function editCodeMetaTerm(cm: CodeMeta, name: string, useEditor: bo
       }
     } else {
       let pVal: string | null = '';
-      if ([ "author", "maintainer", "contributor", "funder" ].indexOf(name) > -1) {
-        console.log("Type a period '.' on an empty line when done.");
+      if ([ "author", "maintainer", "contributor", "funder", "softwareRequirements", "programmingLanguage" ].indexOf(name) > -1) {
+        console.log(`Enter YAML for ${name} and period '.' on an empty line when done.`);
         let decoder = new TextDecoder();
         let lines: string[] = [];
         let txt: string | null = '';

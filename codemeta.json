@@ -73,7 +73,7 @@
     "Deno >= 2.1.7"
   ],
   "version": "0.0.10",
-  "developmentStatus": "wip",
+  "developmentStatus": "WIP",
   "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues",
   "releaseNotes": "Simplified command line options in cme"
 }
