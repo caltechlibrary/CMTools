@@ -44,12 +44,12 @@ Write-Output "Download URL $${DOWNLOAD_URL}"
 if (!(Test-Path $$BIN_DIR)) {
   New-Item $$BIN_DIR -ItemType Directory | Out-Null
 }
-curl.exe -Lo "$${ZIPFILE}" "$${DOWNLOAD_URL}"
+irm "$${DOWNLOAD_URL}" -OutFile "$${ZIPFILE}"
 #if ([System.IO.File]::Exists($$ZIPFILE)) {
 if (!(Test-Path $$ZIPFILE)) {
     Write-Output "Failed to download $${ZIPFILE} from $${DOWNLOAD_URL}"
 } else {
-    tar.exe xf "$${ZIPFILE}" -C "$${Home}"
+    Expand-Archive -Path "$${ZIPFILE}" -DestinationPath "$${Home}"
     #Remove-Item $$ZIPFILE
 
     $$User = [System.EnvironmentVariableTarget]::User
