@@ -42,14 +42,15 @@
     }
   ],
   "dateCreated": "2025-01-07",
-  "dateModified": "2025-01-28",
-  "datePublished": "2025-01-28",
+  "dateModified": "2025-01-29",
+  "datePublished": "2025-01-29",
   "description": "CM Tools provides codemeta tooling for codemeta crosswalks and tooling to use the codemeta.json in a build process.",
   "funder": {
     "id": "https://ror.org/5dxps055",
     "type": "Organization",
     "name": "Caltech Library"
   },
+  "funding": "Caltech Library",
   "keywords": [
     "codemeta",
     "cff",
@@ -71,8 +72,8 @@
   "softwareRequirements": [
     "Deno >= 2.1.7"
   ],
-  "version": "0.0.9",
-  "developmentStatus": "concept",
+  "version": "0.0.10",
+  "developmentStatus": "wip",
   "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues",
-  "releaseNotes": "improved output formats, minor bug fixes."
+  "releaseNotes": "Simplified command line options in cme"
 }

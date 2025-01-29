@@ -22,7 +22,6 @@ async function main() {
       version: "v",
       format: "f",
       editor: "e",
-      attributes: "all",
     },
     default: {
       help: false,
@@ -63,7 +62,7 @@ async function main() {
   }
   let inputName: string = (args.length > 0) ? `${args.shift()}` : "";
   let attributeNames: string[] = [];
-  if (app.interactive || args.length === 0) {
+  if (args.length === 0) {
     attributeNames = codeMetaTermNames;
   }
   for (let val of args) {

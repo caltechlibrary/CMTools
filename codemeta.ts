@@ -65,6 +65,7 @@ export const CodeMetaTerms: AttributeType[] = [
   new AttributeType("issueTracker", "url", "link to software bug reporting or issue tracking system"),
   new AttributeType("referencePublication", "url", "An academic publication related to the software."),
   new AttributeType("softwareSuggestions", "text_list", "Optional dependencies , e.g. for optional features, code development, etc."),
+  new AttributeType("developmentStatus", "text", "A status as defined at https://www.repostatus.org/"),
 ];
 
 // Attributes used by CodeMeta terms taken from https://codemeta.github.io/terms/
