@@ -34,7 +34,7 @@ extension determines the generated content. The tool can generate the
 following project files based on the contents of the codemeta.json file.
 <code>cme</code> expects the file path of your codemeta.json file and
 optionally the attributes of the CodeMeta object you wish to manage.</p>
-<p><code>cme</code> is used to create manage “codemeta.json”.
+<p><code>cme</code> is used to create and manage “codemeta.json”.
 <code>cmt</code> is used to generate the following.</p>
 <ul>
 <li>CITATION.cff</li>
@@ -43,22 +43,26 @@ optionally the attributes of the CodeMeta object you wish to manage.</p>
 <li>page.hbs (handlebars template) or page.tmpl (Pandoc template)</li>
 </ul>
 <h2 id="create-and-manage-your-file">Create and manage your file</h2>
-<p><code>cme</code> is for managing your “codemeta.json” file. Using the
-“interactive” option it will prompt for the various top level attributes
-and allow you to set them. For complex list attributes like “author”,
-“contributor”, “maintainer” you can enter those using YAML notation.
-Here’s an example of setting up to use <code>cme</code> to create and
-edit the “codemeta.json” file.</p>
-<pre class="shell"><code># Set our EDITOR environment variable
-export EDITOR=micro
-cme -e -i codemeta.json</code></pre>
+<p><code>cme</code> is for managing your “codemeta.json” file. If only
+the “codemeta.json” file is provided then you’ll be in an “interactive”
+mode. You will be prompted for each top level attribute. You either
+press enter and accept the current value or replace the value. For
+complex attributes like “author”, and “keywords”<a href="#fn1"
+class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> you
+use YAML notation followed by a line containing only a period to
+indicate completion. If you enter only the line with a period then the
+current value remains. Here’s an example of setting up to use
+<code>cme</code> to create and edit the “codemeta.json” file.</p>
+<pre class="shell"><code>cme codemeta.json</code></pre>
 <p>The will let you iterate over the top level CodeMeta object
-attributes. For multi line or list attributes your favorate editor will
+attributes. For multi line or list attributes your favorite editor will
 be used to create or update the values.</p>
 <p>Here’s an example of updating the version and
-<code>.releaseNotes</code> attributes (I assume you have the EDITOR
-environment variable already set).</p>
-<pre class="shell"><code>cme -e codemeta.json version releaseNotes</code></pre>
+<code>.releaseNotes</code> attributes but instead of the direct input
+you edit the value using the Micro Editor<a href="#fn2"
+class="footnote-ref" id="fnref2"
+role="doc-noteref"><sup>2</sup></a>.</p>
+<pre class="shell"><code>cme codemeta.json version releaseNotes -e</code></pre>
 <p>Since the version is short you’ll just be prompted to type in a new
 version string. You release notes maybe longer so for that you’ll drop
 into your editor.</p>
@@ -98,6 +102,19 @@ Documentation</h2>
 <li><a href="INSTALL.html">installation</a></li>
 <li><a href="LICENSE">license</a></li>
 </ul>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>For a full list of complex fields see the user manual
+for <code>cme</code>.<a href="#fnref1" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>You need to have <a
+href="http://micro-editor.github.io">Micro Editor</a> installed for this
+to work.<a href="#fnref2" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 </section>
 </body>
 </html>

@@ -5,7 +5,7 @@
 
 The tools are intended to be run from the project root directory. `cmt` expects the file path of your codemeta.json file as well as one or more target files to be generated. The target file's extension determines the generated content. The tool can generate the following project files based on the contents of the codemeta.json file. `cme` expects the file path of your codemeta.json file and optionally the attributes of the CodeMeta object you wish to manage.
 
-`cme` is used to create manage "codemeta.json". `cmt` is used to generate the following.
+`cme` is used to create and manage "codemeta.json". `cmt` is used to generate the following.
 
 - CITATION.cff
 - version.ts, version.js, version.go or version.py
@@ -14,21 +14,22 @@ The tools are intended to be run from the project root directory. `cmt` expects 
 
 ## Create and manage your file
 
-`cme` is for managing your "codemeta.json" file.  Using the "interactive" option it will prompt for the various top level attributes and allow you to set them. For complex list attributes like "author", "contributor", "maintainer" you can enter those using YAML notation. Here's an example of setting up to use `cme` to create and edit the "codemeta.json" file.
+`cme` is for managing your "codemeta.json" file.  If only the "codemeta.json" file is provided then you'll be in an "interactive" mode. You will be prompted for each top level attribute. You either press enter and accept the current value or replace the value. For complex attributes like "author", and "keywords"[^1] you use YAML notation followed by a line containing only a period to indicate completion. If you enter only the line with a period then the current value remains. Here's an example of setting up to use `cme` to create and edit the "codemeta.json" file.
+
+[^1]: For a full list of complex fields see the user manual for `cme`.
 
 ~~~shell
-# Set our EDITOR environment variable
-export EDITOR=micro
-cme -e -i codemeta.json
+cme codemeta.json
 ~~~
 
-The will let you iterate over the top level CodeMeta object attributes. For multi line or list attributes your favorate editor will be used to create or update the values.
+The will let you iterate over the top level CodeMeta object attributes. For multi line or list attributes your favorite editor will be used to create or update the values.
 
-Here's an example of updating the version and `.releaseNotes` attributes (I assume you have the
-EDITOR environment variable already set).
+Here's an example of updating the version and `.releaseNotes` attributes but instead of the direct input you edit the value using the Micro Editor[^2].
+
+[^2]: You need to have [Micro Editor](http://micro-editor.github.io) installed for this to work.
 
 ~~~shell
-cme -e codemeta.json version releaseNotes
+cme codemeta.json version releaseNotes -e
 ~~~
 
 Since the version is short you'll just be prompted to type in a new version string. You release notes maybe longer so for that you'll drop into your editor.

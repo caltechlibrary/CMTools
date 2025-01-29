@@ -1,5 +1,5 @@
 ---
-title: "CMTools, codemeta driven builds"
+title: "CMTools, CodeMeta driven builds"
 author: "R. S. Doiel, <rsdoiel@caltech.edu>"
 institute: |
   Caltech Library,
@@ -74,11 +74,11 @@ The artifact are easy to keep up to date.
 
 - very tedious
 - often incomplete done
-- lower quality -> higher maintainence
+- lower quality -> higher maintenance
 
 # Proposed maintenance cycle
 
-One command for each supported langauge:
+One command for each supported language:
 
 - Python
   - `cmt codemeta.json CITATION.cff about.md version.py`
@@ -155,7 +155,7 @@ irm https://caltechlibrary.github.io/CMTools/installer.ps1 | iex
 # Something to consider
 
 > Software lives longer than expected,
-> long lived software requires maintainence
+> long lived software requires maintenance
 
 # Reference links
 
