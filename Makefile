@@ -120,7 +120,7 @@ clean:
 	if [ -d bin ]; then rm -fR bin/*; fi
 	if [ -d dist ]; then rm -fR dist/*; fi
 
-release: clean build man website distribute_docs dist/Linux-x86_64 dist/Linux-aarch64 dist/macOS-x86_64 dist/macOS-arm64 dist/Windows-x86_64 dist/Windows-aarch64
+release: clean build man website distribute_docs dist/Linux-x86_64 dist/Linux-aarch64 dist/macOS-x86_64 dist/macOS-arm64 dist/Windows-x86_64 dist/Windows-arm64
 	echo "Ready to do ./release.bash"
 
 setup_dist: .FORCE
@@ -168,11 +168,11 @@ dist/Windows-x86_64: .FORCE
 	@cd dist && zip -r $(PROJECT)-v$(VERSION)-Windows-x86_64.zip LICENSE codemeta.json CITATION.cff *.md bin/*
 	@rm -fR dist/bin
 
-dist/Windows-aarch64: .FORCE
+dist/Windows-arm64: .FORCE
 	@mkdir -p dist/bin
 	#deno task dist_windows_aarch64 <-- switch to native when Rust/Deno supports Windows ARM64
 	deno task dist_windows_x86_64
-	@cd dist && zip -r $(PROJECT)-v$(VERSION)-Windows-aarch64.zip LICENSE codemeta.json CITATION.cff *.md bin/*
+	@cd dist && zip -r $(PROJECT)-v$(VERSION)-Windows-arm64.zip LICENSE codemeta.json CITATION.cff *.md bin/*
 	@rm -fR dist/bin
 
 .FORCE:
