@@ -53,6 +53,14 @@ export async function transform(
   let obj: { [key: string]: any } = cm.toObject();
   obj["project_name"] = path.basename(Deno.cwd());
   obj["releaseHash"] = await gitReleaseHash();
+  if (obj['dateModified'] === undefined || obj['dateModified'] === '') {
+    const d = new Date();
+    const year = `${d.getFullYear()}`;
+    const month = `${d.getMonth() + 1}`.padStart(2, '0');
+    const day = `${d.getDate() + 1}`.padStart(2, '0');
+    obj['dateModified'] = `${year}-${month}-${day}`;
+  }
+  (obj['releaseDate'] === undefined) ? obj['releaseDate'] = obj['dateModified'] : '';
   //obj['git_org_or_person'] = await gitOrgOrPerson();
   let licenseText: string = "";
   try {
