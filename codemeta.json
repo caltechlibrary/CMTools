@@ -72,8 +72,8 @@
   "softwareRequirements": [
     "Deno >= 2.1.7"
   ],
-  "version": "0.0.11",
+  "version": "0.0.12",
   "developmentStatus": "WIP",
   "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues",
-  "releaseNotes": "Fix editing operatingSystem attribute in cme"
+  "releaseNotes": "Added field=value support to cme"
 }

@@ -17,7 +17,7 @@ maintainer:
     orcid: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.11
+version: 0.0.12
 license_url: https://data.caltech.edu/LICENSE
 operating_system:
   - Linux
@@ -39,7 +39,7 @@ date_released: 2025-01-29
 About this software
 ===================
 
-## CMTools 0.0.11
+## CMTools 0.0.12
 
 ### Authors
 

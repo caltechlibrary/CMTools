@@ -5,6 +5,8 @@ import { CodeMeta, CodeMetaTerms } from "./codemeta.ts";
 import type { AttributeType } from "./codemeta.ts";
 import { editCodeMetaTerm } from "./editor.ts";
 
+const reUnquote = new RegExp(`^["'](.*)["']$`);
+
 function getAttributeNames(terms: AttributeType[]): string[] {
   let names: string[] = [];
   for (let item of terms) {
@@ -65,9 +67,15 @@ async function main() {
   if (args.length === 0) {
     attributeNames = codeMetaTermNames;
   }
-  for (let val of args) {
-    const attr: string = `${val}`;
-    if (attributeNames.indexOf(attr) === -1) {
+  let attrValues: {[key: string]: string} = {};
+  for (const arg of args) {
+    // NOTE: arg can be a number or value due to process_args, should always be string.
+    let attr: string = `${arg}`;
+    if (attr.indexOf("=") > -1) {
+      let str = attr.substring(attr.indexOf('=')+1);
+      attr = attr.substring(0, attr.indexOf('='));
+      attrValues[attr] = str;
+    } else if (attributeNames.indexOf(attr) === -1) {
       // Make sure the attirubute name makes sense, if not exits without doing anything.
       if (codeMetaTermNames.indexOf(attr) === -1) {
         console.log(`ERROR: "${attr}" is not a supported CodeMeta attribute, aborting`);
@@ -104,6 +112,22 @@ async function main() {
   if (cm.fromObject(obj) === false) {
     console.log(`failed to process ${inputName} object`);
     Deno.exit(1);
+  }
+  if (Object.keys(attrValues).length > 0) {
+    let obj: {[key: string]: string} = {};
+    for (let key of Object.keys(attrValues)) {
+      let val = attrValues[key];
+      obj[key] = val;
+    }
+    cm.patchObject(obj);
+    src = JSON.stringify(cm.toObject(), null, 2);
+    // Check if file exists then write out new version.
+    try {
+      await Deno.copyFile(inputName, `${inputName}.bak`);
+    } catch (err) {
+      // No file exists, skip backup.
+    }
+    await Deno.writeTextFile(inputName, src);
   }
   if (attributeNames.length > 0) {
     for (let name of attributeNames) {
