@@ -2,7 +2,7 @@
 
 export const version = '0.0.12',
 releaseDate = '2025-01-29',
-releaseHash = 'b025226',
+releaseHash = 'b5c5852',
 licenseText = `
 
 Copyright (c) 2025, Caltech

@@ -1,4 +1,4 @@
-%cme(1) user manual | version 0.0.12 b025226
+%cme(1) user manual | version 0.0.12 b5c5852
 % R. S. Doiel
 % 2025-01-29
 
@@ -11,6 +11,8 @@ cme
 cme CODEMETA_JSON [OPTION ...] 
 
 cme CODEMETA_JSON ATTRIBUTE_NAME [ATTRIBUTE_NAME ...] [OPTION ...]
+
+cme CODEMETA_JSON ATTRIBUTE_NAME=ATTRIBUTE_VALUE [ATTRIBUTE_NAME=ATTRIBUTE_VALUE ...] [OPTION ...]
 
 # DESCRIPTION
 
@@ -33,6 +35,10 @@ Two date fields are set if they are not previously set, "dateCreated" and "dateM
 "dateModified" is updated each time you change something in the CodeMeta file unless you explicitly
 edit it.
 
+For the simple fields like version, name, description, releaseNotes you can set their values
+directly on the command line using an equal sign between the attribute name and the value. If
+the value includes spaces you need to wrap them in quotes. See the EXAMPLE below.
+
 # OPTION
 
 -h, --help
@@ -50,25 +56,31 @@ text editor available from <https://micro-editor.github.io/>.
 
 # EXAMPLES
 
-Create a new CodeMeta file. In the following example the environment
-variable EDITOR will be used to invoke your editor for editing multi line
-CodeMeta attributes like author, contributor, maintainer, keywords,
-required software, etc.  If no attribute names are included then you will
+Create a new CodeMeta file. If no attribute names are included then you will
 be prompt for each attribute.
 
 ~~~
-cme codemeta.json -e
+cme codemeta.json
 ~~~
 
 Set the version number in your codemeta.json file and add/replace the `.releaseNotes`.
 
 ~~~
-cme codemeta.json version releaseNotes -e
+cme codemeta.json version releaseNotes
 ~~~
 
-Add authors to your codemeta.json using the "micro" editor.  NOTE: you enter authors as YAML.
+Set the version number to "0.0.1" and release notes to "Initial Concept"
+without being prompted.
 
+~~~shell
+cme codemeta.json version=0.0.1 release='Initial Concept'
 ~~~
-cme codemeta.json authors -e
+
+If Micro Editor is installed you can edit the decription in micro using the
+"-e" option.
+
+~~~shell
+cme codemeta.json description -e
 ~~~
+
 

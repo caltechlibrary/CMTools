@@ -1,4 +1,4 @@
-%cmt(1) user manual | version 0.0.12 b025226
+%cmt(1) user manual | version 0.0.12 b5c5852
 % R. S. Doiel
 % 2025-01-29
 
@@ -41,16 +41,6 @@ Options come as the last parameter(s) on the command line.
 
 -d, --deno
 : update the deno.json file tasks based on output files requested.
-
-# ENVIRONMENT
-
-cmt relies on the environment for the value of EDITOR. This holds for
-POSIX shells as well as Powershell on Windows. If EDITOR is set and you use
-the editor option then the value will be written to a temp file and saved to
-your CodeMeta JSON file on update.
-
-If the EDITOR value is empty the default editor is micro available from
-<https://micro-editor.github.io/>.
 
 # EXAMPLES
 

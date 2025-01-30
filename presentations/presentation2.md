@@ -131,6 +131,14 @@ version, dateModified, datePublished and releaseNotes
 cme codemeta.json version dateModified datePublished releaseNotes
 ~~~
 
+# Update a CodeMeta attributes without prompts.
+
+Set version to "1.0.1"  and releaseNotes to "Bug fixes".
+
+~~~shell
+cme codemeta.json version=1.0.1 releaseNotes='Bug fixes'
+~~~
+
 # Updating other files
 
 Update the artifacts just like we created them.

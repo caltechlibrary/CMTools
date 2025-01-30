@@ -23,6 +23,8 @@
 <h1 id="synopsis">SYNOPSIS</h1>
 <p>cme CODEMETA_JSON [OPTION …]</p>
 <p>cme CODEMETA_JSON ATTRIBUTE_NAME [ATTRIBUTE_NAME …] [OPTION …]</p>
+<p>cme CODEMETA_JSON ATTRIBUTE_NAME=ATTRIBUTE_VALUE
+[ATTRIBUTE_NAME=ATTRIBUTE_VALUE …] [OPTION …]</p>
 <h1 id="description">DESCRIPTION</h1>
 <p>cme is a CodeMeta file editing tool. When called with only the
 CODEMETA_JSON filename it will read in the CodeMeta file, report any
@@ -40,6 +42,10 @@ available to edit in the order you’ve requested them to be edited.</p>
 <p>Two date fields are set if they are not previously set, “dateCreated”
 and “dateModified”. The “dateModified” is updated each time you change
 something in the CodeMeta file unless you explicitly edit it.</p>
+<p>For the simple fields like version, name, description, releaseNotes
+you can set their values directly on the command line using an equal
+sign between the attribute name and the value. If the value includes
+spaces you need to wrap them in quotes. See the EXAMPLE below.</p>
 <h1 id="option">OPTION</h1>
 <dl>
 <dt>-h, –help</dt>
@@ -62,18 +68,18 @@ class="uri">https://micro-editor.github.io/</a>.
 </dd>
 </dl>
 <h1 id="examples">EXAMPLES</h1>
-<p>Create a new CodeMeta file. In the following example the environment
-variable EDITOR will be used to invoke your editor for editing multi
-line CodeMeta attributes like author, contributor, maintainer, keywords,
-required software, etc. If no attribute names are included then you will
-be prompt for each attribute.</p>
-<pre><code>cme codemeta.json -e</code></pre>
+<p>Create a new CodeMeta file. If no attribute names are included then
+you will be prompt for each attribute.</p>
+<pre><code>cme codemeta.json</code></pre>
 <p>Set the version number in your codemeta.json file and add/replace the
 <code>.releaseNotes</code>.</p>
-<pre><code>cme codemeta.json version releaseNotes -e</code></pre>
-<p>Add authors to your codemeta.json using the “micro” editor. NOTE: you
-enter authors as YAML.</p>
-<pre><code>cme codemeta.json authors -e</code></pre>
+<pre><code>cme codemeta.json version releaseNotes</code></pre>
+<p>Set the version number to “0.0.1” and release notes to “Initial
+Concept” without being prompted.</p>
+<pre class="shell"><code>cme codemeta.json version=0.0.1 release=&#39;Initial Concept&#39;</code></pre>
+<p>If Micro Editor is installed you can edit the decription in micro
+using the “-e” option.</p>
+<pre class="shell"><code>cme codemeta.json description -e</code></pre>
 </section>
 </body>
 </html>
