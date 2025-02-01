@@ -1,183 +1,32 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<html lang="en-US">
 <head>
-  <meta charset="utf-8" />
-  <meta name="generator" content="pandoc" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>README</title>
-  <style>
-    html {
-      color: #1a1a1a;
-      background-color: #fdfdfd;
-    }
-    body {
-      margin: 0 auto;
-      max-width: 36em;
-      padding-left: 50px;
-      padding-right: 50px;
-      padding-top: 50px;
-      padding-bottom: 50px;
-      hyphens: auto;
-      overflow-wrap: break-word;
-      text-rendering: optimizeLegibility;
-      font-kerning: normal;
-    }
-    @media (max-width: 600px) {
-      body {
-        font-size: 0.9em;
-        padding: 12px;
-      }
-      h1 {
-        font-size: 1.8em;
-      }
-    }
-    @media print {
-      html {
-        background-color: white;
-      }
-      body {
-        background-color: transparent;
-        color: black;
-        font-size: 12pt;
-      }
-      p, h2, h3 {
-        orphans: 3;
-        widows: 3;
-      }
-      h2, h3, h4 {
-        page-break-after: avoid;
-      }
-    }
-    p {
-      margin: 1em 0;
-    }
-    a {
-      color: #1a1a1a;
-    }
-    a:visited {
-      color: #1a1a1a;
-    }
-    img {
-      max-width: 100%;
-    }
-    svg {
-      height: auto;
-      max-width: 100%;
-    }
-    h1, h2, h3, h4, h5, h6 {
-      margin-top: 1.4em;
-    }
-    h5, h6 {
-      font-size: 1em;
-      font-style: italic;
-    }
-    h6 {
-      font-weight: normal;
-    }
-    ol, ul {
-      padding-left: 1.7em;
-      margin-top: 1em;
-    }
-    li > ol, li > ul {
-      margin-top: 0;
-    }
-    blockquote {
-      margin: 1em 0 1em 1.7em;
-      padding-left: 1em;
-      border-left: 2px solid #e6e6e6;
-      color: #606060;
-    }
-    code {
-      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
-      font-size: 85%;
-      margin: 0;
-      hyphens: manual;
-    }
-    pre {
-      margin: 1em 0;
-      overflow: auto;
-    }
-    pre code {
-      padding: 0;
-      overflow: visible;
-      overflow-wrap: normal;
-    }
-    .sourceCode {
-     background-color: transparent;
-     overflow: visible;
-    }
-    hr {
-      background-color: #1a1a1a;
-      border: none;
-      height: 1px;
-      margin: 1em 0;
-    }
-    table {
-      margin: 1em 0;
-      border-collapse: collapse;
-      width: 100%;
-      overflow-x: auto;
-      display: block;
-      font-variant-numeric: lining-nums tabular-nums;
-    }
-    table caption {
-      margin-bottom: 0.75em;
-    }
-    tbody {
-      margin-top: 0.5em;
-      border-top: 1px solid #1a1a1a;
-      border-bottom: 1px solid #1a1a1a;
-    }
-    th {
-      border-top: 1px solid #1a1a1a;
-      padding: 0.25em 0.5em 0.25em 0.5em;
-    }
-    td {
-      padding: 0.125em 0.5em 0.25em 0.5em;
-    }
-    header {
-      margin-bottom: 4em;
-      text-align: center;
-    }
-    #TOC li {
-      list-style: none;
-    }
-    #TOC ul {
-      padding-left: 1.3em;
-    }
-    #TOC > ul {
-      padding-left: 0;
-    }
-    #TOC a:not(:hover) {
-      text-decoration: none;
-    }
-    code{white-space: pre-wrap;}
-    span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
-    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
-    /* The extra [class] is a hack that increases specificity enough to
-       override a similar rule in reveal.js */
-    ul.task-list[class]{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      font-size: inherit;
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1.6em;
-      vertical-align: middle;
-    }
-    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
-  </style>
+    <title>CMTools</title>
+    <link rel="stylesheet" href="/css/site.css">
 </head>
 <body>
-<h1 id="cmtools">CMTools</h1>
+<nav>
+<ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="index.html">README</a></li>
+    <li><a href="LICENSE">LICENSE</a></li>
+    <li><a href="INSTALL.html">INSTALL</a></li>
+    <li><a href="user_manual.html">User Manual</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="search.html">Search</a></li>
+    <li><a href="https://github.com/caltechlibrary/CMTools">GitHub</a></li>
+</ul>
+</nav>
+<section>
+<h1 id="codemeta-tools">CodeMeta Tools</h1>
 <p><a href="https://codemeta.github.io">CodeMeta</a> Tools provides a
 simple command line tool called <code>cmt</code> that can be used to
-generate project files and software artifacts. It provides a tool called
-<code>cme</code> to edit and manage the CodeMeta file.</p>
-<p>The project focuses on leveraging CodeMeta data, directory name and
-Git repo information for building and release software written in
-Python, Go, JavaScript or TypeScript. It was motivated by the practices
-in Caltech Library’s Digital Development Group.</p>
+generate project files and artifacts. It also provides a tool called
+<code>cme</code> to edit and manage the CodeMeta file. The project
+focuses on leveraging CodeMeta data, directory name and Git repo
+information for building and release software written in Python, Go,
+JavaScript or TypeScript. It was motivated by the practices in Caltech
+Library’s Digital Development Group.</p>
 <p>The tools are intended to be run from the project root directory.
 <code>cmt</code> expects the file path of your codemeta.json file as
 well as one or more target files to be generated. The target file’s
@@ -188,50 +37,84 @@ optionally the attributes of the CodeMeta object you wish to manage.</p>
 <p><code>cme</code> is used to create and manage “codemeta.json”.
 <code>cmt</code> is used to generate the following.</p>
 <ul>
-<li>README.md</li>
-<li>INSTALL.md</li>
-<li>installer.sh</li>
-<li>installer.ps1</li>
 <li>CITATION.cff</li>
 <li>version.ts, version.js, version.go or version.py</li>
 <li>about.md</li>
 <li>page.hbs (handlebars template) or page.tmpl (Pandoc template)</li>
 </ul>
-<h2 id="release-notes">Release Notes</h2>
+<h2 id="create-and-manage-your-file">Create and manage your file</h2>
+<p><code>cme</code> is for managing your “codemeta.json” file. If only
+the “codemeta.json” file is provided then you’ll be in an “interactive”
+mode. You will be prompted for each top level attribute. You either
+press enter and accept the current value or replace the value. For
+complex attributes like “author”, and “keywords”<a href="#fn1"
+class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> you
+use YAML notation followed by a line containing only a period to
+indicate completion. If you enter only the line with a period then the
+current value remains. Here’s an example of setting up to use
+<code>cme</code> to create and edit the “codemeta.json” file.</p>
+<pre class="shell"><code>cme codemeta.json</code></pre>
+<p>The will let you iterate over the top level CodeMeta object
+attributes. For multi line or list attributes your favorite editor will
+be used to create or update the values.</p>
+<p>Here’s an example of updating the version and
+<code>.releaseNotes</code> attributes but instead of the direct input
+you edit the value using the Micro Editor<a href="#fn2"
+class="footnote-ref" id="fnref2"
+role="doc-noteref"><sup>2</sup></a>.</p>
+<pre class="shell"><code>cme codemeta.json version releaseNotes -e</code></pre>
+<p>Since the version is short you’ll just be prompted to type in a new
+version string. You release notes maybe longer so for that you’ll drop
+into your editor.</p>
+<h2 id="create-a-version-file-for-typescript-go-and-python">Create a
+version file for TypeScript, Go and Python</h2>
+<p>The <code>cmt</code> command can render a version file suitable for
+TypeScript, JavaScript, Go and Python projects. The version file will
+contain version name, release hash, release date and license
+information. Here’s an example of rendering a “version.ts” for the
+CMTools project.</p>
+<pre class="shell"><code>cmt codemeta.json version.ts</code></pre>
+<p>For Go you would do,</p>
+<pre class="shell"><code>cmt codemeta.json version.go</code></pre>
+<p>and for Python.</p>
+<pre class="shell"><code>cmt codemeta.json version.py</code></pre>
+<h2 id="creating-an-about.md">Creating an about.md</h2>
+<p>The codemeta file contains sufficient information to rendering an
+about page for your project. Rendering a Markdown document for that
+purpose can be done with the following.</p>
+<pre class="shell"><code>cmt codemeta.json about.md</code></pre>
+<h2 id="create-a-simple-project-handlebars-template">Create a simple
+project handlebars template</h2>
+<p>A handlebars template can be generated from the codemeta.json as
+well.</p>
+<pre class="shell"><code>cmt codemeta.json page.hbs</code></pre>
+<p>This Handlebars template then can be used along with a handlebars
+template script to build the website from your repository.</p>
+<h2 id="create-a-project-pandoc-template">Create a project Pandoc
+template</h2>
+<p>A Pandoc template can be generated from the codemeta.json as
+well.</p>
+<pre><code>cmt codemeta.json page.tmpl</code></pre>
+<h2 id="additional-project-documentation">Additional Project
+Documentation</h2>
 <ul>
-<li>version: 0.0.12</li>
-<li>status: WIP</li>
-<li>released: 2025-01-29</li>
+<li><a href="user_manual.html">user manual</a></li>
+<li><a href="INSTALL.html">installation</a></li>
+<li><a href="LICENSE">license</a></li>
 </ul>
-<p>Added field=value support to cme</p>
-<h3 id="authors">Authors</h3>
-<ul>
-<li>Doiel, R. S.</li>
-</ul>
-<h3 id="contributors">Contributors</h3>
-<ul>
-<li>Morrell, Tom</li>
-</ul>
-<h3 id="maintainers">Maintainers</h3>
-<ul>
-<li>Doiel, R. S.</li>
-</ul>
-<h2 id="software-requirements">Software Requirements</h2>
-<ul>
-<li>Deno &gt;= 2.1.7</li>
-<li>GNU Make &gt;= 3.81</li>
-<li>Pandoc &gt;= 3.1</li>
-<li>Git &gt;= 2.39</li>
-</ul>
-<p>Uses: Deno</p>
-<h2 id="related-resources">Related resources</h2>
-<ul>
-<li><a
-href="git+https://github.com/caltechlibrary/CMTools/issues">Getting
-Help, Reporting bugs</a></li>
-<li><a href="https://data.caltech.edu/LICENSE">LICENSE</a></li>
-<li><a href="INSTALL.md">Installation</a></li>
-<li><a href="about.md">About</a></li>
-</ul>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>For a full list of complex fields see the user manual
+for <code>cme</code>.<a href="#fnref1" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>You need to have <a
+href="http://micro-editor.github.io">Micro Editor</a> installed for this
+to work.<a href="#fnref2" class="footnote-back"
+role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+</section>
 </body>
 </html>

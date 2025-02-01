@@ -34,9 +34,13 @@ targeting your Python, Go, JavaScript or TypeScript build process.
 
 {app_name} can be used to generate various code artifacts including the following.
 
+- README.md
+- INSTALL.md
 - CITATION.cff
 - about.md
 - version.py, version.go, version.js or version.ts
+- installer.sh
+- installer.ps1
 
 # OPTIONS
 

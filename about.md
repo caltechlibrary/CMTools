@@ -8,6 +8,10 @@ The tools are intended to be run from the project root directory. &#x60;cmt&#x60
 
 &#x60;cme&#x60; is used to create and manage &quot;codemeta.json&quot;. &#x60;cmt&#x60; is used to generate the following.
 
+- README.md
+- INSTALL.md
+- installer.sh
+- installer.ps1
 - CITATION.cff
 - version.ts, version.js, version.go or version.py
 - about.md
@@ -28,7 +32,7 @@ maintainer:
     orcid: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.12
+version: 0.0.13
 license_url: https://data.caltech.edu/LICENSE
 operating_system:
   - Linux
@@ -50,7 +54,7 @@ date_released: 2025-01-29
 About this software
 ===================
 
-## CMTools 0.0.12
+## CMTools 0.0.13
 
 ### Authors
 
@@ -72,6 +76,10 @@ The tools are intended to be run from the project root directory. &#x60;cmt&#x60
 
 &#x60;cme&#x60; is used to create and manage &quot;codemeta.json&quot;. &#x60;cmt&#x60; is used to generate the following.
 
+- README.md
+- INSTALL.md
+- installer.sh
+- installer.ps1
 - CITATION.cff
 - version.ts, version.js, version.go or version.py
 - about.md
