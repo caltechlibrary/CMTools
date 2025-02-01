@@ -75,8 +75,8 @@
     "Pandoc >= 3.1",
     "Git >= 2.39"
   ],
-  "version": "0.0.12",
+  "version": "0.0.13",
   "developmentStatus": "WIP",
   "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues",
-  "releaseNotes": "Added field=value support to cme"
+  "releaseNotes": "Added support to render README.md, INSTALL.md, installer.sh, installer.ps1"
 }
