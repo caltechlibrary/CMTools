@@ -80,6 +80,7 @@ async function main() {
   }
   let denoTasks: {[ key: string]: string } = {};
   for (let outputName of outputNames) {
+    // FIXME: Handle case of specific filenames, e.g. README.md, INSTALL.md
     format = getFormatFromExt(outputName, app.format);
     if (!isSupportedFormat(format)) {
       console.log(`unsupported format, "${format}"`);

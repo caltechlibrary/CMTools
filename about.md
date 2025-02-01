@@ -1,6 +1,17 @@
 ---
 title: CMTools
-abstract: "CM Tools provides codemeta tooling for codemeta crosswalks and tooling to use the codemeta.json in a build process."
+abstract: "[CodeMeta](https://codemeta.github.io) Tools provides a simple command line tool called &#x60;cmt&#x60; that can be used to generate project files and software artifacts. It provides a tool called &#x60;cme&#x60; to edit and manage the CodeMeta file.
+
+The project focuses on leveraging CodeMeta data, directory name and Git repo information for building and release software written in Python, Go, JavaScript or TypeScript. It was motivated by the practices in Caltech Library&#x27;s Digital Development Group.
+
+The tools are intended to be run from the project root directory. &#x60;cmt&#x60; expects the file path of your codemeta.json file as well as one or more target files to be generated. The target file&#x27;s extension determines the generated content. The tool can generate the following project files based on the contents of the codemeta.json file. &#x60;cme&#x60; expects the file path of your codemeta.json file and optionally the attributes of the CodeMeta object you wish to manage.
+
+&#x60;cme&#x60; is used to create and manage &quot;codemeta.json&quot;. &#x60;cmt&#x60; is used to generate the following.
+
+- CITATION.cff
+- version.ts, version.js, version.go or version.py
+- about.md
+- page.hbs (handlebars template) or page.tmpl (Pandoc template)"
 authors:
   - family_name: Doiel
     given_name: R. S.
@@ -53,7 +64,18 @@ About this software
 
 - R. S. Doiel https://orcid.org/0000-0003-0900-6903
 
-CM Tools provides codemeta tooling for codemeta crosswalks and tooling to use the codemeta.json in a build process.
+[CodeMeta](https://codemeta.github.io) Tools provides a simple command line tool called &#x60;cmt&#x60; that can be used to generate project files and software artifacts. It provides a tool called &#x60;cme&#x60; to edit and manage the CodeMeta file.
+
+The project focuses on leveraging CodeMeta data, directory name and Git repo information for building and release software written in Python, Go, JavaScript or TypeScript. It was motivated by the practices in Caltech Library&#x27;s Digital Development Group.
+
+The tools are intended to be run from the project root directory. &#x60;cmt&#x60; expects the file path of your codemeta.json file as well as one or more target files to be generated. The target file&#x27;s extension determines the generated content. The tool can generate the following project files based on the contents of the codemeta.json file. &#x60;cme&#x60; expects the file path of your codemeta.json file and optionally the attributes of the CodeMeta object you wish to manage.
+
+&#x60;cme&#x60; is used to create and manage &quot;codemeta.json&quot;. &#x60;cmt&#x60; is used to generate the following.
+
+- CITATION.cff
+- version.ts, version.js, version.go or version.py
+- about.md
+- page.hbs (handlebars template) or page.tmpl (Pandoc template)
 
 - License: <https://data.caltech.edu/LICENSE>
 - GitHub: <git+https://github.com/caltechlibrary/CMTools>
@@ -74,4 +96,7 @@ CM Tools provides codemeta tooling for codemeta crosswalks and tooling to use th
 ### Software Requirements
 
 - Deno &gt;&#x3D; 2.1.7
+- GNU Make &gt;&#x3D; 3.81
+- Pandoc &gt;&#x3D; 3.1
+- Git &gt;&#x3D; 2.39
 
