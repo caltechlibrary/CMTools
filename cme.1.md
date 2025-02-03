@@ -1,4 +1,4 @@
-%cme(1) user manual | version 0.0.13 f856ee6
+%cme(1) user manual | version 0.0.13 f15e804
 % R. S. Doiel
 % 2025-01-29
 
