@@ -1,4 +1,4 @@
-%cme(1) user manual | version 0.0.13 f15e804
+%cme(1) user manual | version 0.0.14 c63e0ce
 % R. S. Doiel
 % 2025-01-29
 
@@ -51,8 +51,8 @@ the value includes spaces you need to wrap them in quotes. See the EXAMPLE below
 : display license
 
 -e, --editor
-: use Micro Editor to edit attributes. Micro Editor is a cross platform
-text editor available from <https://micro-editor.github.io/>.
+: use the editor named in the EDITOR environment variable. If variable is unset then use 
+the default text editor. On Windows that is notepad.exe. On Linux and macOS it is nano.
 
 # EXAMPLES
 
@@ -76,7 +76,7 @@ without being prompted.
 cme codemeta.json version=0.0.1 release='Initial Concept'
 ~~~
 
-If Micro Editor is installed you can edit the decription in micro using the
+If Micro Editor is installed you can edit the description in micro using the
 "-e" option.
 
 ~~~shell

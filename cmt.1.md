@@ -1,4 +1,4 @@
-%cmt(1) user manual | version 0.0.13 f15e804
+%cmt(1) user manual | version 0.0.14 c63e0ce
 % R. S. Doiel
 % 2025-01-29
 
@@ -20,12 +20,12 @@ targeting your Python, Go, JavaScript or TypeScript build process.
 cmt can be used to generate various code artifacts including the following.
 
 - README.md
-- INSTALL.md
 - CITATION.cff
 - about.md
 - version.py, version.go, version.js or version.ts
-- installer.sh
-- installer.ps1
+- INSTALL.md (requires Git repository)
+- installer.sh (requires Git repository)
+- installer.ps1 (requires Git repository)
 
 # OPTIONS
 

@@ -35,12 +35,12 @@ targeting your Python, Go, JavaScript or TypeScript build process.
 {app_name} can be used to generate various code artifacts including the following.
 
 - README.md
-- INSTALL.md
 - CITATION.cff
 - about.md
 - version.py, version.go, version.js or version.ts
-- installer.sh
-- installer.ps1
+- INSTALL.md (requires Git repository)
+- installer.sh (requires Git repository)
+- installer.ps1 (requires Git repository)
 
 # OPTIONS
 
@@ -158,8 +158,8 @@ the value includes spaces you need to wrap them in quotes. See the EXAMPLE below
 : display license
 
 -e, --editor
-: use Micro Editor to edit attributes. Micro Editor is a cross platform
-text editor available from <https://micro-editor.github.io/>.
+: use the editor named in the EDITOR environment variable. If variable is unset then use 
+the default text editor. On Windows that is notepad.exe. On Linux and macOS it is nano.
 
 # EXAMPLES
 
@@ -183,7 +183,7 @@ without being prompted.
 {app_name} codemeta.json version=0.0.1 release='Initial Concept'
 ~~~
 
-If Micro Editor is installed you can edit the decription in micro using the
+If Micro Editor is installed you can edit the description in micro using the
 "-e" option.
 
 ~~~shell

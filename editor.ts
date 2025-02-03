@@ -3,8 +3,19 @@ import { PersonOrOrganization } from './person_or_organization.ts';
 import * as yaml from "@std/yaml";
 import { type StringifyOptions, type ParseOptions } from "@std/yaml/"
 
+function pickEditor(): string {
+  let editor: string | undefined = Deno.env.get('EDITOR');
+  if (editor === undefined) {
+    if (Deno.build.os === 'windows') {
+      editor = 'notepad.exe';
+    } else {
+      editor = 'nano';
+    }
+  }
+  return editor as string;
+}
 // editor.ts assumes Micro Editor in order to simplify testing.
-let editor = 'micro';
+let editor: string = pickEditor();
 
 function getAttributeByName(name: string): AttributeType | undefined {
     for (let attr of CodeMetaTerms) {
@@ -22,14 +33,14 @@ function getAttributeByName(name: string): AttributeType | undefined {
 // otherwise false is returned.
 export async function editFile(editor: string, filename: string): Promise<{ok: boolean, text: string}> {
     const decoder = new TextDecoder();
-    const command = new Deno.Command(editor, { args: [filename] });
-    const { code, stdout, stderr } = await command.output();
-    let txt = decoder.decode(stdout);
-    if (code === 0) {
-        return { ok: true, text: txt };
+    const command = new Deno.Command(editor, { args: [filename], stdin: "inherit", stdout: "inherit", stderr: "inherit" });
+    const child = command.spawn()
+    const status = await child.status;
+    if (status.success) {
+      let txt = await Deno.readTextFile(filename);
+      return {ok: status.success, text: txt};
     }
-    txt = decoder.decode(stderr);
-    return { ok: false, text: txt };
+    return {ok: status.success, text: ""};
 }
 
 // editTempData will take data in string form, write it

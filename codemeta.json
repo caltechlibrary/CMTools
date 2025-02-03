@@ -75,8 +75,8 @@
     "Pandoc >= 3.1",
     "Git >= 2.39"
   ],
-  "version": "0.0.13",
+  "version": "0.0.14",
   "developmentStatus": "WIP",
   "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues",
-  "releaseNotes": "Added support to render README.md, INSTALL.md, installer.sh, installer.ps1"
+  "releaseNotes": "The editor option now uses the editor named in the EDITOR environment variable."
 }
