@@ -62,9 +62,9 @@ display license
 </dd>
 <dt>-e, –editor</dt>
 <dd>
-use Micro Editor to edit attributes. Micro Editor is a cross platform
-text editor available from <a href="https://micro-editor.github.io/"
-class="uri">https://micro-editor.github.io/</a>.
+use the editor named in the EDITOR environment variable. If variable is
+unset then use the default text editor. On Windows that is notepad.exe.
+On Linux and macOS it is nano.
 </dd>
 </dl>
 <h1 id="examples">EXAMPLES</h1>
@@ -77,7 +77,7 @@ you will be prompt for each attribute.</p>
 <p>Set the version number to “0.0.1” and release notes to “Initial
 Concept” without being prompted.</p>
 <pre class="shell"><code>cme codemeta.json version=0.0.1 release=&#39;Initial Concept&#39;</code></pre>
-<p>If Micro Editor is installed you can edit the decription in micro
+<p>If Micro Editor is installed you can edit the description in micro
 using the “-e” option.</p>
 <pre class="shell"><code>cme codemeta.json description -e</code></pre>
 </section>
