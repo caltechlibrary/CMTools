@@ -133,8 +133,10 @@ notation.</p>
 <div id="create-initial-project-files" class="slide section level1">
 <h1>Create initial project files</h1>
 <p>“foo” is a TypeScript project so we can use <code>cmt</code> to
-create “version.ts”, CITATION.cff and about.md.</p>
-<pre class="shell"><code>cmt codemeta.json version.ts CITATION.cff about.md</code></pre>
+create “version.ts”, CITATION.cff, README.md, INSTALL.md installer.sh,
+installer.ps1 and about.md.</p>
+<pre class="shell"><code>cmt codemeta.json version.ts CITATION.cff README.md \\
+  INSTALL.md installer.sh installer.ps1 about.md</code></pre>
 </div>
 <div id="updating-codemeta-attributes" class="slide section level1">
 <h1>Updating CodeMeta attributes</h1>
@@ -150,7 +152,8 @@ class="slide section level1">
 <div id="updating-other-files" class="slide section level1">
 <h1>Updating other files</h1>
 <p>Update the artifacts just like we created them.</p>
-<pre class="shell"><code>cmt codemeta.json CITATION.cff about.md version.ts</code></pre>
+<pre class="shell"><code>cmt codemeta.json version.ts CITATION.cff README.md \\
+  INSTALL.md installer.sh installer.ps1 about.md</code></pre>
 </div>
 <div id="something-to-consider" class="slide section level1">
 <h1>Something to consider</h1>

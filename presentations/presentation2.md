@@ -16,7 +16,7 @@ date: 2025-01-29
 section-titles: false
 toc: true
 keywords: [ "CodeMeta", "projects", "build" ]
-url: "https://caltechlibrary.github.io/CMTools/presentation"
+url: "https://caltechlibrary.github.io/CMTools/presentations/presentation2.html"
 ---
 
 # What is CMTools?
@@ -117,10 +117,12 @@ Some attributes need to be entered as YAML.
 # Create initial project files
 
 "foo" is a TypeScript project so we can use `cmt` to
-create "version.ts", CITATION.cff and about.md.
+create "version.ts", CITATION.cff, README.md, INSTALL.md
+installer.sh, installer.ps1 and about.md.
 
 ~~~shell
-cmt codemeta.json version.ts CITATION.cff about.md
+cmt codemeta.json version.ts CITATION.cff README.md \\
+  INSTALL.md installer.sh installer.ps1 about.md
 ~~~
 
 # Updating CodeMeta attributes
@@ -144,7 +146,8 @@ cme codemeta.json version=1.0.1 releaseNotes='Bug fixes'
 Update the artifacts just like we created them.
 
 ~~~shell
-cmt codemeta.json CITATION.cff about.md version.ts
+cmt codemeta.json version.ts CITATION.cff README.md \\
+  INSTALL.md installer.sh installer.ps1 about.md
 ~~~
 
 # Something to consider
