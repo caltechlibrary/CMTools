@@ -35,8 +35,8 @@ export function getFormatFromExt(
         return "pdtmpl";
       case ".pdtmpl":
         return "pdtmpl";
-      case ".bash":
-        return "bash";
+      case ".sh":
+        return "sh";
       case ".ps1":
         return "ps1";
     }
@@ -48,7 +48,7 @@ export function isSupportedFormat(format: string | undefined): boolean {
   if (format === undefined) {
     return false;
   }
-  return ["cff", "ts", "js", "go", "py", "md", "hbs", "pdtmpl", "bash", "ps1", "readme.md", "install.md"].indexOf(format) > -1;
+  return ["cff", "ts", "js", "go", "py", "md", "hbs", "pdtmpl", "sh", "ps1", "readme.md", "install.md"].indexOf(format) > -1;
 }
 
 // FIXME: need to handle the special case renderings for README.md,
@@ -104,8 +104,8 @@ export async function transform(
       return renderTemplate(obj, pyTemplateText);
     case "md":
       return renderTemplate(obj, mdTemplateText);
-    case "bash":
-        return renderTemplate(obj, bashInstallerText);
+    case "sh":
+        return renderTemplate(obj, shInstallerText);
     case "ps1":
       return renderTemplate(obj, ps1InstallerText);
     case "hbs":
@@ -336,7 +336,7 @@ $$content$$
 </body>
 </html>`;
 
-const bashInstallerText = `#!/bin/sh
+const shInstallerText = `#!/bin/sh
 
 #
 # Set the package name and version to install

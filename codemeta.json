@@ -70,13 +70,13 @@
   "relatedLink": "https://caltechlibrary.github.io/CMTools",
   "runtimePlatform": "Deno",
   "softwareRequirements": [
-    "Deno >= 2.1.7",
+    "Deno >= 2.1.9",
     "GNU Make >= 3.81",
-    "Pandoc >= 3.1",
-    "Git >= 2.39"
+    "Pandoc >= 3.1,Git >= 2.39",
+    "CMTools >= 0.0.14"
   ],
-  "version": "0.0.14",
+  "version": "0.0.15",
   "developmentStatus": "WIP",
   "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues",
-  "releaseNotes": "The editor option now uses the editor named in the EDITOR environment variable."
+  "releaseNotes": "Fixed handling of generating installer.sh."
 }
