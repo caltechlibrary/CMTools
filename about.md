@@ -32,7 +32,7 @@ maintainer:
     orcid: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.14
+version: 0.0.15
 license_url: https://data.caltech.edu/LICENSE
 operating_system:
   - Linux
@@ -54,7 +54,7 @@ date_released: 2025-01-29
 About this software
 ===================
 
-## CMTools 0.0.14
+## CMTools 0.0.15
 
 ### Authors
 
@@ -103,8 +103,8 @@ The tools are intended to be run from the project root directory. &#x60;cmt&#x60
 
 ### Software Requirements
 
-- Deno &gt;&#x3D; 2.1.7
+- Deno &gt;&#x3D; 2.1.9
 - GNU Make &gt;&#x3D; 3.81
-- Pandoc &gt;&#x3D; 3.1
-- Git &gt;&#x3D; 2.39
+- Pandoc &gt;&#x3D; 3.1,Git &gt;&#x3D; 2.39
+- CMTools &gt;&#x3D; 0.0.14
 
