@@ -42,6 +42,7 @@ async function main() {
     Deno.exit(1);
   }
   let format = app.format;
+  const isDeno = app.deno;
   let inputName: string = (args.length > 0) ? `${args.shift()}` : "";
   let outputNames: string[] = [];
   for (let outputName of args) {
@@ -70,7 +71,7 @@ async function main() {
       console.log(`unsupported format, "${format}"`);
       Deno.exit(1);
     }
-    let txt: string | undefined = await transform(cm, format);
+    let txt: string | undefined = await transform(cm, format, isDeno);
     if (txt === undefined) {
       console.log(`unsupported transform, "${format}"`);
       Deno.exit(1);
@@ -81,12 +82,12 @@ async function main() {
   let denoTasks: {[ key: string]: string } = {};
   for (let outputName of outputNames) {
     // FIXME: Handle case of specific filenames, e.g. README.md, INSTALL.md
-    format = getFormatFromExt(outputName, app.format);
+    format = getFormatFromExt(outputName, format);
     if (!isSupportedFormat(format)) {
       console.log(`unsupported format, "${format}"`);
       Deno.exit(1);
     }
-    let txt: string | undefined = await transform(cm, format);
+    let txt: string | undefined = await transform(cm, format, isDeno);
     if (txt === undefined) {
       console.log(`unsupported transform, "${format}"`);
       Deno.exit(1);
@@ -97,7 +98,7 @@ async function main() {
     }
   }
   // Handle updating the deno.json file.
-  if (app.deno) {
+  if (isDeno) {
     let src: string | undefined = undefined;
     let doBackup: boolean = true;
     try {

@@ -128,7 +128,7 @@ export function getStringFromObject(obj: {[key : string]: any}, key: string): st
     return undefined;
   }
   let src: string | undefined = undefined;
-  if ([ "author", "contributor", "maintainer", "funder", "keywords", "operatingSystem", "softwareRequired" ].indexOf(key) > -1) {
+  if ([ "author", "contributor", "maintainer", "funder", "keywords", "operatingSystem", "softwareRequirements" ].indexOf(key) > -1) {
     try {
       let yamlOpt: StringifyOptions = {};
       yamlOpt.skipInvalid = true;

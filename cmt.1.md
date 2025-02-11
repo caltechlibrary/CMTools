@@ -1,6 +1,6 @@
-%cmt(1) user manual | version 0.0.15 45037c1
+%cmt(1) user manual | version 0.0.16 85210a8
 % R. S. Doiel
-% 2025-01-29
+% 2025-02-11
 
 # NAME
 
@@ -23,9 +23,10 @@ cmt can be used to generate various code artifacts including the following.
 - CITATION.cff
 - about.md
 - version.py, version.go, version.js or version.ts
-- INSTALL.md (requires Git repository)
-- installer.sh (requires Git repository)
-- installer.ps1 (requires Git repository)
+- INSTALL.md (requires Git repository and LICENSE file)
+- installer.sh (requires Git repository and LICENSE file)
+- installer.ps1 (requires Git repository and LICENSE file)
+- Makefile (requires Git repository and LICENSE file)
 
 # OPTIONS
 
@@ -44,7 +45,8 @@ Options come as the last parameter(s) on the command line.
 : output format to use when piping the output to another programming.
 
 -d, --deno
-: update the deno.json file tasks based on output files requested.
+: update the deno.json file tasks based on output files requested
+and used to generate a Deno Makefile.
 
 # EXAMPLES
 

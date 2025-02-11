@@ -34,9 +34,10 @@ following.</p>
 <li>CITATION.cff</li>
 <li>about.md</li>
 <li>version.py, version.go, version.js or version.ts</li>
-<li>INSTALL.md (requires Git repository)</li>
-<li>installer.sh (requires Git repository)</li>
-<li>installer.ps1 (requires Git repository)</li>
+<li>INSTALL.md (requires Git repository and LICENSE file)</li>
+<li>installer.sh (requires Git repository and LICENSE file)</li>
+<li>installer.ps1 (requires Git repository and LICENSE file)</li>
+<li>Makefile (requires Git repository and LICENSE file)</li>
 </ul>
 <h1 id="options">OPTIONS</h1>
 <p>Options come as the last parameter(s) on the command line.</p>
@@ -59,7 +60,8 @@ output format to use when piping the output to another programming.
 </dd>
 <dt>-d, –deno</dt>
 <dd>
-update the deno.json file tasks based on output files requested.
+update the deno.json file tasks based on output files requested and used
+to generate a Deno Makefile.
 </dd>
 </dl>
 <h1 id="examples">EXAMPLES</h1>

@@ -8,7 +8,7 @@ keywords:
 
 # Bootstrapping a TypeScript project with CodeMeta Tools
 
-While Deno provides most tooling for bootstrapping a TypeScript project there are some things it doesn't handle directly.  In my Caltech Library project I like to include a CITATION.cff, about.md and have a simple Pandoc template for generating the website for the project.  These can all be accomplished with CodeMeta Tools' `cmt` command.
+While Deno provides most tooling for bootstrapping a TypeScript project there are some things it doesn't handle directly.  In my Caltech Library project I like to include a CITATION.cff, about.md, Makefile and have a simple Pandoc template for generating the website for the project.  These can all be accomplished with CodeMeta Tools' `cmt` command.
 
 ## Typical Tasks
 
@@ -17,10 +17,10 @@ In the old days I'd so this for a TypeScript project setup.
 1. create a directory to hold your project change into that directory
 2. Run `git init` in the directory
 3. Run `deno init` in the directory
-4. Write a basic README.md, INSTALL.md and copy in the appropriate LICENSE file
+4. Write a basic README.md, INSTALL.md, Makefile and copy in the appropriate LICENSE file
 5. Create a codemeta.json file
 6. Create an about.md page
-7. Create a Pandoc template (e.g. page.tmpl)
+7. Create a Pandoc template (e.g. page.tmpl and copy over the codemeta Pandoc templates)
 8. Create a CITATION.cff file
 9. Create a version.ts file for the project version, Git hash and license info
 10. Start documenting and coding your project.
@@ -42,6 +42,7 @@ micro codemeta.json
 micro about.md
 # copy then edit a Pandoc template for building website
 cp ../<SOME_OTHER_PROJECT>/page.tmpl ./
+cp ../<SOME_PTHER_PROJECT>/codmeta-*.tmpl ./
 micro page.tmpl
 codemeta2cff
 # I usually write a Makefile to generate version.ts
@@ -61,11 +62,9 @@ The basic steps.
 ~~~shell
 mkdir myproject && cd myproject
 git init
-deno init
-touch README.md INSTALL.md
 cp ../<SOME_OTHER_PROJECT>/LICENSE ./
 # Edit the three files.
-micro README.md INSTALL.md LICENSE
+micro README.md INSTALL.md LICENSE Makefile
 firefox https://codemeta.github.io/codemeta-generator/
 # paste the result into my codemeta.json file
 micro codemeta.json
@@ -75,19 +74,25 @@ Now you shortcut the rest of the effort using generated content with `cmt`. For 
 that would look like.
 
 ~~~shell
-cmt codemeta.json about.md page.tmpl CITATION.cff version.ts
+mkdir myproject && cd myproject
+git init
+cp ../<SOME_OTHER_PROJECT>/LICENSE ./
+firefox https://codemeta.github.io/codemeta-generator/
+cmt codemeta.json about.md page.tmpl CITATION.cff version.ts Makefile --deno
+# Edit the these files as needed
+micro README.md INSTALL.md LICENSE Makefile
 ~~~
 
-NOTE: You can individual create the files using `cmt` like this.
+NOTE: The individual files create the files using `cmt` like this. The `--deno` options sets things up for working with Deno.
 
-For deno projects you can also generate tasks to manage your project with the `--deno`
-option as the last command line parameter.
+You can regenerate the files that changes on release with the following.
 
 ~~~shell
-cmt codemeta.json version.ts about.md CITATION.cff --deno
+cmt codemeta.json version.ts about.md CITATION.cff
 ~~~
 
-This would result in a deno.json task element like the following.
+The `--deno` option choose the Makefile generated if this is required and it
+update the `deno.json` file to include the following tasks.
 
 ~~~json
 {

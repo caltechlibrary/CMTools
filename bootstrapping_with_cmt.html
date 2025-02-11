@@ -23,10 +23,10 @@ id="bootstrapping-a-typescript-project-with-codemeta-tools">Bootstrapping
 a TypeScript project with CodeMeta Tools</h1>
 <p>While Deno provides most tooling for bootstrapping a TypeScript
 project there are some things it doesn’t handle directly. In my Caltech
-Library project I like to include a CITATION.cff, about.md and have a
-simple Pandoc template for generating the website for the project. These
-can all be accomplished with CodeMeta Tools’ <code>cmt</code>
-command.</p>
+Library project I like to include a CITATION.cff, about.md, Makefile and
+have a simple Pandoc template for generating the website for the
+project. These can all be accomplished with CodeMeta Tools’
+<code>cmt</code> command.</p>
 <h2 id="typical-tasks">Typical Tasks</h2>
 <p>In the old days I’d so this for a TypeScript project setup.</p>
 <ol type="1">
@@ -34,11 +34,12 @@ command.</p>
 directory</li>
 <li>Run <code>git init</code> in the directory</li>
 <li>Run <code>deno init</code> in the directory</li>
-<li>Write a basic README.md, INSTALL.md and copy in the appropriate
-LICENSE file</li>
+<li>Write a basic README.md, INSTALL.md, Makefile and copy in the
+appropriate LICENSE file</li>
 <li>Create a codemeta.json file</li>
 <li>Create an about.md page</li>
-<li>Create a Pandoc template (e.g. page.tmpl)</li>
+<li>Create a Pandoc template (e.g. page.tmpl and copy over the codemeta
+Pandoc templates)</li>
 <li>Create a CITATION.cff file</li>
 <li>Create a version.ts file for the project version, Git hash and
 license info</li>
@@ -60,6 +61,7 @@ micro codemeta.json
 micro about.md
 # copy then edit a Pandoc template for building website
 cp ../&lt;SOME_OTHER_PROJECT&gt;/page.tmpl ./
+cp ../&lt;SOME_PTHER_PROJECT&gt;/codmeta-*.tmpl ./
 micro page.tmpl
 codemeta2cff
 # I usually write a Makefile to generate version.ts
@@ -88,24 +90,30 @@ cmt.</p>
 <p>The basic steps.</p>
 <pre class="shell"><code>mkdir myproject &amp;&amp; cd myproject
 git init
-deno init
-touch README.md INSTALL.md
 cp ../&lt;SOME_OTHER_PROJECT&gt;/LICENSE ./
 # Edit the three files.
-micro README.md INSTALL.md LICENSE
+micro README.md INSTALL.md LICENSE Makefile
 firefox https://codemeta.github.io/codemeta-generator/
 # paste the result into my codemeta.json file
 micro codemeta.json</code></pre>
 <p>Now you shortcut the rest of the effort using generated content with
 <code>cmt</code>. For TypeScript that would look like.</p>
-<pre class="shell"><code>cmt codemeta.json about.md page.tmpl CITATION.cff version.ts</code></pre>
-<p>NOTE: You can individual create the files using <code>cmt</code> like
-this.</p>
-<p>For deno projects you can also generate tasks to manage your project
-with the <code>--deno</code> option as the last command line
-parameter.</p>
-<pre class="shell"><code>cmt codemeta.json version.ts about.md CITATION.cff --deno</code></pre>
-<p>This would result in a deno.json task element like the following.</p>
+<pre class="shell"><code>mkdir myproject &amp;&amp; cd myproject
+git init
+cp ../&lt;SOME_OTHER_PROJECT&gt;/LICENSE ./
+firefox https://codemeta.github.io/codemeta-generator/
+cmt codemeta.json about.md page.tmpl CITATION.cff version.ts Makefile --deno
+# Edit the these files as needed
+micro README.md INSTALL.md LICENSE Makefile</code></pre>
+<p>NOTE: The individual files create the files using <code>cmt</code>
+like this. The <code>--deno</code> options sets things up for working
+with Deno.</p>
+<p>You can regenerate the files that changes on release with the
+following.</p>
+<pre class="shell"><code>cmt codemeta.json version.ts about.md CITATION.cff</code></pre>
+<p>The <code>--deno</code> option choose the Makefile generated if this
+is required and it update the <code>deno.json</code> file to include the
+following tasks.</p>
 <div class="sourceCode" id="cb5"><pre
 class="sourceCode json"><code class="sourceCode json"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;tasks&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
