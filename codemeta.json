@@ -76,8 +76,8 @@
     "Git >= 2.39",
     "CMTools >= 0.0.16"
   ],
-  "version": "0.0.16",
+  "version": "0.0.17",
   "developmentStatus": "WIP",
   "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues",
-  "releaseNotes": "Fixed typo in editor setup for softwareRequiremetns. GitHub issue #6.\nAdded experimental generation of Makefile for Go or Deno projects."
+  "releaseNotes": "Fixed formatting in about.md generation."
 }

@@ -272,23 +272,25 @@ About this software
 
 ## {{name}} {{version}}
 
+{{#if releaseNotes}}{{releaseNotes}}{{/if}}
+
 {{#if author}}
 ### Authors
 
 {{#each author}}
-- {{givenName}} {{familyName}} {{id}}{{/each}}{{/if}}
+- {{givenName}} {{familyName}}{{#if id}}, ORCID: <{{id}}>{{/if}}{{/each}}{{/if}}
 
 {{#if contributor}}
 ### Contributors
 
 {{#each contributor}}
-- {{givenName}} {{familyName}} {{id}}{{/each}}{{/if}}
+- {{givenName}} {{familyName}}{{#if id}}, ORCID: <{{id}}>{{/if}}{{/each}}{{/if}}
 
 {{#if maintainer}}
 ### Maintainers
 
 {{#each maintainer}}
-- {{givenName}} {{familyName}} {{id}}{{/each}}{{/if}}
+- {{givenName}} {{familyName}}{{#if id}}, ORCID: <{{id}}>{{/if}}{{/each}}{{/if}}
 
 {{#if description}}{{description}}{{/if}}
 
@@ -570,7 +572,7 @@ if (!(Test-Path $$ZIPFILE)) {
 
 const readmeMdText = `
 
-# {{name}}
+# {{name}} {{version}}
 
 {{{description}}}
 
@@ -689,8 +691,6 @@ PACKAGE = {{name}}
 
 PROGRAMS = <PROGRAM_LIST_GOES_HERE>
 
-TS_MODS = <DEMO_MODULE_LIST_GOES_HERE>
-
 GIT_GROUP = {{git_org_or_person}}
 
 VERSION = $(shell grep '"version":' codemeta.json | cut -d\"  -f 4)
@@ -719,8 +719,6 @@ ifeq ($(OS), Windows)
 endif
 
 PREFIX = $(HOME)
-
-TS_MODS = $(shell ls -1 *.ts | grep -v _test.ts | grep -v deps.ts | grep -v version.ts)
 
 build: version.ts CITATION.cff about.md bin compile installer.sh installer.ps1
 
