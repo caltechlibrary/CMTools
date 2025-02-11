@@ -56,7 +56,10 @@ About this software
 
 ## CMTools 0.0.17
 
-Fixed formatting in about.md generation. Improvements to the Deno Makefile output.
+Fixed formatting in about.md generation.
+Improved to the Deno Makefile output.
+Colorized error output.
+Add option &#x60;--init&#x60; to simply bootstrapping python, Go, TypeScript and JavaScript projects.
 
 ### Authors
 

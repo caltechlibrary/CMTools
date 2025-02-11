@@ -1,4 +1,4 @@
-%cmt(1) user manual | version 0.0.17 bb1223f
+%cmt(1) user manual | version 0.0.17 ff1d1a8
 % R. S. Doiel
 % 2025-02-11
 
@@ -47,6 +47,10 @@ Options come as the last parameter(s) on the command line.
 -d, --deno
 : update the deno.json file tasks based on output files requested
 and used to generate a Deno Makefile.
+
+-i, --init PROGRAMMING_LANGUAGE
+: initialize the project based on a programming language name.
+Supported languages are "python", "go", "javascript" and "typescript".
 
 # EXAMPLES
 

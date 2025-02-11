@@ -79,5 +79,5 @@
   "version": "0.0.17",
   "developmentStatus": "WIP",
   "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues",
-  "releaseNotes": "Fixed formatting in about.md generation. Improvements to the Deno Makefile output. Colorized error output."
+  "releaseNotes": "Fixed formatting in about.md generation.\nImproved to the Deno Makefile output.\nColorized error output.\nAdd option `--init` to simply bootstrapping python, Go, TypeScript and JavaScript projects."
 }

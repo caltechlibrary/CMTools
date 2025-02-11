@@ -1,5 +1,5 @@
 import * as path from "@std/path";
-import * as yaml from "@std/yaml";
+//import * as yaml from "@std/yaml";
 import Handlebars from "npm:handlebars";
 import { CodeMeta } from "./codemeta.ts";
 import { gitOrgOrPerson, gitReleaseHash } from "./gitcmds.ts";

@@ -9,10 +9,10 @@ urlcolor: blue
 linkstyle: bold
 aspectratio: 169
 createDate: 2025-01-29
-updateDate: 2025-01-29
+updateDate: 2025-02-11
 pubDate: TBD
 place: TBD
-date: 2025-01-29
+date: 2025-02-11
 section-titles: false
 toc: true
 keywords: [ "CodeMeta", "projects", "build" ]
@@ -67,7 +67,7 @@ cmt --help | more
 - Create a directory and change into it
 - Create a "LICENSE" file
 - Create a new `codemeta.json` file
-- Create project files
+- Generate project files
 
 # create a directory and change into it
 
@@ -116,14 +116,23 @@ Some attributes need to be entered as YAML.
 
 # Create initial project files
 
-"foo" is a TypeScript project so we can use `cmt` to
-create "version.ts", CITATION.cff, README.md, INSTALL.md
-installer.sh, installer.ps1 and about.md.
+`cmt` supports an `--init` option identifying projects
+by their primary programming language. Currently supported
+are Python, Go, JavaScript and TypeScript. In our example
+we're setting up for a Deno+TypeScript project.
 
 ~~~shell
-cmt codemeta.json version.ts CITATION.cff README.md \\
-  INSTALL.md installer.sh installer.ps1 about.md
+cmt codemeta.json --init typescript
 ~~~
+
+# Create initial project files
+
+`cmt codemeta.json --init typescript` yields the following
+files.
+
+- README.md, about.md and CITATION.cff
+- INSTALL.md, installer.ps1 and installer.sh
+- version.ts and Makefile
 
 # Updating CodeMeta attributes
 
@@ -143,10 +152,11 @@ cme codemeta.json version=1.0.1 releaseNotes='Bug fixes'
 
 # Updating other files
 
-Update the artifacts just like we created them.
+Update the artifacts by explicitly passing their
+names on the command line.
 
 ~~~shell
-cmt codemeta.json version.ts CITATION.cff README.md \\
+cmt codemeta.json version.ts CITATION.cff \\
   INSTALL.md installer.sh installer.ps1 about.md
 ~~~
 

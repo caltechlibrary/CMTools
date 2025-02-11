@@ -7,7 +7,7 @@
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <meta name="generator" content="pandoc" />
   <meta name="author" content="R. S. Doiel, rsdoiel@caltech.edu" />
-  <meta name="date" content="2025-01-29" />
+  <meta name="date" content="2025-02-11" />
   <meta name="keywords" content="CodeMeta, projects, build" />
   <title>CMTools: cme and cmt</title>
   <style type="text/css">
@@ -42,7 +42,7 @@ class="email">rsdoiel@caltech.edu</a>
   <p class="institute">
 <p>Caltech Library, Digital Library Development</p>
   </p>
-  <p class="date">2025-01-29</p>
+  <p class="date">2025-02-11</p>
 </div>
 <div class="slide" id="TOC">
 
@@ -95,7 +95,7 @@ class="slide section level1">
 <li>Create a directory and change into it</li>
 <li>Create a “LICENSE” file</li>
 <li>Create a new <code>codemeta.json</code> file</li>
-<li>Create project files</li>
+<li>Generate project files</li>
 </ul>
 </div>
 <div id="create-a-directory-and-change-into-it"
@@ -132,11 +132,21 @@ notation.</p>
 </div>
 <div id="create-initial-project-files" class="slide section level1">
 <h1>Create initial project files</h1>
-<p>“foo” is a TypeScript project so we can use <code>cmt</code> to
-create “version.ts”, CITATION.cff, README.md, INSTALL.md installer.sh,
-installer.ps1 and about.md.</p>
-<pre class="shell"><code>cmt codemeta.json version.ts CITATION.cff README.md \\
-  INSTALL.md installer.sh installer.ps1 about.md</code></pre>
+<p><code>cmt</code> supports an <code>--init</code> option identifying
+projects by their primary programming language. Currently supported are
+Python, Go, JavaScript and TypeScript. In our example we’re setting up
+for a Deno+TypeScript project.</p>
+<pre class="shell"><code>cmt codemeta.json --init typescript</code></pre>
+</div>
+<div id="create-initial-project-files-1" class="slide section level1">
+<h1>Create initial project files</h1>
+<p><code>cmt codemeta.json --init typescript</code> yields the following
+files.</p>
+<ul>
+<li>README.md, about.md and CITATION.cff</li>
+<li>INSTALL.md, installer.ps1 and installer.sh</li>
+<li>version.ts and Makefile</li>
+</ul>
 </div>
 <div id="updating-codemeta-attributes" class="slide section level1">
 <h1>Updating CodeMeta attributes</h1>
@@ -151,8 +161,9 @@ class="slide section level1">
 </div>
 <div id="updating-other-files" class="slide section level1">
 <h1>Updating other files</h1>
-<p>Update the artifacts just like we created them.</p>
-<pre class="shell"><code>cmt codemeta.json version.ts CITATION.cff README.md \\
+<p>Update the artifacts by explicitly passing their names on the command
+line.</p>
+<pre class="shell"><code>cmt codemeta.json version.ts CITATION.cff \\
   INSTALL.md installer.sh installer.ps1 about.md</code></pre>
 </div>
 <div id="something-to-consider" class="slide section level1">

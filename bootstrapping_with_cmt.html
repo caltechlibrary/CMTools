@@ -91,40 +91,43 @@ cmt.</p>
 <pre class="shell"><code>mkdir myproject &amp;&amp; cd myproject
 git init
 cp ../&lt;SOME_OTHER_PROJECT&gt;/LICENSE ./
-# Edit the three files.
-micro README.md INSTALL.md LICENSE Makefile
 firefox https://codemeta.github.io/codemeta-generator/
 # paste the result into my codemeta.json file
-micro codemeta.json</code></pre>
-<p>Now you shortcut the rest of the effort using generated content with
-<code>cmt</code>. For TypeScript that would look like.</p>
-<pre class="shell"><code>mkdir myproject &amp;&amp; cd myproject
-git init
-cp ../&lt;SOME_OTHER_PROJECT&gt;/LICENSE ./
-firefox https://codemeta.github.io/codemeta-generator/
-cmt codemeta.json about.md page.tmpl CITATION.cff version.ts Makefile --deno
-# Edit the these files as needed
-micro README.md INSTALL.md LICENSE Makefile</code></pre>
-<p>NOTE: The individual files create the files using <code>cmt</code>
-like this. The <code>--deno</code> options sets things up for working
-with Deno.</p>
-<p>You can regenerate the files that changes on release with the
-following.</p>
+micro codemeta.json
+cmt codemeta.json --init typescript
+micro README.md Makefile</code></pre>
+<p>That generates the following files for your project.</p>
+<ul>
+<li>version.ts</li>
+<li>README.md</li>
+<li>about.md</li>
+<li>INSTALL.md</li>
+<li>installer.ps1</li>
+<li>installer.sh</li>
+<li>CITATION.cff</li>
+<li>Makefile</li>
+</ul>
+<p><code>cmt</code> assume TypeScript and JavaScript are used with Deno.
+The <code>deno.json</code> file be updated with a task to manage
+regenerating those files that are likely to update with each release of
+your software, i.e. <code>deno task gen-code</code> will update those
+files.</p>
+<p>You can manually regenerate the files by listing them on the command
+line explicitly.</p>
 <pre class="shell"><code>cmt codemeta.json version.ts about.md CITATION.cff</code></pre>
-<p>The <code>--deno</code> option choose the Makefile generated if this
-is required and it update the <code>deno.json</code> file to include the
+<p>The <code>--deno</code> is set automatically when you choose
+<code>--init typescript</code> or <code>--init javascript</code>. This
+will cause the <code>deno.json</code> to be update to include the
 following tasks.</p>
-<div class="sourceCode" id="cb5"><pre
-class="sourceCode json"><code class="sourceCode json"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;tasks&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;gen-code&quot;</span><span class="fu">:</span> <span class="st">&quot;deno task version.ts ; deno task about.md ; deno task CITATION.cff&quot;</span><span class="fu">,</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;version.ts&quot;</span><span class="fu">:</span> <span class="st">&quot;cmt codemeta.json version.ts&quot;</span><span class="fu">,</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;about.md&quot;</span><span class="fu">:</span> <span class="st">&quot;cmt codemeta.json about.ts&quot;</span><span class="fu">,</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;CITATION.cff&quot;</span><span class="fu">:</span> <span class="st">&quot;cmt codemeta.json CITATION.cff&quot;</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
-<p>This means I can run <code>deno task gen-code</code> to update these
-files when I update my codemeta.json.</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;tasks&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;gen-code&quot;</span><span class="fu">:</span> <span class="st">&quot;deno task version.ts ; deno task about.md ; deno task CITATION.cff&quot;</span><span class="fu">,</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;version.ts&quot;</span><span class="fu">:</span> <span class="st">&quot;cmt codemeta.json version.ts&quot;</span><span class="fu">,</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;about.md&quot;</span><span class="fu">:</span> <span class="st">&quot;cmt codemeta.json about.ts&quot;</span><span class="fu">,</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;CITATION.cff&quot;</span><span class="fu">:</span> <span class="st">&quot;cmt codemeta.json CITATION.cff&quot;</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
 </section>
 </body>
 </html>

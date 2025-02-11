@@ -14,6 +14,7 @@ async function main() {
       version: "v",
       format: "f",
       deno: "d",
+      init: "i",
     },
     default: {
       help: false,
@@ -21,6 +22,7 @@ async function main() {
       license: false,
       format: "",
       deno: false,
+      init: "",
     },
   });
   const args = app._;
@@ -46,9 +48,40 @@ async function main() {
   const isDeno = app.deno;
   let inputName: string = (args.length > 0) ? `${args.shift()}` : "";
   let outputNames: string[] = [];
-  for (let outputName of args) {
-    outputNames.push(`${outputName}`);
-  } 
+  if (app.init !== '') {
+    outputNames = [
+      "README.md", "about.md", "CITATION.cff",
+      "INSTALL.md", "installer.ps1", "installer.sh"
+    ];
+    switch (app.init.toLowerCase()) {
+      case "python":
+        outputNames.push("version.py");
+        break;
+      case "go":
+        outputNames.push("version.go");
+        outputNames.push("Makefile");
+        break;
+      case "typescript":
+        outputNames.push("version.ts");
+        outputNames.push("Makefile");
+        app.deno = true;
+        break;
+      case "javascript":
+        outputNames.push("version.js");
+        outputNames.push("Makefile");
+        app.deno = true;
+        break;
+      default:
+        console.log(`languaged not supported by init option, %c${app.init}`, ERROR_COLOR);
+        Deno.exit(1);
+        break;
+    }
+  }
+  for (const outputName of args) {
+    if (outputNames.indexOf(`${outputName}`) === -1) {
+      outputNames.push(`${outputName}`);
+    }
+  }
   if (inputName === "") {
     console.log("error: %cmissing filepath to codemeta.json", ERROR_COLOR);
     Deno.exit(1);

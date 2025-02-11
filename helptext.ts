@@ -63,6 +63,10 @@ Options come as the last parameter(s) on the command line.
 : update the deno.json file tasks based on output files requested
 and used to generate a Deno Makefile.
 
+-i, --init PROGRAMMING_LANGUAGE
+: initialize the project based on a programming language name.
+Supported languages are "python", "go", "javascript" and "typescript".
+
 # EXAMPLES
 
 Here's an example of rendering ` + "`CITATION.cff`" + ` from a ` +

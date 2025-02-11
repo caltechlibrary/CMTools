@@ -63,36 +63,36 @@ The basic steps.
 mkdir myproject && cd myproject
 git init
 cp ../<SOME_OTHER_PROJECT>/LICENSE ./
-# Edit the three files.
-micro README.md INSTALL.md LICENSE Makefile
 firefox https://codemeta.github.io/codemeta-generator/
 # paste the result into my codemeta.json file
 micro codemeta.json
+cmt codemeta.json --init typescript
+micro README.md Makefile
 ~~~
 
-Now you shortcut the rest of the effort using generated content with `cmt`. For TypeScript
-that would look like.
+That generates the following files for your project.
 
-~~~shell
-mkdir myproject && cd myproject
-git init
-cp ../<SOME_OTHER_PROJECT>/LICENSE ./
-firefox https://codemeta.github.io/codemeta-generator/
-cmt codemeta.json about.md page.tmpl CITATION.cff version.ts Makefile --deno
-# Edit the these files as needed
-micro README.md INSTALL.md LICENSE Makefile
-~~~
+- version.ts
+- README.md
+- about.md
+- INSTALL.md
+- installer.ps1
+- installer.sh
+- CITATION.cff
+- Makefile
 
-NOTE: The individual files create the files using `cmt` like this. The `--deno` options sets things up for working with Deno.
+`cmt` assume TypeScript and JavaScript are used with Deno. The `deno.json` file
+be updated with a task to manage regenerating those files that are likely to update
+with each release of your software, i.e. `deno task gen-code` will update those files.
 
-You can regenerate the files that changes on release with the following.
+You can manually regenerate the files by listing them on the command line explicitly.
 
 ~~~shell
 cmt codemeta.json version.ts about.md CITATION.cff
 ~~~
 
-The `--deno` option choose the Makefile generated if this is required and it
-update the `deno.json` file to include the following tasks.
+The `--deno` is set automatically when you choose `--init typescript` or `--init javascript`.
+This will cause the `deno.json` to be update to include the following tasks.
 
 ~~~json
 {
@@ -104,5 +104,3 @@ update the `deno.json` file to include the following tasks.
     }
 }
 ~~~
-
-This means I can run `deno task gen-code` to update these files when I update my codemeta.json.
