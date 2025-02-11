@@ -911,10 +911,10 @@ endif
 build: version.go $(PROGRAMS) man CITATION.cff about.md installer.sh installer.ps1
 
 version.go: .FORCE
-  cmt codemeta.json version.go
+	cmt codemeta.json version.go
 
 hash: .FORCE
-        git log --pretty=format:'%h' -n 1
+	git log --pretty=format:'%h' -n 1
 
 man: $(MAN_PAGES_1) # $(MAN_PAGES_3) $(MAN_PAGES_7)
 
@@ -940,20 +940,20 @@ $(MAN_PAGES): .FORCE
 	pandoc $@.md --from markdown --to man -s >man/man1/$@
 
 CITATION.cff: codemeta.json
-  cmt codemeta.json CITATION.cff
+	cmt codemeta.json CITATION.cff
 
 about.md: codemeta.json $(PROGRAMS)
-  cmt codemeta.json about.md
+	cmt codemeta.json about.md
 
 installer.sh: .FORCE
-  cmt codemeta.json installer.sh
+	cmt codemeta.json installer.sh
 
 installer.ps1: .FORCE
-  cmt codemeta.json installer.ps1
+	cmt codemeta.json installer.ps1
 
 
 test: $(PACKAGE)
-  go test
+	go test
 
 website: clean-website .FORCE
 	make -f website.mak

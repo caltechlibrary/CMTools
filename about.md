@@ -56,7 +56,7 @@ About this software
 
 ## CMTools 0.0.17
 
-Fixed formatting in about.md generation.
+Fixed formatting in about.md generation. Improvements to the Deno Makefile output.
 
 ### Authors
 
