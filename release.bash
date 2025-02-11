@@ -19,7 +19,7 @@ read -r -p "Push release to GitHub with gh? (y/N) " YES_NO
 if [ "$YES_NO" = "y" ]; then
 	make save msg="prep for ${RELEASE_TAG}, ${RELEASE_NOTES}"
 	# Now generate a draft releas
-	echo "Pusing release ${RELASE_TAG} to GitHub"
+	echo "Pushing release ${RELEASE_TAG} to GitHub"
 	gh release create "${RELEASE_TAG}" \
  		--draft \
 		-F release_notes.tmp \
