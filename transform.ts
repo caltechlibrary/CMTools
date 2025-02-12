@@ -711,6 +711,8 @@ RELEASE_HASH=$(shell git log --pretty=format:%h -n 1)
 
 HTML_PAGES = $(shell ls -1 *.html) # $(shell ls -1 *.md | grep -v 'nav.md' | sed -E 's/.md/.html/g')
 
+DOCS = $(shell ls -1 *.?.md)
+
 OS = $(shell uname)
 
 EXT =
@@ -821,11 +823,9 @@ distribute_docs: website man setup_dist
 	@cp LICENSE dist/
 	@cp codemeta.json dist/
 	@cp CITATION.cff dist/
-	@cp *.1.md dist/
 	@cp INSTALL.md dist/
-	@cp approach_and_implementation.md dist/
-	@cp bootstrapping_with_migrate.md dist/
 	@cp -vR man dist/
+	@for DNAME in $(DOCS); do cp -vR $$DNAME dist/; done
 
 dist/Linux-x86_64: .FORCE
 	@mkdir -p dist/bin
@@ -887,6 +887,8 @@ MAN_PAGES_3 = $(shell ls -1 *.3.md | sed -E 's/\.3.md/.3/g')
 MAN_PAGES_7 = $(shell ls -1 *.7.md | sed -E 's/\.7.md/.7/g')
 
 HTML_PAGES = $(shell find . -type f | grep -E '\.html')
+
+DOCS = $(shell ls -1 *.?.md)
 
 PACKAGE = $(shell ls -1 *.go)
 

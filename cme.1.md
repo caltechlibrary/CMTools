@@ -1,6 +1,6 @@
-%cme(1) user manual | version 0.0.17 ff1d1a8
+%cme(1) user manual | version 0.0.18 b795945
 % R. S. Doiel
-% 2025-02-11
+% 2025-02-12
 
 # NAME
 

@@ -1,6 +1,6 @@
-%cmt(1) user manual | version 0.0.17 ff1d1a8
+%cmt(1) user manual | version 0.0.18 b795945
 % R. S. Doiel
-% 2025-02-11
+% 2025-02-12
 
 # NAME
 
@@ -92,4 +92,10 @@ cmt codemeta.json about.md CITATION.cff version.ts --deno
 
 This will create a "gen-code" task that will rebuild those files based on
 the current contents of the CodeMeta file.
+
+### Project Initialization
+
+cmt supports four languages at this time. It will generated the
+files needed to bootstrap the project based on the langauge choosen.
+
 

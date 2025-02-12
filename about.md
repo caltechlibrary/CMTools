@@ -32,7 +32,7 @@ maintainer:
     orcid: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.17
+version: 0.0.18
 license_url: https://data.caltech.edu/LICENSE
 operating_system:
   - Linux
@@ -48,18 +48,15 @@ keywords:
   - software
   - code generation
 
-date_released: 2025-02-11
+date_released: 2025-02-12
 ---
 
 About this software
 ===================
 
-## CMTools 0.0.17
+## CMTools 0.0.18
 
-Fixed formatting in about.md generation.
-Improved to the Deno Makefile output.
-Colorized error output.
-Add option &#x60;--init&#x60; to simply bootstrapping python, Go, TypeScript and JavaScript projects.
+Fixed Makefile for Go and Deno which required extra documents. Added DOCS variable to Makefiles generated to control what gets added in release rule.
 
 ### Authors
 
