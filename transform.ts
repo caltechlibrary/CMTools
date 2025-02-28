@@ -886,7 +886,7 @@ MAN_PAGES_3 = $(shell ls -1 *.3.md | sed -E 's/\.3.md/.3/g')
 
 MAN_PAGES_7 = $(shell ls -1 *.7.md | sed -E 's/\.7.md/.7/g')
 
-HTML_PAGES = $(shell find . -type f | grep -E '\.html')
+HTML_PAGES = $(shell find . -type f | grep -E '\.html$')
 
 DOCS = $(shell ls -1 *.?.md)
 
