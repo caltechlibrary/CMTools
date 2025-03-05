@@ -32,7 +32,7 @@ maintainer:
     orcid: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.18
+version: 0.0.19
 license_url: https://data.caltech.edu/LICENSE
 operating_system:
   - Linux
@@ -48,15 +48,15 @@ keywords:
   - software
   - code generation
 
-date_released: 2025-02-12
+date_released: 2025-03-04
 ---
 
 About this software
 ===================
 
-## CMTools 0.0.18
+## CMTools 0.0.19
 
-Fixed Makefile for Go and Deno which required extra documents. Added DOCS variable to Makefiles generated to control what gets added in release rule.
+Fixes to generate about.md
 
 ### Authors
 

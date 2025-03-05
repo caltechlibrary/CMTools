@@ -233,21 +233,21 @@ const mdTemplateText = `---
 {{#if description}}abstract: "{{description}}"{{/if}}
 {{#if author}}authors:
 {{#each author}}
-  - family_name: {{familyName}}
-    given_name: {{givenName}}{{#if id}}
-    orcid: {{id}}{{/if}}
+  - {{#if name}}name: {{name}}{{else}}family_name: {{familyName}}
+    given_name: {{givenName}}{{/if}}{{#if id}}
+    id: {{id}}{{/if}}
 {{/each}}{{/if}}
 {{#if contributor}}contributor:
 {{#each contributor}}
-  - family_name: {{familyName}}
-    given_name: {{givenName}}{{#if id}}
-    orcid: {{id}}{{/if}}
+  - {{#if name}}name: {{name}}{{else}}family_name: {{familyName}}
+    given_name: {{givenName}}{{/if}}{{#if id}}
+    id: {{id}}{{/if}}
 {{/each}}{{/if}}
 {{#if maintainer}}maintainer:
 {{#each maintainer}}
-  - family_name: {{familyName}}
-    given_name: {{givenName}}{{#if id}}
-    orcid: {{id}}{{/if}}
+  - {{#if name}}name: {{name}}{{else}}family_name: {{familyName}}
+    given_name: {{givenName}}{{/if}}{{#if id}}
+    id: {{id}}{{/if}}
 {{/each}}{{/if}}
 {{#if codeRepository}}repository_code: {{codeRepository}}{{/if}}
 {{#if version}}version: {{version}}{{/if}}
@@ -278,19 +278,19 @@ About this software
 ### Authors
 
 {{#each author}}
-- {{givenName}} {{familyName}}{{#if id}}, ORCID: <{{id}}>{{/if}}{{/each}}{{/if}}
+- {{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}{{#if id}}, <{{id}}>{{/if}}{{/each}}{{/if}}
 
 {{#if contributor}}
 ### Contributors
 
 {{#each contributor}}
-- {{givenName}} {{familyName}}{{#if id}}, ORCID: <{{id}}>{{/if}}{{/each}}{{/if}}
+- {{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}{{#if id}}, <{{id}}>{{/if}}{{/each}}{{/if}}
 
 {{#if maintainer}}
 ### Maintainers
 
 {{#each maintainer}}
-- {{givenName}} {{familyName}}{{#if id}}, ORCID: <{{id}}>{{/if}}{{/each}}{{/if}}
+- {{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}{{#if id}}, <{{id}}>{{/if}}{{/each}}{{/if}}
 
 {{#if description}}{{description}}{{/if}}
 
