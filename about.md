@@ -19,20 +19,20 @@ The tools are intended to be run from the project root directory. &#x60;cmt&#x60
 authors:
   - family_name: Doiel
     given_name: R. S.
-    orcid: https://orcid.org/0000-0003-0900-6903
+    id: https://orcid.org/0000-0003-0900-6903
 
 contributor:
   - family_name: Morrell
     given_name: Tom
-    orcid: https://orcid.org/0000-0001-9266-5146
+    id: https://orcid.org/0000-0001-9266-5146
 
 maintainer:
   - family_name: Doiel
     given_name: R. S.
-    orcid: https://orcid.org/0000-0003-0900-6903
+    id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.19
+version: 0.0.20
 license_url: https://data.caltech.edu/LICENSE
 operating_system:
   - Linux
@@ -48,27 +48,27 @@ keywords:
   - software
   - code generation
 
-date_released: 2025-03-04
+date_released: 2025-03-31
 ---
 
 About this software
 ===================
 
-## CMTools 0.0.19
+## CMTools 0.0.20
 
-Fixes to generate about.md
+Fixes to bug in rendering LICENSE into version.ts where HTML entities were encoded unnecessarily.
 
 ### Authors
 
-- R. S. Doiel, ORCID: <https://orcid.org/0000-0003-0900-6903>
+- R. S. Doiel, <https://orcid.org/0000-0003-0900-6903>
 
 ### Contributors
 
-- Tom Morrell, ORCID: <https://orcid.org/0000-0001-9266-5146>
+- Tom Morrell, <https://orcid.org/0000-0001-9266-5146>
 
 ### Maintainers
 
-- R. S. Doiel, ORCID: <https://orcid.org/0000-0003-0900-6903>
+- R. S. Doiel, <https://orcid.org/0000-0003-0900-6903>
 
 [CodeMeta](https://codemeta.github.io) Tools provides a simple command line tool called &#x60;cmt&#x60; that can be used to generate project files and software artifacts. It provides a tool called &#x60;cme&#x60; to edit and manage the CodeMeta file.
 
