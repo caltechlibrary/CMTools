@@ -32,10 +32,10 @@ contacts:
     email: rsdoiel@caltech.edu
 
 repository-code: "git+https://github.com/caltechlibrary/CMTools"
-version: 0.0.20
-date-released: 2025-03-31
+version: 0.0.21
+date-released: 2025-04-03
 
-license-url: "https://data.caltech.edu/LICENSE"
+license-url: "https://caltechlibrary.github.io/CMTools/LICENSE"
 keywords:
   - codemeta
   - cff

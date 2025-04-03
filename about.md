@@ -32,8 +32,8 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.20
-license_url: https://data.caltech.edu/LICENSE
+version: 0.0.21
+license_url: https://caltechlibrary.github.io/CMTools/LICENSE
 operating_system:
   - Linux
   - Windows
@@ -48,15 +48,15 @@ keywords:
   - software
   - code generation
 
-date_released: 2025-03-31
+date_released: 2025-04-03
 ---
 
 About this software
 ===================
 
-## CMTools 0.0.20
+## CMTools 0.0.21
 
-Fixes to bug in rendering LICENSE into version.ts where HTML entities were encoded unnecessarily.
+Fixes to bug in rendering Markdown about document.
 
 ### Authors
 
@@ -87,7 +87,7 @@ The tools are intended to be run from the project root directory. &#x60;cmt&#x60
 - about.md
 - page.hbs (handlebars template) or page.tmpl (Pandoc template)
 
-- License: <https://data.caltech.edu/LICENSE>
+- License: <https://caltechlibrary.github.io/CMTools/LICENSE>
 - GitHub: <git+https://github.com/caltechlibrary/CMTools>
 - Issues: <git+https://github.com/caltechlibrary/CMTools/issues>
 
@@ -109,5 +109,5 @@ The tools are intended to be run from the project root directory. &#x60;cmt&#x60
 - GNU Make &gt;&#x3D; 3.81
 - Pandoc &gt;&#x3D; 3.1
 - Git &gt;&#x3D; 2.39
-- CMTools &gt;&#x3D; 0.0.16
+- CMTools &gt;&#x3D; 0.0.20
 

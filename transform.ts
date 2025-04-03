@@ -278,19 +278,22 @@ About this software
 ### Authors
 
 {{#each author}}
-- {{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}{{#if id}}, <{{id}}>{{/if}}{{/each}}{{/if}}
+- {{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}{{#if id}}, <{{id}}>{{/if}}
+{{/each}}{{/if}}
 
 {{#if contributor}}
 ### Contributors
 
 {{#each contributor}}
-- {{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}{{#if id}}, <{{id}}>{{/if}}{{/each}}{{/if}}
+- {{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}{{#if id}}, <{{id}}>{{/if}}
+{{/each}}{{/if}}
 
 {{#if maintainer}}
 ### Maintainers
 
 {{#each maintainer}}
-- {{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}{{#if id}}, <{{id}}>{{/if}}{{/each}}{{/if}}
+- {{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}{{#if id}}, <{{id}}>{{/if}}
+{{/each}}{{/if}}
 
 {{#if description}}{{description}}{{/if}}
 

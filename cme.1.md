@@ -1,6 +1,6 @@
-%cme(1) user manual | version 0.0.20 fe5732e
+%cme(1) user manual | version 0.0.21 640c9ed
 % R. S. Doiel
-% 2025-03-31
+% 2025-04-03
 
 # NAME
 
