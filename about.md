@@ -32,7 +32,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.21
+version: 0.0.22
 license_url: https://caltechlibrary.github.io/CMTools/LICENSE
 operating_system:
   - Linux
@@ -48,27 +48,30 @@ keywords:
   - software
   - code generation
 
-date_released: 2025-04-03
+date_released: 2025-04-04
 ---
 
 About this software
 ===================
 
-## CMTools 0.0.21
+## CMTools 0.0.22
 
-Fixes to bug in rendering Markdown about document.
+Fixes to release rule in Makefile to include man pages.
 
 ### Authors
 
 - R. S. Doiel, <https://orcid.org/0000-0003-0900-6903>
 
+
 ### Contributors
 
 - Tom Morrell, <https://orcid.org/0000-0001-9266-5146>
 
+
 ### Maintainers
 
 - R. S. Doiel, <https://orcid.org/0000-0003-0900-6903>
+
 
 [CodeMeta](https://codemeta.github.io) Tools provides a simple command line tool called &#x60;cmt&#x60; that can be used to generate project files and software artifacts. It provides a tool called &#x60;cme&#x60; to edit and manage the CodeMeta file.
 
