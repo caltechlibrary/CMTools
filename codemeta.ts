@@ -66,6 +66,8 @@ export const CodeMetaTerms: AttributeType[] = [
   new AttributeType("referencePublication", "url", "An academic publication related to the software."),
   new AttributeType("softwareSuggestions", "text_list", "Optional dependencies , e.g. for optional features, code development, etc."),
   new AttributeType("developmentStatus", "text", "A status as defined at https://www.repostatus.org/"),
+  new AttributeType("copyrightYear", "number", "set the numeric year value of the copyright, e.g. 2025"),
+  new AttributeType("copyrightHolder", "text", "the name of the copyright holder"),
 ];
 
 // Attributes used by CodeMeta terms taken from https://codemeta.github.io/terms/
@@ -116,6 +118,8 @@ export class CodeMeta implements CodeMetaInterface {
   downloadUrl: string = "";
   releaseNotes: string = "";
   developmentStatus: string = "";
+  copyrightYear?: number | undefined;
+  copyrightHolder?: string | undefined;
 
   toObject(): {[key: string]: any} {
     //FIXME: Only build an `{[key: string]: string}` minimal object
@@ -146,6 +150,8 @@ export class CodeMeta implements CodeMetaInterface {
     (this.downloadUrl === '') ? '': obj['downloadUrl'] = this.downloadUrl;
     (this.releaseNotes === '') ? '': obj['releaseNotes'] = this.releaseNotes;
     (this.identifier === '') ? '': obj['identifier'] = this.identifier;
+    (this.copyrightYear === undefined) ? '': obj['copyrightYear'] = this.copyrightYear;
+    (this.copyrightHolder === undefined || this.copyrightHolder === '') ? '': obj['copyrightHolder'] = this.copyrightHolder;
     return obj;
   }
 
@@ -243,6 +249,8 @@ export class CodeMeta implements CodeMetaInterface {
     (obj["releaseNotes"] === undefined)
       ? ""
       : this.releaseNotes = obj["releaseNotes"];
+    (obj["copyrightYear"] === undefined) ? "" : this.copyrightYear = obj['copyrightYear'];
+    (obj["copyrightHolder"] === undefined) ? "" : this.copyrightHolder = obj['copyrightHolder'];
     return true;
   }
 
@@ -349,6 +357,8 @@ export class CodeMeta implements CodeMetaInterface {
     (obj["releaseNotes"] === undefined)
       ? ''
       : this.releaseNotes = obj["releaseNotes"];
+    (obj["copyrightYear"] === undefined) ? "" : this.copyrightYear = obj['copyrightYear'];
+    (obj["copyrightHolder"] === undefined) ? "" : this.copyrightHolder = obj['copyrightHolder'];
     return true;
   }
 }
