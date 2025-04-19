@@ -41,13 +41,13 @@ export const CodeMetaTerms: AttributeType[] = [
   new AttributeType("contributor", "person_or_organization_list", "A secondary contributor to the CreativeWork or Event. (enter as YAML list)"),
   new AttributeType("maintainer", "person_or_organization_list", "Individual responsible for maintaining the software (usually includes an email contact address). (enter ass YAML list)"),
   new AttributeType("codeRepository", "url", "Link to the repository where the un-compiled, human readable code and related code is located (SVN, GitHub, CodePlex, institutional GitLab instance, etc.)."),
-  new AttributeType("copyrightYear", "number", "The year during which the claimed copyright for the CreativeWork was first asserted."), 
-  new AttributeType("copyrightHolder", "person_or_organization", "The party holding the legal copyright to the CreativeWork. "),
   new AttributeType("funder", "person_or_organization", "A person or organization that supports (sponsors) something through some kind of financial contribution."),
   new AttributeType("funding", "text", "Funding source (e.g. specific grant)"),
   new AttributeType("dateCreated", "date", "The date on which the CreativeWork was created or the item was added to a DataFeed."),
   new AttributeType("dateModified", "date", "The date on which the CreativeWork was most recently modified or when the item's entry was modified within a DataFeed."),
   new AttributeType("datePublished", "date", "Date of first broadcast/publication."),
+  new AttributeType("copyrightYear", "number", "The year during which the claimed copyright for the CreativeWork was first asserted."), 
+  new AttributeType("copyrightHolder", "person_or_organization", "The party holding the legal copyright to the CreativeWork. "),
   new AttributeType("version", "number_or_text", "The version of the CreativeWork embodied by a specified resource."),
   new AttributeType("releaseNotes", "text_or_url", "Description of what changed in this version."),
   new AttributeType("downloadUrl", "url", "If the file can be downloaded, URL to download the binary."),
@@ -66,8 +66,6 @@ export const CodeMetaTerms: AttributeType[] = [
   new AttributeType("referencePublication", "url", "An academic publication related to the software."),
   new AttributeType("softwareSuggestions", "text_list", "Optional dependencies , e.g. for optional features, code development, etc."),
   new AttributeType("developmentStatus", "text", "A status as defined at https://www.repostatus.org/"),
-  new AttributeType("copyrightYear", "number", "set the numeric year value of the copyright, e.g. 2025"),
-  new AttributeType("copyrightHolder", "text", "the name of the copyright holder"),
 ];
 
 // Attributes used by CodeMeta terms taken from https://codemeta.github.io/terms/
