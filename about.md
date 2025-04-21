@@ -32,7 +32,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.23
+version: 0.0.24
 license_url: https://caltechlibrary.github.io/CMTools/LICENSE
 operating_system:
   - Linux
@@ -48,15 +48,15 @@ keywords:
   - software
   - code generation
 
-date_released: 2025-04-10
+date_released: 2025-04-21
 ---
 
 About this software
 ===================
 
-## CMTools 0.0.23
+## CMTools 0.0.24
 
-Fixed missing copyrightYear and copyrightHolder handling.
+Fixed duplicate copyrightYear and copyrightHolder handling.
 
 ### Authors
 
