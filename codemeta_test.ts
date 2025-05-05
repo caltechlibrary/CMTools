@@ -3,7 +3,7 @@ import { CodeMeta } from "./codemeta.ts";
 import {
   validateORCID,
   validateROR,
-} from "https://caltechlibrary.github.io/metadatatools/mod.ts";
+} from "@caltechlibrary/metadatatools";
 
 Deno.test("test fromObject", async function () {
   const src: string = await Deno.readTextFile("./codemeta.json");

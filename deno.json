@@ -43,6 +43,7 @@
     "test-all": "deno test --reload --coverage --allow-net --allow-import --allow-env --allow-run --allow-read --allow-write"
   },
   "imports": {
+    "@caltechlibrary/metadatatools": "jsr:@caltechlibrary/metadatatools@^0.0.6",
     "@libs/markdown": "jsr:@libs/markdown@^2.0.2",
     "@std/assert": "jsr:@std/assert@^1.0.11",
     "@std/cli": "jsr:@std/cli@^1.0.11",

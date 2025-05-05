@@ -119,7 +119,7 @@ export async function transform(
     case "ts":
       return renderTemplate(obj, tsTemplateText);
     case "js":
-      return renderTemplate(obj, tsTemplateText);
+      return renderTemplate(obj, jsTemplateText);
     case "go":
       return renderTemplate(obj, goTemplateText);
     case "py":
@@ -192,6 +192,16 @@ keywords:
 
 // TypeScript
 const tsTemplateText = `// {{name}} version and license information.
+
+export const version: string = '{{version}}',
+releaseDate: string = '{{releaseDate}}',
+releaseHash: string = '{{releaseHash}}'{{#if licenseText}},
+licenseText: string = ` + "`" + `
+{{{licenseText}}}
+` + "`{{/if}};";
+
+// JavaScript
+const jsTemplateText = `// {{name}} version and license information.
 
 export const version = '{{version}}',
 releaseDate = '{{releaseDate}}',
