@@ -14,6 +14,6 @@ Deno.test('test transform', async function() {
     const src = await Deno.readTextFile("./codemeta.json");
     const obj = JSON.parse(src);
     cm.fromObject(obj);
-    let txt: string | undefined = await transform(cm, getFormatFromExt(filename, ""));
+    let txt: string | undefined = await transform(cm, getFormatFromExt(filename, ""), false);
     assertNotEquals(txt, undefined, `transform(cm, "${filename}")`);
 });

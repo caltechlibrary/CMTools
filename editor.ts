@@ -14,6 +14,15 @@ function pickEditor(): string {
   }
   return editor as string;
 }
+
+export function getEditorFromEnv(envVar?: string): string {
+  let editor: string | undefined = (envVar === undefined)  ? undefined : Deno.env.get(envVar);
+  if (editor === undefined) {
+    return pickEditor();
+  }
+  return editor as string;
+}
+
 // editor.ts assumes Micro Editor in order to simplify testing.
 let editor: string = pickEditor();
 

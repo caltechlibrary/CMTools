@@ -24,6 +24,7 @@ async function testEditTempData() {
   );
   const expectedTempData = "Hello World!!";
   let result: string | undefined = await edit.editTempData(expectedTempData);
+  result === undefined ? "": result = result.trim();
   console.log("Save the file without changes to complete test.");
   assertNotEquals(
     result,
