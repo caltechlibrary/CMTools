@@ -39,7 +39,8 @@
     "editor_test.ts": "deno test --allow-env --allow-run --allow-read --allow-write editor_test.ts",
     "comdeta_test.ts": "deno test codemeta_test.ts --allow-import --allow-read",
     "person_or_organization_test.ts": "deno test person_or_organization_test.ts --allow-read",
-    "transform_test.ts": "deno test transform_test.ts --allow-read --allow-run"  
+    "transform_test.ts": "deno test transform_test.ts --allow-read --allow-run",
+    "test-all": "deno test --reload --coverage --allow-net --allow-import --allow-env --allow-run --allow-read --allow-write"
   },
   "imports": {
     "@libs/markdown": "jsr:@libs/markdown@^2.0.2",

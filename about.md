@@ -32,7 +32,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.24
+version: 0.0.25
 license_url: https://caltechlibrary.github.io/CMTools/LICENSE
 operating_system:
   - Linux
@@ -48,15 +48,15 @@ keywords:
   - software
   - code generation
 
-date_released: 2025-04-21
+date_released: 2025-05-05
 ---
 
 About this software
 ===================
 
-## CMTools 0.0.24
+## CMTools 0.0.25
 
-Fixed duplicate copyrightYear and copyrightHolder handling.
+Improving test code, update metadatatools dependency to v0.0.5. Minimal Deno version is 2.3.
 
 ### Authors
 
@@ -108,9 +108,9 @@ The tools are intended to be run from the project root directory. &#x60;cmt&#x60
 
 ### Software Requirements
 
-- Deno &gt;&#x3D; 2.1.9
+- Deno &gt;&#x3D; 2.3
 - GNU Make &gt;&#x3D; 3.81
 - Pandoc &gt;&#x3D; 3.1
 - Git &gt;&#x3D; 2.39
-- CMTools &gt;&#x3D; 0.0.20
+- CMTools &gt;&#x3D; 0.0.24
 
