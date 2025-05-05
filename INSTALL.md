@@ -1,7 +1,22 @@
 Installation for development of **CMTools**
 ===========================================
 
-**CMTools** is an experimental, proof of concept, set of tools for TypeScript, JavaScript, Python or Go programming projects. It provides a `cmt` command line program.
+**CMTools** [CodeMeta](https://codemeta.github.io) Tools provides a simple command line tool called &#x60;cmt&#x60; that can be used to generate project files and software artifacts. It provides a tool called &#x60;cme&#x60; to edit and manage the CodeMeta file.
+
+The project focuses on leveraging CodeMeta data, directory name and Git repo information for building and release software written in Python, Go, JavaScript or TypeScript. It was motivated by the practices in Caltech Library&#x27;s Digital Development Group.
+
+The tools are intended to be run from the project root directory. &#x60;cmt&#x60; expects the file path of your codemeta.json file as well as one or more target files to be generated. The target file&#x27;s extension determines the generated content. The tool can generate the following project files based on the contents of the codemeta.json file. &#x60;cme&#x60; expects the file path of your codemeta.json file and optionally the attributes of the CodeMeta object you wish to manage.
+
+&#x60;cme&#x60; is used to create and manage &quot;codemeta.json&quot;. &#x60;cmt&#x60; is used to generate the following.
+
+- README.md
+- INSTALL.md
+- installer.sh
+- installer.ps1
+- CITATION.cff
+- version.ts, version.js, version.go or version.py
+- about.md
+- page.hbs (handlebars template) or page.tmpl (Pandoc template)
 
 Quick install with curl or irm
 ------------------------------
@@ -12,12 +27,12 @@ There is an experimental installer.sh script that can be run with the following 
 curl https://caltechlibrary.github.io/CMTools/installer.sh | sh
 ~~~
 
-This will install `cmt` in your `$HOME/bin` directory.
+This will install the programs included in CMTools in your `$HOME/bin` directory.
 
 If you are running Windows 10 or 11 use the Powershell command below.
 
 ~~~ps1
-irm https://caltechlibrary.github.io/CMTools/installer.ps1 | iex
+irm https://caltechlibrary.github.io//installer.ps1 | iex
 ~~~
 
 Installing from source
@@ -25,40 +40,23 @@ Installing from source
 
 ### Required software
 
-1. Git (to clone the cold repository on GitHub)
-2. Deno >= 2.1.4
+- Deno &gt;&#x3D; 2.3
+- GNU Make &gt;&#x3D; 3.81
+- Pandoc &gt;&#x3D; 3.1
+- Git &gt;&#x3D; 2.39
+- CMTools &gt;&#x3D; 0.0.24
 
-### Compiling **CMTools**
+### Steps
 
-Deno is used to compile the TypeScript and dependent JavaScript files into an executable.
-
-1. Install handlebars via Deno
-2. Use Deno's task to build project
-
-~~~shell
-deno install npm:handlebars
-deno task build
-~~~
-
-This will provide the `cmt` command in the "bin" folder in your repository directory.
-
-You can check to make sure `cmt` works for your system. The compiled version is self contain and can be copied someplace in your path. 
-
-### Manual install on POSIX
+1. git clone https://github.com/caltechlibrary/CMTools
+2. Change directory into the `CMTools` directory
+3. Make to build, test and install
 
 ~~~shell
-mkdir -p $HOME/bin
-export PATH="$HOME/bin:$PATH"
-cp bin/cmt $HOME/bin/
-export MANPATH="$MANPATH:$HOME/man"
-cp -vR man $HOME/
+git clone https://github.com/caltechlibrary/CMTools
+cd CMTools
+make
+make test
+make install
 ~~~
 
-### Manual install for Windows via Powershell
-
-~~~ps1
-mkdir $HOME/bin
-$PATH = [Environment]::GetEnvironmentVariable("PATH")
-[Environment]::SetEnvironmentVariable("PATH", "$PATH;$HOME/bin")
-copy ./bin/cmt.exe $HOME/bin/
-~~~
