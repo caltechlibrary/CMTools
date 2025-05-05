@@ -6,25 +6,25 @@ import { gitOrgOrPerson, gitReleaseHash } from "./gitcmds.ts";
 
 export function getFormatFromExt(
   filename: string | undefined,
-  defaultFormat: string  
+  defaultFormat: string,
 ): string {
   if (filename !== undefined) {
-      //NOTE: We need to handle special case files like README.md, INSTALL.md
-      switch (filename) {
-        case "README.md":
-          return "readme.md";
-        case "INSTALL.md":
-          return "install.md";
-        case "Makefile":
-          return "Makefile";
-      }
-      switch (path.extname(filename)) {
+    //NOTE: We need to handle special case files like README.md, INSTALL.md
+    switch (filename) {
+      case "README.md":
+        return "readme.md";
+      case "INSTALL.md":
+        return "install.md";
+      case "Makefile":
+        return "Makefile";
+    }
+    switch (path.extname(filename)) {
       case ".cff":
         return "cff";
       case ".ts":
         return "ts";
       case ".js":
-        return "js"
+        return "js";
       case ".go":
         return "go";
       case ".py":
@@ -50,7 +50,21 @@ export function isSupportedFormat(format: string | undefined): boolean {
   if (format === undefined) {
     return false;
   }
-  return ["cff", "ts", "js", "go", "py", "md", "hbs", "pdtmpl", "sh", "ps1", "readme.md", "install.md", "Makefile"].indexOf(format) > -1;
+  return [
+    "cff",
+    "ts",
+    "js",
+    "go",
+    "py",
+    "md",
+    "hbs",
+    "pdtmpl",
+    "sh",
+    "ps1",
+    "readme.md",
+    "install.md",
+    "Makefile",
+  ].indexOf(format) > -1;
 }
 
 // FIXME: need to handle the special case renderings for README.md,
@@ -59,7 +73,7 @@ export function isSupportedFormat(format: string | undefined): boolean {
 export async function transform(
   cm: CodeMeta,
   format: string,
-  isDeno: boolean
+  isDeno: boolean,
 ): Promise<string | undefined> {
   if (!isSupportedFormat(format)) {
     return undefined;
@@ -67,15 +81,17 @@ export async function transform(
   let obj: { [key: string]: any } = cm.toObject();
   obj["project_name"] = path.basename(Deno.cwd());
   obj["releaseHash"] = await gitReleaseHash();
-  if (obj['dateModified'] === undefined || obj['dateModified'] === '') {
+  if (obj["dateModified"] === undefined || obj["dateModified"] === "") {
     const d = new Date();
     const year = `${d.getFullYear()}`;
-    const month = `${d.getMonth() + 1}`.padStart(2, '0');
-    const day = `${d.getDate() + 1}`.padStart(2, '0');
-    obj['dateModified'] = `${year}-${month}-${day}`;
+    const month = `${d.getMonth() + 1}`.padStart(2, "0");
+    const day = `${d.getDate() + 1}`.padStart(2, "0");
+    obj["dateModified"] = `${year}-${month}-${day}`;
   }
-  (obj['releaseDate'] === undefined) ? obj['releaseDate'] = obj['dateModified'] : '';
-  obj['git_org_or_person'] = await gitOrgOrPerson();
+  (obj["releaseDate"] === undefined)
+    ? obj["releaseDate"] = obj["dateModified"]
+    : "";
+  obj["git_org_or_person"] = await gitOrgOrPerson();
   let licenseText: string = "";
   try {
     licenseText = await Deno.readTextFile("LICENSE");
@@ -96,7 +112,7 @@ export async function transform(
     case "install.md":
       return renderTemplate(obj, installMdText);
     case "Makefile":
-      if (isDeno) { return renderTemplate(obj, denoMakefileText); };
+      if (isDeno) return renderTemplate(obj, denoMakefileText);
       return renderTemplate(obj, goMakefileText);
     case "cff":
       return renderTemplate(obj, cffTemplateText);
@@ -111,7 +127,7 @@ export async function transform(
     case "md":
       return renderTemplate(obj, mdTemplateText);
     case "sh":
-        return renderTemplate(obj, shInstallerText);
+      return renderTemplate(obj, shInstallerText);
     case "ps1":
       return renderTemplate(obj, ps1InstallerText);
     case "hbs":
@@ -130,7 +146,10 @@ export async function transform(
   return undefined;
 }
 
-export function renderTemplate(obj: {[key: string]: any}, tmpl: string): string | undefined {
+export function renderTemplate(
+  obj: { [key: string]: any },
+  tmpl: string,
+): string | undefined {
   const template = Handlebars.compile(tmpl);
   if (template === undefined) {
     console.log(`templates failed to compile, ${tmpl}`);
@@ -139,6 +158,7 @@ export function renderTemplate(obj: {[key: string]: any}, tmpl: string): string 
   return template(obj);
 }
 
+// CITATION.cff
 const cffTemplateText = `
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
@@ -170,6 +190,7 @@ keywords:
 {{/each}}{{/if}}
 `;
 
+// TypeScript
 const tsTemplateText = `// {{name}} version and license information.
 
 export const version = '{{version}}',
@@ -179,6 +200,7 @@ licenseText = ` + "`" + `
 {{{licenseText}}}
 ` + "`{{/if}};";
 
+// Python
 const pyTemplateText = `# {{name}} version and license information.
 
 export const version = '{{version}}',
@@ -189,6 +211,7 @@ licenseText = '''
 '''{{/if}};
 `;
 
+// Go
 const goTemplateText = `package {{name}}
 
 import (
@@ -228,6 +251,7 @@ func FmtHelp(src string, appName string, version string, releaseDate string, rel
 
 `;
 
+// Pandoc
 const mdTemplateText = `---
 {{#if name}}title: {{name}}{{/if}}
 {{#if description}}abstract: "{{description}}"{{/if}}
@@ -323,6 +347,7 @@ About this software
 {{/each}}{{/if}}
 `;
 
+// HTML
 const hbsTemplateText = `<!DOCTYPE html>
 <html lang="en-US">
 <head>
@@ -348,6 +373,7 @@ $$content$$
 </body>
 </html>`;
 
+// Bash
 const shInstallerText = `#!/bin/sh
 
 #
@@ -509,6 +535,7 @@ cd "$$START" || exit 1
 
 `;
 
+// Powershell
 const ps1InstallerText = `#!/usr/bin/env pwsh
 # Generated with codemeta-ps1-installer.tmpl, see https://github.com/caltechlibrary/codemeta-pandoc-examples
 
@@ -573,6 +600,7 @@ if (!(Test-Path $$ZIPFILE)) {
 }
 `;
 
+// Markdown
 const readmeMdText = `
 
 # {{name}} {{version}}
@@ -637,6 +665,7 @@ const readmeMdText = `
 
 `;
 
+// Markdown
 const installMdText = `Installation for development of **{{name}}**
 ===========================================
 
@@ -651,7 +680,8 @@ There is an experimental installer.sh script that can be run with the following 
 curl https://{{git_org_or_person}}.github.io/{{name}}/installer.sh | sh
 ~~~
 
-This will install the programs included in {{name}} in your `+"`$HOME/bin`"+` directory.
+This will install the programs included in {{name}} in your ` + "`$HOME/bin`" +
+  ` directory.
 
 If you are running Windows 10 or 11 use the Powershell command below.
 
@@ -671,7 +701,7 @@ Installing from source
 ### Steps
 
 1. git clone https://github.com/{{git_org_or_person}}/{{name}}
-2. Change directory into the `+"`"+`{{name}}`+"`"+` directory
+2. Change directory into the ` + "`" + `{{name}}` + "`" + ` directory
 3. Make to build, test and install
 
 ~~~shell
@@ -684,7 +714,7 @@ make install
 
 `;
 
-
+// Makefile
 export const denoMakefileText = `#
 # Simple Makefile for Deno based Projects built under POSIX.
 #
@@ -870,6 +900,7 @@ dist/Windows-arm64: .FORCE
 .FORCE:
 `;
 
+// Makefile
 export const goMakefileText = `#
 # Simple Makefile for Golang based Projects built under POSIX.
 #
@@ -1073,4 +1104,4 @@ release: build installer.sh save setup_dist distribute_docs dist/Linux-x86_64 di
 
 
 .FORCE:
-`
+`;
