@@ -56,7 +56,7 @@ About this software
 
 ## CMTools 0.0.25
 
-Improving test code, update metadatatools dependency to v0.0.5. Minimal Deno version is 2.3.
+Fixed bug in generating installer.ps1 where path was wrong. Improving test code, update metadatatools dependency to v0.0.5. Minimal Deno version is 2.3.
 
 ### Authors
 

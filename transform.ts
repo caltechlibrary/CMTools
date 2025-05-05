@@ -656,7 +656,7 @@ This will install the programs included in {{name}} in your `+"`$HOME/bin`"+` di
 If you are running Windows 10 or 11 use the Powershell command below.
 
 ~~~ps1
-irm https://{{git_org_or_person}}.github.io/{{mame}}/installer.ps1 | iex
+irm https://{{git_org_or_person}}.github.io/{{name}}/installer.ps1 | iex
 ~~~
 
 Installing from source

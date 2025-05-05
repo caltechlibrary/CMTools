@@ -32,7 +32,7 @@ This will install the programs included in CMTools in your `$HOME/bin` directory
 If you are running Windows 10 or 11 use the Powershell command below.
 
 ~~~ps1
-irm https://caltechlibrary.github.io//installer.ps1 | iex
+irm https://caltechlibrary.github.io/CMTools/installer.ps1 | iex
 ~~~
 
 Installing from source

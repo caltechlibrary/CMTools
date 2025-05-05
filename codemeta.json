@@ -79,7 +79,7 @@
   "version": "0.0.25",
   "developmentStatus": "WIP",
   "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues",
-  "releaseNotes": "Improving test code, update metadatatools dependency to v0.0.5. Minimal Deno version is 2.3.",
+  "releaseNotes": "Fixed bug in generating installer.ps1 where path was wrong. Improving test code, update metadatatools dependency to v0.0.5. Minimal Deno version is 2.3.",
   "copyrightYear": 2025,
   "copyrightHolder": "California Institute of Technology"
 }
