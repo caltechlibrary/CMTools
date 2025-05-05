@@ -12,6 +12,7 @@ export function fmtHelp(
     );
 }
 
+// Markdown
 export const cmtHelpText =
   `%{app_name}(1) user manual | version {version} {release_hash}
 % R. S. Doiel
@@ -117,7 +118,9 @@ files needed to bootstrap the project based on the langauge choosen.
 
 `;
 
-export const cmeHelpText: string = `%{app_name}(1) user manual | version {version} {release_hash}
+// Markdown
+export const cmeHelpText: string =
+  `%{app_name}(1) user manual | version {version} {release_hash}
 % R. S. Doiel
 % {release_date}
 
@@ -182,7 +185,8 @@ be prompt for each attribute.
 {app_name} codemeta.json
 ~~~
 
-Set the version number in your codemeta.json file and add/replace the `+"`.releaseNotes`"+`.
+Set the version number in your codemeta.json file and add/replace the ` +
+  "`.releaseNotes`" + `.
 
 ~~~
 {app_name} codemeta.json version releaseNotes

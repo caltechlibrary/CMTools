@@ -1,6 +1,6 @@
 import { parseArgs } from "@std/cli";
 import { licenseText, releaseDate, releaseHash, version } from "./version.ts";
-import { fmtHelp, cmeHelpText } from "./helptext.ts";
+import { cmeHelpText, fmtHelp } from "./helptext.ts";
 import { CodeMeta, CodeMetaTerms } from "./codemeta.ts";
 import type { AttributeType } from "./codemeta.ts";
 import { editCodeMetaTerm } from "./editor.ts";
@@ -36,7 +36,9 @@ async function main() {
   const args = app._;
 
   if (app.help) {
-    console.log(fmtHelp(cmeHelpText, appName, version, releaseDate, releaseHash));
+    console.log(
+      fmtHelp(cmeHelpText, appName, version, releaseDate, releaseHash),
+    );
     Deno.exit(0);
   }
   if (app.license) {
@@ -50,7 +52,7 @@ async function main() {
   }
   const codeMetaTermNames = getAttributeNames(CodeMetaTerms);
   if (app.attributes) {
-    console.log('');
+    console.log("");
     for (const term of CodeMetaTerms) {
       console.log(`${term.name}
 : ${term.help}
@@ -67,18 +69,20 @@ async function main() {
   if (args.length === 0) {
     attributeNames = codeMetaTermNames;
   }
-  let attrValues: {[key: string]: string} = {};
+  let attrValues: { [key: string]: string } = {};
   for (const arg of args) {
     // NOTE: arg can be a number or value due to process_args, should always be string.
     let attr: string = `${arg}`;
     if (attr.indexOf("=") > -1) {
-      let str = attr.substring(attr.indexOf('=')+1);
-      attr = attr.substring(0, attr.indexOf('='));
+      let str = attr.substring(attr.indexOf("=") + 1);
+      attr = attr.substring(0, attr.indexOf("="));
       attrValues[attr] = str;
     } else if (attributeNames.indexOf(attr) === -1) {
       // Make sure the attirubute name makes sense, if not exits without doing anything.
       if (codeMetaTermNames.indexOf(attr) === -1) {
-        console.log(`ERROR: "${attr}" is not a supported CodeMeta attribute, aborting`);
+        console.log(
+          `ERROR: "${attr}" is not a supported CodeMeta attribute, aborting`,
+        );
         Deno.exit(1);
       }
       attributeNames.push(`${attr}`);
@@ -89,18 +93,18 @@ async function main() {
     console.log("error: missing filepath to codemeta.json");
     Deno.exit(1);
   }
-  let src: string = '';
+  let src: string = "";
   try {
     src = await Deno.readTextFile(inputName);
   } catch (err) {
     console.log(`${err}`);
     if (confirm(`Create ${inputName}?`)) {
-      src = '{}';
+      src = "{}";
     } else {
       Deno.exit(1);
     }
   }
-  let obj: {[key: string]: any} = {};
+  let obj: { [key: string]: any } = {};
   try {
     obj = JSON.parse(src);
   } catch (err) {
@@ -114,7 +118,7 @@ async function main() {
     Deno.exit(1);
   }
   if (Object.keys(attrValues).length > 0) {
-    let obj: {[key: string]: string} = {};
+    let obj: { [key: string]: string } = {};
     for (let key of Object.keys(attrValues)) {
       let val = attrValues[key];
       obj[key] = val;
@@ -131,8 +135,8 @@ async function main() {
   }
   if (attributeNames.length > 0) {
     for (let name of attributeNames) {
-      if (! await editCodeMetaTerm(cm, name, app.editor)) {
-          console.info(`INFO: using previous value ${name}`)
+      if (!await editCodeMetaTerm(cm, name, app.editor)) {
+        console.info(`INFO: using previous value ${name}`);
       }
     }
     src = JSON.stringify(cm.toObject(), null, 2);

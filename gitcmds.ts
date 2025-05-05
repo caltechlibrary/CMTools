@@ -7,14 +7,14 @@ export async function gitReleaseHash(): Promise<string> {
     "--pretty=format:%h",
     "-n",
     "1",
-  ]; 
+  ];
   const command = new Deno.Command("git", {
     args: options,
   });
   const { code, stdout, stderr } = await command.output();
   if (code > 0) {
-    console.log(`"git ${options.join(' ')}" exited with ${code}`);
-    return '';
+    console.log(`"git ${options.join(" ")}" exited with ${code}`);
+    return "";
   }
   return (new TextDecoder()).decode(stdout);
 }
@@ -30,8 +30,8 @@ async function getRemoteOriginURL(): Promise<string> {
   });
   const { code, stdout, stderr } = await command.output();
   if (code > 0) {
-    console.log(`"git ${options.join(' ')}" exited with ${code}`);
-    return '';
+    console.log(`"git ${options.join(" ")}" exited with ${code}`);
+    return "";
   }
   return (new TextDecoder()).decode(stdout);
 }

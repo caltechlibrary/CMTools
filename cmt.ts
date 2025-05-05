@@ -1,9 +1,9 @@
 import { parseArgs } from "@std/cli";
 import { licenseText, releaseDate, releaseHash, version } from "./version.ts";
-import { fmtHelp, cmtHelpText } from "./helptext.ts";
+import { cmtHelpText, fmtHelp } from "./helptext.ts";
 import { CodeMeta } from "./codemeta.ts";
 import { getFormatFromExt, isSupportedFormat, transform } from "./transform.ts";
-import { ERROR_COLOR, GREEN } from './colors.ts';
+import { ERROR_COLOR, GREEN } from "./colors.ts";
 
 async function main() {
   const appName = "cmt";
@@ -28,7 +28,9 @@ async function main() {
   const args = app._;
 
   if (app.help) {
-    console.log(fmtHelp(cmtHelpText, appName, version, releaseDate, releaseHash));
+    console.log(
+      fmtHelp(cmtHelpText, appName, version, releaseDate, releaseHash),
+    );
     Deno.exit(0);
   }
   if (app.license) {
@@ -41,17 +43,24 @@ async function main() {
     Deno.exit(0);
   }
   if (args.length < 1) {
-    console.log(`USAGE: %c${appName} [OPTIONS] INPUT_NAME [OUTPUT_NAME]`, ERROR_COLOR);
+    console.log(
+      `USAGE: %c${appName} [OPTIONS] INPUT_NAME [OUTPUT_NAME]`,
+      ERROR_COLOR,
+    );
     Deno.exit(1);
   }
   let format = app.format;
   const isDeno = app.deno;
   let inputName: string = (args.length > 0) ? `${args.shift()}` : "";
   let outputNames: string[] = [];
-  if (app.init !== '') {
+  if (app.init !== "") {
     outputNames = [
-      "README.md", "about.md", "CITATION.cff",
-      "INSTALL.md", "installer.ps1", "installer.sh"
+      "README.md",
+      "about.md",
+      "CITATION.cff",
+      "INSTALL.md",
+      "installer.ps1",
+      "installer.sh",
     ];
     switch (app.init.toLowerCase()) {
       case "python":
@@ -72,7 +81,10 @@ async function main() {
         app.deno = true;
         break;
       default:
-        console.log(`languaged not supported by init option, %c${app.init}`, ERROR_COLOR);
+        console.log(
+          `languaged not supported by init option, %c${app.init}`,
+          ERROR_COLOR,
+        );
         Deno.exit(1);
         break;
     }
@@ -113,7 +125,7 @@ async function main() {
     console.log(txt);
     Deno.exit(0);
   }
-  let denoTasks: {[ key: string]: string } = {};
+  let denoTasks: { [key: string]: string } = {};
   for (let outputName of outputNames) {
     // FIXME: Handle case of specific filenames, e.g. README.md, INSTALL.md
     format = getFormatFromExt(outputName, format);
@@ -145,12 +157,12 @@ async function main() {
       src = `{"tasks":{}}`;
     }
 
-    let denoJSON: {[key:string]: any} = {};
+    let denoJSON: { [key: string]: any } = {};
     try {
       denoJSON = JSON.parse(src);
     } catch (err) {
       console.log(`deno.json error, %c${err}`, ERROR_COLOR);
-      Deno.exit(0)
+      Deno.exit(0);
     }
     let genCodeTasks: string[] = [];
     if (denoJSON.tasks === undefined) {
@@ -161,20 +173,23 @@ async function main() {
       genCodeTasks.push(`deno task ${taskName}`);
     }
     if (genCodeTasks.length > 0) {
-      denoJSON.tasks["gen-code"] = genCodeTasks.join(' ; ');
+      denoJSON.tasks["gen-code"] = genCodeTasks.join(" ; ");
     }
     // Update deno.json file.
     if (doBackup) {
       try {
         await Deno.copyFile("deno.json", "deno.json.bak");
-      } catch(err) {
-        console.log(`failed to backup deno.json aborting, %c${err}`, ERROR_COLOR);
+      } catch (err) {
+        console.log(
+          `failed to backup deno.json aborting, %c${err}`,
+          ERROR_COLOR,
+        );
         Deno.exit(1);
       }
     }
     src = JSON.stringify(denoJSON, null, 2);
     if (src !== undefined) {
-        Deno.writeTextFile("deno.json", src);
+      Deno.writeTextFile("deno.json", src);
     }
   }
 }
