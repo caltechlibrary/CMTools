@@ -151,6 +151,8 @@ export async function transform(
         return undefined;
       }
       return renderTemplate(obj, makefileTemplate);
+    case "website.mak":
+      return renderTemplate(obj, websiteMakefileText);
     case "release.bash":
       return renderTemplate(obj, releaseBashText);
     case "publish.bash":
