@@ -28,18 +28,17 @@ These files provide a generalized schaffolding for a project.
 cme codemeta.json
 ~~~
 
-The will let you iterate over the top level CodeMeta object attributes. For multi line or list attributes your favorite editor will be used to create or update the values.
+The will let you iterate over the top level CodeMeta object attributes. For short fields this works well (e.g. version). For multi line or list attributes you can use the `-e`, the editor option, for handling the input from the prompts.
 
-Here's an example of updating the version and `.releaseNotes` attributes but instead of the direct input you edit the value using the Micro Editor[^2].
+Here's an example of updating the version and `.releaseNotes` attributes but instead of the direct input you edit the value using a text editor like Nano or Micro Editor[^2].
 
-[^2]: You need to have [Micro Editor](http://micro-editor.github.io) installed for this to work.
+[^2]: You need to have Nano or [Micro Editor](http://micro-editor.github.io) installed for this to work.
 
 ~~~shell
 cme codemeta.json version releaseNotes -e
 ~~~
 
 Since normally the version is short you'll just be prompted to type in a new version string. The releaseNotes is a multiline field. The `-e` indicates to use your editor to complete the values for all fields.
-
 
 ## Create a version file for TypeScript, Go and Python
 
@@ -92,4 +91,3 @@ cmt codemeta.json page.tmpl
 - [user manual](user_manual.md)
 - [installation](INSTALL.md)
 - [license](LICENSE)
-
