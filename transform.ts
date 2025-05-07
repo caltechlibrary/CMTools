@@ -1117,7 +1117,7 @@ uninstall: .FORCE
 
 setup_dist: .FORCE
 	@mkdir -p dist
-	@rm -fR dist/*
+	@rm -fR dist/
 
 dist/Linux-x86_64: $(PROGRAMS)
 	@mkdir -p dist/bin
@@ -1185,19 +1185,19 @@ const websiteMakefileText = `#
 #
 PROJECT = {{name}}
 
-PANDOC = $(shell which pandoc)
+PANDOC = \$(shell which pandoc)
 
-MD_PAGES = $(shell ls -1 *.md | grep -v 'nav.md')
+MD_PAGES = \$(shell ls -1 *.md | grep -v 'nav.md')
 
-HTML_PAGES = $(shell ls -1 *.md | grep -v 'nav.md' | sed -E 's/.md/.html/g')
+HTML_PAGES = \$(shell ls -1 *.md | grep -v 'nav.md' | sed -E 's/.md/.html/g')
 
-build: $(HTML_PAGES) $(MD_PAGES) pagefind
+build: \$(HTML_PAGES) \$(MD_PAGES) pagefind
 
-$(HTML_PAGES): $(MD_PAGES) .FORCE
-	if [ -f $(PANDOC) ]; then $(PANDOC) --metadata title=$(basename $@) -s --to html5 $(basename $@).md -o $(basename $@).html \
-		--lua-filter=links-to-html.lua \
+\$(HTML_PAGES): \$(MD_PAGES) .FORCE
+	if [ -f \$(PANDOC) ]; then \$(PANDOC) --metadata title=$(basename $@) -s --to html5 $(basename $@).md -o $(basename $@).html \\
+		--lua-filter=links-to-html.lua \\
 	    --template=page.tmpl; fi
-	@if [ $@ = "README.html" ]; then mv README.html index.html; fi
+	@if [ \$@ = "README.html" ]; then mv README.html index.html; fi
 
 pagefind: .FORCE
 	# NOTE: I am not including most of the archive in PageFind index since it doesn't make sense in this case.
