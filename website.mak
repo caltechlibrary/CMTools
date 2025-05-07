@@ -12,9 +12,7 @@ HTML_PAGES = $(shell ls -1 *.md | grep -v 'nav.md' | sed -E 's/.md/.html/g')
 build: $(HTML_PAGES) $(MD_PAGES) pagefind
 
 $(HTML_PAGES): $(MD_PAGES) .FORCE
-	if [ -f $(PANDOC) ]; then $(PANDOC) --metadata title=$(basename $@) -s --to html5 $(basename $@).md -o $(basename $@).html \
-		--lua-filter=links-to-html.lua \
-	    --template=page.tmpl; fi
+	if [ -f $(PANDOC) ]; then $(PANDOC) --metadata title=$(basename $@) -s --to html5 $(basename $@).md -o $(basename $@).html 		--lua-filter=links-to-html.lua 	    --template=page.tmpl; fi
 	@if [ $@ = "README.html" ]; then mv README.html index.html; fi
 
 pagefind: .FORCE
