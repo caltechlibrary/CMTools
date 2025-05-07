@@ -15,7 +15,11 @@ The tools are intended to be run from the project root directory. &#x60;cmt&#x60
 - CITATION.cff
 - version.ts, version.js, version.go or version.py
 - about.md
-- page.hbs (handlebars template) or page.tmpl (Pandoc template)"
+- page.hbs (handlebars template) or page.tmpl (Pandoc template)
+- Makefile
+- website.mak
+- release.bash
+- publish.bash"
 authors:
   - family_name: Doiel
     given_name: R. S.
@@ -91,6 +95,10 @@ The tools are intended to be run from the project root directory. &#x60;cmt&#x60
 - version.ts, version.js, version.go or version.py
 - about.md
 - page.hbs (handlebars template) or page.tmpl (Pandoc template)
+- Makefile
+- website.mak
+- release.bash
+- publish.bash
 
 - License: <https://caltechlibrary.github.io/CMTools/LICENSE>
 - GitHub: <git+https://github.com/caltechlibrary/CMTools>

@@ -17,6 +17,10 @@ The tools are intended to be run from the project root directory. &#x60;cmt&#x60
 - version.ts, version.js, version.go or version.py
 - about.md
 - page.hbs (handlebars template) or page.tmpl (Pandoc template)
+- Makefile
+- website.mak
+- release.bash
+- publish.bash
 
 Quick install with curl or irm
 ------------------------------

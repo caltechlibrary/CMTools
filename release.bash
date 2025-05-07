@@ -14,7 +14,7 @@ echo "REPO_URL -> ${REPO_URL}"
 # Generate a new draft release jq and gh
 #
 RELEASE_TAG="v$(jq -r .version codemeta.json)"
-RELEASE_NOTES="$(jq -r .releaseNotes codemeta.json | tr '\n' ' ')"
+RELEASE_NOTES="$(jq -r .releaseNotes codemeta.json | tr '\`' "'" | tr '\n' ' ')"
 echo "tag: ${RELEASE_TAG}, notes:"
 jq -r .releaseNotes codemeta.json >release_notes.tmp
 cat release_notes.tmp
@@ -29,8 +29,9 @@ if [ "$YES_NO" = "y" ]; then
 	gh release create "${RELEASE_TAG}" \
  		--draft \
 		-F release_notes.tmp \
-		--generate-notes \
-		dist/*.zip 
+		--generate-notes
+	echo "Uploading distribution files"
+    gh release upload "${RELEASE_TAG}"	dist/*.zip 
 	
 	cat <<EOT
 
