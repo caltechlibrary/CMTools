@@ -40,8 +40,13 @@ optionally the attributes of the CodeMeta object you wish to manage.</p>
 <li>CITATION.cff</li>
 <li>version.ts, version.js, version.go or version.py</li>
 <li>about.md</li>
+<li>INSTALL.md</li>
+<li>search.md</li>
 <li>page.hbs (handlebars template) or page.tmpl (Pandoc template)</li>
+<li>Makefile (based on supported langauge choice)</li>
+<li>webmake.mak</li>
 </ul>
+<p>These files provide a generalized schaffolding for a project.</p>
 <h2 id="create-and-manage-your-file">Create and manage your file</h2>
 <p><code>cme</code> is for managing your “codemeta.json” file. If only
 the “codemeta.json” file is provided then you’ll be in an “interactive”
@@ -63,9 +68,10 @@ you edit the value using the Micro Editor<a href="#fn2"
 class="footnote-ref" id="fnref2"
 role="doc-noteref"><sup>2</sup></a>.</p>
 <pre class="shell"><code>cme codemeta.json version releaseNotes -e</code></pre>
-<p>Since the version is short you’ll just be prompted to type in a new
-version string. You release notes maybe longer so for that you’ll drop
-into your editor.</p>
+<p>Since normally the version is short you’ll just be prompted to type
+in a new version string. The releaseNotes is a multiline field. The
+<code>-e</code> indicates to use your editor to complete the values for
+all fields.</p>
 <h2 id="create-a-version-file-for-typescript-go-and-python">Create a
 version file for TypeScript, Go and Python</h2>
 <p>The <code>cmt</code> command can render a version file suitable for
