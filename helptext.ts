@@ -68,6 +68,9 @@ and used to generate a Deno Makefile.
 : initialize the project based on a programming language name.
 Supported languages are "python", "go", "javascript" and "typescript".
 
+--lang LANGUAGE
+: this sets the language to use when generating Makefile.
+
 # EXAMPLES
 
 Here's an example of rendering ` + "`CITATION.cff`" + ` from a ` +

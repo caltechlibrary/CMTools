@@ -1,4 +1,4 @@
-%cmt(1) user manual | version 0.0.26 64a9feb
+%cmt(1) user manual | version 0.0.26 b2e0def
 % R. S. Doiel
 % 2025-05-07
 
@@ -51,6 +51,9 @@ and used to generate a Deno Makefile.
 -i, --init PROGRAMMING_LANGUAGE
 : initialize the project based on a programming language name.
 Supported languages are "python", "go", "javascript" and "typescript".
+
+--lang LANGUAGE
+: this sets the language to use when generating Makefile.
 
 # EXAMPLES
 
