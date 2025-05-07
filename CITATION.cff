@@ -32,8 +32,8 @@ contacts:
     email: rsdoiel@caltech.edu
 
 repository-code: "git+https://github.com/caltechlibrary/CMTools"
-version: 0.0.25
-date-released: 2025-05-05
+version: 0.0.26
+date-released: 2025-05-07
 
 license-url: "https://caltechlibrary.github.io/CMTools/LICENSE"
 keywords:

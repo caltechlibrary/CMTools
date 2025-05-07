@@ -32,7 +32,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.25
+version: 0.0.26
 license_url: https://caltechlibrary.github.io/CMTools/LICENSE
 operating_system:
   - Linux
@@ -48,15 +48,17 @@ keywords:
   - software
   - code generation
 
-date_released: 2025-05-05
+date_released: 2025-05-07
 ---
 
 About this software
 ===================
 
-## CMTools 0.0.25
+## CMTools 0.0.26
 
-Fixed bug in generating installer.ps1 where path was wrong. Improving test code, update metadatatools dependency to v0.0.5. Minimal Deno version is 2.3.
+Added support for &#x60;--lang&#x60; to specify a langauge to use for generating Makefile flavors.  Right now Makefile for Go and Deno are supported. Otherwise will follow.
+
+Added support for generated &quot;search.md&quot;, a search page using PageFind indexes for a repository.
 
 ### Authors
 

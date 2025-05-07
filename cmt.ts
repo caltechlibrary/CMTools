@@ -23,6 +23,7 @@ async function main() {
       format: "",
       deno: false,
       init: "",
+      lang: "",
     },
   });
   const args = app._;
@@ -51,12 +52,17 @@ async function main() {
   }
   let format = app.format;
   const isDeno = app.deno;
+  let lang = app.lang;
+  if (lang === "" && app.deno) {
+    lang = "typescript";
+  }
   let inputName: string = (args.length > 0) ? `${args.shift()}` : "";
   let outputNames: string[] = [];
   if (app.init !== "") {
     outputNames = [
       "README.md",
       "about.md",
+      "search.md",
       "CITATION.cff",
       "INSTALL.md",
       "installer.ps1",
@@ -64,18 +70,22 @@ async function main() {
     ];
     switch (app.init.toLowerCase()) {
       case "python":
+        lang = app.init.toLowerCase();
         outputNames.push("version.py");
         break;
       case "go":
+        lang = app.init.toLowerCase();
         outputNames.push("version.go");
         outputNames.push("Makefile");
         break;
       case "typescript":
+        lang = app.init.toLowerCase();
         outputNames.push("version.ts");
         outputNames.push("Makefile");
         app.deno = true;
         break;
       case "javascript":
+        lang = app.init.toLowerCase();
         outputNames.push("version.js");
         outputNames.push("Makefile");
         app.deno = true;
@@ -117,7 +127,7 @@ async function main() {
       console.log(`unsupported format, %c"${format}"`, ERROR_COLOR);
       Deno.exit(1);
     }
-    let txt: string | undefined = await transform(cm, format, isDeno);
+    let txt: string | undefined = await transform(cm, format, lang, isDeno);
     if (txt === undefined) {
       console.log(`unsupported transform, %c"${format}"`, ERROR_COLOR);
       Deno.exit(1);
@@ -133,7 +143,7 @@ async function main() {
       console.log(`unsupported format, %c"${format}"`, ERROR_COLOR);
       Deno.exit(1);
     }
-    let txt: string | undefined = await transform(cm, format, isDeno);
+    let txt: string | undefined = await transform(cm, format, lang, isDeno);
     if (txt === undefined) {
       console.log(`unsupported transform, %c"${format}"`, ERROR_COLOR);
       Deno.exit(1);

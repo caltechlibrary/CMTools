@@ -17,6 +17,14 @@ export function getFormatFromExt(
         return "install.md";
       case "Makefile":
         return "Makefile";
+      case "search.md":
+        return "search.md";
+      case "website.mak":
+        return "website.mak";
+      case "release.bash":
+        return "release.bash"
+      case "publish.bash":
+        return "publish.bash";
     }
     switch (path.extname(filename)) {
       case ".cff":
@@ -63,16 +71,40 @@ export function isSupportedFormat(format: string | undefined): boolean {
     "ps1",
     "readme.md",
     "install.md",
+    "search.md",
+    "website.mak",
     "Makefile",
+    "release.bash",
+    "publish.bash",
   ].indexOf(format) > -1;
 }
 
 // FIXME: need to handle the special case renderings for README.md,
 // INSTALL.md and the installer scripts.
 
+function getMakefileTemplate(lang: string, isDeno: boolean) : string | undefined {
+  const prefix: {[key: string]: string} = {
+    "golang": goMakefileText,
+    "go": goMakefileText,
+    "javascript": denoMakefileText,
+    "typescript": denoMakefileText,
+    "deno": denoMakefileText,
+    //"python": pyMakefileText,
+    //"bash": shMakefileText,
+  }
+  if (lang === "" && isDeno) {
+    return denoMakefileText;
+  }
+  if (prefix[lang.toLowerCase()] === undefined) {
+    return undefined;
+  }
+  return prefix[lang.toLowerCase()];
+}
+
 export async function transform(
   cm: CodeMeta,
   format: string,
+  lang: string,
   isDeno: boolean,
 ): Promise<string | undefined> {
   if (!isSupportedFormat(format)) {
@@ -111,9 +143,18 @@ export async function transform(
       return renderTemplate(obj, readmeMdText);
     case "install.md":
       return renderTemplate(obj, installMdText);
+    case "search.md":
+      return renderTemplate(obj, searchMdText);
     case "Makefile":
-      if (isDeno) return renderTemplate(obj, denoMakefileText);
-      return renderTemplate(obj, goMakefileText);
+      const makefileTemplate = getMakefileTemplate(lang, isDeno);
+      if (makefileTemplate === undefined) {
+        return undefined;
+      }
+      return renderTemplate(obj, makefileTemplate);
+    case "release.bash":
+      return renderTemplate(obj, releaseBashText);
+    case "publish.bash":
+      return renderTemplate(obj, publishBashText);
     case "cff":
       return renderTemplate(obj, cffTemplateText);
     case "ts":
@@ -676,6 +717,27 @@ const readmeMdText = `
 `;
 
 // Markdown
+const searchMdText = `
+
+# {{name}}
+
+<link href="./pagefind/pagefind-ui.css" rel="stylesheet">
+<script src="./pagefind/pagefind-ui.js" type="text/javascript"></script>
+<div id="search"></div>
+<script>
+    const u = URL.parse(window.location.href);
+    const basePath = u.pathname.replace(/search\.html$/g, '');
+    
+    window.addEventListener('DOMContentLoaded', (event) => {
+        new PagefindUI({ 
+            element: "#search",
+            baseUrl: basePath
+        });
+    });
+</script>
+`
+
+// Markdown
 const installMdText = `Installation for development of **{{name}}**
 ===========================================
 
@@ -1115,3 +1177,116 @@ release: build installer.sh save setup_dist distribute_docs dist/Linux-x86_64 di
 
 .FORCE:
 `;
+
+const websiteMakefileText = `#
+# Makefile for running pandoc on all Markdown docs ending in .md
+#
+PROJECT = {{name}}
+
+PANDOC = $(shell which pandoc)
+
+MD_PAGES = $(shell ls -1 *.md | grep -v 'nav.md')
+
+HTML_PAGES = $(shell ls -1 *.md | grep -v 'nav.md' | sed -E 's/.md/.html/g')
+
+build: $(HTML_PAGES) $(MD_PAGES) pagefind
+
+$(HTML_PAGES): $(MD_PAGES) .FORCE
+	if [ -f $(PANDOC) ]; then $(PANDOC) --metadata title=$(basename $@) -s --to html5 $(basename $@).md -o $(basename $@).html \
+		--lua-filter=links-to-html.lua \
+	    --template=page.tmpl; fi
+	@if [ $@ = "README.html" ]; then mv README.html index.html; fi
+
+pagefind: .FORCE
+	# NOTE: I am not including most of the archive in PageFind index since it doesn't make sense in this case.
+	pagefind --verbose --glob="{*.html,docs/*.html}" --force-language en-US --exclude-selectors="nav,header,footer" --output-path ./pagefind --site .
+	git add pagefind
+
+clean:
+	@rm *.html
+
+.FORCE:
+`
+
+const publishBashText = `#!/bin/bash
+#
+
+#
+# Publish script for {{name}} for GitHub pages. It expect the gh-pages
+# branch to already exist.
+#
+
+WORKING_BRANCH=\$(git branch | grep -E "\\* " | cut -d \\  -f 2)
+if [ "\${WORKING_BRANCH}" = "gh-pages" ]; then
+	git commit -am "publishing to gh-pages branch"
+	git push origin gh-pages
+else
+	echo "You're in \${WORKING_BRANCH} branch"
+	echo "You need to pull in changes to the gh-pages branch to publish"
+  # shellcheck disable=SC2162
+	read -p "process Y/n " YES_NO
+	if [ "\${YES_NO}" = "Y" ] || [ "\${YES_NO}" = "y" ]; then
+		echo "Committing and pushing to \${WORKING_BRANCH}"
+		git commit -am "commiting to \${WORKING_BRANCH}"
+		git push origin "\${WORKING_BRANCH}"
+		echo "Changing branchs from \${WORKING_BRANCH} to gh-pages"
+		git checkout gh-pages
+		echo "Merging changes from origin gh-pages"
+		git pull origin gh-pages
+		git commit -am "merging origin gh-pages"
+		echo "Pulling changes from \${WORKING_BRANCH} info gh-pages"
+		git pull origin "\${WORKING_BRANCH}"
+		echo "Merging changes from \${WORKING_BRANCH}"
+		git commit -am "merging \${WORKING_BRANCH} with gh-pages"
+		echo "Pushing changes up and publishing"
+		git push origin gh-pages
+		echo "Changing back to your working branch \${WORKING_BRANCH}"
+		git checkout "\${WORKING_BRANCH}"
+	fi
+fi
+`
+
+const releaseBashText = `#!/bin/bash
+
+#
+# Release script for {{name}} on GitHub using gh cli.
+#
+# shellcheck disable=SC2046
+REPO_ID="\$(basename \$(pwd))"
+# shellcheck disable=SC2046
+GROUP_ID="\$(basename \$(dirname \$(pwd)))"
+REPO_URL="https://github.com/\${GROUP_ID}/\${REPO_ID}"
+echo "REPO_URL -> \${REPO_URL}"
+
+#
+# Generate a new draft release jq and gh
+#
+RELEASE_TAG="v$(jq -r .version codemeta.json)"
+RELEASE_NOTES="$(jq -r .releaseNotes codemeta.json | tr '\\n' ' ')"
+echo "tag: \${RELEASE_TAG}, notes:"
+jq -r .releaseNotes codemeta.json >release_notes.tmp
+cat release_notes.tmp
+
+# Now we're ready to push things.
+# shellcheck disable=SC2162
+read -r -p "Push release to GitHub with gh? (y/N) " YES_NO
+if [ "$YES_NO" = "y" ]; then
+	make save msg="prep for \${RELEASE_TAG}, \${RELEASE_NOTES}"
+	# Now generate a draft releas
+	echo "Pushing release \${RELEASE_TAG} to GitHub"
+	gh release create "\${RELEASE_TAG}" \\
+ 		--draft \\
+		-F release_notes.tmp \\
+		--generate-notes \\
+		dist/*.zip 
+	
+	cat <<EOT
+
+Now goto repo release and finalize draft.
+
+	\${REPO_URL}/releases
+
+EOT
+
+fi
+`

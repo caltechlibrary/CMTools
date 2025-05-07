@@ -10,7 +10,13 @@ The tools are intended to be run from the project root directory. `cmt` expects 
 - CITATION.cff
 - version.ts, version.js, version.go or version.py
 - about.md
+- INSTALL.md
+- search.md
 - page.hbs (handlebars template) or page.tmpl (Pandoc template)
+- Makefile (based on supported langauge choice)
+- webmake.mak
+
+These files provide a generalized schaffolding for a project.
 
 ## Create and manage your file
 
@@ -32,7 +38,7 @@ Here's an example of updating the version and `.releaseNotes` attributes but ins
 cme codemeta.json version releaseNotes -e
 ~~~
 
-Since the version is short you'll just be prompted to type in a new version string. You release notes maybe longer so for that you'll drop into your editor.
+Since normally the version is short you'll just be prompted to type in a new version string. The releaseNotes is a multiline field. The `-e` indicates to use your editor to complete the values for all fields.
 
 
 ## Create a version file for TypeScript, Go and Python
