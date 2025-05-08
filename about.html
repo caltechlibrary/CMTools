@@ -19,12 +19,10 @@
 </nav>
 <section>
 <h1 id="about-this-software">About this software</h1>
-<h2 id="cmtools-0.0.26">CMTools 0.0.26</h2>
-<p>Added support for `–lang` to specify a langauge to use for generating
-Makefile flavors. Right now Makefile for Go and Deno are supported.
-Otherwise will follow.</p>
-<p>Added support for generated "search.md", a search page using PageFind
-indexes for a repository.</p>
+<h2 id="cmtools-0.0.27">CMTools 0.0.27</h2>
+<p>Fixed support for rendering website.mak. Improved output of
+release.bash to split the release creation from the file upload. Also
+handle embedded back ticks in description.</p>
 <h3 id="authors">Authors</h3>
 <ul>
 <li>R. S. Doiel, <a href="https://orcid.org/0000-0003-0900-6903"
@@ -65,9 +63,10 @@ generate the following.</p>
 <li><p>CITATION.cff</p></li>
 <li><p>version.ts, version.js, version.go or version.py</p></li>
 <li><p>about.md</p></li>
-<li><p>page.hbs (handlebars template) or page.tmpl (Pandoc
+<li><p>page.tmpl (Pandoc template) or page.hbs (handlebars
 template)</p></li>
-<li><p>Makefile</p></li>
+<li><p>Makefile (for Go or Deno based projects)</p></li>
+<li><p>website.mak</p></li>
 <li><p>release.bash</p></li>
 <li><p>publish.bash</p></li>
 <li><p>License: <a
@@ -94,7 +93,7 @@ class="uri">https://caltechlibrary.github.io/CMTools/LICENSE</a></p></li>
 <li>GNU Make &gt;= 3.81</li>
 <li>Pandoc &gt;= 3.1</li>
 <li>Git &gt;= 2.39</li>
-<li>CMTools &gt;= 0.0.24</li>
+<li>CMTools &gt;= 0.0.26</li>
 </ul>
 </section>
 </body>

@@ -16,8 +16,9 @@ The tools are intended to be run from the project root directory. &#x60;cmt&#x60
 - CITATION.cff
 - version.ts, version.js, version.go or version.py
 - about.md
-- page.hbs (handlebars template) or page.tmpl (Pandoc template)
-- Makefile
+- page.tmpl (Pandoc template) or page.hbs (handlebars template)
+- Makefile (for Go or Deno based projects)
+- website.mak
 - release.bash
 - publish.bash
 
@@ -47,7 +48,7 @@ Installing from source
 - GNU Make &gt;&#x3D; 3.81
 - Pandoc &gt;&#x3D; 3.1
 - Git &gt;&#x3D; 2.39
-- CMTools &gt;&#x3D; 0.0.24
+- CMTools &gt;&#x3D; 0.0.26
 
 ### Steps
 

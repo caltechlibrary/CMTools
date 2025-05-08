@@ -18,8 +18,9 @@ The tools are intended to be run from the project root directory. &#x60;cmt&#x60
 - CITATION.cff
 - version.ts, version.js, version.go or version.py
 - about.md
-- page.hbs (handlebars template) or page.tmpl (Pandoc template)
-- Makefile
+- page.tmpl (Pandoc template) or page.hbs (handlebars template)
+- Makefile (for Go or Deno based projects)
+- website.mak
 - release.bash
 - publish.bash"
 authors:
@@ -35,8 +36,8 @@ contacts:
     email: rsdoiel@caltech.edu
 
 repository-code: "git+https://github.com/caltechlibrary/CMTools"
-version: 0.0.26
-date-released: 2025-05-07
+version: 0.0.27
+date-released: 2025-05-08
 
 license-url: "https://caltechlibrary.github.io/CMTools/LICENSE"
 keywords:
