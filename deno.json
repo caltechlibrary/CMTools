@@ -37,7 +37,7 @@
     "dist_windows_aarch64_cme": "deno compile --allow-env --allow-read --allow-write --allow-run --output dist/bin/cme.exe --target aarch64-pc-windows-msvc cme.ts",
     "test": "deno task codemeta_test.ts ; deno task person_or_organization_test.ts ; deno task transform_test.ts",
     "editor_test.ts": "deno test --allow-env --allow-run --allow-read --allow-write editor_test.ts",
-    "comdeta_test.ts": "deno test codemeta_test.ts --allow-import --allow-read",
+    "codemeta_test.ts": "deno test codemeta_test.ts --allow-import --allow-read",
     "person_or_organization_test.ts": "deno test person_or_organization_test.ts --allow-read",
     "transform_test.ts": "deno test transform_test.ts --allow-read --allow-run",
     "test-all": "deno test --reload --coverage --allow-net --allow-import --allow-env --allow-run --allow-read --allow-write"

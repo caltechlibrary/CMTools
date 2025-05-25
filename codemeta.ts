@@ -255,6 +255,7 @@ export class CodeMeta implements CodeMetaInterface {
   runtimePlatform: string[] = [];
   operatingSystem: string[] = [];
   softwareRequirements: string[] = [];
+  softwareSuggestions: string[] = [];
   downloadUrl: string = "";
   releaseNotes: string = "";
   developmentStatus: string = "";
@@ -314,6 +315,10 @@ export class CodeMeta implements CodeMetaInterface {
         this.softwareRequirements.length === 0)
       ? ""
       : obj["softwareRequirements"] = this.softwareRequirements;
+    (this.softwareSuggestions === undefined ||
+        this.softwareSuggestions.length === 0)
+      ? ""
+      : obj["softwareSuggestions"] = this.softwareSuggestions;
     (this.version === "") ? "" : obj["version"] = this.version;
     (this.developmentStatus === "")
       ? ""
@@ -426,6 +431,16 @@ export class CodeMeta implements CodeMetaInterface {
         this.softwareRequirements.push(obj["softwareRequirements"]);
       } else {
         this.softwareRequirements = obj["softwareRequirements"];
+      }
+    }
+    if (obj["softwareSuggestions"] === undefined) {
+      this.softwareSuggestions = [];
+    } else {
+      if (typeof (obj["softwareSuggestions"]) === "string") {
+        this.softwareSuggestions = [];
+        this.softwareSuggestions.push(obj["softwareSuggestions"]);
+      } else {
+        this.softwareSuggestions = obj["softwareSuggestions"];
       }
     }
     (obj["version"] === undefined) ? "" : this.version = obj["version"];

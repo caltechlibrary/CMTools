@@ -97,7 +97,6 @@ htdocs: .FORCE
 
 test: .FORCE
 	deno task test
-	deno task editor_test.ts
 
 install: build man .FORCE
 	mkdir -p "${HOME}/bin"
