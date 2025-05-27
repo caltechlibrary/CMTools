@@ -18,7 +18,6 @@ RELEASE_NOTES="$(jq -r .releaseNotes codemeta.json | tr '\`' "'" | tr '\n' ' ')"
 echo "tag: ${RELEASE_TAG}, notes:"
 jq -r .releaseNotes codemeta.json >release_notes.tmp
 cat release_notes.tmp
-rm release_notes.tmp
 
 # Now we're ready to push things.
 # shellcheck disable=SC2162
@@ -41,5 +40,7 @@ Now goto repo release and finalize draft.
 	${REPO_URL}/releases
 
 EOT
+
+    rm release_notes.tmp
 
 fi
