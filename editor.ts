@@ -1,4 +1,4 @@
-import { AttributeType, CodeMeta, CodeMetaTerms } from "./codemeta.ts";
+import { AttributeType, CodeMeta, CodeMetaTerms, getExampleText, complexFieldList } from "./codemeta.ts";
 import { PersonOrOrganization } from "./person_or_organization.ts";
 import * as yaml from "@std/yaml";
 import { type ParseOptions, type StringifyOptions } from "@std/yaml/";
@@ -102,22 +102,17 @@ export async function editCodeMetaTerm(
   console.log(`Default: ${name}: ${curVal}`);
   if (useEditor) {
     if (confirm(`Edit ${name}?`)) {
-      const eVal = (curVal === undefined) ? "" : curVal;
+      let eVal = (curVal === undefined) ? "" : curVal;
+      //FIXME: if eVal is for a complex type and it is empty 
+      // then I need to insert example text to use when editing the temp data.
+      if (eVal === "" && (complexFieldList.indexOf(name) > -1)) {
+        eVal = getExampleText(name);
+      }
       val = await editTempData(eVal);
     }
   } else {
     let pVal: string | null = "";
-    if (
-      [
-        "author",
-        "maintainer",
-        "contributor",
-        "funder",
-        "softwareRequirements",
-        "programmingLanguage",
-        "keywords",
-      ].indexOf(name) > -1
-    ) {
+    if (complexFieldList.indexOf(name) > -1) {
       console.log(
         `Enter YAML for ${name}. Enter period '.' on an empty line when done.`,
       );
@@ -170,17 +165,7 @@ export function getStringFromObject(
     return undefined;
   }
   let src: string | undefined = undefined;
-  if (
-    [
-      "author",
-      "contributor",
-      "maintainer",
-      "funder",
-      "keywords",
-      "operatingSystem",
-      "softwareRequirements",
-    ].indexOf(key) > -1
-  ) {
+  if (complexFieldList.indexOf(key) > -1) {
     try {
       let yamlOpt: StringifyOptions = {};
       yamlOpt.skipInvalid = true;

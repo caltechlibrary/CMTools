@@ -398,6 +398,14 @@ About this software
 {{#each softwareRequirements}}
 - {{.}}
 {{/each}}{{/if}}
+
+{{#if softwareSuggestions}}
+### Software Suggestions
+
+{{#each softwareSuggestions}}
+- {{.}}
+{{/each}}{{/if}}
+
 `;
 
 // HTML
@@ -701,6 +709,14 @@ const readmeMdText = `
 ## Software Requirements
 
 {{#each softwareRequirements}}
+- {{.}}
+{{/each}}
+{{/if}}
+
+{{#if softwareSuggestions}}
+## Software Suggestions
+
+{{#each softwareSuggestions}}
 - {{.}}
 {{/each}}
 {{/if}}

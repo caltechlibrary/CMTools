@@ -4,6 +4,17 @@ import {
   PersonOrOrganization,
 } from "./person_or_organization.ts";
 
+export const complexFieldList = [ 
+  "author",
+  "maintainer",
+  "contributor",
+  "funder",
+  "softwareRequirements",
+  "softwareSuggestions",
+  "programmingLanguage",
+  "keywords"
+];
+
 export interface AttributeTypeInterface {
   "name": string;
   "type": string;
@@ -155,6 +166,11 @@ export const CodeMetaTerms: AttributeType[] = [
     "Required software dependencies",
   ),
   new AttributeType(
+    "softwareSuggestions",
+    "text_list",
+    "Optional dependencies , e.g. for optional features, code development, etc.",
+  ),
+  new AttributeType(
     "relatedLink",
     "url_list",
     "A link related to this object, e.g. related web pages",
@@ -173,11 +189,6 @@ export const CodeMetaTerms: AttributeType[] = [
     "referencePublication",
     "url",
     "An academic publication related to the software.",
-  ),
-  new AttributeType(
-    "softwareSuggestions",
-    "text_list",
-    "Optional dependencies , e.g. for optional features, code development, etc.",
   ),
   new AttributeType(
     "developmentStatus",
@@ -315,11 +326,13 @@ export class CodeMeta implements CodeMetaInterface {
         this.softwareRequirements.length === 0)
       ? ""
       : obj["softwareRequirements"] = this.softwareRequirements;
+
     (this.softwareSuggestions === undefined ||
         this.softwareSuggestions.length === 0)
       ? ""
       : obj["softwareSuggestions"] = this.softwareSuggestions;
-    (this.version === "") ? "" : obj["version"] = this.version;
+
+      (this.version === "") ? "" : obj["version"] = this.version;
     (this.developmentStatus === "")
       ? ""
       : obj["developmentStatus"] = this.developmentStatus;
@@ -565,6 +578,18 @@ export class CodeMeta implements CodeMetaInterface {
         this.softwareRequirements = obj["softwareRequirements"];
       }
     }
+    if (obj["softwareSuggestions"] === undefined) {
+      // do nothing.
+    } else {
+      (this.softwareSuggestions === undefined)
+        ? this.softwareSuggestions = []
+        : "";
+      if (typeof (obj["softwareSuggestions"]) === "string") {
+        this.softwareSuggestions.push(obj["softwareSuggestions"]);
+      } else {
+        this.softwareSuggestions = obj["softwareSuggestions"];
+      }
+    }
     (obj["version"] === undefined) ? "" : this.version = obj["version"];
     (obj["developmentStatus"] === undefined)
       ? ""
@@ -604,4 +629,50 @@ function yyyymmdd(d: Date): string {
   const day = `${d.getDate() + 1}`.padStart(2, "0");
   const s = `${year}-${month}-${day}`;
   return s;
+}
+
+export function getExampleText(attr: string) : string {
+  switch (attr) {
+    case "author":
+      return `- id : ORCID_VALUE_GOES_HERE
+  familyName: FAMILY_NAME_GOES_HERE
+  givenName: GIVEN_NAME_GOES_HERE
+  email: OPTIONAL_EMAIL_GOESHERE
+`;
+    case "maintainer":
+      return `- id : ORCID_VALUE_GOES_HERE
+  familyName: FAMILY_NAME_GOES_HERE
+  givenName: GIVEN_NAME_GOES_HERE
+  email: OPTIONAL_EMAIL_GOESHERE
+`;
+    case "contributor":
+      return `- id : ORCID_VALUE_GOES_HERE
+  familyName: FAMILY_NAME_GOES_HERE
+  givenName: GIVEN_NAME_GOES_HERE
+  email: OPTIONAL_EMAIL_GOESHERE
+`;
+    case "funder":
+      return `- name : FUNDER_NAME_GOES_HERE
+  ror: ROR_GOES_HERE_IF_KNOWN
+`;
+    case "softwareRequirements":
+      return `- SOFTWARE_NAME SEMVER_PHRASE
+- SOFTWARE_NAME SEMVER_PHRASE
+`;
+    case "softwareSuggestions":
+      return `- SOFTWARE_NAME SEMVER_PHRASE
+- SOFTWARE_NAME SEMVER_PHRASE
+`;
+    case "programmingLanguage":
+      return `- LANGUAGE_NAME SEMVER_PHRASE
+- LANGUAGE_NAME SEMVER_PHRASE
+`;
+    case "keywords":
+      return `- KEYWORD_ONE
+- KEYWORD_TWO
+- KEYWORD_THREE ...
+`;
+    default:
+      return '';
+  }
 }

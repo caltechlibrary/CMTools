@@ -136,7 +136,7 @@ async function main() {
   if (attributeNames.length > 0) {
     for (let name of attributeNames) {
       if (!await editCodeMetaTerm(cm, name, app.editor)) {
-        console.info(`INFO: using previous value ${name}`);
+        console.info(`INFO: using previous value for ${name}`);
       }
     }
     src = JSON.stringify(cm.toObject(), null, 2);
