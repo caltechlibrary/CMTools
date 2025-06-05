@@ -36,7 +36,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.29
+version: 0.0.30
 license_url: https://caltechlibrary.github.io/CMTools/LICENSE
 operating_system:
   - Linux
@@ -52,15 +52,15 @@ keywords:
   - software
   - code generation
 
-date_released: 2025-05-27
+date_released: 2025-06-05
 ---
 
 About this software
 ===================
 
-## CMTools 0.0.29
+## CMTools 0.0.30
 
-Fixed bug where softwareSuggestions attribute was not being propogated. Added example text for complex fields.
+Fixed bug in generating installer.ps1.
 
 ### Authors
 
@@ -117,11 +117,13 @@ The tools are intended to be run from the project root directory. &#x60;cmt&#x60
 ### Software Requirements
 
 - Deno &gt;&#x3D; 2.3
+- CMTools &gt;&#x3D; 0.0.29
+
+
+### Software Suggestions
+
 - GNU Make &gt;&#x3D; 3.81
 - Pandoc &gt;&#x3D; 3.1
 - Git &gt;&#x3D; 2.39
-- CMTools &gt;&#x3D; 0.0.26
-
-
 
 

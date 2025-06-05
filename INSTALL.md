@@ -45,10 +45,7 @@ Installing from source
 ### Required software
 
 - Deno &gt;&#x3D; 2.3
-- GNU Make &gt;&#x3D; 3.81
-- Pandoc &gt;&#x3D; 3.1
-- Git &gt;&#x3D; 2.39
-- CMTools &gt;&#x3D; 0.0.26
+- CMTools &gt;&#x3D; 0.0.29
 
 ### Steps
 
