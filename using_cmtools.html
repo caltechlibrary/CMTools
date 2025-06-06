@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>CMTools</title>
+    <link rel="stylesheet" href="/css/site.css">
+</head>
+<body>
+<nav>
+<ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="index.html">README</a></li>
+    <li><a href="LICENSE">LICENSE</a></li>
+    <li><a href="INSTALL.html">INSTALL</a></li>
+    <li><a href="user_manual.html">User Manual</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="search.html">Search</a></li>
+    <li><a href="https://github.com/caltechlibrary/CMTools">GitHub</a></li>
+</ul>
+</nav>
+<section>
+<h1 id="using-cmtools">Using CMTools</h1>
+<p>What is CMTools? It is two programs that work with a <a
+href="https://codemeta.github.io">CodeMeta</a> file to save time and
+effort setting up or maintaining a GitHub based project. It was
+developed specifically for Caltech Library Digital Library Development
+Group as a replacement for GitHub templates.</p>
+<p>The CodeMeta file is a JSON document that hold metadata about your
+project (e.g. name, description, authorship, dates). When combined with
+the metadata available from Git and your LICENSE file many files
+typically included in a project can be generated.</p>
+<p>Here’s a brief list</p>
+<ul>
+<li>README.md</li>
+<li>about.md</li>
+<li>INSTALL.md</li>
+<li>CITATION.cff</li>
+<li>Makefile (for Go and Deno projects)</li>
+<li>website.mak</li>
+<li>installer.sh</li>
+<li>installer.ps1</li>
+<li>release.bash</li>
+<li>publish.bash</li>
+<li>page.tmpl</li>
+<li>version.py, version.go and version.ts</li>
+</ul>
+<p>The toolkit is composed from two command line programs provided along
+with a text editor (e.g. Nano, Vim, Micro Editor, TextEdit,
+NotePad).</p>
+<p>All these files contain some level of the metadata captured in the <a
+href="codemeta.json">codemeta.json</a>, in the path and Git repository
+metadata or the LICENSE file associated with your project.</p>
+<h2 id="creating-and-maintaining-your-codemeta.json">creating and
+maintaining your codemeta.json</h2>
+<p>The tool for creating and maintaining your codemeta.json file is
+called <code>cme</code>. That stands for “CodeMeta Editor”. It is an
+interactive tool that will prompt for top level CodeMeta attributes and
+let you enter them. It includes a <code>-e</code> option that will let
+you update the value in your chosen editor. This is nice for longer
+fields like <code>description</code> and <code>releaseNotes</code> as
+well as complex fields like <code>author</code>,
+<code>contributor</code>, <code>maintainer</code> and
+<code>softwareRequirements</code>.</p>
+<p>Complex fields are entered using <a
+href="https://en.wikipedia.org/wiki/YAML">YAML</a> notation to describe
+the element and attributes defined by the CodeMeta standard.</p>
+<h2 id="generating-project-files-and-artifacts">generating project files
+and artifacts</h2>
+<p>Once you have a “codemeta.json” file you can use the tool named
+<code>cmt</code>, “CodeMeta Transformer”, to transform the CodeMeta
+contents into one or more files (see previous list). The CodeMeta JSON
+file functions as the source of truth about the project. That means you
+can generate initial versions of the files and continue hand editing
+them or when are happy with the basics generate and regenerated as
+needed when the CodeMeta JSON file changes.</p>
+<h2 id="example-creating-a-deno-typescript-project">Example creating a
+Deno TypeScript project</h2>
+<p>In the following example I step through creating a “Hello World”
+Deno+TypeScript project. A few things need to be in place before you can
+use CMTools and generated files.</p>
+<ol type="1">
+<li>Create a Git repository directory</li>
+<li>Change into that directory and initialize a new Git repository</li>
+<li>Create a LICENSE (or just an empty placeholder)</li>
+<li>Create the codemeta.json file using <code>cme</code></li>
+<li>Generate the files for the project</li>
+</ol>
+<p>Steps one through three are the pre-CMTools setup. For steps four and
+five you use CMTools’ programs.</p>
+<pre class="shell"><code>mkdir -p src/helloworld
+cd src/helloworld
+touch LICENSE .gitignore
+git init -am &#39;Initial Setup&#39;</code></pre>
+<p>Now you’re ready to create your codemeta.json file. I’m using the
+<code>-e</code> option so that I can edit the values in my preferred
+text editor.</p>
+<pre class="shell"><code>export EDITOR=&quot;nano&quot;
+cme codemeta.json -e</code></pre>
+<p>Now we are ready for to generate files. The first time you run this.
+You’ll likely get an error like</p>
+<pre class="error"><code>&quot;git log --pretty=format:%h -n 1&quot; exited with 128
+&quot;git config --get remote.origin.url&quot; exited with 1</code></pre>
+<p>This is because we haven’t committed and pushed our repository
+before. There are not any version numbers associated with the Git
+log.</p>
+<pre class="shell"><code>cmt codemeta.json README.md
+cmt codemeta.json about.md
+cmt codemeta.json INSTALL.md
+cmt codemeta.json CITATION.cff
+cmt codemeta.json Makefile --lang=TypeScript
+cmt codemeta.json website.mak
+cmt codemeta.json installer.sh
+cmt codemeta.json installer.ps1
+cmt codemeta.json release.bash
+cmt codemeta.json publish.bash
+cmt codemeta.json page.tmpl
+cmt codemeta.json version.ts</code></pre>
+<p>Add these files to the Git repository.</p>
+<pre class="shell"><code>git add codemeta.json
+git add README.md
+git add about.md
+git add INSTALL.md
+git add CITATION.cff
+git add Makefile
+git add website.mak
+git add installer.sh
+git add installer.ps1
+git add release.bash
+git add publish.bash
+git add page.tmpl
+git add version.ts
+git commit -am &#39;Initial Setup&#39;
+git push -u origin main</code></pre>
+<p>Now you’re ready to start development. Remember you can always update
+these generated files by updating the codemeta.json file with
+<code>cme</code> and then updating the files using <code>cmt</code>.</p>
+</section>
+</body>
+</html>
