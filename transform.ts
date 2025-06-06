@@ -648,7 +648,29 @@ curl.exe -Lo "$\{ZIPFILE\}" "$\{DOWNLOAD_URL\}"
 if (!(Test-Path $ZIPFILE)) {
     Write-Output "Failed to download $\{ZIPFILE\} from $\{DOWNLOAD_URL\}"
 } else {
-    tar.exe xf "$\{ZIPFILE\}" -C "$\{Home\}"
+    # Do we have a zip file or tar.gz file?
+    $fileInfo = Get-Item "C:\path\to\your\file.tar.gz"
+
+    # Handle zip or tar.gz files
+    switch ($fileInfo.Extension) {
+        ".zip" {
+            Expand-Archive -Path "$\{ZIPFILE\}" "$\{Home\}"
+            break
+        }
+        ".gz" {
+            tar.exe xf "$\{ZIPFILE\}" -C "$\{Home\}"
+            break
+        }
+        ".tgz" {
+            tar.exe xf "$\{ZIPFILE\}" -C "$\{Home\}"
+            break
+        }
+        default {
+            Write-Output "The $\{ZIPFILE\} from $\{DOWNLOAD_URL\} is neither a ZIP file nor a gzipped tar file."
+            exit 1
+        }
+    }
+
     #Remove-Item $ZIPFILE
 
     $User = [System.EnvironmentVariableTarget]::User
