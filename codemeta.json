@@ -77,10 +77,10 @@
     "Pandoc >= 3.1",
     "Git >= 2.39"
   ],
-  "version": "0.0.31",
+  "version": "0.0.32",
   "developmentStatus": "active",
   "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues",
-  "releaseNotes": "Improved installer.ps1 by supporting both tar.gz files and zip files by checking the file extensions.",
+  "releaseNotes": "Added generators for website.ps1,release.ps1,publish.ps1. Fixed typo in generator installer.ps1",
   "copyrightYear": 2025,
   "copyrightHolder": "California Institute of Technology"
 }
