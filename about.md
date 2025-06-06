@@ -36,7 +36,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.31
+version: 0.0.32
 license_url: https://caltechlibrary.github.io/CMTools/LICENSE
 operating_system:
   - Linux
@@ -58,9 +58,9 @@ date_released: 2025-06-06
 About this software
 ===================
 
-## CMTools 0.0.31
+## CMTools 0.0.32
 
-Improved installer.ps1 by supporting both tar.gz files and zip files by checking the file extensions.
+Added generators for website.ps1,release.ps1,publish.ps1. Fixed typo in generator installer.ps1
 
 ### Authors
 

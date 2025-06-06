@@ -1369,7 +1369,7 @@ generated with CMTools {{version}} {{releaseHash}} {{releaseDate}}
 Publish script for GitHub pages. It expects the gh-pages branch to already exist.
 #>
 
-$workingBranch = git branch | Select-String -Pattern "\* " | ForEach-Object { $_ -replace '\* ', '' }
+$workingBranch = git branch | Select-String -Pattern "\\* " | ForEach-Object { $_ -replace '\* ', '' }
 if ($workingBranch -eq "gh-pages") {
     git commit -am "publishing to gh-pages branch"
     git push origin gh-pages
@@ -1476,7 +1476,7 @@ if ($yesNo -eq "y") {
     Write-Output "Pushing release $releaseTag to GitHub"
     gh release create "$releaseTag" \`
         --draft \`
-        --notesFile release_notes.tmp \`
+        --notes-file release_notes.tmp \`
         --generate-notes
     Write-Output "Uploading distribution files"
     gh release upload "$releaseTag" dist/*.zip

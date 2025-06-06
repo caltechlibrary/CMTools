@@ -1,5 +1,5 @@
 <#
-generated with CMTools 0.0.31 a5b2b06 [{releaseDate}}
+generated with CMTools 0.0.32 79c8982 [{releaseDate}}
 
 .SYNOPSIS
 Release script for CMTools on GitHub using gh CLI.
@@ -28,7 +28,7 @@ if ($yesNo -eq "y") {
     Write-Output "Pushing release $releaseTag to GitHub"
     gh release create "$releaseTag" `
         --draft `
-        --notesFile release_notes.tmp `
+        --notes-file release_notes.tmp `
         --generate-notes
     Write-Output "Uploading distribution files"
     gh release upload "$releaseTag" dist/*.zip
