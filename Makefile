@@ -122,7 +122,22 @@ clean:
 	if [ -d bin ]; then rm -fR bin/*; fi
 	if [ -d dist ]; then rm -fR dist/*; fi
 
-release: clean build man website distribute_docs dist/Linux-x86_64 dist/Linux-aarch64 dist/macOS-x86_64 dist/macOS-arm64 dist/Windows-x86_64 dist/Windows-arm64
+installers: INSTALL.md installer.sh installer.ps1
+
+INSTALL.md: .FORCE
+	deno run --allow-read --allow-write --allow-run cmt.ts codemeta.json INSTALL.md
+
+installer.sh: .FORCE
+	deno run --allow-read --allow-write --allow-run cmt.ts codemeta.json installer.sh
+
+installer.ps1: .FORCE
+	deno run --allow-read --allow-write --allow-run cmt.ts codemeta.json installer.ps1
+
+project_scripts: website.mak website.ps1 release.bash release.ps1 publish.bash publish.ps1
+	deno run --allow-read --allow-write --allow-run cmt.ts codemeta.json website.mak release.bash publish.bash
+	deno run --allow-read --allow-write --allow-run cmt.ts codemeta.json website.ps1 release.ps1 publish.ps1
+
+release: clean build man website project_scripts distribute_docs dist/Linux-x86_64 dist/Linux-aarch64 dist/macOS-x86_64 dist/macOS-arm64 dist/Windows-x86_64 dist/Windows-arm64
 	echo "Ready to do ./release.bash"
 
 setup_dist: .FORCE

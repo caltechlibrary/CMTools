@@ -3,6 +3,7 @@ import * as path from "@std/path";
 import Handlebars from "npm:handlebars";
 import { CodeMeta } from "./codemeta.ts";
 import { gitOrgOrPerson, gitReleaseHash } from "./gitcmds.ts";
+import { version, releaseDate, releaseHash } from "./version.ts";
 
 export function getFormatFromExt(
   filename: string | undefined,
@@ -21,10 +22,16 @@ export function getFormatFromExt(
         return "search.md";
       case "website.mak":
         return "website.mak";
+      case "website.ps1":
+        return "website.ps1";
       case "release.bash":
         return "release.bash"
+      case "release.ps1":
+        return "release.ps1"
       case "publish.bash":
         return "publish.bash";
+      case "publish.ps1":
+        return "publish.ps1";
     }
     switch (path.extname(filename)) {
       case ".cff":
@@ -73,9 +80,12 @@ export function isSupportedFormat(format: string | undefined): boolean {
     "install.md",
     "search.md",
     "website.mak",
+    "website.ps1",
     "Makefile",
     "release.bash",
+    "release.ps1",
     "publish.bash",
+    "publish.ps1",
   ].indexOf(format) > -1;
 }
 
@@ -153,10 +163,16 @@ export async function transform(
       return renderTemplate(obj, makefileTemplate);
     case "website.mak":
       return renderTemplate(obj, websiteMakefileText);
+    case "website.ps1":
+      return renderTemplate(obj, websitePs1Text);
     case "release.bash":
       return renderTemplate(obj, releaseBashText);
+    case "release.ps1":
+      return renderTemplate(obj, releasePs1Text);
     case "publish.bash":
       return renderTemplate(obj, publishBashText);
+    case "publish.ps1":
+      return renderTemplate(obj, publishPs1Text);
     case "cff":
       return renderTemplate(obj, cffTemplateText);
     case "ts":
@@ -436,6 +452,7 @@ $$content$$
 
 // Bash
 const shInstallerText = `#!/bin/sh
+# generated with CMTools {{version}} {{releaseHash}} {{releaseDate}}
 
 #
 # Set the package name and version to install
@@ -598,7 +615,7 @@ cd "$START" || exit 1
 
 // Powershell
 const ps1InstallerText = `#!/usr/bin/env pwsh
-# Generated with codemeta-ps1-installer.tmpl, see https://github.com/caltechlibrary/codemeta-pandoc-examples
+# generated with CMTools {{version}} {{releaseHash}} {{releaseDate}}
 
 #
 # Set the package name and version to install
@@ -623,6 +640,7 @@ if ($SYSTEM_TYPE.CsSystemType.Contains("ARM64")) {
     $MACHINE = "x86_64"
 }
 
+Write-Output "Using release $\{RELEASE\}"
 
 # FIGURE OUT Install directory
 $BIN_DIR = "$\{Home\}\\bin"
@@ -649,7 +667,7 @@ if (!(Test-Path $ZIPFILE)) {
     Write-Output "Failed to download $\{ZIPFILE\} from $\{DOWNLOAD_URL\}"
 } else {
     # Do we have a zip file or tar.gz file?
-    $fileInfo = Get-Item "C:\path\to\your\file.tar.gz"
+    $fileInfo = Get-Item "$\{ZIPFILE\}"
 
     # Handle zip or tar.gz files
     switch ($fileInfo.Extension) {
@@ -827,9 +845,13 @@ make install
 `;
 
 // Makefile
-export const denoMakefileText = `#
+export const denoMakefileText = `
+# generated with CMTools {{version}} {{releaseHash}} {{releaseDate}}
+
+#
 # Simple Makefile for Deno based Projects built under POSIX.
 #
+
 PROJECT = {{name}}
 
 PACKAGE = {{name}}
@@ -1013,7 +1035,10 @@ dist/Windows-arm64: .FORCE
 `;
 
 // Makefile
-export const goMakefileText = `#
+export const goMakefileText = `
+# generated with CMTools {{version}} {{releaseHash}} {{releaseDate}}
+
+#
 # Simple Makefile for Golang based Projects built under POSIX.
 #
 PROJECT = {{name}}
@@ -1218,7 +1243,10 @@ release: build installer.sh save setup_dist distribute_docs dist/Linux-x86_64 di
 .FORCE:
 `;
 
-const websiteMakefileText = `#
+const websiteMakefileText = `
+# generated with CMTools {{version}} {{releaseHash}} {{releaseDate}}
+
+#
 # Makefile for running pandoc on all Markdown docs ending in .md
 #
 PROJECT = {{name}}
@@ -1248,7 +1276,55 @@ clean:
 .FORCE:
 `
 
+const websitePs1Text = `<#
+generated with CMTools 0.0.31 a5b2b06 2025-06-06
+
+.SYNOPSIS
+PowerShell script for running pandoc on all Markdown docs ending in .md
+#>
+$project = "CMTools"
+Write-Output "Building website for $\{project\}"
+$pandoc = Get-Command pandoc | Select-Object -ExpandProperty Source
+
+# Get all markdown files except 'nav.md'
+$mdPages = Get-ChildItem -Filter *.md | Where-Object { $_.Name -ne "nav.md" }
+
+# Generate HTML page names from markdown files
+$htmlPages = $mdPages | ForEach-Object { [System.IO.Path]::ChangeExtension($_.Name, ".html") }
+
+function Build-HtmlPage {
+    param($htmlPages, $mdPages)
+
+    foreach ($htmlPage in $htmlPages) {
+        $mdPage = [System.IO.Path]::ChangeExtension($htmlPage, ".md")
+        if (Test-Path $pandoc) {
+            & $pandoc "--metadata" "title=$($htmlPage.Replace('.html', ''))" "-s" "--to" "html5" $mdPage "-o" $htmlPage \`
+                "--lua-filter=links-to-html.lua" \`
+                "--template=page.tmpl"
+        }
+
+        if ($htmlPage -eq "README.html") {
+            Move-Item -Path "README.html" -Destination "index.html" -Force
+        }
+    }
+}
+
+function Invoke-PageFind {
+    # Run PageFind
+    pagefind --verbose --glob="{*.html,docs/*.html}" --force-language en-US --exclude-selectors="nav,header,footer" --output-path ./pagefind --site .
+    git add pagefind
+}
+
+# Build HTML page
+Build-HtmlPage -htmlPages $htmlPages -mdPages $mdPages
+
+# Invoke PageFind
+Invoke-PageFind
+
+`
+
 const publishBashText = `#!/bin/bash
+# generated with CMTools {{version}} {{releaseHash}} {{releaseDate}}
 #
 
 #
@@ -1286,7 +1362,44 @@ else
 fi
 `
 
+const publishPs1Text = `<#
+generated with CMTools {{version}} {{releaseHash}} {{releaseDate}}
+
+.SYNOPSIS
+Publish script for GitHub pages. It expects the gh-pages branch to already exist.
+#>
+
+$workingBranch = git branch | Select-String -Pattern "\* " | ForEach-Object { $_ -replace '\* ', '' }
+if ($workingBranch -eq "gh-pages") {
+    git commit -am "publishing to gh-pages branch"
+    git push origin gh-pages
+} else {
+    Write-Output "You're in $workingBranch branch"
+    Write-Output "You need to pull in changes to the gh-pages branch to publish"
+    $yesNo = Read-Host "Process Y/n"
+    if ($yesNo -eq "Y" -or $yesNo -eq "y") {
+        Write-Output "Committing and pushing to $workingBranch"
+        git commit -am "committing to $workingBranch"
+        git push origin $workingBranch
+        Write-Output "Changing branches from $workingBranch to gh-pages"
+        git checkout gh-pages
+        Write-Output "Merging changes from origin gh-pages"
+        git pull origin gh-pages
+        git commit -am "merging origin gh-pages"
+        Write-Output "Pulling changes from $workingBranch into gh-pages"
+        git pull origin $workingBranch
+        Write-Output "Merging changes from $workingBranch"
+        git commit -am "merging $workingBranch with gh-pages"
+        Write-Output "Pushing changes up and publishing"
+        git push origin gh-pages
+        Write-Output "Changing back to your working branch $workingBranch"
+        git checkout $workingBranch
+    }
+}
+`
+
 const releaseBashText = `#!/bin/bash
+# generated with CMTools {{version}} {{releaseHash}} {{releaseDate}}
 
 #
 # Release script for {{name}} on GitHub using gh cli.
@@ -1331,4 +1444,49 @@ EOT
     rm release_notes.tmp
 
 fi
+`
+
+const releasePs1Text = `<#
+generated with CMTools {{version}} {{releaseHash}} [{releaseDate}}
+
+.SYNOPSIS
+Release script for {{name}} on GitHub using gh CLI.
+#>
+
+# Determine repository and group IDs
+$repoId = Split-Path -Leaf -Path (Get-Location)
+$groupId = Split-Path -Leaf -Path (Split-Path -Parent -Path (Get-Location))
+$repoUrl = "https://github.com/$groupId/$repoId"
+Write-Output "REPO_URL -> $repoUrl"
+
+# Generate a new draft release using jq and gh
+$releaseTag = "v$(jq -r .version codemeta.json)"
+$releaseNotes = jq -r .releaseNotes codemeta.json | ForEach-Object { $_ -replace "\`n", " " -replace "\`'", "'" }
+Write-Output "tag: $releaseTag, notes:"
+jq -r .releaseNotes codemeta.json | Out-File -FilePath release_notes.tmp -Encoding utf8
+Get-Content release_notes.tmp
+
+# Prompt user to push release to GitHub
+$yesNo = Read-Host -Prompt "Push release to GitHub with gh? (y/N)"
+if ($yesNo -eq "y") {
+    # Assuming 'make save' is a placeholder for a command you have
+    # Replace 'make save' with the appropriate PowerShell command or function
+    Write-Output "Preparing for $releaseTag, $releaseNotes"
+    # Create a draft release
+    Write-Output "Pushing release $releaseTag to GitHub"
+    gh release create "$releaseTag" \`
+        --draft \`
+        --notesFile release_notes.tmp \`
+        --generate-notes
+    Write-Output "Uploading distribution files"
+    gh release upload "$releaseTag" dist/*.zip
+
+    @"
+Now go to repo release and finalize draft.
+
+$repoUrl/releases
+"@
+
+    Remove-Item release_notes.tmp
+}
 `
