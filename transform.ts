@@ -452,7 +452,7 @@ $$content$$
 
 // Bash
 const shInstallerText = `#!/bin/sh
-# generated with CMTools {{version}} {{releaseHash}} {{releaseDate}}
+# generated with CMTools {{version}} {{releaseHash}}
 
 #
 # Set the package name and version to install
@@ -615,7 +615,7 @@ cd "$START" || exit 1
 
 // Powershell
 const ps1InstallerText = `#!/usr/bin/env pwsh
-# generated with CMTools {{version}} {{releaseHash}} {{releaseDate}}
+# generated with CMTools {{version}} {{releaseHash}}
 
 #
 # Set the package name and version to install
@@ -846,7 +846,7 @@ make install
 
 // Makefile
 export const denoMakefileText = `
-# generated with CMTools {{version}} {{releaseHash}} {{releaseDate}}
+# generated with CMTools {{version}} {{releaseHash}}
 
 #
 # Simple Makefile for Deno based Projects built under POSIX.
@@ -1036,7 +1036,7 @@ dist/Windows-arm64: .FORCE
 
 // Makefile
 export const goMakefileText = `
-# generated with CMTools {{version}} {{releaseHash}} {{releaseDate}}
+# generated with CMTools {{version}} {{releaseHash}}
 
 #
 # Simple Makefile for Golang based Projects built under POSIX.
@@ -1244,7 +1244,7 @@ release: build installer.sh save setup_dist distribute_docs dist/Linux-x86_64 di
 `;
 
 const websiteMakefileText = `
-# generated with CMTools {{version}} {{releaseHash}} {{releaseDate}}
+# generated with CMTools {{version}} {{releaseHash}}
 
 #
 # Makefile for running pandoc on all Markdown docs ending in .md
@@ -1324,7 +1324,7 @@ Invoke-PageFind
 `
 
 const publishBashText = `#!/bin/bash
-# generated with CMTools {{version}} {{releaseHash}} {{releaseDate}}
+# generated with CMTools {{version}} {{releaseHash}}
 #
 
 #
@@ -1363,7 +1363,7 @@ fi
 `
 
 const publishPs1Text = `<#
-generated with CMTools {{version}} {{releaseHash}} {{releaseDate}}
+generated with CMTools {{version}} {{releaseHash}}
 
 .SYNOPSIS
 Publish script for GitHub pages. It expects the gh-pages branch to already exist.
@@ -1399,7 +1399,7 @@ if ($workingBranch -eq "gh-pages") {
 `
 
 const releaseBashText = `#!/bin/bash
-# generated with CMTools {{version}} {{releaseHash}} {{releaseDate}}
+# generated with CMTools {{version}} {{releaseHash}}
 
 #
 # Release script for {{name}} on GitHub using gh cli.
@@ -1447,7 +1447,7 @@ fi
 `
 
 const releasePs1Text = `<#
-generated with CMTools {{version}} {{releaseHash}} [{releaseDate}}
+generated with CMTools {{version}} {{releaseHash}}
 
 .SYNOPSIS
 Release script for {{name}} on GitHub using gh CLI.
