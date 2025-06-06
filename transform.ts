@@ -1484,7 +1484,8 @@ if ($yesNo -eq "y") {
     @"
 Now go to repo release and finalize draft.
 
-$repoUrl/releases
+    $repoUrl/releases
+
 "@
 
     Remove-Item release_notes.tmp
