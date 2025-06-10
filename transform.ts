@@ -622,7 +622,7 @@ const ps1InstallerText = `#!/usr/bin/env pwsh
 #
 param(
   [Parameter()]
-  [String]$VERSION = "$version$"
+  [String]$VERSION = "{{version}}"
 )
 [String]$PKG_VERSION = [Environment]::GetEnvironmentVariable("PKG_VERSION")
 if ($PKG_VERSION) {
@@ -672,7 +672,7 @@ if (!(Test-Path $ZIPFILE)) {
     # Handle zip or tar.gz files
     switch ($fileInfo.Extension) {
         ".zip" {
-            Expand-Archive -Path "$\{ZIPFILE\}" "$\{Home\}"
+            Expand-Archive -Force -Path "$\{ZIPFILE\}" "$\{Home\}"
             break
         }
         ".gz" {

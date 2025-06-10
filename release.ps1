@@ -1,5 +1,5 @@
 <#
-generated with CMTools 0.0.32 b975e1c [{releaseDate}}
+generated with CMTools 0.0.33 732f034
 
 .SYNOPSIS
 Release script for CMTools on GitHub using gh CLI.
@@ -36,7 +36,8 @@ if ($yesNo -eq "y") {
     @"
 Now go to repo release and finalize draft.
 
-$repoUrl/releases
+    $repoUrl/releases
+
 "@
 
     Remove-Item release_notes.tmp

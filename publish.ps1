@@ -1,5 +1,5 @@
 <#
-generated with CMTools 0.0.32 b975e1c 2025-06-06
+generated with CMTools 0.0.33 732f034
 
 .SYNOPSIS
 Publish script for GitHub pages. It expects the gh-pages branch to already exist.

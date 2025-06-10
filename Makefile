@@ -138,7 +138,7 @@ project_scripts: website.mak website.ps1 release.bash release.ps1 publish.bash p
 	deno run --allow-read --allow-write --allow-run cmt.ts codemeta.json website.ps1 release.ps1 publish.ps1
 
 release: clean build man website project_scripts distribute_docs dist/Linux-x86_64 dist/Linux-aarch64 dist/macOS-x86_64 dist/macOS-arm64 dist/Windows-x86_64 dist/Windows-arm64
-	echo "Ready to do ./release.bash"
+	printf "\n\tReady to do ./release.bash\n"
 
 setup_dist: .FORCE
 	@rm -fR dist

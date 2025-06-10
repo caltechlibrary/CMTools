@@ -1,12 +1,12 @@
 #!/usr/bin/env pwsh
-# generated with CMTools 0.0.32 c851ccf 2025-06-06
+# generated with CMTools 0.0.33 732f034
 
 #
 # Set the package name and version to install
 #
 param(
   [Parameter()]
-  [String]$VERSION = "$version$"
+  [String]$VERSION = "0.0.33"
 )
 [String]$PKG_VERSION = [Environment]::GetEnvironmentVariable("PKG_VERSION")
 if ($PKG_VERSION) {
@@ -56,7 +56,7 @@ if (!(Test-Path $ZIPFILE)) {
     # Handle zip or tar.gz files
     switch ($fileInfo.Extension) {
         ".zip" {
-            Expand-Archive -Path "${ZIPFILE}" "${Home}"
+            Expand-Archive -Force -Path "${ZIPFILE}" "${Home}"
             break
         }
         ".gz" {
