@@ -80,7 +80,7 @@
   "version": "0.0.33",
   "developmentStatus": "active",
   "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues",
-  "releaseNotes": "Added generators for website.ps1,release.ps1,publish.ps1. Fixed typo in generator installer.ps1. Fixed issue #25 with installer.ps1.",
+  "releaseNotes": "Added generators for website.ps1,release.ps1,publish.ps1. \n\nFixed typo in generator installer.ps1. Fixed issue #25 with installer.ps1.\n\nImproved the generation of website.mak.",
   "copyrightYear": 2025,
   "copyrightHolder": "California Institute of Technology"
 }
