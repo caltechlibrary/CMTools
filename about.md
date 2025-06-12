@@ -60,7 +60,11 @@ About this software
 
 ## CMTools 0.0.33
 
-Added generators for website.ps1,release.ps1,publish.ps1. Fixed typo in generator installer.ps1. Fixed issue #25 with installer.ps1.
+Added generators for website.ps1,release.ps1,publish.ps1. 
+
+Fixed typo in generator installer.ps1. Fixed issue #25 with installer.ps1.
+
+Improved the generation of website.mak.
 
 ### Authors
 

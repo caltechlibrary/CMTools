@@ -567,7 +567,7 @@ if [ "$EXPLAIN_OS_POLICY" = "no" ]; then
 
   You need to take additional steps to complete installation.
 
-  Your operating system security policied needs to "allow"
+  Your operating system security policies needs to "allow"
   running programs from $PACKAGE.
 
   Example: on macOS you can type open the programs in finder.
@@ -1425,7 +1425,7 @@ cat release_notes.tmp
 read -r -p "Push release to GitHub with gh? (y/N) " YES_NO
 if [ "$YES_NO" = "y" ]; then
 	make save msg="prep for \${RELEASE_TAG}, \${RELEASE_NOTES}"
-	# Now generate a draft releas
+	# Now generate a draft release
 	echo "Pushing release \${RELEASE_TAG} to GitHub"
 	gh release create "\${RELEASE_TAG}" \\
  		--draft \\
