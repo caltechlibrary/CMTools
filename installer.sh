@@ -1,11 +1,11 @@
 #!/bin/sh
-# generated with CMTools 0.0.33 4e6fce1
+# generated with CMTools 0.0.34 1c54523
 
 #
 # Set the package name and version to install
 #
 PACKAGE="CMTools"
-VERSION="0.0.33"
+VERSION="0.0.34"
 GIT_GROUP="caltechlibrary"
 RELEASE="https://github.com/$GIT_GROUP/$PACKAGE/releases/tag/v$VERSION"
 if [ "$PKG_VERSION" != "" ]; then
@@ -114,7 +114,7 @@ if [ "$EXPLAIN_OS_POLICY" = "no" ]; then
 
   You need to take additional steps to complete installation.
 
-  Your operating system security policied needs to "allow"
+  Your operating system security policies needs to "allow"
   running programs from $PACKAGE.
 
   Example: on macOS you can type open the programs in finder.

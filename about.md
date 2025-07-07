@@ -36,7 +36,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.33
+version: 0.0.34
 license_url: https://caltechlibrary.github.io/CMTools/LICENSE
 operating_system:
   - Linux
@@ -52,19 +52,17 @@ keywords:
   - software
   - code generation
 
-date_released: 2025-06-10
+date_released: 2025-07-07
 ---
 
 About this software
 ===================
 
-## CMTools 0.0.33
+## CMTools 0.0.34
 
-Added generators for website.ps1,release.ps1,publish.ps1. 
-
-Fixed typo in generator installer.ps1. Fixed issue #25 with installer.ps1.
-
-Improved the generation of website.mak.
+- Updated generated REAMDE.md
+- Copyedits in documentation
+- Bumped Deno required to v2.4 or better
 
 ### Authors
 
@@ -120,8 +118,8 @@ The tools are intended to be run from the project root directory. &#x60;cmt&#x60
 
 ### Software Requirements
 
-- Deno &gt;&#x3D; 2.3
-- CMTools &gt;&#x3D; 0.0.29
+- Deno &gt;&#x3D; 2.4
+- CMTools &gt;&#x3D; 0.0.33
 
 
 ### Software Suggestions

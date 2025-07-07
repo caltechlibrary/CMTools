@@ -1,5 +1,5 @@
 #!/bin/bash
-# generated with CMTools 0.0.33 732f034
+# generated with CMTools 0.0.34 1c54523
 
 #
 # Release script for CMTools on GitHub using gh cli.
@@ -25,7 +25,7 @@ cat release_notes.tmp
 read -r -p "Push release to GitHub with gh? (y/N) " YES_NO
 if [ "$YES_NO" = "y" ]; then
 	make save msg="prep for ${RELEASE_TAG}, ${RELEASE_NOTES}"
-	# Now generate a draft releas
+	# Now generate a draft release
 	echo "Pushing release ${RELEASE_TAG} to GitHub"
 	gh release create "${RELEASE_TAG}" \
  		--draft \

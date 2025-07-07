@@ -9,5 +9,5 @@
 - Presentations
   - [Proof of concept](presentations/presentation1.md)
   - [cmt and cme](presentations/presentation2.md)
-- [Someday, maybe](someday_maybe.md), a hypthetical roadmap
+- [Someday, maybe](someday_maybe.md), a hypothetical road map
 

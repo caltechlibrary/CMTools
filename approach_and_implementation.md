@@ -14,8 +14,9 @@ The following files are common in my projects and other's projects at Caltech Li
 
 - CITATION.cff
 - about.md
-- version.go, version.py, version.js, version.ts
+- version.go, version.py, version.js or version.ts
 - page templates for the project website
+- installer scripts for macOS, Linux and Windows
 
 Having a CM Tool that can generate these means the build processes can be simplified and can more easily translate across the POSIX and Windows divide. 
 
@@ -25,7 +26,7 @@ Right now my build processes require Pandoc. Pandoc isn't something that most de
 
 # Implementation
 
-CM Tools is implemented as a [TypeScript](https://typescriptlang.org) program compiled using [Deno](https://deno.com). The `cmt` is a "static binary"[^1] that can be "installed" with a simple copy command. TypeScript was chosen because it is a superset of JavaScript which is one of the most common programming languages in the early 21st century.  This is the type of tool that will benefit from community contributions.  Deno provide easy cross platform compilation for our supported operating systems -- macOS, Windows and Linux. Deno and TypeScript together provide many of the advantages of our Go based utilities with the advantage of a large part of the Library, Archives and Museum developer communities that could potentially contribute.
+CM Tools is implemented as a [TypeScript](https://typescriptlang.org) program compiled using [Deno](https://deno.com). Both `cme` and `cmt` are a static executables and can be "installed" with a simple copy command. TypeScript was chosen because it is a superset of JavaScript which is one of the most common programming languages in the early 21st century.  This is the type of tool that will benefit from community contributions.  Deno provide easy cross platform compilation for our supported operating systems -- macOS, Windows and Linux. Deno and TypeScript together provide many of the advantages of our Go based utilities with the advantage of a large part of the Library, Archives and Museum developer communities that could potentially contribute.
 
 The architecture of CM Tools is a series of small TypeScript files
 
@@ -45,7 +46,25 @@ person_or_organization.ts
 : This holds the agent model for people and organizations used in the CodeMeta object
 
 transform.ts
-: This does the heavy lifting and transforming the CodeMeta 3 object into our target files.
+: This does the heavy lifting and transforming the CodeMeta 3 object into our target files. It holds
+the functions for the transform as well as the mappings of variables to text. The texts are in the
+file `generate_text.ts`.
+
+generate_text.ts
+: This file holds the specific file content to be generated.
 
 cmt.ts
-: This is the TypeScript that provides our command line interface for CM Tools
+: This is the TypeScript that provides our command line interface for generating files based on codemeta.json
+
+cme.ts
+: This is the TypeScript the provides our command line interface for editing codemeta.json
+
+editor.ts
+: This is used by `cme.ts` to provide an interactive editor (E.g. nano, notepad, textedit)
+
+person_or_organization.ts
+: This provides an class implementing the codemeta.json person or organizational scheme
+
+colors.ts
+: This provides some standard colorization of the cli.
+

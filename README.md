@@ -1,22 +1,25 @@
 
 # CodeMeta Tools
 
-[CodeMeta](https://codemeta.github.io) Tools provides a simple command line tool called `cmt` that can be used to generate project files and artifacts. It also provides a tool called `cme` to edit and manage the CodeMeta file. The project focuses on leveraging CodeMeta data, directory name and Git repo information for building and release software written in Python, Go, JavaScript or TypeScript. It was motivated by the practices in Caltech Library's Digital Development Group.
+[CodeMeta](https://codemeta.github.io) Tools provides a simple command line tool called `cmt` that can be used to generate project files and artifacts. It also provides a tool called `cme` to edit and manage the CodeMeta file. The project focuses on leveraging CodeMeta data, directory name and Git repo information for building and releasing software written in Python, Go, JavaScript or TypeScript. It was motivated by the practices in Caltech Library's Digital Development Group.
 
 The tools are intended to be run from the project root directory. `cmt` expects the file path of your codemeta.json file as well as one or more target files to be generated. The target file's extension determines the generated content. The tool can generate the following project files based on the contents of the codemeta.json file. `cme` expects the file path of your codemeta.json file and optionally the attributes of the CodeMeta object you wish to manage.
 
-`cme` is used to create and manage "codemeta.json". `cmt` is used to generate the following.
+`cme` is used to create and manage "codemeta.json". `cmt` can be used to generate the following.
 
 - CITATION.cff
 - version.ts, version.js, version.go or version.py
+- README.md
 - about.md
 - INSTALL.md
 - search.md
 - page.hbs (handlebars template) or page.tmpl (Pandoc template)
-- Makefile (based on supported langauge choice)
+- Makefile (based on supported language choice)
 - webmake.mak
+- installer.sh
+- installer.ps1
 
-These files provide a generalized schaffolding for a project.
+These files provide a generalized scaffolding for a project.
 
 ## Create and manage your file
 
@@ -38,7 +41,7 @@ Here's an example of updating the version and `.releaseNotes` attributes but ins
 cme codemeta.json version releaseNotes -e
 ~~~
 
-Since normally the version is short you'll just be prompted to type in a new version string. The releaseNotes is a multiline field. The `-e` indicates to use your editor to complete the values for all fields.
+Since normally the version is short you'll just be prompted to type in a new version string. The releaseNotes is a multi line field. The `-e` indicates to use your editor to complete the values for all fields.
 
 ## Create a version file for TypeScript, Go and Python
 
