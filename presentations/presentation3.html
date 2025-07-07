@@ -9,7 +9,7 @@
   <meta name="author" content="R. S. Doiel, rsdoiel@caltech.edu" />
   <meta name="date" content="2025-07-07" />
   <meta name="keywords" content="CodeMeta, projects, build" />
-  <title>CMTools: cme and cmt (Deno+TypeScript)</title>
+  <title>CMTools: cme and cmt (Python)</title>
   <style type="text/css">
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -36,7 +36,7 @@
 </head>
 <body>
 <div class="slide titlepage">
-  <h1 class="title">CMTools: cme and cmt (Deno+TypeScript)</h1>
+  <h1 class="title">CMTools: cme and cmt (Python)</h1>
   <p class="author">
 R. S. Doiel, <a href="mailto:rsdoiel@caltech.edu"
 class="email">rsdoiel@caltech.edu</a>
@@ -150,25 +150,23 @@ option</li>
 <p><code>cmt</code> supports an <code>--init</code> option identifying
 projects by their primary programming language. Currently supported are
 Python, Go, JavaScript and TypeScript. In our example we’re setting up
-for a Deno+TypeScript project.</p>
-<pre class="shell"><code>cmt codemeta.json --init typescript</code></pre>
+for a Python project.</p>
+<pre class="shell"><code>cmt codemeta.json --init python</code></pre>
 </div>
 <div id="create-initial-project-files-1" class="slide section level1">
 <h1>Create initial project files</h1>
-<p><code>cmt codemeta.json --init typescript</code> yields the following
+<p><code>cmt codemeta.json --init python</code> yields the following
 files.</p>
 <ul>
 <li>README.md, about.md and CITATION.cff</li>
 <li>INSTALL.md, installer.ps1 and installer.sh</li>
-<li>version.ts and Makefile</li>
+<li>version.py and Makefile</li>
 </ul>
 </div>
 <div id="updating-codemeta-attributes" class="slide section level1">
 <h1>Updating CodeMeta attributes</h1>
 <p>version, dateModified, datePublished and releaseNotes</p>
 <pre class="shell"><code>cme codemeta.json version dateModified datePublished releaseNotes -e</code></pre>
-<p>NOTE: I recommend the <code>-e</code> option since our releaseNotes
-maybe more than a single line of text.</p>
 </div>
 <div id="update-a-codemeta-attributes-without-prompts."
 class="slide section level1">
@@ -180,11 +178,11 @@ class="slide section level1">
 <h1>Updating other files</h1>
 <p>Update the artifacts by explicitly passing their names on the command
 line.</p>
-<p>On macOS and Linux</p>
+<p>macOS and Linux</p>
 <pre class="shell"><code>cmt codemeta.json version.ts CITATION.cff \\
   INSTALL.md installer.sh installer.ps1 about.md</code></pre>
 <p>On Windows</p>
-<pre class="shell"><code>cmt codemeta.json version.ts CITATION.cff `
+<pre class="pwsh"><code>cmt codemeta.json version.ts CITATION.cff `
   INSTALL.md installer.sh installer.ps1 about.md</code></pre>
 </div>
 <div id="something-to-consider" class="slide section level1">
@@ -204,8 +202,8 @@ class="uri">https://caltechlibrary.github.io/CMTools</a></li>
 class="uri">https://github.com/caltechlibrary/CMTools</a></li>
 <li>CodeMeta: <a href="https://codemeta.github.io"
 class="uri">https://codemeta.github.io</a></li>
-<li>Deno: <a href="https://deno.com"
-class="uri">https://deno.com</a></li>
+<li>Python: <a href="https://python.org"
+class="uri">https://python.org</a></li>
 </ul>
 <p>Thank you!</p>
 </div>

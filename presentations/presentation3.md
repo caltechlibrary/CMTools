@@ -1,21 +1,21 @@
 ---
-title: "CMTools: cme and cmt (Deno+TypeScript)"
+title: "CMTools: cme and cmt (Python)"
 author: "R. S. Doiel, <rsdoiel@caltech.edu>"
 institute: |
   Caltech Library,
   Digital Library Development
 description: Caltech Library Digital Development Group presentation
-createDate: 2025-01-29
+createDate: 2025-07-07
 updateDate: 2025-07-07
 pubDate: TBD
 place: TBD
 date: 2025-07-07
-section-titles: false
 slidy-url: .
 css: styles/sea-and-shore.css
+section-titles: false
 toc: true
 keywords: [ "CodeMeta", "projects", "build" ]
-url: "https://caltechlibrary.github.io/CMTools/presentations/presentation2.html"
+url: "https://caltechlibrary.github.io/CMTools/presentations/presentation3.html"
 ---
 
 # What is CMTools?
@@ -125,20 +125,20 @@ Some attributes need to be entered as YAML.
 `cmt` supports an `--init` option identifying projects
 by their primary programming language. Currently supported
 are Python, Go, JavaScript and TypeScript. In our example
-we're setting up for a Deno+TypeScript project.
+we're setting up for a Python project.
 
 ~~~shell
-cmt codemeta.json --init typescript
+cmt codemeta.json --init python
 ~~~
 
 # Create initial project files
 
-`cmt codemeta.json --init typescript` yields the following
+`cmt codemeta.json --init python` yields the following
 files.
 
 - README.md, about.md and CITATION.cff
 - INSTALL.md, installer.ps1 and installer.sh
-- version.ts and Makefile
+- version.py and Makefile
 
 # Updating CodeMeta attributes
 
@@ -147,8 +147,6 @@ version, dateModified, datePublished and releaseNotes
 ~~~shell
 cme codemeta.json version dateModified datePublished releaseNotes -e
 ~~~
-
-NOTE: I recommend the `-e` option since our releaseNotes maybe more than a single line of text.
 
 # Update a CodeMeta attributes without prompts.
 
@@ -160,10 +158,9 @@ cme codemeta.json version=1.0.1 releaseNotes='Bug fixes'
 
 # Updating other files
 
-Update the artifacts by explicitly passing their
-names on the command line.
+Update the artifacts by explicitly passing their names on the command line.
 
-On macOS and Linux
+macOS and Linux 
 
 ~~~shell
 cmt codemeta.json version.ts CITATION.cff \\
@@ -172,7 +169,7 @@ cmt codemeta.json version.ts CITATION.cff \\
 
 On Windows
 
-~~~shell
+~~~pwsh
 cmt codemeta.json version.ts CITATION.cff `
   INSTALL.md installer.sh installer.ps1 about.md
 ~~~
@@ -189,6 +186,6 @@ CMTools helps with maintenance.
 - CMTools: <https://caltechlibrary.github.io/CMTools>
 - on GitHub: <https://github.com/caltechlibrary/CMTools>
 - CodeMeta: <https://codemeta.github.io>
-- Deno: <https://deno.com>
+- Python: <https://python.org>
 
 Thank you!

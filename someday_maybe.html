@@ -19,87 +19,40 @@
 </nav>
 <section>
 <h1 id="someday-maybe">Someday, maybe</h1>
-<p>CMTools is currently just a working proof of concept. It is intended
-to show the benefits could be pursuing the project to a stable and
-sustainable conclusion. What might the next steps look like?</p>
+<p>CMTools is currently a working in progress. It has proven useful in
+managing metadata driven artifacts in a number of Caltech Library
+projects. It is still rapidly evolving. What might the next steps look
+like?</p>
 <p>What follows is a hypothetical roadmap, not a promise of
 implementation. That’s why this document is called “Someday, maybe”.</p>
 <h2 id="files-should-be-generator">Files should be generator</h2>
-<h3 id="readme.md-readme.txt-readme">README.md, README.txt, README</h3>
-<p>Assuming the README is a basic brief document describing the
-document. This could be generated completely from the CodeMeta data. It
-probably should be as the important parts of the README are covered by
-the following CodeMeta attributes</p>
-<dl>
-<dt><code>.name</code></dt>
-<dd>
-Name of the project
-</dd>
-<dt><code>.description</code></dt>
-<dd>
-Provides a <strong>short</strong> high level view of the project
-</dd>
-<dt><code>.releaseNotes</code></dt>
-<dd>
-Provides a brief summery of recent changes
-</dd>
-<dt><code>.version</code> and <code>.dateReleased</code></dt>
-<dd>
-The version and date release info
-</dd>
-<dt><code>.relatedUrls</code></dt>
-<dd>
-Provides links to more detail
-</dd>
-<dt><code>.operatingSystem</code>, <code>.runtimePlatform</code> and
-<code>.softwareRequirements</code></dt>
-<dd>
-provide the important software context
-</dd>
-<dt><code>.license</code></dt>
-<dd>
-Provides a URL to the Open Source license used
-</dd>
-<dt><code>.codeRepository</code> and <code>.issueTracker</code></dt>
-<dd>
-Provide where to find the project and how to communicate with the
-project owner(s)
-</dd>
-<dt><code>.author</code>, <code>.contributor</code> and
-<code>.maintainer</code></dt>
-<dd>
-Provide additional contact information as well as important citation
-information
-</dd>
-</dl>
-<p>All that data is recommended to be provided in a README. It can be
-reduced to boiler plate. Why don’t we just generate the README document
-from the CodeMeta?</p>
-<h3 id="install.md-install.txt-install">INSTALL.md, INSTALL.txt,
-INSTALL</h3>
-<p>Installation documents tend to wind up being very similar like a well
-assembled README. Also the practice of curating a simple net based
-install script (e.g. installer.sh, installer.ps1) has become a common
-practice for non-commercial software. It maybe possible to reduce much
-of the INSTALL file just as we did with the README. The installer
-scripts can be generated from the CodeMeta and the quick install via
-curl/sh (POSIX) or irm/iex (Windows) can easy be generated based on a
-stable practice. The prologue to the build from source description
-similarly can be generated. If we can assume the steps work the same on
-Windows as well as POSIX then a simple formula can be generated for
-building the project from source.</p>
-<pre><code>deno task configure
-deno task build
-deno task test
-deno task install</code></pre>
-<p>Since Deno tasks can be written similarly regardless of POSIX or
-Windows operating system it makes sense to include something similar as
-boiler plate. If you do provide POSIX a Makefile then you could also
-include the recipe of</p>
-<pre><code>./configure --prefix=$HOME
-make
-make test
-make install</code></pre>
+<ul>
+<li>CITATION.cff</li>
+<li>version.(ts|js|py|go) (implemented)</li>
+<li>README.md (implemented)</li>
+<li>INSTALL.md (implemented)</li>
+<li>about.md (implemented)</li>
+<li>search.md (implemented)</li>
+<li>page.tmpl and/or page.hbs (implemeneted)</li>
+<li>installer.sh (implemented)</li>
+<li>installer.ps1 (implemented)</li>
+<li>release.bash (implemented)</li>
+<li>release.ps1 (implemented)</li>
+<li>publish.bash (implemented)</li>
+<li>publish.ps1 (implemented)</li>
+<li>Makefiles based on project language
+<ul>
+<li>Deno (imeplented)</li>
+<li>Go (implemented)</li>
+</ul></li>
+<li>website.mak (implemented)</li>
+<li>website.ps1 (implemented)</li>
+<li>Add configuration file support with list which artifacts should be
+auto-regenerated</li>
+<li>A localhost web UI for editing codemeta.json (under
+consideration)</li>
+</ul>
+<h2 id="deno-projects">Deno projects</h2>
 <h3 id="deno.json-and-using-deno-to-manage-your-build-process">deno.json
 and using Deno to manage your build process</h3>
 <p>While Deno should create the <code>deno.json</code> file, CMTools can
@@ -110,34 +63,6 @@ also provide TypeScript support for more complex build operations that
 are maintained on a website like <a
 href="https://caltechlibrary/CMTools"
 class="uri">https://caltechlibrary/CMTools</a>.</p>
-<h2 id="how-do-you-manage-your-codemeta.json-file">How do you manage
-your “codemeta.json” file?</h2>
-<p>The CodeMeta file content is represented in JSON. JSON can be tedious
-to manually edit by hand. I usually rely on the <a
-href="https://codemeta.github.io/codemeta-generator/">CodeMeta
-Generator</a> for this chore. But even that isn’t ideal. This is
-particularly true if you are using the description attribute to describe
-your project in more detail. While links are easy enough to extract can
-check with cURL spell check is troublesome for the description
-attribute. What you will want is to be able to review your CodeMeta file
-and easily edit it.</p>
-<p>One approach would be to write and maintain your CodeMeta in
-equivalent YAML or TOML. But that approach means on more layer of
-abstraction to manage and one more point of synchronization (at least
-until someone decides codemeta.yaml, codemeta.toml are equivalent to
-codemeta.json).</p>
-<p>A better approach would be a for CMTools to provide something like a
-<code>cmedit</code> command. This would let you create or edit a
-CodeMeta file much as the CodeMeta generator does but it should also
-allow you to pop out specific elements into your favorite text editor
-(e.g. like cron edit does). This would allow for more comfortable
-editing as well as easier spell checking. The advantage of a tool like
-this would be that you can always reading a older version of CodeMeta
-and then write out a normalized version you can rely on. It also means
-you can work completely off line and avoid a tedious copy/edit
-cycle.</p>
-<p>Making it preferable to manage your project metadata in the CodeMeta
-file lowers the friction in maintaining your software.</p>
 </section>
 </body>
 </html>
