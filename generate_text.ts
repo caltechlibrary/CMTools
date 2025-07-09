@@ -54,9 +54,9 @@ licenseText = ` + "`" + `
 // Python
 export const pyTemplateText = `# {{name}} version and license information.
 
-export const version = '{{version}}',
-releaseDate = '{{releaseDate}}',
-releaseHash = '{{releaseHash}}'{{#if licenseText}},
+version = '{{version}}'
+releaseDate = '{{releaseDate}}'
+releaseHash = '{{releaseHash}}'{{#if licenseText}}
 licenseText = '''
 {{{licenseText}}}
 '''{{/if}};
@@ -69,7 +69,7 @@ import (
 	"strings"
 )
 
-export const (
+const (
     // Version number of release
     Version = "{{version}}"
 

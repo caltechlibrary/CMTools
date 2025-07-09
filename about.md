@@ -36,7 +36,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.34
+version: 0.0.35
 license_url: https://caltechlibrary.github.io/CMTools/LICENSE
 operating_system:
   - Linux
@@ -52,17 +52,15 @@ keywords:
   - software
   - code generation
 
-date_released: 2025-07-07
+date_released: 2025-07-09
 ---
 
 About this software
 ===================
 
-## CMTools 0.0.34
+## CMTools 0.0.35
 
-- Updated generated REAMDE.md
-- Copyedits in documentation
-- Bumped Deno required to v2.4 or better
+- fixed issue 27 where generated version.go and version.py had TypeScript syntax for version string.
 
 ### Authors
 
