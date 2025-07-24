@@ -39,6 +39,14 @@ If you are running Windows 10 or 11 use the Powershell command below.
 irm https://caltechlibrary.github.io/CMTools/installer.ps1 | iex
 ~~~
 
+### If you are running macOS or Windows
+
+You may get security warnings for the installed executables. Please review the install notes specific to your operating system.
+
+- [INSTALL_NOTES_macOS.md](INSTALL_NOTES_macOS.md)
+- [INSTALL_NOTES_Windows.md](INSTALL_NOTES_Windows.md)
+
+
 Installing from source
 ----------------------
 
