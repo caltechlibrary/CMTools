@@ -162,7 +162,7 @@ export async function transform(
       return renderTemplate(obj, installMdText);
     case "install.md":
       return renderTemplate(obj, installMdText);
-    case "install.md":
+    case "install_notes_macos.md":
       return renderTemplate(obj, installNotesMacOSMdText);
     case "install_notes_windows.md":
       return renderTemplate(obj, installNotesWindowsMdText);

@@ -65,6 +65,8 @@ async function main() {
       "search.md",
       "CITATION.cff",
       "INSTALL.md",
+      "INSTALL_NOTES_macOS.md",
+      "INSTALL_NOTES_Windows.md",
       "installer.ps1",
       "installer.sh",
     ];
