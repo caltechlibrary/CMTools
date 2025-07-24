@@ -36,7 +36,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.35
+version: 0.0.36
 license_url: https://caltechlibrary.github.io/CMTools/LICENSE
 operating_system:
   - Linux
@@ -52,15 +52,15 @@ keywords:
   - software
   - code generation
 
-date_released: 2025-07-09
+date_released: 2025-07-24
 ---
 
 About this software
 ===================
 
-## CMTools 0.0.35
+## CMTools 0.0.36
 
-- fixed issue 27 where generated version.go and version.py had TypeScript syntax for version string.
+Added generation of INSTALL_NOTES_macOS.md and INSTALL_NOTES_Windows.md so that people know have to deal with unsigned executables.
 
 ### Authors
 

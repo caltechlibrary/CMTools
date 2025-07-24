@@ -1,11 +1,11 @@
 #!/bin/sh
-# generated with CMTools 0.0.35 a061811
+# generated with CMTools 0.0.36 abb1080
 
 #
 # Set the package name and version to install
 #
 PACKAGE="CMTools"
-VERSION="0.0.35"
+VERSION="0.0.36"
 GIT_GROUP="caltechlibrary"
 RELEASE="https://github.com/$GIT_GROUP/$PACKAGE/releases/tag/v$VERSION"
 if [ "$PKG_VERSION" != "" ]; then
@@ -123,6 +123,8 @@ if [ "$EXPLAIN_OS_POLICY" = "no" ]; then
 
   Find the program(s) and right click on the program(s)
   installed to enable them to run.
+
+  More information about security policies see INSTALL_NOTES_macOS.md
 
 EOT
 

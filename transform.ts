@@ -3,7 +3,7 @@ import * as path from "@std/path";
 import Handlebars from "npm:handlebars";
 import { CodeMeta } from "./codemeta.ts";
 import { gitOrgOrPerson, gitReleaseHash } from "./gitcmds.ts";
-import { version, releaseDate, releaseHash } from "./version.ts";
+//import { version, releaseDate, releaseHash } from "./version.ts";
 import * as gText from "./generate_text.ts";
 
 export function getFormatFromExt(
@@ -17,6 +17,10 @@ export function getFormatFromExt(
         return "readme.md";
       case "INSTALL.md":
         return "install.md";
+      case "INSTALL_NOTES_macOS.md":
+        return "install_notes_macos.md";
+      case "INSTALL_NOTES_WINDOWS.md":
+        return "install_notes_windows.md";
       case "Makefile":
         return "Makefile";
       case "search.md":
@@ -79,6 +83,8 @@ export function isSupportedFormat(format: string | undefined): boolean {
     "ps1",
     "readme.md",
     "install.md",
+    "install_notes_macos.md",
+    "install_notes_windows.md",
     "search.md",
     "website.mak",
     "website.ps1",
@@ -154,6 +160,12 @@ export async function transform(
       return renderTemplate(obj, readmeMdText);
     case "install.md":
       return renderTemplate(obj, installMdText);
+    case "install.md":
+      return renderTemplate(obj, installMdText);
+    case "install.md":
+      return renderTemplate(obj, installNotesMacOSMdText);
+    case "install_notes_windows.md":
+      return renderTemplate(obj, installNotesWindowsMdText);
     case "search.md":
       return renderTemplate(obj, searchMdText);
     case "Makefile":
@@ -253,6 +265,12 @@ const searchMdText = gText.searchMdText;
 
 // Markdown
 const installMdText = gText.installMdText;
+
+// Markdown
+const installNotesMacOSMdText = gText.installNotesMacOSMdText;
+
+// Markdown
+const installNotesWindowsMdText = gText.installNotesWindowsMdText;
 
 // Makefile
 export const denoMakefileText = gText.denoMakefileText;
@@ -457,6 +475,7 @@ distribute_docs:
 	@cp -v README.md dist/
 	@cp -v LICENSE dist/
 	@cp -v INSTALL.md dist/
+  @cp -v INSTALL_NOTES_*.md dist/
 	@cp -vR man dist/
 	@for DNAME in $(DOCS); do cp -vR $$DNAME dist/; done
 

@@ -40,9 +40,13 @@ targeting your Python, Go, JavaScript or TypeScript build process.
 - about.md
 - version.py, version.go, version.js or version.ts
 - INSTALL.md (requires Git repository and LICENSE file)
+- INSTALL_NOTES_macOS.md
+- INSTALL_NOTES_Windows.md
 - installer.sh (requires Git repository and LICENSE file)
 - installer.ps1 (requires Git repository and LICENSE file)
 - Makefile (requires Git repository and LICENSE file)
+- release.bash (requires gh is installed)
+- publish.bash (requires git)
 
 # OPTIONS
 
