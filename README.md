@@ -12,6 +12,8 @@ The tools are intended to be run from the project root directory. `cmt` expects 
 - README.md
 - about.md
 - INSTALL.md
+- INSTALL_NOTES_macOS.md
+- INSTALL_NOTES_Windows.md
 - search.md
 - page.hbs (handlebars template) or page.tmpl (Pandoc template)
 - Makefile (based on supported language choice)
