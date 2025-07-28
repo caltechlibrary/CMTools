@@ -36,7 +36,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.36
+version: 0.0.37
 license_url: https://caltechlibrary.github.io/CMTools/LICENSE
 operating_system:
   - Linux
@@ -52,15 +52,16 @@ keywords:
   - software
   - code generation
 
-date_released: 2025-07-24
+date_released: 2025-07-28
 ---
 
 About this software
 ===================
 
-## CMTools 0.0.36
+## CMTools 0.0.37
 
-Added generation of INSTALL_NOTES_macOS.md and INSTALL_NOTES_Windows.md so that people know have to deal with unsigned executables.
+Fixed formatting generating REAMDE.md where there is Runtime platform information.
+Added support to generate links-to-html.lua for use with Pandoc website generation.
 
 ### Authors
 

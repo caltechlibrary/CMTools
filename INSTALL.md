@@ -11,8 +11,6 @@ The tools are intended to be run from the project root directory. &#x60;cmt&#x60
 
 - README.md
 - INSTALL.md
-- INSTALL_NOTES_macOS.md
-- INSTALL_NOTES_Windows.md
 - installer.sh
 - installer.ps1
 - CITATION.cff

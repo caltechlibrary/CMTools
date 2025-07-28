@@ -1,5 +1,5 @@
 #!/bin/bash
-# generated with CMTools 0.0.36 5bdf151
+# generated with CMTools 0.0.37 07648ee
 
 #
 # Release script for CMTools on GitHub using gh cli.

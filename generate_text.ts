@@ -1,4 +1,3 @@
-
 // CITATION.cff
 export const cffTemplateText = `
 cff-version: 1.2.0
@@ -549,7 +548,7 @@ export const readmeMdText = `
 {{#if runtimePlatform}}
 #### Runtime platform
 
-{{runtimePlatform}}**{{/if}}
+**{{runtimePlatform}}**{{/if}}
 
 ## Related resources
 
@@ -581,7 +580,7 @@ export const searchMdText = `
         });
     });
 </script>
-`
+`;
 
 // Markdown
 export const installMdText = `Installation for development of **{{name}}**
@@ -655,7 +654,7 @@ PROGRAMS = <PROGRAM_LIST_GOES_HERE>
 
 GIT_GROUP = {{git_org_or_person}}
 
-VERSION = $(shell grep '"version":' codemeta.json | cut -d\"  -f 4)
+VERSION = $(shell grep '"version":' codemeta.json | cut -d\\"  -f 4)
 
 BRANCH = $(shell git branch | grep '* ' | cut -d\  -f 2)
 
@@ -792,38 +791,38 @@ distribute_docs: website man setup_dist
 dist/Linux-x86_64: .FORCE
 	@mkdir -p dist/bin
 	deno task dist_linux_x86_64
-	@cd dist && zip -r $(PROJECT)-v$(VERSION)-Linux-x86_64.zip LICENSE codemeta.json CITATION.cff *.md bin/*
+	@cd dist && zip -r $(PROJECT)-v$(VERSION)-Linux-x86_64.zip LICENSE codemeta.json CITATION.cff *.md bin/* man/*
 	@rm -fR dist/bin
 
 dist/Linux-aarch64: .FORCE
 	@mkdir -p dist/bin
 	deno task dist_linux_aarch64
-	@cd dist && zip -r $(PROJECT)-v$(VERSION)-Linux-aarch64.zip LICENSE codemeta.json CITATION.cff *.md bin/*
+	@cd dist && zip -r $(PROJECT)-v$(VERSION)-Linux-aarch64.zip LICENSE codemeta.json CITATION.cff *.md bin/* man/*
 	@rm -fR dist/bin
 
 dist/macOS-x86_64: .FORCE
 	@mkdir -p dist/bin
 	deno task dist_macos_x86_64
-	@cd dist && zip -r $(PROJECT)-v$(VERSION)-macOS-x86_64.zip LICENSE codemeta.json CITATION.cff *.md bin/*
+	@cd dist && zip -r $(PROJECT)-v$(VERSION)-macOS-x86_64.zip LICENSE codemeta.json CITATION.cff *.md bin/* man/*
 	@rm -fR dist/bin
 
 dist/macOS-arm64: .FORCE
 	@mkdir -p dist/bin
 	deno task dist_macos_aarch64
-	@cd dist && zip -r $(PROJECT)-v$(VERSION)-macOS-arm64.zip LICENSE codemeta.json CITATION.cff *.md bin/*
+	@cd dist && zip -r $(PROJECT)-v$(VERSION)-macOS-arm64.zip LICENSE codemeta.json CITATION.cff *.md bin/* man/*
 	@rm -fR dist/bin
 
 dist/Windows-x86_64: .FORCE
 	@mkdir -p dist/bin
 	deno task dist_windows_x86_64
-	@cd dist && zip -r $(PROJECT)-v$(VERSION)-Windows-x86_64.zip LICENSE codemeta.json CITATION.cff *.md bin/*
+	@cd dist && zip -r $(PROJECT)-v$(VERSION)-Windows-x86_64.zip LICENSE codemeta.json CITATION.cff *.md bin/* man/*
 	@rm -fR dist/bin
 
 dist/Windows-arm64: .FORCE
 	@mkdir -p dist/bin
 	#deno task dist_windows_aarch64 <-- switch to native when Rust/Deno supports Windows ARM64
 	deno task dist_windows_x86_64
-	@cd dist && zip -r $(PROJECT)-v$(VERSION)-Windows-arm64.zip LICENSE codemeta.json CITATION.cff *.md bin/*
+	@cd dist && zip -r $(PROJECT)-v$(VERSION)-Windows-arm64.zip LICENSE codemeta.json CITATION.cff *.md bin/* man/*
 	@rm -fR dist/bin
 
 .FORCE:
@@ -858,7 +857,7 @@ DOCS = $(shell ls -1 *.?.md)
 
 PACKAGE = $(shell ls -1 *.go)
 
-VERSION = $(shell grep '"version":' codemeta.json | cut -d\"  -f 4)
+VERSION = $(shell grep '"version":' codemeta.json | cut -d\\"  -f 4)
 
 BRANCH = $(shell git branch | grep '* ' | cut -d\  -f 2)
 
@@ -1069,7 +1068,7 @@ clean:
 	@rm *.html
 
 .FORCE:
-`
+`;
 
 export const websitePs1Text = `<#
 generated with CMTools {{version}} {{releaseHash}}
@@ -1116,7 +1115,7 @@ Build-HtmlPage -htmlPages $htmlPages -mdPages $mdPages
 # Invoke PageFind
 Invoke-PageFind
 
-`
+`;
 
 export const publishBashText = `#!/bin/bash
 # generated with CMTools {{version}} {{releaseHash}}
@@ -1155,7 +1154,7 @@ else
 		git checkout "\${WORKING_BRANCH}"
 	fi
 fi
-`
+`;
 
 export const publishPs1Text = `<#
 generated with CMTools {{version}} {{releaseHash}}
@@ -1191,7 +1190,7 @@ if ($workingBranch -eq "gh-pages") {
         git checkout $workingBranch
     }
 }
-`
+`;
 
 export const releaseBashText = `#!/bin/bash
 # generated with CMTools {{version}} {{releaseHash}}
@@ -1239,7 +1238,7 @@ EOT
     rm release_notes.tmp
 
 fi
-`
+`;
 
 export const releasePs1Text = `<#
 generated with CMTools {{version}} {{releaseHash}}
@@ -1285,7 +1284,7 @@ Now go to repo release and finalize draft.
 
     Remove-Item release_notes.tmp
 }
-`
+`;
 
 export const installNotesMacOSMdText = `
 Installing an unsigned executable on macOS can be a bit tricky due to macOS's security features designed to protect users from potentially harmful software. Here's a general guide on how to do it:
@@ -1362,4 +1361,32 @@ Installing an unsigned executable on Windows can also pose security risks, as Wi
 - **Antivirus Software**: Your antivirus software might also block unsigned executables. You may need to temporarily disable it or add an exception for the file.
 
 If you're unsure about any of these steps or the safety of the file, it's best to consult with someone who has more experience with Windows or to contact the software developer for support.
+`;
+
+export const linksToHtmlLuaText =
+  `-- links-to-html.lua converts links to local Markdown documents to
+-- there respective .html counterparts.
+function Link(el)
+  el.target = string.gsub(el.target, "%.md", ".html")
+  return el
+end
+`;
+
+export const denoTasksText = `
+{
+  "tasks": {
+    "dist_linux_x86_64": "deno task dist_linux_x86_64_<prog_name>",
+    "dist_linux_x86_64_<prog_name>": "deno compile   <deno-permissions> --output dist/bin/<prog_name> --target x86_64-unknown-linux-gnu <source_name>.ts",
+    "dist_linux_aarch64": "deno task dist_linux_aarch64_<prog_name> ",
+    "dist_linux_aarch64_<prog_name>": "deno compile  <deno-permissions> --output dist/bin/<prog_name> --target aarch64-unknown-linux-gnu <source_name>.ts",
+    "dist_macos_x86_64": "deno task dist_macos_x86_64_<prog_name> ",
+    "dist_macos_x86_64_<prog_name>": "deno compile   <deno-permissions> --output dist/bin/<prog_name> --target x86_64-apple-darwin <source_name>.ts",
+    "dist_macos_aarch64": "deno task dist_macos_aarch64_<prog_name> ",
+    "dist_macos_aarch64_<prog_name>": "deno compile  <deno-permissions> --output dist/bin/<prog_name> --target aarch64-apple-darwin <source_name>.ts",
+    "dist_windows_x86_64": "deno task dist_windows_x86_64_<prog_name> ",
+    "dist_windows_x86_64_<prog_name>": "deno compile <deno-permissions> --output dist/bin/<prog_name>.exe --target x86_64-pc-windows-msvc <source_name>.ts",
+    "dist_windows_aarch64": "deno task dist_windows_aarch64_<prog_name> ",
+    "dist_windows_aarch64_<prog_name>": "deno compile <deno-permissions> --output dist/bin/<prog_name>.exe --target aarch64-pc-windows-msvc <source_name>.ts"
+  }
+}
 `;

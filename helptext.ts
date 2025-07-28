@@ -38,15 +38,18 @@ targeting your Python, Go, JavaScript or TypeScript build process.
 - README.md
 - CITATION.cff
 - about.md
+- search.md
 - version.py, version.go, version.js or version.ts
 - INSTALL.md (requires Git repository and LICENSE file)
 - INSTALL_NOTES_macOS.md
 - INSTALL_NOTES_Windows.md
 - installer.sh (requires Git repository and LICENSE file)
 - installer.ps1 (requires Git repository and LICENSE file)
-- Makefile (requires Git repository and LICENSE file)
-- release.bash (requires gh is installed)
-- publish.bash (requires git)
+- Makefile (requires Git repository and LICENSE file), build.ps1
+- website.mak, website.ps1
+- release.bash (requires gh is installed), release.ps1
+- publish.bash (requires git), publish.ps1
+- page.tmpl (Pandoc template), page.hbs (Handlebarsjs)
 
 # OPTIONS
 

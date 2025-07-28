@@ -30,13 +30,17 @@ export function getFormatFromExt(
       case "website.ps1":
         return "website.ps1";
       case "release.bash":
-        return "release.bash"
+        return "release.bash";
       case "release.ps1":
-        return "release.ps1"
+        return "release.ps1";
       case "publish.bash":
         return "publish.bash";
       case "publish.ps1":
         return "publish.ps1";
+      case "links-to-html.lua":
+        return "links-to-html.lua";
+      case "deno-tasks.json":
+        return "deno-tasks.json";
     }
     switch (path.extname(filename)) {
       case ".cff":
@@ -93,14 +97,19 @@ export function isSupportedFormat(format: string | undefined): boolean {
     "release.ps1",
     "publish.bash",
     "publish.ps1",
+    "links-to-html.lua",
+    "deno-tasks.json",
   ].indexOf(format) > -1;
 }
 
 // FIXME: need to handle the special case renderings for README.md,
 // INSTALL.md and the installer scripts.
 
-function getMakefileTemplate(lang: string, isDeno: boolean) : string | undefined {
-  const prefix: {[key: string]: string} = {
+function getMakefileTemplate(
+  lang: string,
+  isDeno: boolean,
+): string | undefined {
+  const prefix: { [key: string]: string } = {
     "golang": goMakefileText,
     "go": goMakefileText,
     "javascript": denoMakefileText,
@@ -108,7 +117,7 @@ function getMakefileTemplate(lang: string, isDeno: boolean) : string | undefined
     "deno": denoMakefileText,
     //"python": pyMakefileText,
     //"bash": shMakefileText,
-  }
+  };
   if (lang === "" && isDeno) {
     return denoMakefileText;
   }
@@ -127,7 +136,7 @@ export async function transform(
   if (!isSupportedFormat(format)) {
     return undefined;
   }
-  let obj: { [key: string]: any } = cm.toObject();
+  const obj: { [key: string]: unknown } = cm.toObject();
   obj["project_name"] = path.basename(Deno.cwd());
   obj["releaseHash"] = await gitReleaseHash();
   if (obj["dateModified"] === undefined || obj["dateModified"] === "") {
@@ -155,11 +164,10 @@ export async function transform(
     obj["repositoryLink"] = cm.codeRepository.replace("git+https", "https");
   }
 
+  let makefileTemplate: string | undefined = "";
   switch (format) {
     case "readme.md":
       return renderTemplate(obj, readmeMdText);
-    case "install.md":
-      return renderTemplate(obj, installMdText);
     case "install.md":
       return renderTemplate(obj, installMdText);
     case "install_notes_macos.md":
@@ -169,7 +177,7 @@ export async function transform(
     case "search.md":
       return renderTemplate(obj, searchMdText);
     case "Makefile":
-      const makefileTemplate = getMakefileTemplate(lang, isDeno);
+      makefileTemplate = getMakefileTemplate(lang, isDeno);
       if (makefileTemplate === undefined) {
         return undefined;
       }
@@ -186,6 +194,10 @@ export async function transform(
       return renderTemplate(obj, publishBashText);
     case "publish.ps1":
       return renderTemplate(obj, publishPs1Text);
+    case "links-to-html.lua":
+      return renderTemplate(obj, linksToHtmlLuaText);
+    case "deno-tasks.json":
+      return renderTemplate(obj, denoTasksText);
     case "cff":
       return renderTemplate(obj, cffTemplateText);
     case "ts":
@@ -215,11 +227,10 @@ export async function transform(
     default:
       return undefined;
   }
-  return undefined;
 }
 
 export function renderTemplate(
-  obj: { [key: string]: any },
+  obj: { [key: string]: unknown },
   tmpl: string,
 ): string | undefined {
   const template = Handlebars.compile(tmpl);
@@ -231,7 +242,7 @@ export function renderTemplate(
 }
 
 // CITATION.cff
-const cffTemplateText =  gText.cffTemplateText;
+const cffTemplateText = gText.cffTemplateText;
 
 // TypeScript
 const tsTemplateText = gText.tsTemplateText;
@@ -275,6 +286,12 @@ const installNotesWindowsMdText = gText.installNotesWindowsMdText;
 // Makefile
 export const denoMakefileText = gText.denoMakefileText;
 
+// links-to-html.lua
+const linksToHtmlLuaText = gText.linksToHtmlLuaText;
+
+// deno-tasks
+const denoTasksText = gText.denoTasksText;
+
 // Makefile
 export const goMakefileText = `
 # generated with CMTools {{version}} {{releaseHash}}
@@ -304,7 +321,7 @@ DOCS = $(shell ls -1 *.?.md)
 
 PACKAGE = $(shell ls -1 *.go)
 
-VERSION = $(shell grep '"version":' codemeta.json | cut -d\"  -f 4)
+VERSION = $(shell grep '"version":' codemeta.json | cut -d\\"  -f 4)
 
 BRANCH = $(shell git branch | grep '* ' | cut -d\  -f 2)
 
@@ -516,7 +533,7 @@ clean:
 	@rm *.html
 
 .FORCE:
-`
+`;
 
 const websitePs1Text = `<#
 generated with CMTools {{version}} {{releaseHash}}
@@ -563,7 +580,7 @@ Build-HtmlPage -htmlPages $htmlPages -mdPages $mdPages
 # Invoke PageFind
 Invoke-PageFind
 
-`
+`;
 
 const publishBashText = `#!/bin/bash
 # generated with CMTools {{version}} {{releaseHash}}
@@ -602,7 +619,7 @@ else
 		git checkout "\${WORKING_BRANCH}"
 	fi
 fi
-`
+`;
 
 const publishPs1Text = `<#
 generated with CMTools {{version}} {{releaseHash}}
@@ -638,7 +655,7 @@ if ($workingBranch -eq "gh-pages") {
         git checkout $workingBranch
     }
 }
-`
+`;
 
 const releaseBashText = `#!/bin/bash
 # generated with CMTools {{version}} {{releaseHash}}
@@ -686,7 +703,7 @@ EOT
     rm release_notes.tmp
 
 fi
-`
+`;
 
 const releasePs1Text = `<#
 generated with CMTools {{version}} {{releaseHash}}
@@ -732,4 +749,4 @@ Now go to repo release and finalize draft.
 
     Remove-Item release_notes.tmp
 }
-`
+`;

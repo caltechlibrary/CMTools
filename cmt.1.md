@@ -1,6 +1,6 @@
-%cmt(1) user manual | version 0.0.36 5bdf151
+%cmt(1) user manual | version 0.0.37 07648ee
 % R. S. Doiel
-% 2025-07-24
+% 2025-07-28
 
 # NAME
 
@@ -22,15 +22,18 @@ cmt can be used to generate various code artifacts including the following.
 - README.md
 - CITATION.cff
 - about.md
+- search.md
 - version.py, version.go, version.js or version.ts
 - INSTALL.md (requires Git repository and LICENSE file)
 - INSTALL_NOTES_macOS.md
 - INSTALL_NOTES_Windows.md
 - installer.sh (requires Git repository and LICENSE file)
 - installer.ps1 (requires Git repository and LICENSE file)
-- Makefile (requires Git repository and LICENSE file)
-- release.bash (requires gh is installed)
-- publish.bash (requires git)
+- Makefile (requires Git repository and LICENSE file), build.ps1
+- website.mak, website.ps1
+- release.bash (requires gh is installed), release.ps1
+- publish.bash (requires git), publish.ps1
+- page.tmpl (Pandoc template), page.hbs (Handlebarsjs)
 
 # OPTIONS
 
