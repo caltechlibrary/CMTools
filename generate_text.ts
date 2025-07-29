@@ -211,6 +211,7 @@ export const hbsTemplateText = `<!DOCTYPE html>
 <head>
     <title>{{project_name}}</title>
     <link rel="stylesheet" href="/css/site.css">
+    <!-- <script type="module" src="https://caltechlibrary.github.io/CL-web-components/src/footer-global.js"></script> -->
 </head>
 <body>
 <nav>
@@ -228,6 +229,7 @@ export const hbsTemplateText = `<!DOCTYPE html>
 <section>
 $$content$$
 </section>
+<!-- <footer-global></footer-global> -->
 </body>
 </html>`;
 
