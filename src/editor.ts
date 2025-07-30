@@ -1,6 +1,6 @@
 
 function pickEditor(): string {
-  const editor: string | undefined = Deno.env.get("EDITOR");
+  let editor: string | undefined = Deno.env.get("EDITOR");
   if (editor === undefined) {
     if (Deno.build.os === "windows") {
       editor = "notepad.exe";

@@ -113,14 +113,14 @@ async function main() {
   const src: string = await Deno.readTextFile(inputName);
   let obj: object = {};
   try {
-    obj = JSON.parse(src);
+    obj = JSON.parse(src) as object;
   } catch (err) {
     console.log(`error parsing ${inputName}, %c${err}`, ERROR_COLOR);
     Deno.exit(1);
   }
 
   const cm = new CodeMeta();
-  if (cm.fromObject(obj) === false) {
+  if (cm.fromObject(obj as {[key: string]: unknown}) === false) {
     console.log(`failed to process object, %c${inputName}`, ERROR_COLOR);
     Deno.exit(1);
   }
@@ -171,21 +171,25 @@ async function main() {
 
     let denoJSON: { [key: string]: unknown } = {};
     try {
-      denoJSON = JSON.parse(src);
+      denoJSON = JSON.parse(src) as {[key: string]: {[key:string]: unknown}};
     } catch (err) {
       console.log(`deno.json error, %c${err}`, ERROR_COLOR);
       Deno.exit(0);
     }
     const genCodeTasks: string[] = [];
-    if (denoJSON.tasks === undefined) {
-      denoJSON.tasks = {};
+    if (denoJSON.tasks === undefined || denoJSON.tasks === null) {
+      denoJSON.tasks = {} as {[key: string]: string};
     }
+    const tasks: {[key:string]: string} = {};
     for (const taskName of Object.keys(denoTasks)) {
-      denoJSON.tasks[taskName] = denoTasks[taskName];
+      tasks[taskName] = denoTasks[taskName];
       genCodeTasks.push(`deno task ${taskName}`);
     }
     if (genCodeTasks.length > 0) {
-      denoJSON.tasks["gen-code"] = genCodeTasks.join(" ; ");
+      tasks["gen-code"] = (genCodeTasks as string[]).join(" ; ");
+    }
+    if (Object(tasks).keys().length > 0) {
+      denoJSON.tasks = tasks;
     }
     // Update deno.json file.
     if (doBackup) {

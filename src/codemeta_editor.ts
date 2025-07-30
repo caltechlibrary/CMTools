@@ -90,7 +90,7 @@ export function getStringFromObject(
   if (obj[key] === undefined) {
     return undefined;
   }
-  const val: string | number | unknown[] = obj[key];
+  const val: string | number | unknown[] = obj[key] as string | number | unknown[];
   if (val === undefined) {
     return undefined;
   }
@@ -125,7 +125,8 @@ export function setObjectFromString(
   let dt: Date;
   let u: URL | null;
   let textData: string[] = [];
-  let personData: PersonOrOrganization[] = [];
+  let personData: PersonOrOrganization = {} as PersonOrOrganization;
+  let personDataList: PersonOrOrganization[] = [];
   let objData: { [key: string]: unknown } = {};
 
   switch (data_type) {
@@ -195,33 +196,33 @@ export function setObjectFromString(
       break;
     case "person_or_organization":
       try {
-        objData = yaml.parse(val + "\n") as unknown as PersonOrOrganization;
+        personData = yaml.parse(val + "\n") as unknown as PersonOrOrganization;
       } catch (err) {
         console.log(`YAML ERROR: ${err} -> ${val}`);
         try {
-          objData = JSON.parse(val) as unknown as PersonOrOrganization;
-        } catch (err) {
-          console.log(`JSON ERROR: ${err} -> ${val}`);
-          return false;
-        }
-      }
-      obj[key] = objData;
-      break;
-    case "person_or_organization_list":
-      try {
-        personData = yaml.parse(
-          val + "\n",
-        ) as unknown as PersonOrOrganization[];
-      } catch (err) {
-        console.log(`YAML ERROR: ${err} -> ${val}`);
-        try {
-          personData = JSON.parse(val) as unknown as PersonOrOrganization[];
+          personData = JSON.parse(val) as unknown as PersonOrOrganization;
         } catch (err) {
           console.log(`JSON ERROR: ${err} -> ${val}`);
           return false;
         }
       }
       obj[key] = personData;
+      break;
+    case "person_or_organization_list":
+      try {
+        personDataList = yaml.parse(
+          val + "\n",
+        ) as unknown as PersonOrOrganization[];
+      } catch (err) {
+        console.log(`YAML ERROR: ${err} -> ${val}`);
+        try {
+          personDataList = JSON.parse(val) as unknown as PersonOrOrganization[];
+        } catch (err) {
+          console.log(`JSON ERROR: ${err} -> ${val}`);
+          return false;
+        }
+      }
+      obj[key] = personDataList;
       break;
     default:
       // Unsupported conversion
