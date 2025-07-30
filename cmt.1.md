@@ -1,4 +1,4 @@
-%cmt(1) user manual | version 0.0.37 ffabc23
+%cmt(1) user manual | version 0.0.37 cc187dc
 % R. S. Doiel
 % 2025-07-28
 
