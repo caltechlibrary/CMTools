@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert";
-import { normalizePersonOrOrgList, PersonOrOrganization } from "./person_or_organization.ts";
+import { normalizePersonOrOrgList, PersonOrOrganization } from "../src/person_or_organization.ts";
 
 Deno.test("test normalizePersonOrOrgLits()", function () {
    const s = "R. S. Doiel"; 

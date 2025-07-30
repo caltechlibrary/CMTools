@@ -1,9 +1,9 @@
 import { parseArgs } from "@std/cli";
 import { licenseText, releaseDate, releaseHash, version } from "./version.ts";
 import { cmtHelpText, fmtHelp } from "./helptext.ts";
-import { CodeMeta } from "./codemeta.ts";
-import { getFormatFromExt, isSupportedFormat, transform } from "./transform.ts";
-import { ERROR_COLOR, GREEN } from "./colors.ts";
+import { CodeMeta } from "./src/codemeta.ts";
+import { isSupportedFormat, transform } from "./src/transform.ts";
+import { ERROR_COLOR, GREEN } from "./src/colors.ts";
 
 async function main() {
   const appName = "cmt";
@@ -139,8 +139,8 @@ async function main() {
   }
   let denoTasks: { [key: string]: string } = {};
   for (let outputName of outputNames) {
-    // FIXME: Handle case of specific filenames, e.g. README.md, INSTALL.md
-    format = getFormatFromExt(outputName, format);
+    // NOTE: Formats are defined by outputName, e.g. README.md, INSTALL.md.
+    format = outputName
     if (!isSupportedFormat(format)) {
       console.log(`unsupported format, %c"${format}"`, ERROR_COLOR);
       Deno.exit(1);

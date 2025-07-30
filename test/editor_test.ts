@@ -1,5 +1,5 @@
 import { assertEquals, assertNotEquals } from "@std/assert";
-import * as edit from "./editor.ts";
+import * as edit from "../src/editor.ts";
 
 function testEditorFromEnv() {
   // Set a temporary environment value.

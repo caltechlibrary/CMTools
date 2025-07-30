@@ -1,5 +1,5 @@
 // CITATION.cff
-export const cffTemplateText = `
+export const citationCffText = `
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 type: software
@@ -31,7 +31,7 @@ keywords:
 `;
 
 // TypeScript
-export const tsTemplateText = `// {{name}} version and license information.
+export const versionTsText = `// {{name}} version and license information.
 
 export const version: string = '{{version}}',
 releaseDate: string = '{{releaseDate}}',
@@ -41,7 +41,7 @@ licenseText: string = ` + "`" + `
 ` + "`{{/if}};";
 
 // JavaScript
-export const jsTemplateText = `// {{name}} version and license information.
+export const versionJsText = `// {{name}} version and license information.
 
 export const version = '{{version}}',
 releaseDate = '{{releaseDate}}',
@@ -51,7 +51,7 @@ licenseText = ` + "`" + `
 ` + "`{{/if}};";
 
 // Python
-export const pyTemplateText = `# {{name}} version and license information.
+export const versionPyText = `# {{name}} version and license information.
 
 version = '{{version}}'
 releaseDate = '{{releaseDate}}'
@@ -62,7 +62,7 @@ licenseText = '''
 `;
 
 // Go
-export const goTemplateText = `package {{name}}
+export const versionGoText = `package {{name}}
 
 import (
 	"strings"
@@ -102,7 +102,7 @@ func FmtHelp(src string, appName string, version string, releaseDate string, rel
 `;
 
 // Pandoc
-export const mdTemplateText = `---
+export const aboutMdText = `---
 {{#if name}}title: {{name}}{{/if}}
 {{#if description}}abstract: "{{description}}"{{/if}}
 {{#if author}}authors:
@@ -1392,3 +1392,4 @@ export const denoTasksText = `
   }
 }
 `;
+

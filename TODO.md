@@ -10,6 +10,7 @@
   1. Code that results in an executable (command line programs and services)
   2. Code that results in browser side JavaScript (example CL.js)
   3. Code the results in web components
+- [ ] With the advent of footer-global component in CL-web-components it makes sense to adjust the page templates to include web component elements for DLD projects. It's a little like generating the deno tasks knowing the executible names. I would like to be able to provide a simple standard HTML template but have it "just work" for Caltech Library purposes and have it useful outside where CL branding is not appropriate. Example, I'd like to use CMTools in my personal projects but they should not be branded as Caltech
 - [ ] Work with Twila to come up with some default vanilla CSS generation (using CSS variables for easy customization)
 - [ ] I need some sort of way of reducing the foot print of adding generated documents types
   - put each type in it's on module

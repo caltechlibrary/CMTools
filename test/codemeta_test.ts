@@ -1,5 +1,5 @@
 import { assertEquals, assertNotEquals } from "@std/assert";
-import { CodeMeta } from "./codemeta.ts";
+import { CodeMeta } from "../src/codemeta.ts";
 import {
   validateORCID,
   validateROR,

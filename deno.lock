@@ -4,9 +4,10 @@
     "jsr:@caltechlibrary/metadatatools@^0.0.6": "0.0.6",
     "jsr:@libs/markdown@^2.0.2": "2.0.2",
     "jsr:@std/assert@^1.0.11": "1.0.13",
-    "jsr:@std/cli@^1.0.11": "1.0.17",
-    "jsr:@std/internal@^1.0.6": "1.0.6",
-    "jsr:@std/path@^1.0.8": "1.0.9",
+    "jsr:@std/cli@^1.0.21": "1.0.21",
+    "jsr:@std/internal@^1.0.6": "1.0.9",
+    "jsr:@std/internal@^1.0.9": "1.0.9",
+    "jsr:@std/path@^1.1.1": "1.1.1",
     "jsr:@std/text@1": "1.0.9",
     "jsr:@std/yaml@1": "1.0.6",
     "jsr:@std/yaml@^1.0.5": "1.0.6",
@@ -73,17 +74,23 @@
     "@std/assert@1.0.13": {
       "integrity": "ae0d31e41919b12c656c742b22522c32fb26ed0cba32975cb0de2a273cb68b29",
       "dependencies": [
-        "jsr:@std/internal"
+        "jsr:@std/internal@^1.0.6"
       ]
     },
-    "@std/cli@1.0.17": {
-      "integrity": "e15b9abe629e17be90cc6216327f03a29eae613365f1353837fa749aad29ce7b"
+    "@std/cli@1.0.21": {
+      "integrity": "cd25b050bdf6282e321854e3822bee624f07aca7636a3a76d95f77a3a919ca2a"
     },
     "@std/internal@1.0.6": {
       "integrity": "9533b128f230f73bd209408bb07a4b12f8d4255ab2a4d22a1fd6d87304aca9a4"
     },
-    "@std/path@1.0.9": {
-      "integrity": "260a49f11edd3db93dd38350bf9cd1b4d1366afa98e81b86167b4e3dd750129e"
+    "@std/internal@1.0.9": {
+      "integrity": "bdfb97f83e4db7a13e8faab26fb1958d1b80cc64366501af78a0aee151696eb8"
+    },
+    "@std/path@1.1.1": {
+      "integrity": "fe00026bd3a7e6a27f73709b83c607798be40e20c81dde655ce34052fd82ec76",
+      "dependencies": [
+        "jsr:@std/internal@^1.0.9"
+      ]
     },
     "@std/text@1.0.9": {
       "integrity": "b2db4abc3e6ab93eb0280a0d5e126fd3fca80955bcc297ccaaf555e995eab747"
@@ -2485,8 +2492,8 @@
       "jsr:@caltechlibrary/metadatatools@^0.0.6",
       "jsr:@libs/markdown@^2.0.2",
       "jsr:@std/assert@^1.0.11",
-      "jsr:@std/cli@^1.0.11",
-      "jsr:@std/path@^1.0.8",
+      "jsr:@std/cli@^1.0.21",
+      "jsr:@std/path@^1.1.1",
       "jsr:@std/yaml@^1.0.5",
       "npm:handlebars@^4.7.8"
     ]

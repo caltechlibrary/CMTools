@@ -1,9 +1,8 @@
 import { parseArgs } from "@std/cli";
 import { licenseText, releaseDate, releaseHash, version } from "./version.ts";
 import { cmeHelpText, fmtHelp } from "./helptext.ts";
-import { CodeMeta, CodeMetaTerms } from "./codemeta.ts";
-import type { AttributeType } from "./codemeta.ts";
-import { editCodeMetaTerm } from "./editor.ts";
+import { CodeMeta, CodeMetaTerms, type AttributeType } from "./src/codemeta.ts";
+import { editCodeMetaTerm } from "./src/editor.ts";
 
 const reUnquote = new RegExp(`^["'](.*)["']$`);
 
