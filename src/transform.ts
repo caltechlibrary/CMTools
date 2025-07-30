@@ -34,6 +34,8 @@ export function isSupportedFormat(format: string | undefined): boolean {
     "version.go",
     "version.py",
     "deno-tasks.json",
+    "page.tmpl",
+    "page.hbs",
   ].indexOf(format) > -1;
 }
 
@@ -154,12 +156,24 @@ export async function transform(
     case "installer.ps1":
       return renderTemplate(obj, ps1InstallerText);
     case "page.hbs":
-      return renderTemplate(obj, hbsTemplateText)?.replace(
+      if (obj['git_org_or_person'] !== undefined && obj['git_org_or_person'] !== null && (obj['git_org_or_person'] as string).toLowerCase() === 'caltechlibrary' ) {
+        return renderTemplate(obj, pageHbsCaltechLibraryText)?.replace(
+          "$$content$$",
+          "${body}",
+        );
+      }
+      return renderTemplate(obj, pageHbsText)?.replace(
         "$$content$$",
         "{{{content}}}",
       );
-    case "page.pdtmpl": // render as Pandoc template
-      return renderTemplate(obj, hbsTemplateText)?.replace(
+    case "page.tmpl": // render as Pandoc template
+      if (obj['git_org_or_person'] !== undefined && obj['git_org_or_person'] !== null && (obj['git_org_or_person'] as string).toLowerCase() === 'caltechlibrary' ) {
+        return renderTemplate(obj, pageHbsCaltechLibraryText)?.replace(
+          "$$content$$",
+          "${body}",
+        );
+      }
+      return renderTemplate(obj, pageHbsText)?.replace(
         "$$content$$",
         "${body}",
       );
@@ -199,7 +213,10 @@ const versionGoText = gText.versionGoText;
 const aboutMdText = gText.aboutMdText;
 
 // HTML
-const hbsTemplateText = gText.hbsTemplateText;
+const pageHbsText = gText.pageHbsText;
+
+// HTML
+const pageHbsCaltechLibraryText = gText.pageHbsCaltechLibraryText;
 
 // Bash
 const shInstallerText = gText.shInstallerText;

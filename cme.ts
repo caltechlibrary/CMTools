@@ -2,13 +2,12 @@ import { parseArgs } from "@std/cli";
 import { licenseText, releaseDate, releaseHash, version } from "./version.ts";
 import { cmeHelpText, fmtHelp } from "./helptext.ts";
 import { CodeMeta, CodeMetaTerms, type AttributeType } from "./src/codemeta.ts";
-import { editCodeMetaTerm } from "./src/editor.ts";
+import { editCodeMetaTerm } from "./src/codemeta_editor.ts";
 
-const reUnquote = new RegExp(`^["'](.*)["']$`);
 
 function getAttributeNames(terms: AttributeType[]): string[] {
-  let names: string[] = [];
-  for (let item of terms) {
+  const names: string[] = [];
+  for (const item of terms) {
     names.push(item.name);
   }
   return names;
@@ -63,17 +62,17 @@ async function main() {
     console.log(`USAGE: ${appName} [OPTIONS] INPUT_NAME [OUTPUT_NAME]`);
     Deno.exit(1);
   }
-  let inputName: string = (args.length > 0) ? `${args.shift()}` : "";
+  const inputName: string = (args.length > 0) ? `${args.shift()}` : "";
   let attributeNames: string[] = [];
   if (args.length === 0) {
     attributeNames = codeMetaTermNames;
   }
-  let attrValues: { [key: string]: string } = {};
+  const attrValues: { [key: string]: string } = {};
   for (const arg of args) {
     // NOTE: arg can be a number or value due to process_args, should always be string.
     let attr: string = `${arg}`;
     if (attr.indexOf("=") > -1) {
-      let str = attr.substring(attr.indexOf("=") + 1);
+      const str = attr.substring(attr.indexOf("=") + 1);
       attr = attr.substring(0, attr.indexOf("="));
       attrValues[attr] = str;
     } else if (attributeNames.indexOf(attr) === -1) {
@@ -103,7 +102,7 @@ async function main() {
       Deno.exit(1);
     }
   }
-  let obj: { [key: string]: any } = {};
+  let obj: { [key: string]: unknown } = {};
   try {
     obj = JSON.parse(src);
   } catch (err) {
@@ -111,29 +110,28 @@ async function main() {
     Deno.exit(1);
   }
 
-  let cm = new CodeMeta();
+  const cm = new CodeMeta();
   if (cm.fromObject(obj) === false) {
     console.log(`failed to process ${inputName} object`);
     Deno.exit(1);
   }
   if (Object.keys(attrValues).length > 0) {
-    let obj: { [key: string]: string } = {};
-    for (let key of Object.keys(attrValues)) {
-      let val = attrValues[key];
-      obj[key] = val;
+    const obj: { [key: string]: string } = {};
+    for (const key of Object.keys(attrValues)) {
+      obj[key] = attrValues[key];
     }
     cm.patchObject(obj);
     src = JSON.stringify(cm.toObject(), null, 2);
     // Check if file exists then write out new version.
     try {
       await Deno.copyFile(inputName, `${inputName}.bak`);
-    } catch (err) {
+    } catch (_err) {
       // No file exists, skip backup.
     }
     await Deno.writeTextFile(inputName, src);
   }
   if (attributeNames.length > 0) {
-    for (let name of attributeNames) {
+    for (const name of attributeNames) {
       if (!await editCodeMetaTerm(cm, name, app.editor)) {
         console.info(`INFO: using previous value for ${name}`);
       }
@@ -144,7 +142,7 @@ async function main() {
       // Check if file exists then write out new version.
       try {
         await Deno.copyFile(inputName, `${inputName}.bak`);
-      } catch (err) {
+      } catch (_err) {
         // No file exists, skip backup.
       }
       await Deno.writeTextFile(inputName, src);

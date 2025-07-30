@@ -56,7 +56,7 @@ async function main() {
   if (lang === "" && app.deno) {
     lang = "typescript";
   }
-  let inputName: string = (args.length > 0) ? `${args.shift()}` : "";
+  const inputName: string = (args.length > 0) ? `${args.shift()}` : "";
   let outputNames: string[] = [];
   if (app.init !== "") {
     outputNames = [
@@ -110,7 +110,7 @@ async function main() {
     console.log("error: %cmissing filepath to codemeta.json", ERROR_COLOR);
     Deno.exit(1);
   }
-  let src: string = await Deno.readTextFile(inputName);
+  const src: string = await Deno.readTextFile(inputName);
   let obj: object = {};
   try {
     obj = JSON.parse(src);
@@ -119,7 +119,7 @@ async function main() {
     Deno.exit(1);
   }
 
-  let cm = new CodeMeta();
+  const cm = new CodeMeta();
   if (cm.fromObject(obj) === false) {
     console.log(`failed to process object, %c${inputName}`, ERROR_COLOR);
     Deno.exit(1);
@@ -129,7 +129,7 @@ async function main() {
       console.log(`unsupported format, %c"${format}"`, ERROR_COLOR);
       Deno.exit(1);
     }
-    let txt: string | undefined = await transform(cm, format, lang, isDeno);
+    const txt: string | undefined = await transform(cm, format, lang, isDeno);
     if (txt === undefined) {
       console.log(`unsupported transform, %c"${format}"`, ERROR_COLOR);
       Deno.exit(1);
@@ -137,15 +137,15 @@ async function main() {
     console.log(txt);
     Deno.exit(0);
   }
-  let denoTasks: { [key: string]: string } = {};
-  for (let outputName of outputNames) {
+  const denoTasks: { [key: string]: string } = {};
+  for (const outputName of outputNames) {
     // NOTE: Formats are defined by outputName, e.g. README.md, INSTALL.md.
     format = outputName
     if (!isSupportedFormat(format)) {
       console.log(`unsupported format, %c"${format}"`, ERROR_COLOR);
       Deno.exit(1);
     }
-    let txt: string | undefined = await transform(cm, format, lang, isDeno);
+    const txt: string | undefined = await transform(cm, format, lang, isDeno);
     if (txt === undefined) {
       console.log(`unsupported transform, %c"${format}"`, ERROR_COLOR);
       Deno.exit(1);
@@ -161,7 +161,7 @@ async function main() {
     let doBackup: boolean = true;
     try {
       src = await Deno.readTextFile("deno.json");
-    } catch (err) {
+    } catch (_err) {
       console.warn(`creating %cdeno.json`, GREEN);
       doBackup = false;
     }
@@ -169,18 +169,18 @@ async function main() {
       src = `{"tasks":{}}`;
     }
 
-    let denoJSON: { [key: string]: any } = {};
+    let denoJSON: { [key: string]: unknown } = {};
     try {
       denoJSON = JSON.parse(src);
     } catch (err) {
       console.log(`deno.json error, %c${err}`, ERROR_COLOR);
       Deno.exit(0);
     }
-    let genCodeTasks: string[] = [];
+    const genCodeTasks: string[] = [];
     if (denoJSON.tasks === undefined) {
       denoJSON.tasks = {};
     }
-    for (let taskName of Object.keys(denoTasks)) {
+    for (const taskName of Object.keys(denoTasks)) {
       denoJSON.tasks[taskName] = denoTasks[taskName];
       genCodeTasks.push(`deno task ${taskName}`);
     }

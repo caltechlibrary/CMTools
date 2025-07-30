@@ -206,12 +206,11 @@ About this software
 `;
 
 // HTML
-export const hbsTemplateText = `<!DOCTYPE html>
+export const pageHbsText = `<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <title>{{project_name}}</title>
     <link rel="stylesheet" href="/css/site.css">
-    <!-- <script type="module" src="https://caltechlibrary.github.io/CL-web-components/src/footer-global.js"></script> -->
 </head>
 <body>
 <nav>
@@ -229,9 +228,37 @@ export const hbsTemplateText = `<!DOCTYPE html>
 <section>
 $$content$$
 </section>
-<!-- <footer-global></footer-global> -->
 </body>
 </html>`;
+
+// HTML
+export const pageHbsCaltechLibraryText = `<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>{{project_name}}</title>
+    <link rel="stylesheet" href="/css/site.css">
+    <script type="module" src="https://caltechlibrary.github.io/CL-web-components/src/cl-web-components.js"></script>
+</head>
+<body>
+<nav>
+<ul>
+    <li><a href="/">Home</a></li>
+    <li><a href="index.html">README</a></li>
+    <li><a href="LICENSE">LICENSE</a></li>
+    <li><a href="INSTALL.html">INSTALL</a></li>
+    <li><a href="user_manual.html">User Manual</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="search.html">Search</a></li>
+{{#if repositoryLink}}    <li><a href="{{repositoryLink}}">GitHub</a></li>{{/if}}
+</ul>
+</nav>
+<section>
+$$content$$
+</section>
+<footer-global></footer-global>
+</body>
+</html>`;
+
 
 // Bash
 export const shInstallerText = `#!/bin/sh

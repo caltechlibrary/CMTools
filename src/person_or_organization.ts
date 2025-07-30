@@ -18,7 +18,7 @@ export class PersonOrOrganization implements PersonOrOrganizationInterface {
   email: string = "";
 
   toObject(): object {
-    let obj: {[key: string]: any} = {};
+    const obj: {[key: string]: unknown} = {};
     (this.id === undefined || this.id.length === 0) ? '': obj["id"] = this.id;
     (this.type === undefined || this.type.trim().length === 0) ? '': obj["type"] = this.type;
     (this.name === undefined || this.name.trim().length === 0) ? '': obj["name"] = this.name;
@@ -29,7 +29,7 @@ export class PersonOrOrganization implements PersonOrOrganizationInterface {
     return obj;
   }
 
-  fromObject(obj: { [key: string]: any }): boolean {
+  fromObject(obj: { [key: string]: unknown }): boolean {
     (obj["id"] === undefined) ? "" : this.id = obj["id"].trim();
     if (this.id === "") {
       (obj["@id"] === undefined) ? "" : this.id = obj["@id"].trim();
@@ -50,10 +50,10 @@ export class PersonOrOrganization implements PersonOrOrganizationInterface {
 export function normalizePersonOrOrgList(obj: object | string): PersonOrOrganization[] {
   const oType = Object.prototype.toString.call(obj);
   let p: PersonOrOrganization = new PersonOrOrganization();
-  let l: {[key: string]: any}[] = [];
+  const l: {[key: string]: unknown}[] = [];
   switch (oType) {
     case "[object Array]":
-      for (let item of Object.values(obj)) {
+      for (const item of Object.values(obj)) {
         p = new PersonOrOrganization();
         p.fromObject(item);
         if (p.type === "") {
@@ -67,7 +67,7 @@ export function normalizePersonOrOrgList(obj: object | string): PersonOrOrganiza
       }
       break;
     case "[object Object]":
-      p.fromObject(obj as Object);
+      p.fromObject(obj as object);
       if (p.type === "") {
         if (p.name === "") {
           p.type = "Person";

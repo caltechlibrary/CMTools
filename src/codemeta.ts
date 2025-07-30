@@ -236,8 +236,8 @@ export const CodeMetaAttributes: AttributeType[] = [
 
 export interface CodeMetaInterface {
   atContext: string;
-  toObject(): { [key: string]: any };
-  fromObject(obj: { [key: string]: any }): boolean;
+  toObject(): { [key: string]: unknown };
+  fromObject(obj: { [key: string]: unknown }): boolean;
   patchObject(obj: { [key: string]: string }): boolean;
 }
 
@@ -273,9 +273,9 @@ export class CodeMeta implements CodeMetaInterface {
   copyrightYear?: number | undefined;
   copyrightHolder?: string | undefined;
 
-  toObject(): { [key: string]: any } {
+  toObject(): { [key: string]: unknown } {
     //FIXME: Only build an `{[key: string]: string}` minimal object
-    let obj: { [key: string]: any } = {};
+    const obj: { [key: string]: unknown } = {};
     obj["@context"] = this.atContext;
     obj["type"] = this.type;
     (this.codeRepository === "")
@@ -349,7 +349,7 @@ export class CodeMeta implements CodeMetaInterface {
     return obj;
   }
 
-  fromObject(obj: { [key: string]: any }): boolean {
+  fromObject(obj: { [key: string]: unknown }): boolean {
     //FIXME: obj
     //FIXME: need to handle prior codemeta version import
     this.atContext = (obj["@context"] === undefined)
@@ -367,7 +367,7 @@ export class CodeMeta implements CodeMetaInterface {
       this.author = [];
     } else {
       //FIXME: if this is NOT an array I need to write code to handle it here.
-      const oType = Object.prototype.toString.call(obj["author"]);
+      ///const oType = Object.prototype.toString.call(obj["author"]);
       this.author = normalizePersonOrOrgList(obj["author"]);
     }
     if (obj["license"] === undefined) {
@@ -382,7 +382,7 @@ export class CodeMeta implements CodeMetaInterface {
           this.license = "";
           this.licenseText = obj["license"];
         }
-      } catch (err) {
+      } catch (_err) {
         this.license = "";
       }
     }
@@ -478,7 +478,7 @@ export class CodeMeta implements CodeMetaInterface {
     return true;
   }
 
-  patchObject(obj: { [key: string]: any }): boolean {
+  patchObject(obj: { [key: string]: unknown }): boolean {
     //FIXME: obj
     //FIXME: need to handle prior codemeta version import
     (obj["@context"] === undefined)
@@ -496,7 +496,7 @@ export class CodeMeta implements CodeMetaInterface {
       // do nothing.
     } else {
       //FIXME: if this is NOT an array I need to write code to handle it here.
-      const oType = Object.prototype.toString.call(obj["author"]);
+      //const oType = Object.prototype.toString.call(obj["author"]);
       this.author = normalizePersonOrOrgList(obj["author"]);
     }
     if (obj["license"] === undefined) {
@@ -512,7 +512,7 @@ export class CodeMeta implements CodeMetaInterface {
           this.license = "";
           this.licenseText = obj["license"];
         }
-      } catch (err) {
+      } catch (_err) {
         // do nothing.
       }
     }
