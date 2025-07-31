@@ -620,15 +620,7 @@ function normalizeDateFormat(x: string | Date): string {
   } else {
     d = new Date(x);
   }
-  return yyyymmdd(d);
-}
-
-function yyyymmdd(d: Date): string {
-  const year = d.getFullYear();
-  const month = `${d.getMonth() + 1}`.padStart(2, "0");
-  const day = `${d.getDate() + 1}`.padStart(2, "0");
-  const s = `${year}-${month}-${day}`;
-  return s;
+  return d.toISOString().split('T')[0];
 }
 
 export function getExampleText(attr: string) : string {

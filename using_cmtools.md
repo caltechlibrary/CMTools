@@ -1,35 +1,40 @@
 ---
 title: Using CMTools
 dateCreated: 2025-05-07
+dateModified: 2025-07-30
 keywords:
   - development
   - tooling
+  - CodeMeta
 ---
 
 # Using CMTools
 
-What is CMTools? It is two programs that work with a [CodeMeta](https://codemeta.github.io) file to save time and effort setting up or maintaining a GitHub based project. It was developed specifically for Caltech Library Digital Library Development Group as a replacement for GitHub templates.
+What is CMTools? Two programs designed to work with a [CodeMeta](https://codemeta.github.io) file. One manages curation the is a text/code generator based on the contents of your CodeMeta file. The two save you time and effort setting up or maintaining a GitHub based project. They were developed for Caltech Library Digital Library Development Group as a alternative to using GitHub template repositories.
 
-The CodeMeta file is a JSON document that hold metadata about your project (e.g. name, description, authorship, dates). When combined with the metadata available from Git and your LICENSE file many files typically included in a project can be generated.
+The CodeMeta file is a JSON document that hold metadata about your project (e.g. name, description, authorship, dates). When combined with the metadata available from Git and your LICENSE file many files typically included in a project can be generated automatically. This means many of the software artifacts can be calculated as needed when your metadata changes.
 
 Here's a brief list
 
 - README.md
 - about.md
+- search.md
 - INSTALL.md
+  - INSTALL_NOTES_macOS.md
+  - INSTALL_NOTES_Windows.md
 - CITATION.cff
-- Makefile (for Go and Deno projects)
-- website.mak
-- installer.sh
-- installer.ps1
-- release.bash
-- publish.bash
-- page.tmpl
-- version.py, version.go and version.ts
+- Makefile, build.ps1
+- website.mak, website.ps1
+- installer.sh, installer.ps1
+- release.bash, release.ps1
+- publish.bash, publish.ps1
+- page.tmpl, page.hbs
+- version.py, version.go, version.js and version.ts
 
-The toolkit is composed from two command line programs provided along with a text editor (e.g. Nano, Vim, Micro Editor, TextEdit, NotePad).
+The editing tool, `cme`, runs in your favorite shell (e.g. Terminal, Bash, PowerShell) and will use the default shell's text editor for editing CodeMeta values. 
 
-All these files contain some level of the metadata captured in the [codemeta.json](codemeta.json), in the path and Git repository metadata or the LICENSE file associated with your project.
+
+To generate text or code you use `cmt`.  All supported files contain some level of the metadata captured in the [codemeta.json](codemeta.json). Some also require information from the Git repository's `.git` directory and they need to find a file called LICENSE that includes the text of your license.
 
 ## creating and maintaining your codemeta.json
 
@@ -70,7 +75,7 @@ cme codemeta.json -e
 ~~~
 
 
-Now we are ready for to generate files. The first time you run this. You'll likely get an error like
+Now we are ready to generate files. The first time you run this. You'll likely get an error like
 
 ~~~error
 "git log --pretty=format:%h -n 1" exited with 128

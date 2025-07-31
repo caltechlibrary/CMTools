@@ -146,7 +146,7 @@ export function setObjectFromString(
     case "date":
       dt = new Date(val);
       if (isNaN(dt.valueOf())) return false;
-      obj[key] = dt;
+      obj[key] = dt.toISOString().split('T')[0];
       break;
     case "text_or_url":
       u = URL.parse(val);
