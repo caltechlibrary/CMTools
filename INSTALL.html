@@ -19,22 +19,53 @@
 </ul>
 </nav>
 <section>
-<h1 id="installation-for-development-of">Installation for development of
-****</h1>
-<hr />
+<h1 id="installation-for-development-of-cmtools">Installation for
+development of <strong>CMTools</strong></h1>
+<p><strong>CMTools</strong> <a
+href="https://codemeta.github.io">CodeMeta</a> Tools provides a simple
+command line tool called `cmt` that can be used to generate project
+files and software artifacts. It provides a tool called `cme` to edit
+and manage the CodeMeta file.</p>
+<p>The project focuses on leveraging CodeMeta data, directory name and
+Git repo information for building and release software written in
+Python, Go, JavaScript or TypeScript. It was motivated by the practices
+in Caltech Library's Digital Development Group.</p>
+<p>The tools are intended to be run from the project root directory.
+`cmt` expects the file path of your codemeta.json file as well as one or
+more target files to be generated. The target file's extension
+determines the generated content. The tool can generate the following
+project files based on the contents of the codemeta.json file. `cme`
+expects the file path of your codemeta.json file and optionally the
+attributes of the CodeMeta object you wish to manage.</p>
+<p>`cme` is used to create and manage "codemeta.json". `cmt` is used to
+generate the following.</p>
+<ul>
+<li>README.md</li>
+<li>INSTALL.md</li>
+<li>installer.sh</li>
+<li>installer.ps1</li>
+<li>CITATION.cff</li>
+<li>version.ts, version.js, version.go or version.py</li>
+<li>about.md</li>
+<li>page.tmpl (Pandoc template) or page.hbs (handlebars template)</li>
+<li>Makefile (for Go or Deno based projects)</li>
+<li>website.mak</li>
+<li>release.bash</li>
+<li>publish.bash</li>
+</ul>
 <h2 id="quick-install-with-curl-or-irm">Quick install with curl or
 irm</h2>
 <p>There is an experimental installer.sh script that can be run with the
 following command to install latest table release. This may work for
 macOS, Linux and if you’re using Windows with the Unix subsystem. This
 would be run from your shell (e.g. Terminal on macOS).</p>
-<pre class="shell"><code>curl https://caltechlibrary.github.io//installer.sh | sh</code></pre>
-<p>This will install the programs included in in your
+<pre class="shell"><code>curl https://caltechlibrary.github.io/CMTools/installer.sh | sh</code></pre>
+<p>This will install the programs included in CMTools in your
 <code>$HOME/bin</code> directory.</p>
 <p>If you are running Windows 10 or 11 use the Powershell command
 below.</p>
 <div class="sourceCode" id="cb2"><pre
-class="sourceCode ps1"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">irm</span> https<span class="op">://</span>caltechlibrary<span class="op">.</span><span class="fu">github</span><span class="op">.</span><span class="fu">io</span><span class="op">//</span>installer<span class="op">.</span><span class="fu">ps1</span> <span class="op">|</span> <span class="fu">iex</span></span></code></pre></div>
+class="sourceCode ps1"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">irm</span> https<span class="op">://</span>caltechlibrary<span class="op">.</span><span class="fu">github</span><span class="op">.</span><span class="fu">io</span><span class="op">/</span>CMTools<span class="op">/</span>installer<span class="op">.</span><span class="fu">ps1</span> <span class="op">|</span> <span class="fu">iex</span></span></code></pre></div>
 <h3 id="if-your-are-running-macos-or-windows">If your are running macOS
 or Windows</h3>
 <p>You may get security warnings if you are using macOS or Windows. See
@@ -47,14 +78,18 @@ href="INSTALL_NOTES_Windows.html">INSTALL_NOTES_Windows.md</a></li>
 </ul>
 <h2 id="installing-from-source">Installing from source</h2>
 <h3 id="required-software">Required software</h3>
+<ul>
+<li>Deno &gt;= 2.4</li>
+<li>CMTools &gt;= 0.0.33</li>
+</ul>
 <h3 id="steps">Steps</h3>
 <ol type="1">
-<li>git clone https://github.com/caltechlibrary/</li>
-<li>Change directory into the `` directory</li>
+<li>git clone https://github.com/caltechlibrary/CMTools</li>
+<li>Change directory into the <code>CMTools</code> directory</li>
 <li>Make to build, test and install</li>
 </ol>
-<pre class="shell"><code>git clone https://github.com/caltechlibrary/
-cd 
+<pre class="shell"><code>git clone https://github.com/caltechlibrary/CMTools
+cd CMTools
 make
 make test
 make install</code></pre>

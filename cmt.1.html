@@ -49,24 +49,35 @@ following.</p>
 </ul>
 <h1 id="options">OPTIONS</h1>
 <p>Options come as the last parameter(s) on the command line.</p>
-<p>-h, –help : display help</p>
-<p>-v, –version : display version</p>
-<p>-l, –license : display license</p>
-<p>-f, –format : output format to use when piping the output to another
-programming.</p>
-<p>-d, –deno : update the deno.json file tasks based on output files
-requested and used to generate a Deno Makefile.</p>
-<p>-i, –init PROGRAMMING_LANGUAGE : initialize the project based on a
-programming language name. Supported languages are “python”, “go”,
-“javascript” and “typescript”.</p>
-<p>–lang LANGUAGE : this sets the language to use when generating
-Makefile.</p>
+<dl>
+<dt>-h, –help</dt>
+<dd>
+display help
+</dd>
+<dt>-v, –version</dt>
+<dd>
+display version
+</dd>
+<dt>-l, –license</dt>
+<dd>
+display license
+</dd>
+<dt>-i, –init PROGRAMMING_LANGUAGE</dt>
+<dd>
+initialize the project based on a programming language name. Supported
+languages/project types are “python”, “go”, “javascript”, “typescript”
+and “deno”.
+</dd>
+<dt>–lang LANGUAGE</dt>
+<dd>
+this sets the language to use when generating Makefile.
+</dd>
+</dl>
 <h1 id="examples">EXAMPLES</h1>
 <p>Here’s an example of rendering <code>CITATION.cff</code> from a
 <code>codemeta.json</code> file. The second version shows how to use the
 format option.</p>
-<pre><code>cmt codemeta.json CITATION.cff
-cmt codemeta.json --format=cff &gt;CITATION.cff</code></pre>
+<pre><code>cmt codemeta.json CITATION.cff</code></pre>
 <p>Here’s an example of rendering <code>version.ts</code>,
 <code>version.py</code>, and <code>version.go</code> from
 <code>codemeta.json</code> file.</p>
@@ -88,7 +99,7 @@ specified.</p>
 based on the current contents of the CodeMeta file.</p>
 <h3 id="project-initialization">Project Initialization</h3>
 <p>cmt supports four languages at this time. It will generated the files
-needed to bootstrap the project based on the langauge choosen.</p>
+needed to bootstrap the project based on the language chosen.</p>
 </section>
 <footer-global></footer-global>
 </body>

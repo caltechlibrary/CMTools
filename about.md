@@ -65,6 +65,9 @@ Bug fixes.
 - Issue #30, removed &#x60;--deno&#x60; support
 - Added &#x60;links-to-html.lua&#x60;, &#x60;website.mak&#x60; and &#x60;website.ps1&#x60; to the default when &#x60;cmt --init&#x3D;PROJECT_TYPE&#x60; is used.
 - Removed &#x60;--format&#x60; option since formats are determined by filename to generate
+- Fixed issue #32, problem generating &#x60;INSTALL_NOTES_Windows.md&#x60;
+- Fixed issue #28, problem with &#x60;-d&#x60; and generating &#x60;links-to-html.lua&#x60;.
+- Resolved issue #26, untangled the code in &#x60;src/transform.ts&#x60; and &#x60;src/generate_text.ts&#x60;.
 
 ### Authors
 
