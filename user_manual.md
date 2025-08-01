@@ -1,4 +1,3 @@
-
 # User Manual
 
 - [Architecture and Implementation](approach_and_implementation.md)
@@ -11,4 +10,3 @@
   - [cmt and cme](presentations/presentation2.md) (Deno+TypeScript)
   - [cmt and cme](presentations/presentation3.md) (Python)
 - [Someday, maybe](someday_maybe.md), a hypothetical road map
-

@@ -1,9 +1,6 @@
 import { assertEquals, assertNotEquals } from "@std/assert";
 import { CodeMeta } from "../src/codemeta.ts";
-import {
-  validateORCID,
-  validateROR,
-} from "@caltechlibrary/metadatatools";
+import { validateORCID, validateROR } from "@caltechlibrary/metadatatools";
 
 Deno.test("test fromObject", async function () {
   const src: string = await Deno.readTextFile("./codemeta.json");

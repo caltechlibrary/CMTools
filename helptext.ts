@@ -64,16 +64,10 @@ Options come as the last parameter(s) on the command line.
 -l, --license
 : display license
 
--f, --format
-: output format to use when piping the output to another programming.
-
--d, --deno
-: update the deno.json file tasks based on output files requested
-and used to generate a Deno Makefile.
-
 -i, --init PROGRAMMING_LANGUAGE
 : initialize the project based on a programming language name.
-Supported languages are "python", "go", "javascript" and "typescript".
+Supported languages/project types are "python", "go", "javascript",
+"typescript" and "deno".
 
 --lang LANGUAGE
 : this sets the language to use when generating Makefile.
@@ -86,7 +80,6 @@ shows how to use the format option.
 
 ~~~
 {app_name} codemeta.json CITATION.cff
-{app_name} codemeta.json --format=cff >CITATION.cff
 ~~~
 
 Here's an example of rendering ` + "`version.ts`" + `, ` + "`version.py`" +
@@ -124,7 +117,7 @@ the current contents of the CodeMeta file.
 ### Project Initialization
 
 {app_name} supports four languages at this time. It will generated the
-files needed to bootstrap the project based on the langauge choosen.
+files needed to bootstrap the project based on the language chosen.
 
 `;
 

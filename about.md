@@ -36,7 +36,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.37
+version: 0.0.38
 license_url: https://caltechlibrary.github.io/CMTools/LICENSE
 operating_system:
   - Linux
@@ -52,16 +52,19 @@ keywords:
   - software
   - code generation
 
-date_released: 2025-07-28
+date_released: 2025-08-01
 ---
 
 About this software
 ===================
 
-## CMTools 0.0.37
+## CMTools 0.0.38
 
-Fixed formatting generating REAMDE.md where there is Runtime platform information.
-Added support to generate links-to-html.lua for use with Pandoc website generation.
+Bug fixes.
+
+- Issue #30, removed &#x60;--deno&#x60; support
+- Added &#x60;links-to-html.lua&#x60;, &#x60;website.mak&#x60; and &#x60;website.ps1&#x60; to the default when &#x60;cmt --init&#x3D;PROJECT_TYPE&#x60; is used.
+- Removed &#x60;--format&#x60; option since formats are determined by filename to generate
 
 ### Authors
 

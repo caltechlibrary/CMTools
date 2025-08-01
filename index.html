@@ -3,7 +3,7 @@
 <head>
     <title>CMTools</title>
     <link rel="stylesheet" href="/css/site.css">
-	<script type="module" src="https://caltechlibrary.github.io/CL-web-components/src/footer-global.js"></script>
+    <script type="module" src="https://caltechlibrary.github.io/CL-web-components/src/footer-global.js"></script>
 </head>
 <body>
 <nav>
@@ -19,115 +19,12 @@
 </ul>
 </nav>
 <section>
-<h1 id="codemeta-tools">CodeMeta Tools</h1>
-<p><a href="https://codemeta.github.io">CodeMeta</a> Tools provides a
-simple command line tool called <code>cmt</code> that can be used to
-generate project files and artifacts. It also provides a tool called
-<code>cme</code> to edit and manage the CodeMeta file. The project
-focuses on leveraging CodeMeta data, directory name and Git repo
-information for building and releasing software written in Python, Go,
-JavaScript or TypeScript. It was motivated by the practices in Caltech
-Library’s Digital Development Group.</p>
-<p>The tools are intended to be run from the project root directory.
-<code>cmt</code> expects the file path of your codemeta.json file as
-well as one or more target files to be generated. The target file’s
-extension determines the generated content. The tool can generate the
-following project files based on the contents of the codemeta.json file.
-<code>cme</code> expects the file path of your codemeta.json file and
-optionally the attributes of the CodeMeta object you wish to manage.</p>
-<p><code>cme</code> is used to create and manage “codemeta.json”.
-<code>cmt</code> can be used to generate the following.</p>
+<h1 id="section"></h1>
+<h2 id="related-resources">Related resources</h2>
 <ul>
-<li>CITATION.cff</li>
-<li>version.ts, version.js, version.go or version.py</li>
-<li>README.md</li>
-<li>about.md</li>
-<li>INSTALL.md</li>
-<li>INSTALL_NOTES_macOS.md</li>
-<li>INSTALL_NOTES_Windows.md</li>
-<li>search.md</li>
-<li>page.hbs (handlebars template) or page.tmpl (Pandoc template)</li>
-<li>Makefile (based on supported language choice)</li>
-<li>webmake.mak</li>
-<li>installer.sh</li>
-<li>installer.ps1</li>
+<li><a href="INSTALL.html">Installation</a></li>
+<li><a href="about.html">About</a></li>
 </ul>
-<p>These files provide a generalized scaffolding for a project.</p>
-<h2 id="create-and-manage-your-file">Create and manage your file</h2>
-<p><code>cme</code> is for managing your “codemeta.json” file. If only
-the “codemeta.json” file is provided then you’ll be in an “interactive”
-mode. You will be prompted for each top level attribute. You either
-press enter and accept the current value or replace the value. For
-complex attributes like “author”, and “keywords”<a href="#fn1"
-class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> you
-use YAML notation followed by a line containing only a period to
-indicate completion. If you enter only the line with a period then the
-current value remains. Here’s an example of setting up to use
-<code>cme</code> to create and edit the “codemeta.json” file.</p>
-<pre class="shell"><code>cme codemeta.json</code></pre>
-<p>The will let you iterate over the top level CodeMeta object
-attributes. For short fields this works well (e.g. version). For multi
-line or list attributes you can use the <code>-e</code>, the editor
-option, for handling the input from the prompts.</p>
-<p>Here’s an example of updating the version and
-<code>.releaseNotes</code> attributes but instead of the direct input
-you edit the value using a text editor like Nano or Micro Editor<a
-href="#fn2" class="footnote-ref" id="fnref2"
-role="doc-noteref"><sup>2</sup></a>.</p>
-<pre class="shell"><code>cme codemeta.json version releaseNotes -e</code></pre>
-<p>Since normally the version is short you’ll just be prompted to type
-in a new version string. The releaseNotes is a multi line field. The
-<code>-e</code> indicates to use your editor to complete the values for
-all fields.</p>
-<h2 id="create-a-version-file-for-typescript-go-and-python">Create a
-version file for TypeScript, Go and Python</h2>
-<p>The <code>cmt</code> command can render a version file suitable for
-TypeScript, JavaScript, Go and Python projects. The version file will
-contain version name, release hash, release date and license
-information. Here’s an example of rendering a “version.ts” for the
-CMTools project.</p>
-<pre class="shell"><code>cmt codemeta.json version.ts</code></pre>
-<p>For Go you would do,</p>
-<pre class="shell"><code>cmt codemeta.json version.go</code></pre>
-<p>and for Python.</p>
-<pre class="shell"><code>cmt codemeta.json version.py</code></pre>
-<h2 id="creating-an-about.md">Creating an about.md</h2>
-<p>The codemeta file contains sufficient information to rendering an
-about page for your project. Rendering a Markdown document for that
-purpose can be done with the following.</p>
-<pre class="shell"><code>cmt codemeta.json about.md</code></pre>
-<h2 id="create-a-simple-project-handlebars-template">Create a simple
-project handlebars template</h2>
-<p>A handlebars template can be generated from the codemeta.json as
-well.</p>
-<pre class="shell"><code>cmt codemeta.json page.hbs</code></pre>
-<p>This Handlebars template then can be used along with a handlebars
-template script to build the website from your repository.</p>
-<h2 id="create-a-project-pandoc-template">Create a project Pandoc
-template</h2>
-<p>A Pandoc template can be generated from the codemeta.json as
-well.</p>
-<pre><code>cmt codemeta.json page.tmpl</code></pre>
-<h2 id="additional-project-documentation">Additional Project
-Documentation</h2>
-<ul>
-<li><a href="user_manual.html">user manual</a></li>
-<li><a href="INSTALL.html">installation</a></li>
-<li><a href="LICENSE">license</a></li>
-</ul>
-<section id="footnotes" class="footnotes footnotes-end-of-document"
-role="doc-endnotes">
-<hr />
-<ol>
-<li id="fn1"><p>For a full list of complex fields see the user manual
-for <code>cme</code>.<a href="#fnref1" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>You need to have Nano or <a
-href="http://micro-editor.github.io">Micro Editor</a> installed for this
-to work.<a href="#fnref2" class="footnote-back"
-role="doc-backlink">↩︎</a></p></li>
-</ol>
-</section>
 </section>
 <footer-global></footer-global>
 </body>

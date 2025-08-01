@@ -3,7 +3,7 @@
 <head>
     <title>CMTools</title>
     <link rel="stylesheet" href="/css/site.css">
-	<script type="module" src="https://caltechlibrary.github.io/CL-web-components/src/footer-global.js"></script>
+    <script type="module" src="https://caltechlibrary.github.io/CL-web-components/src/footer-global.js"></script>
 </head>
 <body>
 <nav>
@@ -20,36 +20,46 @@
 </nav>
 <section>
 <h1 id="using-cmtools">Using CMTools</h1>
-<p>What is CMTools? It is two programs that work with a <a
-href="https://codemeta.github.io">CodeMeta</a> file to save time and
-effort setting up or maintaining a GitHub based project. It was
-developed specifically for Caltech Library Digital Library Development
-Group as a replacement for GitHub templates.</p>
+<p>What is CMTools? Two programs designed to work with a <a
+href="https://codemeta.github.io">CodeMeta</a> file. One manages
+curation the is a text/code generator based on the contents of your
+CodeMeta file. The two save you time and effort setting up or
+maintaining a GitHub based project. They were developed for Caltech
+Library Digital Library Development Group as a alternative to using
+GitHub template repositories.</p>
 <p>The CodeMeta file is a JSON document that hold metadata about your
-project (e.g. name, description, authorship, dates). When combined with
+project (e.g. name, description, authorship, dates). When combined with
 the metadata available from Git and your LICENSE file many files
-typically included in a project can be generated.</p>
+typically included in a project can be generated automatically. This
+means many of the software artifacts can be calculated as needed when
+your metadata changes.</p>
 <p>Here’s a brief list</p>
 <ul>
 <li>README.md</li>
 <li>about.md</li>
-<li>INSTALL.md</li>
+<li>search.md</li>
+<li>INSTALL.md
+<ul>
+<li>INSTALL_NOTES_macOS.md</li>
+<li>INSTALL_NOTES_Windows.md</li>
+</ul></li>
 <li>CITATION.cff</li>
-<li>Makefile (for Go and Deno projects)</li>
-<li>website.mak</li>
-<li>installer.sh</li>
-<li>installer.ps1</li>
-<li>release.bash</li>
-<li>publish.bash</li>
-<li>page.tmpl</li>
-<li>version.py, version.go and version.ts</li>
+<li>Makefile, build.ps1</li>
+<li>website.mak, website.ps1</li>
+<li>installer.sh, installer.ps1</li>
+<li>release.bash, release.ps1</li>
+<li>publish.bash, publish.ps1</li>
+<li>page.tmpl, page.hbs</li>
+<li>version.py, version.go, version.js and version.ts</li>
 </ul>
-<p>The toolkit is composed from two command line programs provided along
-with a text editor (e.g. Nano, Vim, Micro Editor, TextEdit,
-NotePad).</p>
-<p>All these files contain some level of the metadata captured in the <a
-href="codemeta.json">codemeta.json</a>, in the path and Git repository
-metadata or the LICENSE file associated with your project.</p>
+<p>The editing tool, <code>cme</code>, runs in your favorite shell
+(e.g. Terminal, Bash, PowerShell) and will use the default shell’s text
+editor for editing CodeMeta values.</p>
+<p>To generate text or code you use <code>cmt</code>. All supported
+files contain some level of the metadata captured in the <a
+href="codemeta.json">codemeta.json</a>. Some also require information
+from the Git repository’s <code>.git</code> directory and they need to
+find a file called LICENSE that includes the text of your license.</p>
 <h2 id="creating-and-maintaining-your-codemeta.json">creating and
 maintaining your codemeta.json</h2>
 <p>The tool for creating and maintaining your codemeta.json file is
@@ -96,7 +106,7 @@ git init -am &#39;Initial Setup&#39;</code></pre>
 text editor.</p>
 <pre class="shell"><code>export EDITOR=&quot;nano&quot;
 cme codemeta.json -e</code></pre>
-<p>Now we are ready for to generate files. The first time you run this.
+<p>Now we are ready to generate files. The first time you run this.
 You’ll likely get an error like</p>
 <pre class="error"><code>&quot;git log --pretty=format:%h -n 1&quot; exited with 128
 &quot;git config --get remote.origin.url&quot; exited with 1</code></pre>

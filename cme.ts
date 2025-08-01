@@ -1,9 +1,8 @@
 import { parseArgs } from "@std/cli";
 import { licenseText, releaseDate, releaseHash, version } from "./version.ts";
 import { cmeHelpText, fmtHelp } from "./helptext.ts";
-import { CodeMeta, CodeMetaTerms, type AttributeType } from "./src/codemeta.ts";
+import { type AttributeType, CodeMeta, CodeMetaTerms } from "./src/codemeta.ts";
 import { editCodeMetaTerm } from "./src/codemeta_editor.ts";
-
 
 function getAttributeNames(terms: AttributeType[]): string[] {
   const names: string[] = [];

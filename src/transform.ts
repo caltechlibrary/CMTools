@@ -14,7 +14,7 @@ export function isSupportedFormat(format: string | undefined): boolean {
     "README.md",
     "INSTALL.md",
     "INSTALL_NOTES_macOS.md",
-    "INSTALL_NOTES_WINDOWS.md",
+    "INSTALL_NOTES_Windows.md",
     "CITATION.cff",
     "search.md",
     "about.md",
@@ -44,7 +44,6 @@ export function isSupportedFormat(format: string | undefined): boolean {
 
 function getMakefileTemplate(
   lang: string,
-  isDeno: boolean,
 ): string | undefined {
   const prefix: { [key: string]: string } = {
     "golang": goMakefileText,
@@ -55,7 +54,7 @@ function getMakefileTemplate(
     //"python": pyMakefileText,
     //"bash": shMakefileText,
   };
-  if (lang === "" && isDeno) {
+  if (lang === "") {
     return denoMakefileText;
   }
   if (prefix[lang.toLowerCase()] === undefined) {
@@ -68,7 +67,6 @@ export async function transform(
   cm: CodeMeta,
   format: string,
   lang: string,
-  isDeno: boolean,
 ): Promise<string | undefined> {
   if (!isSupportedFormat(format)) {
     return undefined;
@@ -100,7 +98,7 @@ export async function transform(
   if (cm.codeRepository !== "") {
     obj["repositoryLink"] = cm.codeRepository.replace("git+https", "https");
   }
-  //FIXME: If generating deno tasks or page templates I need to 
+  //FIXME: If generating deno tasks or page templates I need to
   // prompt for choices.
   // deno tasks I need to know the name(s) of the executables and the source module for compile statement
   // for page templates I need to know if I'm pulling CaltechLibrary defaults or the generic version.
@@ -118,7 +116,7 @@ export async function transform(
     case "search.md":
       return renderTemplate(obj, searchMdText);
     case "Makefile":
-      makefileTemplate = getMakefileTemplate(lang, isDeno);
+      makefileTemplate = getMakefileTemplate(lang);
       if (makefileTemplate === undefined) {
         return undefined;
       }
@@ -156,7 +154,11 @@ export async function transform(
     case "installer.ps1":
       return renderTemplate(obj, ps1InstallerText);
     case "page.hbs":
-      if (obj['git_org_or_person'] !== undefined && obj['git_org_or_person'] !== null && (obj['git_org_or_person'] as string).toLowerCase() === 'caltechlibrary' ) {
+      if (
+        obj["git_org_or_person"] !== undefined &&
+        obj["git_org_or_person"] !== null &&
+        (obj["git_org_or_person"] as string).toLowerCase() === "caltechlibrary"
+      ) {
         return renderTemplate(obj, pageHbsCaltechLibraryText)?.replace(
           "$$content$$",
           "${body}",
@@ -167,7 +169,11 @@ export async function transform(
         "{{{content}}}",
       );
     case "page.tmpl": // render as Pandoc template
-      if (obj['git_org_or_person'] !== undefined && obj['git_org_or_person'] !== null && (obj['git_org_or_person'] as string).toLowerCase() === 'caltechlibrary' ) {
+      if (
+        obj["git_org_or_person"] !== undefined &&
+        obj["git_org_or_person"] !== null &&
+        (obj["git_org_or_person"] as string).toLowerCase() === "caltechlibrary"
+      ) {
         return renderTemplate(obj, pageHbsCaltechLibraryText)?.replace(
           "$$content$$",
           "${body}",
@@ -248,7 +254,7 @@ const goMakefileText = gText.goMakefileText;
 // Makefile
 const websiteMakefileText = gText.websiteMakefileText;
 
-// PowerShell script 
+// PowerShell script
 const websitePs1Text = gText.websitePs1Text;
 
 // links-to-html.lua

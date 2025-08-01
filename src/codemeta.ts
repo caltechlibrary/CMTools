@@ -4,7 +4,7 @@ import {
   PersonOrOrganization,
 } from "./person_or_organization.ts";
 
-export const complexFieldList = [ 
+export const complexFieldList = [
   "author",
   "maintainer",
   "contributor",
@@ -12,7 +12,7 @@ export const complexFieldList = [
   "softwareRequirements",
   "softwareSuggestions",
   "programmingLanguage",
-  "keywords"
+  "keywords",
 ];
 
 export interface AttributeTypeInterface {
@@ -332,7 +332,7 @@ export class CodeMeta implements CodeMetaInterface {
       ? ""
       : obj["softwareSuggestions"] = this.softwareSuggestions;
 
-      (this.version === "") ? "" : obj["version"] = this.version;
+    (this.version === "") ? "" : obj["version"] = this.version;
     (this.developmentStatus === "")
       ? ""
       : obj["developmentStatus"] = this.developmentStatus;
@@ -390,7 +390,9 @@ export class CodeMeta implements CodeMetaInterface {
       this.contributor = [];
     } else {
       //FIXME: if this is NOT an array I need to write code to handle it here.
-      this.contributor = normalizePersonOrOrgList(obj["contributor"] as string[]);
+      this.contributor = normalizePersonOrOrgList(
+        obj["contributor"] as string[],
+      );
     }
     if (obj["maintainer"] === undefined) {
       this.maintainer = [];
@@ -409,13 +411,21 @@ export class CodeMeta implements CodeMetaInterface {
       : this.dateModified = normalizeDateFormat(obj["dateModified"] as string);
     (obj["datePublished"] === undefined)
       ? ""
-      : this.datePublished = normalizeDateFormat(obj["datePublished"] as string);
+      : this.datePublished = normalizeDateFormat(
+        obj["datePublished"] as string,
+      );
     (obj["description"] === undefined)
       ? ""
       : this.description = obj["description"] as string;
-    (obj["funder"] === undefined) ? "" : this.funder = obj["funder"] as PersonOrOrganization[];
-    (obj["funding"] == undefined) ? "" : this.funding = obj["funding"] as string;
-    (obj["keywords"] === undefined) ? [] : this.keywords = obj["keywords"] as string[];
+    (obj["funder"] === undefined)
+      ? ""
+      : this.funder = obj["funder"] as PersonOrOrganization[];
+    (obj["funding"] == undefined)
+      ? ""
+      : this.funding = obj["funding"] as string;
+    (obj["keywords"] === undefined)
+      ? []
+      : this.keywords = obj["keywords"] as string[];
     (obj["name"] === undefined) ? "" : this.name = obj["name"] as string;
     (obj["operatingSystem"] === undefined)
       ? ""
@@ -456,7 +466,9 @@ export class CodeMeta implements CodeMetaInterface {
         this.softwareSuggestions = obj["softwareSuggestions"] as string[];
       }
     }
-    (obj["version"] === undefined) ? "" : this.version = obj["version"] as string;
+    (obj["version"] === undefined)
+      ? ""
+      : this.version = obj["version"] as string;
     (obj["developmentStatus"] === undefined)
       ? ""
       : this.developmentStatus = obj["developmentStatus"] as string;
@@ -520,13 +532,17 @@ export class CodeMeta implements CodeMetaInterface {
       // do nothing.
     } else {
       //FIXME: if this is NOT an array I need to write code to handle it here.
-      this.contributor = normalizePersonOrOrgList(obj["contributor"] as PersonOrOrganization[]);
+      this.contributor = normalizePersonOrOrgList(
+        obj["contributor"] as PersonOrOrganization[],
+      );
     }
     if (obj["maintainer"] === undefined) {
       // do nothing.
     } else {
       //FIXME: if this is NOT an array I need to write code to handle it here.
-      this.maintainer = normalizePersonOrOrgList(obj["maintainer"] as PersonOrOrganization[]);
+      this.maintainer = normalizePersonOrOrgList(
+        obj["maintainer"] as PersonOrOrganization[],
+      );
     }
     (obj["codeRepository"] === undefined)
       ? ""
@@ -543,9 +559,15 @@ export class CodeMeta implements CodeMetaInterface {
     (obj["description"] === undefined)
       ? ""
       : this.description = obj["description"] as string;
-    (obj["funder"] === undefined) ? "" : this.funder = obj["funder"] as PersonOrOrganization[];
-    (obj["funding"] == undefined) ? "" : this.funding = obj["funding"] as string;
-    (obj["keywords"] === undefined) ? "" : this.keywords = obj["keywords"] as string[];
+    (obj["funder"] === undefined)
+      ? ""
+      : this.funder = obj["funder"] as PersonOrOrganization[];
+    (obj["funding"] == undefined)
+      ? ""
+      : this.funding = obj["funding"] as string;
+    (obj["keywords"] === undefined)
+      ? ""
+      : this.keywords = obj["keywords"] as string[];
     (obj["name"] === undefined) ? "" : this.name = obj["name"] as string;
     (obj["operatingSystem"] === undefined) ? "" : obj["operatingSystem"];
     if (obj["programmingLanguage"] === undefined) {
@@ -590,7 +612,9 @@ export class CodeMeta implements CodeMetaInterface {
         this.softwareSuggestions = obj["softwareSuggestions"] as string[];
       }
     }
-    (obj["version"] === undefined) ? "" : this.version = obj["version"] as string;
+    (obj["version"] === undefined)
+      ? ""
+      : this.version = obj["version"] as string;
     (obj["developmentStatus"] === undefined)
       ? ""
       : this.developmentStatus = obj["developmentStatus"] as string;
@@ -620,10 +644,10 @@ function normalizeDateFormat(x: string | Date): string {
   } else {
     d = new Date(x);
   }
-  return d.toISOString().split('T')[0];
+  return d.toISOString().split("T")[0];
 }
 
-export function getExampleText(attr: string) : string {
+export function getExampleText(attr: string): string {
   switch (attr) {
     case "author":
       return `- id : ORCID_VALUE_GOES_HERE
@@ -665,6 +689,6 @@ export function getExampleText(attr: string) : string {
 - KEYWORD_THREE ...
 `;
     default:
-      return '';
+      return "";
   }
 }

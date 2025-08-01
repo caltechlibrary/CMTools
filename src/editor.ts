@@ -1,4 +1,3 @@
-
 function pickEditor(): string {
   let editor: string | undefined = Deno.env.get("EDITOR");
   if (editor === undefined) {
@@ -12,7 +11,9 @@ function pickEditor(): string {
 }
 
 export function getEditorFromEnv(envVar?: string): string {
-  const editor: string | undefined = (envVar === undefined)  ? undefined : Deno.env.get(envVar);
+  const editor: string | undefined = (envVar === undefined)
+    ? undefined
+    : Deno.env.get(envVar);
   if (editor === undefined) {
     return pickEditor();
   }
@@ -67,4 +68,3 @@ export async function editTempData(val: string): Promise<string> {
   }
   return val;
 }
-

@@ -259,7 +259,6 @@ $$content$$
 </body>
 </html>`;
 
-
 // Bash
 export const shInstallerText = `#!/bin/sh
 # generated with CMTools {{version}} {{releaseHash}}
@@ -1419,4 +1418,3 @@ export const denoTasksText = `
   }
 }
 `;
-

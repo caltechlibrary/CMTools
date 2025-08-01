@@ -20,19 +20,21 @@ url: "https://caltechlibrary.github.io/CMTools/presentation"
 
 # What is CMTools?
 
-CMTools provides a means of generating and maintain various software artifacts based on the contents of your [CodeMeta](https://codemeta.github.io) file.
+CMTools provides a means of generating and maintain various software artifacts
+based on the contents of your [CodeMeta](https://codemeta.github.io) file.
 
 # What are Software Artifacts?
 
-Software Artifacts
-: Project related files that related to development, build and release processes
+Software Artifacts : Project related files that related to development, build
+and release processes
 
 Example: about Markdown page, CITATION.cff, version files
 
 # Why CodeMeta?
 
 - CodeMeta is a maturing spec supporting metadata about projects
-- We already use it when we import software to our [data repository](https://data.caltech.edu)
+- We already use it when we import software to our
+  [data repository](https://data.caltech.edu)
 - It is a superset of CITATION.cff used for search and discovery on GitHub
 
 # What problem does CMTools assist with?
@@ -63,7 +65,8 @@ In the old days ....
 
 # Why is five steps better than four?
 
-The generated artifacts can be maintained with the same command that generated them. 
+The generated artifacts can be maintained with the same command that generated
+them.
 
 The artifact are easy to keep up to date.
 
@@ -86,7 +89,7 @@ One command for each supported language:
 - JavaScript
   - `cmt codemeta.json CITATION.cff about.md version.js`
 - TypeScript
-  -  `cmt codemeta.json CITATION.cff about.md version.js`
+  - `cmt codemeta.json CITATION.cff about.md version.js`
 
 > One command versus hand editing!
 
@@ -105,7 +108,7 @@ One command for each supported language:
 
 # What could CodeMeta/CMTools also manage?
 
-CodeMeta file could be used to generate 
+CodeMeta file could be used to generate
 
 - README.md
 - INSTALL.md
@@ -114,17 +117,25 @@ CodeMeta file could be used to generate
 
 # What else?
 
-CodeMeta `.otherRequiredSoftware` attribute could be used to check if your dev environment is setup correctly.
+CodeMeta `.otherRequiredSoftware` attribute could be used to check if your dev
+environment is setup correctly.
 
 # CodeMeta as part of your build process
 
-Many times it's easy to forget to update your CodeMeta file until you're trying to import it into the data repository.  A better approach is to have the codemeta file actually be part of your build and release process. That way version information is consistent and specific. It can also be easily reflected in the documentation of your project's website. Having/maintaining a project website becomes trivial for each new release.
+Many times it's easy to forget to update your CodeMeta file until you're trying
+to import it into the data repository. A better approach is to have the codemeta
+file actually be part of your build and release process. That way version
+information is consistent and specific. It can also be easily reflected in the
+documentation of your project's website. Having/maintaining a project website
+becomes trivial for each new release.
 
 # Template were a good start but ...
 
-The overhead of manually editing files or maintaining complex scripts to editor those files is problematic.
+The overhead of manually editing files or maintaining complex scripts to editor
+those files is problematic.
 
-Just generating the files and refreshing the generated files is easier and simpler.
+Just generating the files and refreshing the generated files is easier and
+simpler.
 
 # How do I install CMTools?
 
@@ -141,20 +152,19 @@ CMTools highly experimental. Build from source.
 
 For macOS and Linux
 
-~~~shell
+```shell
 curl -L https://caltechlibrary.github.io/CMTools/installer.sh | sh
-~~~
+```
 
 For Windows (using Powershell)
 
-~~~ps1
+```ps1
 irm https://caltechlibrary.github.io/CMTools/installer.ps1 | iex
-~~~
+```
 
 # Something to consider
 
-> Software lives longer than expected,
-> long lived software requires maintenance
+> Software lives longer than expected, long lived software requires maintenance
 
 # Reference links
 

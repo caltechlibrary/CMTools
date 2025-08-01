@@ -11,6 +11,7 @@ export async function gitReleaseHash(): Promise<string> {
   const command = new Deno.Command("git", {
     args: options,
   });
+  // NOTE: stderr isn't used yet, maybe later.
   const { code, stdout, stderr } = await command.output();
   if (code > 0) {
     console.log(`"git ${options.join(" ")}" exited with ${code}`);
@@ -28,6 +29,7 @@ async function getRemoteOriginURL(): Promise<string> {
   const command = new Deno.Command("git", {
     args: options,
   });
+  // NOTE: stderr isn't used yet, maybe later.
   const { code, stdout, stderr } = await command.output();
   if (code > 0) {
     console.log(`"git ${options.join(" ")}" exited with ${code}`);

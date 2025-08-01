@@ -4,13 +4,40 @@ title: Approach and Implementation
 
 # Why CodeMeta Tools?
 
-Over the last several years I've folded in the codemeta.json file as a data source for building and releasing software for Caltech Library. Initially I used a tool I wrote called "codemeta2cff". It did one thing which was create a CITATION.cff from the codemeta.json file. Over time I wound up reusing the CodeMeta to generate version files for Go, Python, JavaScript and TypeScript projects. I wound up generating the "about.md" file from CodeMeta content too.  The evolution was organic and resulted in a series of scripts, Makefile rules and Pandoc templates.  CodeMeta Tools is a consolidation of that evolution into a single simple tool. It also integrated other data like Git repository hash and compile dates. You can now use a single tool to generate your CITATION.cff, about.md and version files with a single tool. This streamlines the setup of projects as well as maintain these various files from a single source of truth held in the codemeta.json file.
+Over the last several years I've folded in the codemeta.json file as a data
+source for building and releasing software for Caltech Library. Initially I used
+a tool I wrote called "codemeta2cff". It did one thing which was create a
+CITATION.cff from the codemeta.json file. Over time I wound up reusing
+CodeMeta to generate version files for Go, Python, JavaScript and TypeScript
+projects. I wound up generating the "about.md" file from CodeMeta content too.
 
-So why is this significant?  The metadata held in our CodeMeta JSON file is very helpful when integrating into software repositories like [CaltechDATA](https://data.caltech.edu). While my initial focus in adopting CodeMeta was documentation for my projects I think it can play a common role across projects regardless of implementation language.  On the command line this means you can easily have a consistent "version" response indicating not just the semver and program name but also the Git hash and compile date. This is important for support reasons. As we evolve programs that are deployed on individual computers users often don't update their software. Knowing that they are running a different version than the currently supported one can cut down the time needed to diagnosis issues. Similarly if we introduce a regression in a new version we can check to see if the fix got applied because the Git hash in the version string will change on each commit. For server software having consistent version info serves a similar role.
+The evolution was organic and resulted in a series of scripts, Makefile rules
+and Pandoc templates. CodeMeta Tools is a consolidation of that evolution into a
+single set of simple tools. The tools also integrated metadata from other sources
+like the like the path, Git repository hash and compile dates. You can now use a
+single tool to generate your CITATION.cff, about.md and version files with a single
+tool. This streamlines the setup of projects as well as maintain these various files
+from a single source of truth held in the codemeta.json file.
+
+So why is this significant? The metadata held in our CodeMeta JSON file is very
+helpful when integrating into software repositories like
+[CaltechDATA](https://data.caltech.edu). While my initial focus in adopting
+CodeMeta was documentation for my projects I think it can play a common role
+across projects regardless of implementation language. On the command line this
+means you can easily have a consistent "version" response indicating not just
+the semver and program name but also the Git hash and compile date. This is
+important for support reasons. As we evolve programs that are deployed on
+individual computers users often don't update their software. Knowing that they
+are running a different version than the currently supported one can cut down
+the time needed to diagnosis issues. Similarly if we introduce a regression in a
+new version we can check to see if the fix got applied because the Git hash in
+the version string will change on each commit. For server software having
+consistent version info serves a similar role.
 
 # What problem are we solving with CM Tools?
 
-The following files are common in my projects and other's projects at Caltech Library.
+The following files are common in my projects and other's projects at Caltech
+Library.
 
 - CITATION.cff
 - about.md
@@ -18,53 +45,64 @@ The following files are common in my projects and other's projects at Caltech Li
 - page templates for the project website
 - installer scripts for macOS, Linux and Windows
 
-Having a CM Tool that can generate these means the build processes can be simplified and can more easily translate across the POSIX and Windows divide. 
+Having a CM Tool that can generate these means the build processes can be
+simplified and can more easily translate across the POSIX and Windows divide.
 
-The common files that can use the information in the CodeMeta file are likely to grow over time. The implementation of CM Tools should make it easy to add additional transformations as needed.
+The common files that can use the information in the CodeMeta file are likely to
+grow over time. The implementation of CM Tools should make it easy to add
+additional transformations as needed.
 
-Right now my build processes require Pandoc. Pandoc isn't something that most developers think about as part of their build tool chain outside of building websites.  With an easy to install command line tool the Pandoc dependency can be removed.
+Right now my build processes require Pandoc. Pandoc isn't something that most
+developers think about as part of their build tool chain outside of building
+websites. With an easy to install command line tool the Pandoc dependency can be
+removed.
 
 # Implementation
 
-CM Tools is implemented as a [TypeScript](https://typescriptlang.org) program compiled using [Deno](https://deno.com). Both `cme` and `cmt` are a static executables and can be "installed" with a simple copy command. TypeScript was chosen because it is a superset of JavaScript which is one of the most common programming languages in the early 21st century.  This is the type of tool that will benefit from community contributions.  Deno provide easy cross platform compilation for our supported operating systems -- macOS, Windows and Linux. Deno and TypeScript together provide many of the advantages of our Go based utilities with the advantage of a large part of the Library, Archives and Museum developer communities that could potentially contribute.
+CM Tools is implemented as a [TypeScript](https://typescriptlang.org) program
+compiled using [Deno](https://deno.com). Both `cme` and `cmt` are a static
+executables and can be "installed" with a simple copy command. TypeScript was
+chosen because it is a superset of JavaScript which is one of the most common
+programming languages in the early 21st century. This is the type of tool that
+will benefit from community contributions. Deno provide easy cross platform
+compilation for our supported operating systems -- macOS, Windows and Linux.
+Deno and TypeScript together provide many of the advantages of our Go based
+utilities with the advantage of a large part of the Library, Archives and Museum
+developer communities that could potentially contribute.
 
 The architecture of CM Tools is a series of small TypeScript files
 
-codemeta.ts
-: provides the basic CodeMeta 3 object.
+codemeta.ts : provides the basic CodeMeta 3 object.
 
-gitcmds.ts
-: provides a thin wrapper around the Git command for retrieving Git hash values
+gitcmds.ts : provides a thin wrapper around the Git command for retrieving Git
+hash values
 
-helptext.ts
-: provides the help documentation use to generate man pages and website doc pages
+helptext.ts : provides the help documentation use to generate man pages and
+website doc pages
 
-version.ts
-: This is generated by CM Tools' `cmt` command and holds the version info for CM Tools
+version.ts : This is generated by CM Tools' `cmt` command and holds the version
+info for CM Tools
 
-person_or_organization.ts
-: This holds the agent model for people and organizations used in the CodeMeta object
+person_or_organization.ts : This holds the agent model for people and
+organizations used in the CodeMeta object
 
-transform.ts
-: This does the heavy lifting and transforming the CodeMeta 3 object into our target files. It holds
-the functions for the transform as well as the mappings of variables to text. The texts are in the
-file `generate_text.ts`.
+transform.ts : This does the heavy lifting and transforming the CodeMeta 3
+object into our target files. It holds the functions for the transform as well
+as the mappings of variables to text. The texts are in the file
+`generate_text.ts`.
 
-generate_text.ts
-: This file holds the specific file content to be generated.
+generate_text.ts : This file holds the specific file content to be generated.
 
-cmt.ts
-: This is the TypeScript that provides our command line interface for generating files based on codemeta.json
+cmt.ts : This is the TypeScript that provides our command line interface for
+generating files based on codemeta.json
 
-cme.ts
-: This is the TypeScript the provides our command line interface for editing codemeta.json
+cme.ts : This is the TypeScript the provides our command line interface for
+editing codemeta.json
 
-editor.ts
-: This is used by `cme.ts` to provide an interactive editor (E.g. nano, notepad, textedit)
+editor.ts : This is used by `cme.ts` to provide an interactive editor (E.g.
+nano, notepad, textedit)
 
-person_or_organization.ts
-: This provides an class implementing the codemeta.json person or organizational scheme
+person_or_organization.ts : This provides an class implementing the
+codemeta.json person or organizational scheme
 
-colors.ts
-: This provides some standard colorization of the cli.
-
+colors.ts : This provides some standard colorization of the cli.

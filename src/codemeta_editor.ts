@@ -1,8 +1,13 @@
 import * as yaml from "@std/yaml";
-import { CodeMeta, getExampleText, complexFieldList, CodeMetaTerms, type AttributeType } from "./codemeta.ts";
+import {
+  type AttributeType,
+  CodeMeta,
+  CodeMetaTerms,
+  complexFieldList,
+  getExampleText,
+} from "./codemeta.ts";
 import { PersonOrOrganization } from "./person_or_organization.ts";
-import { editTempData} from "./editor.ts";
-
+import { editTempData } from "./editor.ts";
 
 function getAttributeByName(name: string): AttributeType | undefined {
   for (const attr of CodeMetaTerms) {
@@ -34,7 +39,7 @@ export async function editCodeMetaTerm(
   if (useEditor) {
     if (confirm(`Edit ${name}?`)) {
       let eVal = (curVal === undefined) ? "" : curVal;
-      //FIXME: if eVal is for a complex type and it is empty 
+      //FIXME: if eVal is for a complex type and it is empty
       // then I need to insert example text to use when editing the temp data.
       if (eVal === "" && (complexFieldList.indexOf(name) > -1)) {
         eVal = getExampleText(name);
@@ -90,7 +95,10 @@ export function getStringFromObject(
   if (obj[key] === undefined) {
     return undefined;
   }
-  const val: string | number | unknown[] = obj[key] as string | number | unknown[];
+  const val: string | number | unknown[] = obj[key] as
+    | string
+    | number
+    | unknown[];
   if (val === undefined) {
     return undefined;
   }
@@ -127,7 +135,6 @@ export function setObjectFromString(
   let textData: string[] = [];
   let personData: PersonOrOrganization = {} as PersonOrOrganization;
   let personDataList: PersonOrOrganization[] = [];
-  let objData: { [key: string]: unknown } = {};
 
   switch (data_type) {
     case "text":
@@ -146,7 +153,7 @@ export function setObjectFromString(
     case "date":
       dt = new Date(val);
       if (isNaN(dt.valueOf())) return false;
-      obj[key] = dt.toISOString().split('T')[0];
+      obj[key] = dt.toISOString().split("T")[0];
       break;
     case "text_or_url":
       u = URL.parse(val);
@@ -186,10 +193,10 @@ export function setObjectFromString(
       {
         const list_of_url: URL[] = [];
         for (const item of textData) {
-            const u: URL | null = URL.parse(item);
-            if (u !== null) {
+          const u: URL | null = URL.parse(item);
+          if (u !== null) {
             list_of_url.push(u);
-            }
+          }
         }
         obj[key] = list_of_url;
       }

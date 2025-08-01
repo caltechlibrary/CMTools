@@ -3,7 +3,7 @@
 <head>
     <title>CMTools</title>
     <link rel="stylesheet" href="/css/site.css">
-	<script type="module" src="https://caltechlibrary.github.io/CL-web-components/src/footer-global.js"></script>
+    <script type="module" src="https://caltechlibrary.github.io/CL-web-components/src/footer-global.js"></script>
 </head>
 <body>
 <nav>
@@ -28,13 +28,14 @@ like?</p>
 implementation. That’s why this document is called “Someday, maybe”.</p>
 <h2 id="files-should-be-generator">Files should be generator</h2>
 <ul>
-<li>CITATION.cff</li>
+<li>CITATION.cff (implemented)</li>
 <li>version.(ts|js|py|go) (implemented)</li>
-<li>README.md (implemented)</li>
+<li>README.md (implemented) (implemented, needs improvement)</li>
 <li>INSTALL.md (implemented)</li>
 <li>about.md (implemented)</li>
 <li>search.md (implemented)</li>
-<li>page.tmpl and/or page.hbs (implemeneted)</li>
+<li>page.tmpl and/or page.hbs (implemented)</li>
+<li>link-to-html.lua (implemented)</li>
 <li>installer.sh (implemented)</li>
 <li>installer.ps1 (implemented)</li>
 <li>release.bash (implemented)</li>
@@ -43,20 +44,27 @@ implementation. That’s why this document is called “Someday, maybe”.</p>
 <li>publish.ps1 (implemented)</li>
 <li>Makefiles based on project language
 <ul>
-<li>Deno (imeplented)</li>
+<li>Deno (implemented)</li>
 <li>Go (implemented)</li>
 </ul></li>
+<li>make.ps1 as a PowerShell alternative to GNU Make files (under
+consideration)</li>
 <li>website.mak (implemented)</li>
 <li>website.ps1 (implemented)</li>
 <li>Add configuration file support with list which artifacts should be
-auto-regenerated</li>
+auto-regenerated (prototype, see <code>--init</code> option)</li>
 <li>A localhost web UI for editing codemeta.json (under
 consideration)</li>
+<li>helptext.ts, helptext.js, helptext.py and helptext.go (planned but
+not implemented)</li>
+<li>Deno task setup (exploring)</li>
 </ul>
-<h2 id="deno-projects">Deno projects</h2>
-<h3 id="deno.json-and-using-deno-to-manage-your-build-process">deno.json
-and using Deno to manage your build process</h3>
-<p>While Deno should create the <code>deno.json</code> file, CMTools can
+<h2 id="deno-task-setup">Deno task setup</h2>
+<p>The <code>deno.json</code> tasks work across Windows, macOS and
+Linux. The Deno tasks can easily be combined and driven from PowerShell,
+e.g. an eventual <code>make.ps1</code> and <code>make.sh</code> like Go
+uses.</p>
+<p>While Deno creates the <code>deno.json</code> file CMTools could
 manage to tasks based on a predefined vocabulary, (e.g. “configure”,
 “build”, “test”, “install”). Additional Deno tasks can be used to build
 projects that do not involve TypeScript or JavaScript. Deno tasks can

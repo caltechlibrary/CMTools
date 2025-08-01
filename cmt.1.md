@@ -1,6 +1,6 @@
-%cmt(1) user manual | version 0.0.37 d7209b2
+%cmt(1) user manual | version 0.0.38 e53f4d2
 % R. S. Doiel
-% 2025-07-28
+% 2025-08-01
 
 # NAME
 
@@ -48,16 +48,10 @@ Options come as the last parameter(s) on the command line.
 -l, --license
 : display license
 
--f, --format
-: output format to use when piping the output to another programming.
-
--d, --deno
-: update the deno.json file tasks based on output files requested
-and used to generate a Deno Makefile.
-
 -i, --init PROGRAMMING_LANGUAGE
 : initialize the project based on a programming language name.
-Supported languages are "python", "go", "javascript" and "typescript".
+Supported languages/project types are "python", "go", "javascript",
+"typescript" and "deno".
 
 --lang LANGUAGE
 : this sets the language to use when generating Makefile.
@@ -69,7 +63,6 @@ shows how to use the format option.
 
 ~~~
 cmt codemeta.json CITATION.cff
-cmt codemeta.json --format=cff >CITATION.cff
 ~~~
 
 Here's an example of rendering `version.ts`, `version.py`, and `version.go` from `codemeta.json` file.
@@ -106,6 +99,6 @@ the current contents of the CodeMeta file.
 ### Project Initialization
 
 cmt supports four languages at this time. It will generated the
-files needed to bootstrap the project based on the langauge choosen.
+files needed to bootstrap the project based on the language chosen.
 
 
