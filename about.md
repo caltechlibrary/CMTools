@@ -36,7 +36,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.38
+version: 0.0.34
 license_url: https://caltechlibrary.github.io/CMTools/LICENSE
 operating_system:
   - Linux
@@ -52,22 +52,17 @@ keywords:
   - software
   - code generation
 
-date_released: 2025-08-01
+date_released: 2025-08-05
 ---
 
 About this software
 ===================
 
-## CMTools 0.0.38
+## CMTools 0.0.34
 
 Bug fixes.
 
-- Issue #30, removed &#x60;--deno&#x60; support
-- Added &#x60;links-to-html.lua&#x60;, &#x60;website.mak&#x60; and &#x60;website.ps1&#x60; to the default when &#x60;cmt --init&#x3D;PROJECT_TYPE&#x60; is used.
-- Removed &#x60;--format&#x60; option since formats are determined by filename to generate
-- Fixed issue #32, problem generating &#x60;INSTALL_NOTES_Windows.md&#x60;
-- Fixed issue #28, problem with &#x60;-d&#x60; and generating &#x60;links-to-html.lua&#x60;.
-- Resolved issue #26, untangled the code in &#x60;src/transform.ts&#x60; and &#x60;src/generate_text.ts&#x60;.
+- Issue #33, Updates the code that generates search.md to include proper path handling and to process a &#x27;?q&#x3D;&lt;SEARCH_TERM&gt;&#x27; URL string.
 
 ### Authors
 

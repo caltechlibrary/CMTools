@@ -3,7 +3,9 @@
 <head>
     <title>CMTools</title>
     <link rel="stylesheet" href="/css/site.css">
-    <script type="module" src="https://caltechlibrary.github.io/CL-web-components/src/footer-global.js"></script>
+    <link rel="stylesheet" href="https://caltechlibrary.github.io/css/code-blocks.css">
+    <script type="module" src="https://caltechlibrary.github.io/modules/copyToClipboard.js"></script>
+    <script type="module" src="https://media.library.caltech.edu/cl-webcomponents/footer-global.js"></script>
 </head>
 <body>
 <nav>
@@ -20,19 +22,12 @@
 </nav>
 <section>
 <h1 id="about-this-software">About this software</h1>
-<h2 id="cmtools-0.0.38">CMTools 0.0.38</h2>
+<h2 id="cmtools-0.0.34">CMTools 0.0.34</h2>
 <p>Bug fixes.</p>
 <ul>
-<li>Issue #30, removed `–deno` support</li>
-<li>Added `links-to-html.lua`, `website.mak` and `website.ps1` to the
-default when `cmt –init=PROJECT_TYPE` is used.</li>
-<li>Removed `–format` option since formats are determined by filename to
-generate</li>
-<li>Fixed issue #32, problem generating `INSTALL_NOTES_Windows.md`</li>
-<li>Fixed issue #28, problem with `-d` and generating
-`links-to-html.lua`.</li>
-<li>Resolved issue #26, untangled the code in `src/transform.ts` and
-`src/generate_text.ts`.</li>
+<li>Issue #33, Updates the code that generates search.md to include
+proper path handling and to process a '?q=&lt;SEARCH_TERM&gt;' URL
+string.</li>
 </ul>
 <h3 id="authors">Authors</h3>
 <ul>
