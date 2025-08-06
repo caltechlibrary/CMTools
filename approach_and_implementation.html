@@ -22,24 +22,17 @@
 </nav>
 <section>
 <h1 id="why-codemeta-tools">Why CodeMeta Tools?</h1>
-<p>Over the last several years I’ve folded in the codemeta.json file as
-a data source for building and releasing software for Caltech Library.
-Initially I used a tool I wrote called “codemeta2cff”. It did one thing
-which was create a CITATION.cff from the codemeta.json file. Over time I
-wound up reusing CodeMeta to generate version files for Go, Python,
-JavaScript and TypeScript projects. I wound up generating the “about.md”
-file from CodeMeta content too.</p>
-<p>The evolution was organic and resulted in a series of scripts,
-Makefile rules and Pandoc templates. CodeMeta Tools is a consolidation
-of that evolution into a single set of simple tools. The tools also
-integrated metadata from other sources like the like the path, Git
-repository hash and compile dates. You can now use a single tool to
-generate your CITATION.cff, about.md and version files with a single
-tool. This streamlines the setup of projects as well as maintain these
-various files from a single source of truth held in the codemeta.json
-file.</p>
-<p>So why is this significant? The metadata held in our CodeMeta JSON
-file is very helpful when integrating into software repositories like <a
+<p>Over the last several years I’ve folded the codemeta.json file into
+my development and build processes for releasing software at Caltech
+Library. Initially I used a tool I wrote called “codemeta2cff”. It did
+one thing which was create a CITATION.cff from the codemeta.json file.
+Over time I wound up re-using the idea to generation version files for
+Go, Python, JavaScript and TypeScript projects. Then I added generation
+of installation scripts and the “about.md”. The various scripts and
+Pandoc templates became pretty unwieldy and that lead to thinking about
+a more holistic approach. That lead to CMTools.</p>
+<p>Why is this significant? The metadata held in our CodeMeta file is
+very helpful when integrating into software repositories like <a
 href="https://data.caltech.edu">CaltechDATA</a>. While my initial focus
 in adopting CodeMeta was documentation for my projects I think it can
 play a common role across projects regardless of implementation
@@ -54,8 +47,8 @@ regression in a new version we can check to see if the fix got applied
 because the Git hash in the version string will change on each commit.
 For server software having consistent version info serves a similar
 role.</p>
-<h1 id="what-problem-are-we-solving-with-cm-tools">What problem are we
-solving with CM Tools?</h1>
+<h1 id="what-problem-am-i-solving-with-cmtools">What problem am I
+solving with CMTools?</h1>
 <p>The following files are common in my projects and other’s projects at
 Caltech Library.</p>
 <ul>
@@ -65,18 +58,20 @@ Caltech Library.</p>
 <li>page templates for the project website</li>
 <li>installer scripts for macOS, Linux and Windows</li>
 </ul>
-<p>Having a CM Tool that can generate these means the build processes
-can be simplified and can more easily translate across the POSIX and
-Windows divide.</p>
+<p>Having a CMTool that can generate these means the build processes can
+be simplified and can more easily translate across the POSIX and Windows
+divide.</p>
 <p>The common files that can use the information in the CodeMeta file
-are likely to grow over time. The implementation of CM Tools should make
+are likely to grow over time. The implementation of CMTools should make
 it easy to add additional transformations as needed.</p>
-<p>Right now my build processes require Pandoc. Pandoc isn’t something
-that most developers think about as part of their build tool chain
-outside of building websites. With an easy to install command line tool
-the Pandoc dependency can be removed.</p>
+<p>Prior to CMTools my build processes required Pandoc. Pandoc isn’t
+something that most developers think about as part of their build tool
+chain outside of building websites. With an easy to install command line
+tool the Pandoc dependency can be removed. I still use Pandoc to render
+CommonMark documentation to HTML but that isn’t required if you just
+want to compile from source code.</p>
 <h1 id="implementation">Implementation</h1>
-<p>CM Tools is implemented as a <a
+<p>CMTools is implemented as a <a
 href="https://typescriptlang.org">TypeScript</a> program compiled using
 <a href="https://deno.com">Deno</a>. Both <code>cme</code> and
 <code>cmt</code> are a static executables and can be “installed” with a
@@ -88,15 +83,14 @@ for our supported operating systems – macOS, Windows and Linux. Deno and
 TypeScript together provide many of the advantages of our Go based
 utilities with the advantage of a large part of the Library, Archives
 and Museum developer communities that could potentially contribute.</p>
-<p>The architecture of CM Tools is a series of small TypeScript
-files</p>
+<p>The architecture of CMTools is a series of small TypeScript files</p>
 <p>codemeta.ts : provides the basic CodeMeta 3 object.</p>
 <p>gitcmds.ts : provides a thin wrapper around the Git command for
 retrieving Git hash values</p>
 <p>helptext.ts : provides the help documentation use to generate man
 pages and website doc pages</p>
-<p>version.ts : This is generated by CM Tools’ <code>cmt</code> command
-and holds the version info for CM Tools</p>
+<p>version.ts : This is generated by CMTools’ <code>cmt</code> command
+and holds the version info for CMTools</p>
 <p>person_or_organization.ts : This holds the agent model for people and
 organizations used in the CodeMeta object</p>
 <p>transform.ts : This does the heavy lifting and transforming the
