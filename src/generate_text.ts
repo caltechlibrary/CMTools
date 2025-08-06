@@ -236,12 +236,15 @@ export const clPageHbsText = `<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <title>{{project_name}}</title>
-    <link rel="stylesheet" href="/css/site.css">
+    <link rel="stylesheet" href="https://caltechlibrary.github.io/css/site.css">
     <link rel="stylesheet" href="https://media.library.caltech.edu/cl-webcomponents/css/code-blocks.css">
     <script type="module" src="https://media.library.caltech.edu/cl-webcomponents/copyToClipboard.js"></script>
     <script type="module" src="https://media.library.caltech.edu/cl-webcomponents/footer-global.js"></script>
 </head>
 <body>
+<header>
+<a href="https://library.caltech.edu"><img src="https://media.library.caltech.edu/assets/caltechlibrary-logo.png" alt="Caltech Library logo"></a>
+</header>
 <nav>
 <ul>
     <li><a href="/">Home</a></li>
