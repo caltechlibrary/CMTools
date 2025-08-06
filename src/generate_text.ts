@@ -4,7 +4,7 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 type: software
 {{#if name}}title: {{name}}{{/if}}
-{{#if description}}abstract: "{{description}}"{{/if}}
+{{#if description}}abstract: "{{{description}}}"{{/if}}
 {{#if author}}authors:
 {{#each author}}
   - family-names: {{familyName}}
@@ -146,7 +146,7 @@ About this software
 
 ## {{name}} {{version}}
 
-{{#if releaseNotes}}{{releaseNotes}}{{/if}}
+{{#if releaseNotes}}{{{releaseNotes}}}{{/if}}
 
 {{#if author}}
 ### Authors
@@ -179,21 +179,21 @@ About this software
 ### Programming languages
 
 {{#each programmingLanguage}}
-- {{.}}
+- {{{.}}}
 {{/each}}{{/if}}
 
 {{#if operatingSystem}}
 ### Operating Systems
 
 {{#each operatingSystem}}
-- {{.}}
+- {{{.}}}
 {{/each}}{{/if}}
 
 {{#if softwareRequirements}}
 ### Software Requirements
 
 {{#each softwareRequirements}}
-- {{.}}
+- {{{.}}}
 {{/each}}{{/if}}
 
 {{#if softwareSuggestions}}
@@ -561,7 +561,7 @@ export const readmeMdText = `
 ## Software Requirements
 
 {{#each softwareRequirements}}
-- {{.}}
+- {{{.}}}
 {{/each}}
 {{/if}}
 
@@ -569,14 +569,14 @@ export const readmeMdText = `
 ### Software Suggestions
 
 {{#each softwareSuggestions}}
-- {{.}}
+- {{{.}}}
 {{/each}}
 {{/if}}
 
 {{#if runtimePlatform}}
 #### Runtime platform
 
-**{{runtimePlatform}}**{{/if}}
+**{{{runtimePlatform}}}**{{/if}}
 
 ## Related resources
 
@@ -626,7 +626,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
 export const installMdText = `Installation for development of **{{name}}**
 ===========================================
 
-**{{name}}** {{description}}
+**{{name}}** {{{description}}}
 
 Quick install with curl or irm
 ------------------------------

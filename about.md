@@ -36,7 +36,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.34
+version: 0.0.39
 license_url: https://caltechlibrary.github.io/CMTools/LICENSE
 operating_system:
   - Linux
@@ -51,18 +51,21 @@ keywords:
   - cff
   - software
   - code generation
+  - markdown generation
 
-date_released: 2025-08-05
+date_released: 2025-08-06
 ---
 
 About this software
 ===================
 
-## CMTools 0.0.34
+## CMTools 0.0.39
+
+Corrected CodeMeta version number, shoud have been v0.0.38 but was set to v0.0.34 (a prior release).
 
 Bug fixes.
 
-- Issue #33, Updates the code that generates search.md to include proper path handling and to process a &#x27;?q&#x3D;&lt;SEARCH_TERM&gt;&#x27; URL string.
+- Issue #33, Updates the code that generates search.md to include proper path handling and to process a '?q=<SEARCH_TERM>' URL string.
 
 ### Authors
 
@@ -118,8 +121,8 @@ The tools are intended to be run from the project root directory. &#x60;cmt&#x60
 
 ### Software Requirements
 
-- Deno &gt;&#x3D; 2.4
-- CMTools &gt;&#x3D; 0.0.33
+- Deno >= 2.4.3
+- CMTools >= 0.0.37
 
 
 ### Software Suggestions

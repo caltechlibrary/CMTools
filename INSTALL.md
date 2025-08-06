@@ -1,13 +1,13 @@
 Installation for development of **CMTools**
 ===========================================
 
-**CMTools** [CodeMeta](https://codemeta.github.io) Tools provides a simple command line tool called &#x60;cmt&#x60; that can be used to generate project files and software artifacts. It provides a tool called &#x60;cme&#x60; to edit and manage the CodeMeta file.
+**CMTools** [CodeMeta](https://codemeta.github.io) Tools provides a simple command line tool called `cmt` that can be used to generate project files and software artifacts. It provides a tool called `cme` to edit and manage the CodeMeta file.
 
-The project focuses on leveraging CodeMeta data, directory name and Git repo information for building and release software written in Python, Go, JavaScript or TypeScript. It was motivated by the practices in Caltech Library&#x27;s Digital Development Group.
+The project focuses on leveraging CodeMeta data, directory name and Git repo information for building and release software written in Python, Go, JavaScript or TypeScript. It was motivated by the practices in Caltech Library's Digital Development Group.
 
-The tools are intended to be run from the project root directory. &#x60;cmt&#x60; expects the file path of your codemeta.json file as well as one or more target files to be generated. The target file&#x27;s extension determines the generated content. The tool can generate the following project files based on the contents of the codemeta.json file. &#x60;cme&#x60; expects the file path of your codemeta.json file and optionally the attributes of the CodeMeta object you wish to manage.
+The tools are intended to be run from the project root directory. `cmt` expects the file path of your codemeta.json file as well as one or more target files to be generated. The target file's extension determines the generated content. The tool can generate the following project files based on the contents of the codemeta.json file. `cme` expects the file path of your codemeta.json file and optionally the attributes of the CodeMeta object you wish to manage.
 
-&#x60;cme&#x60; is used to create and manage &quot;codemeta.json&quot;. &#x60;cmt&#x60; is used to generate the following.
+`cme` is used to create and manage "codemeta.json". `cmt` is used to generate the following.
 
 - README.md
 - INSTALL.md
@@ -51,8 +51,8 @@ Installing from source
 
 ### Required software
 
-- Deno &gt;&#x3D; 2.4
-- CMTools &gt;&#x3D; 0.0.33
+- Deno &gt;&#x3D; 2.4.3
+- CMTools &gt;&#x3D; 0.0.37
 
 ### Steps
 
