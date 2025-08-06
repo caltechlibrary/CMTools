@@ -232,12 +232,14 @@ $$content$$
 </html>`;
 
 // HTML
-export const pageHbsCaltechLibraryText = `<!DOCTYPE html>
+export const clPageHbsText = `<!DOCTYPE html>
 <html lang="en-US">
 <head>
     <title>{{project_name}}</title>
     <link rel="stylesheet" href="/css/site.css">
-    <script type="module" src="https://caltechlibrary.github.io/CL-web-components/src/cl-web-components.js"></script>
+    <link rel="stylesheet" href="https://media.library.caltech.edu/cl-webcomponents/css/code-blocks.css">
+    <script type="module" src="https://media.library.caltech.edu/cl-webcomponents/copyToClipboard.js"></script>
+    <script type="module" src="https://media.library.caltech.edu/cl-webcomponents/footer-global.js"></script>
 </head>
 <body>
 <nav>

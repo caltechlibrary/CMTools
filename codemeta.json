@@ -78,10 +78,10 @@
     "Pandoc >= 3.1",
     "Git >= 2.39"
   ],
-  "version": "0.0.39",
+  "version": "0.0.40",
   "developmentStatus": "active",
   "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues",
-  "releaseNotes": "Corrected CodeMeta version number, shoud have been v0.0.38 but was set to v0.0.34 (a prior release).\n\nBug fixes.\n\n- Issue #33, Updates the code that generates search.md to include proper path handling and to process a '?q=<SEARCH_TERM>' URL string.",
+  "releaseNotes": "Update page templates generated for Caltech Library.",
   "copyrightYear": 2025,
   "copyrightHolder": "California Institute of Technology"
 }

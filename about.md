@@ -36,7 +36,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.39
+version: 0.0.40
 license_url: https://caltechlibrary.github.io/CMTools/LICENSE
 operating_system:
   - Linux
@@ -59,13 +59,9 @@ date_released: 2025-08-06
 About this software
 ===================
 
-## CMTools 0.0.39
+## CMTools 0.0.40
 
-Corrected CodeMeta version number, shoud have been v0.0.38 but was set to v0.0.34 (a prior release).
-
-Bug fixes.
-
-- Issue #33, Updates the code that generates search.md to include proper path handling and to process a '?q=<SEARCH_TERM>' URL string.
+Update page templates generated for Caltech Library.
 
 ### Authors
 

@@ -159,7 +159,7 @@ export async function transform(
         obj["git_org_or_person"] !== null &&
         (obj["git_org_or_person"] as string).toLowerCase() === "caltechlibrary"
       ) {
-        return renderTemplate(obj, pageHbsCaltechLibraryText)?.replace(
+        return renderTemplate(obj, clPageHbsText)?.replace(
           "$$content$$",
           "${body}",
         );
@@ -174,7 +174,7 @@ export async function transform(
         obj["git_org_or_person"] !== null &&
         (obj["git_org_or_person"] as string).toLowerCase() === "caltechlibrary"
       ) {
-        return renderTemplate(obj, pageHbsCaltechLibraryText)?.replace(
+        return renderTemplate(obj, clPageHbsText)?.replace(
           "$$content$$",
           "${body}",
         );
@@ -222,7 +222,7 @@ const aboutMdText = gText.aboutMdText;
 const pageHbsText = gText.pageHbsText;
 
 // HTML
-const pageHbsCaltechLibraryText = gText.pageHbsCaltechLibraryText;
+const clPageHbsText = gText.clPageHbsText;
 
 // Bash
 const shInstallerText = gText.shInstallerText;

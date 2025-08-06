@@ -1,8 +1,8 @@
 // CMTools version and license information.
 
-export const version: string = '0.0.39',
+export const version: string = '0.0.40',
 releaseDate: string = '2025-08-06',
-releaseHash: string = '3d54f94',
+releaseHash: string = '72c96e7',
 licenseText: string = `
 
 Copyright (c) 2025, Caltech
