@@ -19,7 +19,7 @@ export function isSupportedFormat(format: string | undefined): boolean {
     "search.md",
     "about.md",
     "Makefile",
-    "build.ps1",
+    "make.ps1",
     "installer.sh",
     "installer.ps1",
     "website.mak",

@@ -628,8 +628,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
 `;
 
 // Markdown
-export const installMdText = `Installation for development of **{{name}}**
-===========================================
+export const installMdText = `Installation **{{name}}**
+============================
 
 **{{name}}** {{{description}}}
 

@@ -1,5 +1,5 @@
-Installation for development of **CMTools**
-===========================================
+Installation **CMTools**
+============================
 
 **CMTools** [CodeMeta](https://codemeta.github.io) Tools provides a simple command line tool called `cmt` that can be used to generate project files and software artifacts. It provides a tool called `cme` to edit and manage the CodeMeta file.
 

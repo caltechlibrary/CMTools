@@ -45,7 +45,7 @@ targeting your Python, Go, JavaScript or TypeScript build process.
 - INSTALL_NOTES_Windows.md
 - installer.sh (requires Git repository and LICENSE file)
 - installer.ps1 (requires Git repository and LICENSE file)
-- Makefile (requires Git repository and LICENSE file), build.ps1
+- Makefile (requires Git repository and LICENSE file), make.ps1
 - website.mak, website.ps1
 - release.bash (requires gh is installed), release.ps1
 - publish.bash (requires git), publish.ps1

@@ -1,4 +1,4 @@
-%cmt(1) user manual | version 0.0.40 72865be
+%cmt(1) user manual | version 0.0.40 966b541
 % R. S. Doiel
 % 2025-08-06
 
@@ -29,7 +29,7 @@ cmt can be used to generate various code artifacts including the following.
 - INSTALL_NOTES_Windows.md
 - installer.sh (requires Git repository and LICENSE file)
 - installer.ps1 (requires Git repository and LICENSE file)
-- Makefile (requires Git repository and LICENSE file), build.ps1
+- Makefile (requires Git repository and LICENSE file), make.ps1
 - website.mak, website.ps1
 - release.bash (requires gh is installed), release.ps1
 - publish.bash (requires git), publish.ps1
