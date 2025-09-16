@@ -42,7 +42,7 @@ export function isSupportedFormat(format: string | undefined): boolean {
 // FIXME: need to handle the special case renderings for README.md,
 // INSTALL.md and the installer scripts.
 
-function getMakefileTemplate(
+function getMakefileText(
   lang: string,
 ): string | undefined {
   const prefix: { [key: string]: string } = {
@@ -62,6 +62,28 @@ function getMakefileTemplate(
   }
   return prefix[lang.toLowerCase()];
 }
+
+function getMakePs1Text(
+  lang: string,
+): string | undefined {
+  const prefix: { [key: string]: string } = {
+    "golang": goMakePs1Text,
+    "go": goMakePs1Text,
+    //"javascript": denoMakefileText,
+    //"typescript": denoMakefileText,
+    //"deno": denoMakefileText,
+    //"python": pyMakefileText,
+    //"bash": shMakefileText,
+  };
+  if (lang === "") {
+    return goMakePs1Text;
+  }
+  if (prefix[lang.toLowerCase()] === undefined) {
+    return undefined;
+  }
+  return prefix[lang.toLowerCase()];
+}
+
 
 export async function transform(
   cm: CodeMeta,
@@ -104,6 +126,7 @@ export async function transform(
   // for page templates I need to know if I'm pulling CaltechLibrary defaults or the generic version.
 
   let makefileTemplate: string | undefined = "";
+  let makePs1Template: string | undefined = "";
   switch (format) {
     case "README.md":
       return renderTemplate(obj, readmeMdText);
@@ -116,11 +139,17 @@ export async function transform(
     case "search.md":
       return renderTemplate(obj, searchMdText);
     case "Makefile":
-      makefileTemplate = getMakefileTemplate(lang);
+      makefileTemplate = getMakefileText(lang);
       if (makefileTemplate === undefined) {
         return undefined;
       }
       return renderTemplate(obj, makefileTemplate);
+    case "make.ps1":
+      makePs1Template = getMakePs1Text(lang);
+      if (makePs1Template === undefined) {
+        return undefined;
+      }
+      return renderTemplate(obj, makePs1Template);
     case "website.mak":
       return renderTemplate(obj, websiteMakefileText);
     case "website.ps1":
@@ -150,9 +179,9 @@ export async function transform(
     case "about.md":
       return renderTemplate(obj, aboutMdText);
     case "installer.sh":
-      return renderTemplate(obj, shInstallerText);
+      return renderTemplate(obj, installerShText);
     case "installer.ps1":
-      return renderTemplate(obj, ps1InstallerText);
+      return renderTemplate(obj, installerPs1Text);
     case "page.hbs":
       if (
         obj["git_org_or_person"] !== undefined &&
@@ -225,10 +254,10 @@ const pageHbsText = gText.pageHbsText;
 const clPageHbsText = gText.clPageHbsText;
 
 // Bash
-const shInstallerText = gText.shInstallerText;
+const installerShText = gText.installerShText;
 
 // Powershell
-const ps1InstallerText = gText.ps1InstallerText;
+const installerPs1Text = gText.installerPs1Text;
 
 // Markdown
 const readmeMdText = gText.readmeMdText;
@@ -253,6 +282,9 @@ const goMakefileText = gText.goMakefileText;
 
 // Makefile
 const websiteMakefileText = gText.websiteMakefileText;
+
+// make.ps1
+const goMakePs1Text = gText.goMakePs1Text;
 
 // PowerShell script
 const websitePs1Text = gText.websitePs1Text;

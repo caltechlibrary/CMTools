@@ -39,7 +39,7 @@ async function main() {
     console.log("Missing chapter number");
     Deno.exit(1);
   }
-  const chapter = new Number(chpt);
+  const chapter = new Number(chpt) as number;
   if (isNaN(chapter)) {
     console.log(`Invalid chapter number, ${chpt}`);
   }

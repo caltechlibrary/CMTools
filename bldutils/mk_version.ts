@@ -2,14 +2,13 @@
 // to call from a Deno task like build. It assumes it is a folder inside
 // of the Git repository (e.g. `<PROJECT>/bldutils/mk_version.ts`).
 import * as path from "@std/path";
-import { CodeMeta } from "../codemeta.ts";
-import { gitReleaseHash } from "../gitcmds.ts";
+import { gitReleaseHash } from "../src/gitcmds.ts";
 
 async function main() {
   const licenseText = await Deno.readTextFile("LICENSE");
   const codemetaText = await Deno.readTextFile("codemeta.json");
   const releaseHash = await gitReleaseHash();
-  const codemeta: object = JSON.parse(codemetaText);
+  const codemeta: object = JSON.parse(codemetaText) as {[key: string]: unknown };
   const date = new Date();
   const releaseDate = `${date.getFullYear()}-${
     date.toLocaleDateString("en-US", { month: "2-digit" })

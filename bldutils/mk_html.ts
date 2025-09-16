@@ -3,7 +3,7 @@
 // of the Git repository (e.g. `<PROJECT>/bldutils/mk_version.ts`).
 import * as path from "@std/path";
 import * as markdown from "@libs/markdown";
-import { renderTemplate } from "../transform.ts";
+import { renderTemplate } from "../src/transform.ts";
 
 async function mkHTMLPage(
   inputName: string,
@@ -14,7 +14,7 @@ async function mkHTMLPage(
   const block = await encoder.render(src);
   // FIXME: trim front matter from block.
   const hbsTemplate = await Deno.readTextFile("page.hbs");
-  const page = renderTemplate({ "content": block }, hbsTemplate);
+  const page = renderTemplate({ "content": block }, hbsTemplate) as string | ReadableStream<string>;
   await Deno.writeTextFile(outputName, page);
   return `Wrote ${inputName} as ${outputName}`;
 }
