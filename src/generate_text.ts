@@ -149,55 +149,55 @@ About this software
 {{#if releaseNotes}}{{{releaseNotes}}}{{/if}}
 
 {{#if author}}
-### Authors
+## Authors
 
 {{#each author}}
-- {{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}{{#if id}}, <{{id}}>{{/if}}
+- {{#if id}}[{{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}]({{id}}){{else}}{{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}{{/if}}
 {{/each}}{{/if}}
 
 {{#if contributor}}
-### Contributors
+## Contributors
 
 {{#each contributor}}
-- {{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}{{#if id}}, <{{id}}>{{/if}}
+- {{#if id}}[{{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}]({{id}}){{else}}{{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}{{/if}}
 {{/each}}{{/if}}
 
 {{#if maintainer}}
-### Maintainers
+## Maintainers
 
 {{#each maintainer}}
-- {{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}{{#if id}}, <{{id}}>{{/if}}
+- {{#if id}}[{{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}]({{id}}){{else}}{{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}{{/if}}
 {{/each}}{{/if}}
 
 {{#if description}}{{description}}{{/if}}
 
-{{#if license}}- License: <{{license}}>{{/if}}
-{{#if codeRepository}}- GitHub: <{{codeRepository}}>{{/if}}
-{{#if issueTracker}}- Issues: <{{issueTracker}}>{{/if}}
+{{#if license}}- [License]({{license}}){{/if}}
+{{#if codeRepository}}- [Code Repository]({{codeRepository}}){{/if}}
+{{#if issueTracker}}  - [Issue Tracker]({{issueTracker}}){{/if}}
 
 {{#if programmingLanguage}}
-### Programming languages
+## Programming languages
 
 {{#each programmingLanguage}}
 - {{{.}}}
 {{/each}}{{/if}}
 
 {{#if operatingSystem}}
-### Operating Systems
+## Operating Systems
 
 {{#each operatingSystem}}
 - {{{.}}}
 {{/each}}{{/if}}
 
 {{#if softwareRequirements}}
-### Software Requirements
+## Software Requirements
 
 {{#each softwareRequirements}}
 - {{{.}}}
 {{/each}}{{/if}}
 
 {{#if softwareSuggestions}}
-### Software Suggestions
+## Software Suggestions
 
 {{#each softwareSuggestions}}
 - {{.}}
@@ -616,7 +616,7 @@ function getQueryParam(name) {
 const searchQuery = getQueryParam('q');
 
 window.addEventListener('DOMContentLoaded', (event) => {
-    const searchUI = new PagefindUI({ 
+    const searchUI = new PagefindUI({
             element: "#search",
             baseUrl: basePath
     });
@@ -1271,8 +1271,8 @@ if [ "$YES_NO" = "y" ]; then
 		-F release_notes.tmp \\
 		--generate-notes
 	echo "Uploading distribution files"
-    gh release upload "\${RELEASE_TAG}"	dist/*.zip 
-	
+    gh release upload "\${RELEASE_TAG}"	dist/*.zip
+
 	cat <<EOT
 
 Now goto repo release and finalize draft.
@@ -1445,10 +1445,10 @@ $projectName = $jsonContent.name
 $versionNo = $jsonContent.version
 
 function Make-Man {
-    $markdownFiles = Get-ChildItem -File *.1.md 
+    $markdownFiles = Get-ChildItem -File *.1.md
     foreach ($file in $markdownFiles) {
         $manName = [System.IO.Path]::GetFileNameWithoutExtension($file.Name)
-        
+
         if (-not (Test-Path -Path man\man1)) {
             New-Item -ItemType Directory -Path man\man1 | Out-Null
         }
@@ -1528,7 +1528,7 @@ function Build-It {
     $env:GOOS = $TargetOS
     $env:GOARCH = $TargetArch
     # Run the Go build command
-    go build -o "$OutPath" "$SourcePath" 
+    go build -o "$OutPath" "$SourcePath"
     if (-not $?) {
         throw "Build failed for $TargetOS/$TargetArch."
     }

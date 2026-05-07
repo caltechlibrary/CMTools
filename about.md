@@ -36,7 +36,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.40
+version: 0.0.41
 license_url: https://caltechlibrary.github.io/CMTools/LICENSE
 operating_system:
   - Linux
@@ -53,29 +53,29 @@ keywords:
   - code generation
   - markdown generation
 
-date_released: 2025-08-06
+date_released: 2025-05-07
 ---
 
 About this software
 ===================
 
-## CMTools 0.0.40
+## CMTools 0.0.41
 
-Update page templates generated for Caltech Library.
+Improved about.md layout
 
-### Authors
+## Authors
 
-- R. S. Doiel, <https://orcid.org/0000-0003-0900-6903>
-
-
-### Contributors
-
-- Tom Morrell, <https://orcid.org/0000-0001-9266-5146>
+- [R. S. Doiel](https://orcid.org/0000-0003-0900-6903)
 
 
-### Maintainers
+## Contributors
 
-- R. S. Doiel, <https://orcid.org/0000-0003-0900-6903>
+- [Tom Morrell](https://orcid.org/0000-0001-9266-5146)
+
+
+## Maintainers
+
+- [R. S. Doiel](https://orcid.org/0000-0003-0900-6903)
 
 
 [CodeMeta](https://codemeta.github.io) Tools provides a simple command line tool called &#x60;cmt&#x60; that can be used to generate project files and software artifacts. It provides a tool called &#x60;cme&#x60; to edit and manage the CodeMeta file.
@@ -99,29 +99,29 @@ The tools are intended to be run from the project root directory. &#x60;cmt&#x60
 - release.bash
 - publish.bash
 
-- License: <https://caltechlibrary.github.io/CMTools/LICENSE>
-- GitHub: <git+https://github.com/caltechlibrary/CMTools>
-- Issues: <git+https://github.com/caltechlibrary/CMTools/issues>
+- [License](https://caltechlibrary.github.io/CMTools/LICENSE)
+- [Code Repository](git+https://github.com/caltechlibrary/CMTools)
+  - [Issue Tracker](git+https://github.com/caltechlibrary/CMTools/issues)
 
-### Programming languages
+## Programming languages
 
 - TypeScript
 
 
-### Operating Systems
+## Operating Systems
 
 - Linux
 - Windows
 - macOS
 
 
-### Software Requirements
+## Software Requirements
 
 - Deno >= 2.4.3
 - CMTools >= 0.0.37
 
 
-### Software Suggestions
+## Software Suggestions
 
 - GNU Make &gt;&#x3D; 3.81
 - Pandoc &gt;&#x3D; 3.1
