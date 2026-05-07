@@ -36,6 +36,7 @@ export function isSupportedFormat(format: string | undefined): boolean {
     "deno-tasks.json",
     "page.tmpl",
     "page.hbs",
+	"site.css",
   ].indexOf(format) > -1;
 }
 
@@ -178,6 +179,8 @@ export async function transform(
       return renderTemplate(obj, versionPyText);
     case "about.md":
       return renderTemplate(obj, aboutMdText);
+	case "site.css":
+      return renderTemplate(obj, siteCssText);
     case "installer.sh":
       return renderTemplate(obj, installerShText);
     case "installer.ps1":
@@ -228,6 +231,9 @@ export function renderTemplate(
   }
   return template(obj);
 }
+
+// site.css
+const siteCssText = gText.siteCssText;
 
 // CITATION.cff
 const citationCffText = gText.citationCffText;

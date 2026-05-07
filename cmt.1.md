@@ -1,4 +1,4 @@
-%cmt(1) user manual | version 0.0.41 85c3109
+%cmt(1) user manual | version 0.0.42 3fdb60e
 % R. S. Doiel
 % 2026-05-07
 
@@ -34,6 +34,7 @@ cmt can be used to generate various code artifacts including the following.
 - release.bash (requires gh is installed), release.ps1
 - publish.bash (requires git), publish.ps1
 - page.tmpl (Pandoc template), page.hbs (Handlebarsjs)
+- site.css (a basic site.css based on Caltech Library Feeds site.css)
 
 # OPTIONS
 

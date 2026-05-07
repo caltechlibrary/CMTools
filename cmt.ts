@@ -61,6 +61,7 @@ async function main() {
       "links-to-html.lua",
       "website.mak",
       "website.ps1",
+	  "site.css",
     ];
     switch (app.init.toLowerCase()) {
       case "python":

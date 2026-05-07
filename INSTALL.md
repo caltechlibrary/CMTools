@@ -17,6 +17,7 @@ The tools are intended to be run from the project root directory. `cmt` expects 
 - version.ts, version.js, version.go or version.py
 - about.md
 - page.tmpl (Pandoc template) or page.hbs (handlebars template)
+- site.css
 - Makefile (for Go or Deno based projects)
 - website.mak
 - release.bash

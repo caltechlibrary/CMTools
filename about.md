@@ -16,6 +16,7 @@ The tools are intended to be run from the project root directory. &#x60;cmt&#x60
 - version.ts, version.js, version.go or version.py
 - about.md
 - page.tmpl (Pandoc template) or page.hbs (handlebars template)
+- site.css
 - Makefile (for Go or Deno based projects)
 - website.mak
 - release.bash
@@ -36,7 +37,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.41
+version: 0.0.42
 license_url: https://caltechlibrary.github.io/CMTools/LICENSE
 operating_system:
   - Linux
@@ -59,9 +60,9 @@ date_released: 2025-05-07
 About this software
 ===================
 
-## CMTools 0.0.41
+## CMTools 0.0.42
 
-Improved about.md layout
+Improved page.tmpl generation, added support for site.css generation.
 
 ## Authors
 
@@ -94,6 +95,7 @@ The tools are intended to be run from the project root directory. &#x60;cmt&#x60
 - version.ts, version.js, version.go or version.py
 - about.md
 - page.tmpl (Pandoc template) or page.hbs (handlebars template)
+- site.css
 - Makefile (for Go or Deno based projects)
 - website.mak
 - release.bash

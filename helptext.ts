@@ -50,6 +50,7 @@ targeting your Python, Go, JavaScript or TypeScript build process.
 - release.bash (requires gh is installed), release.ps1
 - publish.bash (requires git), publish.ps1
 - page.tmpl (Pandoc template), page.hbs (Handlebarsjs)
+- site.css (a basic site.css based on Caltech Library Feeds site.css)
 
 # OPTIONS
 
