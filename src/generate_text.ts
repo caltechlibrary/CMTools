@@ -1581,7 +1581,7 @@ PANDOC = \$(shell which pandoc)
 
 MD_PAGES = \$(shell ls -1 *.md)
 
-HTML_PAGES = \$(shell ls -1 *.md | sed -E 's/\.md/\.html/g')
+HTML_PAGES = \$(shell ls -1 *.md | sed -E 's/\\.md/\\.html/g')
 
 build: \$(HTML_PAGES) \$(MD_PAGES) # pagefind
 
