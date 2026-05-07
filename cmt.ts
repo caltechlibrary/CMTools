@@ -59,6 +59,7 @@ async function main() {
       "installer.sh",
       "page.tmpl",
       "links-to-html.lua",
+      "add-col-scope.lua",
       "website.mak",
       "website.ps1",
 	  "site.css",

@@ -14,21 +14,28 @@
 <a href="#main-content" class="visually-hidden">skip to main content</a>
 <nav>
 <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="index.html">README</a></li>
+    <li><a href="/">All Library Apps</a></li>
+    <li><a href="index.html">Home</a></li>
     <li><a href="LICENSE">LICENSE</a></li>
     <li><a href="INSTALL.html">INSTALL</a></li>
     <li><a href="user_manual.html">User Manual</a></li>
     <li><a href="about.html">About</a></li>
-    <li><a href="search.html">Search</a></li>
+    <!-- <li><a href="search.html">Search</a></li> -->
     <li><a href="https://github.com/caltechlibrary/CMTools">Code Repository</a></li>
 </ul>
 </nav>
 <section id="main-content">
 <h1 id="about-this-software">About this software</h1>
-<h2 id="cmtools-0.0.42">CMTools 0.0.42</h2>
-<p>Improved page.tmpl generation, added support for site.css
-generation.</p>
+<h2 id="cmtools-0.0.43">CMTools 0.0.43</h2>
+<ul>
+<li>Added generator for add-col-scope.lua</li>
+<li>Update website.mak file to include add-col-scope.lua filter</li>
+<li>Init will now add a site.css and add-col-scope.lua to list files
+generated automatically</li>
+<li>Commented out pagefind from website.mak and website.ps1</li>
+<li>Commented out search.md from nav generation in page.tmpl</li>
+<li>Fixed rendering of suggested software versions in about.md</li>
+</ul>
 <h2 id="authors">Authors</h2>
 <ul>
 <li><a href="https://orcid.org/0000-0003-0900-6903">R. S. Doiel</a></li>
@@ -94,13 +101,13 @@ Tracker</a></li>
 </ul>
 <h2 id="software-requirements">Software Requirements</h2>
 <ul>
-<li>Deno &gt;= 2.4.3</li>
-<li>CMTools &gt;= 0.0.37</li>
+<li>Deno &gt;= 2.7</li>
+<li>CMTools &gt;= 0.0.43</li>
 </ul>
 <h2 id="software-suggestions">Software Suggestions</h2>
 <ul>
 <li>GNU Make &gt;= 3.81</li>
-<li>Pandoc &gt;= 3.1</li>
+<li>Pandoc &gt;= 3.9</li>
 <li>Git &gt;= 2.39</li>
 </ul>
 </section>

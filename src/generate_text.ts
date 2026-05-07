@@ -685,7 +685,7 @@ About this software
 ## Software Suggestions
 
 {{#each softwareSuggestions}}
-- {{.}}
+- {{{.}}}
 {{/each}}{{/if}}
 
 `;
@@ -701,13 +701,13 @@ export const pageHbsText = `<!DOCTYPE html>
 <a href="#main-content" class="visually-hidden">skip to main content</a>
 <nav>
 <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="index.html">README</a></li>
+    <li><a href="/">All Library Apps</a></li>
+    <li><a href="index.html">Home</a></li>
     <li><a href="LICENSE">LICENSE</a></li>
     <li><a href="INSTALL.html">INSTALL</a></li>
     <li><a href="user_manual.html">User Manual</a></li>
     <li><a href="about.html">About</a></li>
-    <li><a href="search.html">Search</a></li>
+    <!-- <li><a href="search.html">Search</a></li> -->
 {{#if repositoryLink}}    <li><a href="{{repositoryLink}}">Code Repository</a></li>{{/if}}
 </ul>
 </nav>
@@ -734,13 +734,13 @@ export const clPageHbsText = `<!DOCTYPE html>
 <a href="#main-content" class="visually-hidden">skip to main content</a>
 <nav>
 <ul>
-    <li><a href="/">Home</a></li>
-    <li><a href="index.html">README</a></li>
+    <li><a href="/">All Library Apps</a></li>
+    <li><a href="index.html">Home</a></li>
     <li><a href="LICENSE">LICENSE</a></li>
     <li><a href="INSTALL.html">INSTALL</a></li>
     <li><a href="user_manual.html">User Manual</a></li>
     <li><a href="about.html">About</a></li>
-    <li><a href="search.html">Search</a></li>
+    <!-- <li><a href="search.html">Search</a></li> -->
 {{#if repositoryLink}}    <li><a href="{{repositoryLink}}">Code Repository</a></li>{{/if}}
 </ul>
 </nav>
@@ -1583,11 +1583,12 @@ MD_PAGES = \$(shell ls -1 *.md)
 
 HTML_PAGES = \$(shell ls -1 *.md | sed -E 's/\.md/\.html/g')
 
-build: \$(HTML_PAGES) \$(MD_PAGES) pagefind
+build: \$(HTML_PAGES) \$(MD_PAGES) # pagefind
 
 \$(HTML_PAGES): \$(MD_PAGES) .FORCE
 	if [ -f \$(PANDOC) ]; then \$(PANDOC) --metadata title=$(basename $@) -s --to html5 $(basename $@).md -o $(basename $@).html \\
 		--lua-filter=links-to-html.lua \\
+		--lua-filter=add-col-scope.lua \\
 	    --template=page.tmpl; fi
 	@if [ \$@ = "README.html" ]; then mv README.html index.html; fi
 
@@ -1626,6 +1627,7 @@ function Build-HtmlPage {
         if (Test-Path $pandoc) {
             & $pandoc "--metadata" "title=$($htmlPage.Replace('.html', ''))" "-s" "--to" "html5" $mdPage "-o" $htmlPage \`
                 "--lua-filter=links-to-html.lua" \`
+                "--lua-filter=add-col-scope.lua" \`
                 "--template=page.tmpl"
         }
 
@@ -1645,7 +1647,7 @@ function Invoke-PageFind {
 Build-HtmlPage -htmlPages $htmlPages -mdPages $mdPages
 
 # Invoke PageFind
-Invoke-PageFind
+# Invoke-PageFind
 
 `;
 
@@ -1893,6 +1895,17 @@ Installing an unsigned executable on Windows can also pose security risks, as Wi
 - **Antivirus Software**: Your antivirus software might also block unsigned executables. You may need to temporarily disable it or add an exception for the file.
 
 If you're unsure about any of these steps or the safety of the file, it's best to consult with someone who has more experience with Windows or to contact the software developer for support.
+`;
+
+export const addColScopeLuaText = `-- add-col-scope.lua adds a scope="col" to table header elements
+function Table(tbl)
+  for _, head in ipairs(tbl.head.rows) do
+    for _, cell in ipairs(head.cells) do
+      cell.attr.attributes["scope"] = "col"
+    end
+  end
+  return tbl
+end
 `;
 
 export const linksToHtmlLuaText =

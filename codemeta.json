@@ -70,18 +70,19 @@
   ],
   "relatedLink": "https://caltechlibrary.github.io/CMTools",
   "softwareRequirements": [
-    "Deno >= 2.4.3",
-    "CMTools >= 0.0.37"
+    "Deno >= 2.7",
+    "CMTools >= 0.0.43"
   ],
   "softwareSuggestions": [
     "GNU Make >= 3.81",
-    "Pandoc >= 3.1",
+    "Pandoc >= 3.9",
     "Git >= 2.39"
   ],
-  "version": "0.0.42",
+  "version": "0.0.43",
   "developmentStatus": "active",
   "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues",
-  "releaseNotes": "Improved page.tmpl generation, added support for site.css generation.",
+  "downloadUrl": "https://github.com/caltechlibrary/CMTools/releases/latest",
+  "releaseNotes": "- Added generator for add-col-scope.lua\n- Update website.mak file to include add-col-scope.lua filter\n- Init will now add a site.css and add-col-scope.lua to list files generated automatically\n- Commented out pagefind from website.mak and website.ps1\n- Commented out search.md from nav generation in page.tmpl\n- Fixed rendering of suggested software versions in about.md",
   "copyrightYear": 2025,
   "copyrightHolder": "California Institute of Technology"
 }

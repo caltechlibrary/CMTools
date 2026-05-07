@@ -37,7 +37,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.42
+version: 0.0.43
 license_url: https://caltechlibrary.github.io/CMTools/LICENSE
 operating_system:
   - Linux
@@ -60,9 +60,14 @@ date_released: 2025-05-07
 About this software
 ===================
 
-## CMTools 0.0.42
+## CMTools 0.0.43
 
-Improved page.tmpl generation, added support for site.css generation.
+- Added generator for add-col-scope.lua
+- Update website.mak file to include add-col-scope.lua filter
+- Init will now add a site.css and add-col-scope.lua to list files generated automatically
+- Commented out pagefind from website.mak and website.ps1
+- Commented out search.md from nav generation in page.tmpl
+- Fixed rendering of suggested software versions in about.md
 
 ## Authors
 
@@ -119,14 +124,14 @@ The tools are intended to be run from the project root directory. &#x60;cmt&#x60
 
 ## Software Requirements
 
-- Deno >= 2.4.3
-- CMTools >= 0.0.37
+- Deno >= 2.7
+- CMTools >= 0.0.43
 
 
 ## Software Suggestions
 
 - GNU Make &gt;&#x3D; 3.81
-- Pandoc &gt;&#x3D; 3.1
+- Pandoc &gt;&#x3D; 3.9
 - Git &gt;&#x3D; 2.39
 
 

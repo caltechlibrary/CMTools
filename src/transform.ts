@@ -25,6 +25,7 @@ export function isSupportedFormat(format: string | undefined): boolean {
     "website.mak",
     "website.ps1",
     "links-to-html.lua",
+	"add-col-scope.lua",
     "publish.bash",
     "publish.ps1",
     "release.bash",
@@ -165,6 +166,8 @@ export async function transform(
       return renderTemplate(obj, publishPs1Text);
     case "links-to-html.lua":
       return renderTemplate(obj, linksToHtmlLuaText);
+	case "add-col-scope.lua":
+      return renderTemplate(obj, addColScopeLuaText);
     case "deno-tasks.json":
       return renderTemplate(obj, denoTasksText);
     case "CITATION.cff":
@@ -297,6 +300,9 @@ const websitePs1Text = gText.websitePs1Text;
 
 // links-to-html.lua
 const linksToHtmlLuaText = gText.linksToHtmlLuaText;
+
+// add-col-scope.lua
+const addColScopeLuaText = gText.addColScopeLuaText;
 
 // deno-tasks
 const denoTasksText = gText.denoTasksText;

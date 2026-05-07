@@ -52,8 +52,8 @@ Installing from source
 
 ### Required software
 
-- Deno &gt;&#x3D; 2.4.3
-- CMTools &gt;&#x3D; 0.0.37
+- Deno &gt;&#x3D; 2.7
+- CMTools &gt;&#x3D; 0.0.43
 
 ### Steps
 

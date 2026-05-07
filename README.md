@@ -18,6 +18,7 @@ The tools are intended to be run from the project root directory. `cmt` expects 
 - version.ts, version.js, version.go or version.py
 - about.md
 - page.tmpl (Pandoc template) or page.hbs (handlebars template)
+- site.css
 - Makefile (for Go or Deno based projects)
 - website.mak
 - release.bash
@@ -25,15 +26,16 @@ The tools are intended to be run from the project root directory. `cmt` expects 
 
 ## Release Notes
 
-- version: 0.0.39
+- version: 0.0.43
 - status: active
-- released: 2025-08-06
+- released: 2025-05-07
 
-Corrected CodeMeta version number, shoud have been v0.0.38 but was set to v0.0.34 (a prior release).
-
-Bug fixes.
-
-- Issue #33, Updates the code that generates search.md to include proper path handling and to process a &#x27;?q&#x3D;&lt;SEARCH_TERM&gt;&#x27; URL string.
+- Added generator for add-col-scope.lua
+- Update website.mak file to include add-col-scope.lua filter
+- Init will now add a site.css and add-col-scope.lua to list files generated automatically
+- Commented out pagefind from website.mak and website.ps1
+- Commented out search.md from nav generation in page.tmpl
+- Fixed rendering of suggested software versions in about.md
 
 
 ### Authors
@@ -52,13 +54,13 @@ Bug fixes.
 
 ## Software Requirements
 
-- Deno >= 2.4.3
-- CMTools >= 0.0.37
+- Deno >= 2.7
+- CMTools >= 0.0.43
 
 ### Software Suggestions
 
 - GNU Make >= 3.81
-- Pandoc >= 3.1
+- Pandoc >= 3.9
 - Git >= 2.39
 
 
@@ -66,7 +68,7 @@ Bug fixes.
 ## Related resources
 
 
-
+- [Download](https://github.com/caltechlibrary/CMTools/releases/latest)
 - [Getting Help, Reporting bugs](git+https://github.com/caltechlibrary/CMTools/issues)
 - [LICENSE](https://caltechlibrary.github.io/CMTools/LICENSE)
 - [Installation](INSTALL.md)
