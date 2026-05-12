@@ -1,5 +1,5 @@
 <#
-generated with CMTools 0.0.43c 5cd4fdd
+generated with CMTools 0.0.43d 9c06542
 
 .SYNOPSIS
 Release script for CMTools on GitHub using gh CLI.
@@ -7,7 +7,7 @@ Release script for CMTools on GitHub using gh CLI.
 
 # Determine repository and group IDs
 $repoId = Split-Path -Leaf -Path (Get-Location)
-$groupId = Split-Path -Leaf -Path (Split-Path -Parent -Path (Get-Location))
+$groupId = (git config --get remote.origin.url) -replace '.*(github\.com[:/]|git@github\.com:)([^/]+)/.*', '$2'
 $repoUrl = "https://github.com/$groupId/$repoId"
 Write-Output "REPO_URL -> $repoUrl"
 

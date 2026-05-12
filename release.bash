@@ -1,13 +1,12 @@
 #!/bin/bash
-# generated with CMTools 0.0.43c 5cd4fdd
+# generated with CMTools 0.0.43d 9c06542
 
 #
 # Release script for CMTools on GitHub using gh cli.
 #
 # shellcheck disable=SC2046
 REPO_ID="$(basename $(pwd))"
-# shellcheck disable=SC2046
-GROUP_ID="$(basename $(dirname $(pwd)))"
+GROUP_ID="$(git config --get remote.origin.url | sed -E 's|.*(github\.com[:/]|git@github\.com:)([^/]+)/.*|\2|')"
 REPO_URL="https://github.com/${GROUP_ID}/${REPO_ID}"
 echo "REPO_URL -> ${REPO_URL}"
 
