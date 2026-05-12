@@ -24,9 +24,11 @@ export const cmtHelpText =
 
 # SYNOPSIS
 
-{app_name} INPUT_NAME [OPTIONS]
-{app_name} INPUT_NAME [OUTPUT_NAME] [OPTIONS]
-{app_name} INPUT_NAME [OUTPUT_NAME OUTPUT_NAME ...] [OPTIONS]
+{app_name} [OPTIONS] INPUT_NAME
+
+{app_name} [OPTIONS] INPUT_NAME [OUTPUT_NAME]
+
+{app_name} [OPTIONS] INPUT_NAME [OUTPUT_NAME OUTPUT_NAME ...]
 
 # DESCRIPTION
 
@@ -70,7 +72,7 @@ Options come as the last parameter(s) on the command line.
 Supported languages/project types are "python", "go", "javascript",
 "typescript" and "deno".
 
---lang LANGUAGE
+-L, --lang LANGUAGE
 : this sets the language to use when generating Makefile.
 
 # EXAMPLES

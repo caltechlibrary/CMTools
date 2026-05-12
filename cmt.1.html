@@ -28,9 +28,10 @@
 <h1 id="name">NAME</h1>
 <p>cmt</p>
 <h1 id="synopsis">SYNOPSIS</h1>
-<p>cmt INPUT_NAME <a href="#options">OPTIONS</a> cmt INPUT_NAME
-[OUTPUT_NAME] <a href="#options">OPTIONS</a> cmt INPUT_NAME [OUTPUT_NAME
-OUTPUT_NAME …] <a href="#options">OPTIONS</a></p>
+<p>cmt <a href="#options">OPTIONS</a> INPUT_NAME</p>
+<p>cmt <a href="#options">OPTIONS</a> INPUT_NAME [OUTPUT_NAME]</p>
+<p>cmt <a href="#options">OPTIONS</a> INPUT_NAME [OUTPUT_NAME
+OUTPUT_NAME …]</p>
 <h1 id="description">DESCRIPTION</h1>
 <p>cmt provides tooling for working with CodeMeta objects targeting your
 Python, Go, JavaScript or TypeScript build process.</p>
@@ -76,7 +77,7 @@ initialize the project based on a programming language name. Supported
 languages/project types are “python”, “go”, “javascript”, “typescript”
 and “deno”.
 </dd>
-<dt>–lang LANGUAGE</dt>
+<dt>-L, –lang LANGUAGE</dt>
 <dd>
 this sets the language to use when generating Makefile.
 </dd>

@@ -1,6 +1,6 @@
-%cmt(1) user manual | version 0.0.43b cf3436b
+%cmt(1) user manual | version 0.0.43c 4a9a806
 % R. S. Doiel
-% 2026-05-07
+% 2026-05-12
 
 # NAME
 
@@ -8,9 +8,11 @@ cmt
 
 # SYNOPSIS
 
-cmt INPUT_NAME [OPTIONS]
-cmt INPUT_NAME [OUTPUT_NAME] [OPTIONS]
-cmt INPUT_NAME [OUTPUT_NAME OUTPUT_NAME ...] [OPTIONS]
+cmt [OPTIONS] INPUT_NAME
+
+cmt [OPTIONS] INPUT_NAME [OUTPUT_NAME]
+
+cmt [OPTIONS] INPUT_NAME [OUTPUT_NAME OUTPUT_NAME ...]
 
 # DESCRIPTION
 
@@ -54,7 +56,7 @@ Options come as the last parameter(s) on the command line.
 Supported languages/project types are "python", "go", "javascript",
 "typescript" and "deno".
 
---lang LANGUAGE
+-L, --lang LANGUAGE
 : this sets the language to use when generating Makefile.
 
 # EXAMPLES

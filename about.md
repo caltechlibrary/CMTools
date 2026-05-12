@@ -37,7 +37,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.43b
+version: 0.0.43c
 license_url: https://caltechlibrary.github.io/CMTools/LICENSE
 operating_system:
   - Linux
@@ -54,13 +54,13 @@ keywords:
   - code generation
   - markdown generation
 
-date_released: 2025-05-07
+date_released: 2025-05-12
 ---
 
 About this software
 ===================
 
-## CMTools 0.0.43b
+## CMTools 0.0.43c
 
 - Added generator for add-col-scope.lua
 - Update website.mak file to include add-col-scope.lua filter
@@ -69,6 +69,8 @@ About this software
 - Commented out search.md from nav generation in page.tmpl
 - Fixed rendering of suggested software versions in about.md
 - Fixed bug in render website.mak where is didn't escape the learing period of ".md" when replacing with ".html".
+- Added `-L` option to set the language
+- Fixed bug where -lang wasn't setting the project language
 
 ## Authors
 

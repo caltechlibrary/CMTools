@@ -13,6 +13,7 @@ async function main() {
       license: "l",
       version: "v",
       init: "i",
+	  lang: "L",
     },
     default: {
       help: false,
@@ -39,12 +40,26 @@ async function main() {
     console.log(`${appName} ${version} ${releaseDate} ${releaseHash}`);
     Deno.exit(0);
   }
-  let lang = app.lang;
-  if (lang === "") {
-    //FIXME: should check the filenames to generate and see if a version.ts, version.js, version.py or version.go is referenced
-    lang = "javascript";
-  }
   const inputName: string = (args.length > 0) ? `${args.shift()}` : "";
+  let lang = app.lang;
+  if (app.lang === "") {
+    //FIXME: should check the filenames to generate and see if a version.ts, version.js, version.py or version.go is referenced
+	for (let i = 0; i < args.length; i++) {
+		const name: string = args[i] as unknown as string;
+		if (name.endsWith(".go")) {
+			lang = "go";
+		} else if (name.endsWith(".js")) {
+			lang = "javascript"
+		} else if (name.endsWith(".ts")) {
+			lang = "typescript"
+		} else if (name.endsWith(".py")) {
+			lang = "python"
+		}
+	}
+	if (lang === "") {
+    	lang = "javascript";
+	}
+  }
   let outputNames: string[] = [];
   if (app.init !== "") {
     outputNames = [
