@@ -1304,8 +1304,8 @@ clean:
 	if [ -d bin ]; then rm -fR bin/*; fi
 	if [ -d dist ]; then rm -fR dist/*; fi
 
-release: clean build man website distribute_docs dist/Linux-x86_64 dist/Linux-aarch64 dist/macOS-x86_64 dist/macOS-arm64 dist/Windows-x86_64 dist/Windows-arm64
-	echo "Ready to do ./release.bash"
+release: clean build man website installer.bash installer.ps1 distribute_docs dist/Linux-x86_64 dist/Linux-aarch64 dist/macOS-x86_64 dist/macOS-arm64 dist/Windows-x86_64 dist/Windows-arm64
+	@printf "\nready to run\n\n\trelease.bash\n\n"
 
 setup_dist: .FORCE
 	@rm -fR dist
@@ -1563,7 +1563,8 @@ distribute_docs:
 	@cp -vR man dist/
 	@for DNAME in $(DOCS); do cp -vR $$DNAME dist/; done
 
-release: build installer.sh save setup_dist distribute_docs dist/Linux-x86_64 dist/Linux-aarch64 dist/macOS-x86_64 dist/macOS-arm64 dist/Windows-x86_64 dist/Windows-arm64 dist/Linux-armv7l
+release: build installer.sh installer.ps1 save setup_dist distribute_docs dist/Linux-x86_64 dist/Linux-aarch64 dist/macOS-x86_64 dist/macOS-arm64 dist/Windows-x86_64 dist/Windows-arm64 dist/Linux-armv7l
+	@printf "\nready to run\n\n\trelease.bash\n\n"
 
 
 .FORCE:
@@ -1734,8 +1735,7 @@ export const releaseBashText = `#!/bin/bash
 #
 # shellcheck disable=SC2046
 REPO_ID="\$(basename \$(pwd))"
-# shellcheck disable=SC2046
-GROUP_ID="\$(basename \$(dirname \$(pwd)))"
+GROUP_ID="\$(git config --get remote.origin.url | sed -E 's|.*(github\.com[:/]|git@github\.com:)([^/]+)/.*|\2|')"
 REPO_URL="https://github.com/\${GROUP_ID}/\${REPO_ID}"
 echo "REPO_URL -> \${REPO_URL}"
 
@@ -1783,7 +1783,7 @@ Release script for {{name}} on GitHub using gh CLI.
 
 # Determine repository and group IDs
 $repoId = Split-Path -Leaf -Path (Get-Location)
-$groupId = Split-Path -Leaf -Path (Split-Path -Parent -Path (Get-Location))
+$groupId = (git config --get remote.origin.url) -replace '.*(github\.com[:/]|git@github\.com:)([^/]+)/.*', '$2'
 $repoUrl = "https://github.com/$groupId/$repoId"
 Write-Output "REPO_URL -> $repoUrl"
 
