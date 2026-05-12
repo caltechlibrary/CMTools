@@ -488,66 +488,66 @@ export const citationCffText = `
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 type: software
-{{#if name}}title: {{name}}{{/if}}
+{{#if name}}title: {{{name}}}{{/if}}
 {{#if description}}abstract: "{{{description}}}"{{/if}}
 {{#if author}}authors:
 {{#each author}}
-  - family-names: {{familyName}}
-    given-names: {{givenName}}{{#if id}}
-    orcid: {{id}}{{/if}}{{#if email}}
-    email: {{email}}{{/if}}
+  - family-names: {{{familyName}}}
+    given-names: {{{givenName}}}{{#if id}}
+    orcid: {{{id}}}{{/if}}{{#if email}}
+    email: {{{email}}}{{/if}}
 {{/each}}{{/if}}
 {{#if maintainer}}contacts:
 {{#each maintainer}}
-  - family-names: {{familyName}}
-    given-names: {{givenName}}{{#if id}}
-    orcid: {{id}}{{/if}}{{#if email}}
-    email: {{email}}{{/if}}
+  - family-names: {{{familyName}}}
+    given-names: {{{givenName}}}{{#if id}}
+    orcid: {{{id}}}{{/if}}{{#if email}}
+    email: {{{email}}}{{/if}}
 {{/each}}{{/if}}
-{{#if codeRepository}}repository-code: "{{codeRepository}}"{{/if}}
-{{#if version}}version: {{version}}{{/if}}
-{{#if datePublished}}date-released: {{datePublished}}{{/if}}
-{{#if identifier}}doi: {{identifier}}{{/if}}
-{{#if license}}license-url: "{{license}}"{{/if}}{{#if keywords}}
+{{#if codeRepository}}repository-code: "{{{codeRepository}}}"{{/if}}
+{{#if version}}version: {{{version}}}{{/if}}
+{{#if datePublished}}date-released: {{{datePublished}}}{{/if}}
+{{#if identifier}}doi: {{{identifier}}}{{/if}}
+{{#if license}}license-url: "{{{license}}}"{{/if}}{{#if keywords}}
 keywords:
 {{#each keywords}}
-  - {{.}}
+  - {{{.}}}
 {{/each}}{{/if}}
 `;
 
 // TypeScript
-export const versionTsText = `// {{name}} version and license information.
+export const versionTsText = `// {{{name}}} version and license information.
 
-export const version: string = '{{version}}',
-releaseDate: string = '{{releaseDate}}',
-releaseHash: string = '{{releaseHash}}'{{#if licenseText}},
+export const version: string = '{{{version}}}',
+releaseDate: string = '{{{releaseDate}}}',
+releaseHash: string = '{{{releaseHash}}}'{{#if licenseText}},
 licenseText: string = ` + "`" + `
 {{{licenseText}}}
 ` + "`{{/if}};";
 
 // JavaScript
-export const versionJsText = `// {{name}} version and license information.
+export const versionJsText = `// {{{name}}} version and license information.
 
-export const version = '{{version}}',
-releaseDate = '{{releaseDate}}',
-releaseHash = '{{releaseHash}}'{{#if licenseText}},
+export const version = '{{{version}}}',
+releaseDate = '{{{releaseDate}}}',
+releaseHash = '{{{releaseHash}}}'{{#if licenseText}},
 licenseText = ` + "`" + `
 {{{licenseText}}}
 ` + "`{{/if}};";
 
 // Python
-export const versionPyText = `# {{name}} version and license information.
+export const versionPyText = `# {{{name}}} version and license information.
 
-version = '{{version}}'
-releaseDate = '{{releaseDate}}'
-releaseHash = '{{releaseHash}}'{{#if licenseText}}
+version = '{{{version}}}'
+releaseDate = '{{{releaseDate}}}'
+releaseHash = '{{{releaseHash}}}'{{#if licenseText}}
 licenseText = '''
 {{{licenseText}}}
 '''{{/if}};
 `;
 
 // Go
-export const versionGoText = `package {{name}}
+export const versionGoText = `package {{{name}}}
 
 import (
 	"strings"
@@ -555,13 +555,13 @@ import (
 
 const (
     // Version number of release
-    Version = "{{version}}"
+    Version = "{{{version}}}"
 
     // ReleaseDate, the date version.go was generated
-    ReleaseDate = "{{releaseDate}}"
+    ReleaseDate = "{{{releaseDate}}}"
 
     // ReleaseHash, the Git hash when version.go was generated
-    ReleaseHash = "{{releaseHash}}"
+    ReleaseHash = "{{{releaseHash}}}"
 {{#if licenseText}}
     LicenseText = ` + "`" + `
 {{{licenseText}}}
@@ -588,48 +588,48 @@ func FmtHelp(src string, appName string, version string, releaseDate string, rel
 
 // Pandoc
 export const aboutMdText = `---
-{{#if name}}title: {{name}}{{/if}}
-{{#if description}}abstract: "{{description}}"{{/if}}
+{{#if name}}title: {{{name}}}{{/if}}
+{{#if description}}abstract: "{{{description}}}"{{/if}}
 {{#if author}}authors:
 {{#each author}}
-  - {{#if name}}name: {{name}}{{else}}family_name: {{familyName}}
-    given_name: {{givenName}}{{/if}}{{#if id}}
-    id: {{id}}{{/if}}
+  - {{#if name}}name: {{{name}}}{{else}}family_name: {{{familyName}}}
+    given_name: {{{givenName}}}{{/if}}{{#if id}}
+    id: {{{id}}}{{/if}}
 {{/each}}{{/if}}
 {{#if contributor}}contributor:
 {{#each contributor}}
-  - {{#if name}}name: {{name}}{{else}}family_name: {{familyName}}
-    given_name: {{givenName}}{{/if}}{{#if id}}
-    id: {{id}}{{/if}}
+  - {{#if name}}name: {{{name}}}{{else}}family_name: {{{familyName}}}
+    given_name: {{{givenName}}}{{/if}}{{#if id}}
+    id: {{{id}}}{{/if}}
 {{/each}}{{/if}}
 {{#if maintainer}}maintainer:
 {{#each maintainer}}
-  - {{#if name}}name: {{name}}{{else}}family_name: {{familyName}}
-    given_name: {{givenName}}{{/if}}{{#if id}}
-    id: {{id}}{{/if}}
+  - {{#if name}}name: {{{name}}}{{else}}family_name: {{{familyName}}}
+    given_name: {{{givenName}}}{{/if}}{{#if id}}
+    id: {{{id}}}{{/if}}
 {{/each}}{{/if}}
-{{#if codeRepository}}repository_code: {{codeRepository}}{{/if}}
-{{#if version}}version: {{version}}{{/if}}
-{{#if license}}license_url: {{license}}{{/if}}
+{{#if codeRepository}}repository_code: {{{codeRepository}}}{{/if}}
+{{#if version}}version: {{{version}}}{{/if}}
+{{#if license}}license_url: {{{license}}}{{/if}}
 {{#if operatingSystem}}operating_system:
 {{#each operatingSystem}}
-  - {{.}}
+  - {{{.}}}
 {{/each}}{{/if}}
 {{#if programmingLanguage}}programming_language:
 {{#each programmingLanguage}}
-  - {{.}}
+  - {{{.}}}
 {{/each}}{{/if}}
 {{#if keywords}}keywords:
 {{#each keywords}}
-  - {{.}}
+  - {{{.}}}
 {{/each}}{{/if}}
-{{#if datePublished}}date_released: {{datePublished}}{{/if}}
+{{#if datePublished}}date_released: {{{datePublished}}}{{/if}}
 ---
 
 About this software
 ===================
 
-## {{name}} {{version}}
+## {{{name}}} {{{version}}}
 
 {{#if releaseNotes}}{{{releaseNotes}}}{{/if}}
 
@@ -637,28 +637,28 @@ About this software
 ## Authors
 
 {{#each author}}
-- {{#if id}}[{{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}]({{id}}){{else}}{{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}{{/if}}
+- {{#if id}}[{{#if name}}{{{ name }}}{{else}}{{{givenName}}} {{{familyName}}}{{/if}}]({{{id}}}){{else}}{{#if name}}{{{ name }}}{{else}}{{{givenName}}} {{{familyName}}}{{/if}}{{/if}}
 {{/each}}{{/if}}
 
 {{#if contributor}}
 ## Contributors
 
 {{#each contributor}}
-- {{#if id}}[{{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}]({{id}}){{else}}{{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}{{/if}}
+- {{#if id}}[{{#if name}}{{{ name }}}{{else}}{{{givenName}}} {{{familyName}}}{{/if}}]({{{id}}}){{else}}{{#if name}}{{{ name }}}{{else}}{{{givenName}}} {{{familyName}}}{{/if}}{{/if}}
 {{/each}}{{/if}}
 
 {{#if maintainer}}
 ## Maintainers
 
 {{#each maintainer}}
-- {{#if id}}[{{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}]({{id}}){{else}}{{#if name}}{{ name }}{{else}}{{givenName}} {{familyName}}{{/if}}{{/if}}
+- {{#if id}}[{{#if name}}{{{ name }}}{{else}}{{{givenName}}} {{{familyName}}}{{/if}}]({{{id}}}){{else}}{{#if name}}{{{ name }}}{{else}}{{{givenName}}} {{{familyName}}}{{/if}}{{/if}}
 {{/each}}{{/if}}
 
-{{#if description}}{{description}}{{/if}}
+{{#if description}}{{{description}}}{{/if}}
 
-{{#if license}}- [License]({{license}}){{/if}}
-{{#if codeRepository}}- [Code Repository]({{codeRepository}}){{/if}}
-{{#if issueTracker}}  - [Issue Tracker]({{issueTracker}}){{/if}}
+{{#if license}}- [License]({{{license}}}){{/if}}
+{{#if codeRepository}}- [Code Repository]({{{codeRepository}}}){{/if}}
+{{#if issueTracker}}  - [Issue Tracker]({{{issueTracker}}}){{/if}}
 
 {{#if programmingLanguage}}
 ## Programming languages
@@ -753,18 +753,18 @@ $$content$$
 
 // Bash
 export const installerShText = `#!/bin/sh
-# generated with CMTools {{version}} {{releaseHash}}
+# generated with CMTools {{{version}}} {{{releaseHash}}}
 
 #
 # Set the package name and version to install
 #
-PACKAGE="{{name}}"
-VERSION="{{version}}"
-GIT_GROUP="{{git_org_or_person}}"
+PACKAGE="{{{name}}}"
+VERSION="{{{version}}}"
+GIT_GROUP="{{{git_org_or_person}}}"
 RELEASE="https://github.com/$GIT_GROUP/$PACKAGE/releases/tag/v$VERSION"
 if [ "$PKG_VERSION" != "" ]; then
    VERSION="$\{PKG_VERSION\}"
-   echo "$\{PKG_VERSION} used for version v$\{VERSION\}"
+   echo "$\{PKG_VERSION\} used for version v$\{VERSION\}"
 fi
 
 #
@@ -792,10 +792,12 @@ if [ "$1" != "" ]; then
 fi
 
 ZIPFILE="$PACKAGE-v$VERSION-$OS_NAME-$MACHINE.zip"
+CHECKSUM_FILE="$PACKAGE-v$VERSION-checksums.txt"
 
 #
 # Check to see if this zip file has been downloaded.
 #
+mkdir -p "$HOME/Downloads"
 DOWNLOAD_URL="https://github.com/$GIT_GROUP/$PACKAGE/releases/download/v$VERSION/$ZIPFILE"
 if ! curl -L -o "$HOME/Downloads/$ZIPFILE" "$DOWNLOAD_URL"; then
 	echo "Curl failed to get $DOWNLOAD_URL"
@@ -807,9 +809,6 @@ cat<<EOT
 
 EOT
 
-if [ ! -d "$HOME/Downloads" ]; then
-	mkdir -p "$HOME/Downloads"
-fi
 if [ ! -f "$HOME/Downloads/$ZIPFILE" ]; then
 	cat<<EOT
 
@@ -828,6 +827,33 @@ EOT
 	exit 1
 fi
 
+#
+# Verify checksum if tools are available
+#
+CHECKSUM_URL="https://github.com/$GIT_GROUP/$PACKAGE/releases/download/v$VERSION/$CHECKSUM_FILE"
+if command -v sha256sum >/dev/null 2>&1 || command -v shasum >/dev/null 2>&1; then
+    if curl -L -s -o "$HOME/Downloads/$CHECKSUM_FILE" "$CHECKSUM_URL"; then
+        EXPECTED=$(grep "$ZIPFILE" "$HOME/Downloads/$CHECKSUM_FILE" | awk '{print $1}')
+        if command -v sha256sum >/dev/null 2>&1; then
+            ACTUAL=$(sha256sum "$HOME/Downloads/$ZIPFILE" | awk '{print $1}')
+        else
+            ACTUAL=$(shasum -a 256 "$HOME/Downloads/$ZIPFILE" | awk '{print $1}')
+        fi
+        if [ -n "$EXPECTED" ] && [ "$EXPECTED" = "$ACTUAL" ]; then
+            echo "Checksum verified: $ZIPFILE"
+        elif [ -z "$EXPECTED" ]; then
+            echo "WARNING: $ZIPFILE not found in checksum file, skipping verification"
+        else
+            echo "WARNING: Checksum mismatch for $ZIPFILE"
+            echo "  Expected: $EXPECTED"
+            echo "  Actual:   $ACTUAL"
+            echo "  Proceeding anyway — verify the download manually if concerned"
+        fi
+    else
+        echo "WARNING: Could not download $CHECKSUM_FILE, skipping verification"
+    fi
+fi
+
 START="$(pwd)"
 mkdir -p "$HOME/.$PACKAGE/installer"
 cd "$HOME/.$PACKAGE/installer" || exit 1
@@ -837,7 +863,7 @@ unzip "$HOME/Downloads/$ZIPFILE" "bin/*" "man/*"
 # Copy the application into place
 #
 mkdir -p "$HOME/bin"
-EXPLAIN_OS_POLICY="yes"
+EXPLAIN_OS_POLICY="no"
 find bin -type f >.binfiles.tmp
 while read -r APP; do
 	V=$("./$APP" --version)
@@ -863,7 +889,7 @@ case :$PATH: in
 esac
 
 # shellcheck disable=SC2031
-if [ "$EXPLAIN_OS_POLICY" = "no" ]; then
+if [ "$EXPLAIN_OS_POLICY" = "yes" ]; then
 	cat <<EOT
 
   You need to take additional steps to complete installation.
@@ -918,14 +944,14 @@ cd "$START" || exit 1
 
 // Powershell
 export const installerPs1Text = `#!/usr/bin/env pwsh
-# generated with CMTools {{version}} {{releaseHash}}
+# generated with CMTools {{{version}}} {{{releaseHash}}}
 
 #
 # Set the package name and version to install
 #
 param(
   [Parameter()]
-  [String]$VERSION = "{{version}}"
+  [String]$VERSION = "{{{version}}}"
 )
 [String]$PKG_VERSION = [Environment]::GetEnvironmentVariable("PKG_VERSION")
 if ($PKG_VERSION) {
@@ -933,8 +959,8 @@ if ($PKG_VERSION) {
 	Write-Output "Using '$\{PKG_VERSION\}' for version value '$\{VERSION\}'"
 }
 
-$PACKAGE = "{{name}}"
-$GIT_GROUP = "{{git_org_or_person}}"
+$PACKAGE = "{{{name}}}"
+$GIT_GROUP = "{{{git_org_or_person}}}"
 $RELEASE = "https://github.com/$\{GIT_GROUP\}/$\{PACKAGE\}/releases/tag/v$\{VERSION\}"
 $SYSTEM_TYPE = Get-ComputerInfo -Property CsSystemType
 if ($SYSTEM_TYPE.CsSystemType.Contains("ARM64")) {
@@ -953,6 +979,7 @@ Write-Output "$\{PACKAGE\} v$\{VERSION\} will be installed in $\{BIN_DIR\}"
 # Figure out what the zip file is named
 #
 $ZIPFILE = "$\{PACKAGE\}-v$\{VERSION\}-Windows-$\{MACHINE\}.zip"
+$CHECKSUM_FILE = "$\{PACKAGE\}-v$\{VERSION\}-checksums.txt"
 Write-Output "Fetching Zipfile $\{ZIPFILE\}"
 
 #
@@ -965,10 +992,34 @@ if (!(Test-Path $BIN_DIR)) {
   New-Item $BIN_DIR -ItemType Directory | Out-Null
 }
 curl.exe -Lo "$\{ZIPFILE\}" "$\{DOWNLOAD_URL\}"
-#if ([System.IO.File]::Exists($ZIPFILE)) {
 if (!(Test-Path $ZIPFILE)) {
     Write-Output "Failed to download $\{ZIPFILE\} from $\{DOWNLOAD_URL\}"
 } else {
+    # Verify checksum
+    $CHECKSUM_URL = "https://github.com/$\{GIT_GROUP\}/$\{PACKAGE\}/releases/download/v$\{VERSION\}/$\{CHECKSUM_FILE\}"
+    try {
+        curl.exe -Lo "$\{CHECKSUM_FILE\}" "$\{CHECKSUM_URL\}"
+        if (Test-Path $CHECKSUM_FILE) {
+            $expectedLine = Get-Content $CHECKSUM_FILE | Where-Object { $_ -match [regex]::Escape($ZIPFILE) }
+            if ($expectedLine) {
+                $expectedHash = ($expectedLine -split '\s+')[0].ToLower()
+                $actualHash = (Get-FileHash -Path $ZIPFILE -Algorithm SHA256).Hash.ToLower()
+                if ($expectedHash -eq $actualHash) {
+                    Write-Output "Checksum verified: $\{ZIPFILE\}"
+                } else {
+                    Write-Warning "Checksum mismatch for $\{ZIPFILE\}"
+                    Write-Warning "  Expected: $\{expectedHash\}"
+                    Write-Warning "  Actual:   $\{actualHash\}"
+                    Write-Warning "  Proceeding anyway — verify the download manually if concerned"
+                }
+            } else {
+                Write-Warning "$\{ZIPFILE\} not found in checksum file, skipping verification"
+            }
+            Remove-Item $CHECKSUM_FILE -ErrorAction SilentlyContinue
+        }
+    } catch {
+        Write-Warning "Could not download $\{CHECKSUM_FILE\}, skipping verification"
+    }
     # Do we have a zip file or tar.gz file?
     $fileInfo = Get-Item "$\{ZIPFILE\}"
 
@@ -1008,18 +1059,18 @@ if (!(Test-Path $ZIPFILE)) {
 // Markdown
 export const readmeMdText = `
 
-# {{name}}
+# {{{name}}}
 
 {{{description}}}
 
 {{#if releaseNotes}}
 ## Release Notes
 
-- version: {{version}}
-{{#if developmentStatus}}- status: {{developmentStatus}}{{/if}}
-{{#if datePublished}}- released: {{datePublished}}{{/if}}
+- version: {{{version}}}
+{{#if developmentStatus}}- status: {{{developmentStatus}}}{{/if}}
+{{#if datePublished}}- released: {{{datePublished}}}{{/if}}
 
-{{releaseNotes}}
+{{{releaseNotes}}}
 {{/if}}
 
 {{#if author}}
@@ -1027,7 +1078,7 @@ export const readmeMdText = `
 ### Authors
 
 {{#each author}}
-- {{#if familyName}}{{familyName}}, {{givenName}}{{else}}{{name}}{{/if}}
+- {{#if familyName}}{{{familyName}}}, {{{givenName}}}{{else}}{{{name}}}{{/if}}
 {{/each}}
 {{/if}}
 
@@ -1036,7 +1087,7 @@ export const readmeMdText = `
 ### Contributors
 
 {{#each contributor}}
-- {{#if familyName}}{{familyName}}, {{givenName}}{{else}}{{name}}{{/if}}
+- {{#if familyName}}{{{familyName}}}, {{{givenName}}}{{else}}{{{name}}}{{/if}}
 {{/each}}
 {{/if}}
 
@@ -1045,7 +1096,7 @@ export const readmeMdText = `
 ### Maintainers
 
 {{#each maintainer}}
-- {{#if familyName}}{{familyName}}, {{givenName}}{{else}}{{name}}{{/if}}
+- {{#if familyName}}{{{familyName}}}, {{{givenName}}}{{else}}{{{name}}}{{/if}}
 {{/each}}
 {{/if}}
 
@@ -1072,10 +1123,10 @@ export const readmeMdText = `
 
 ## Related resources
 
-{{#if installUrl}}-[Install]({{installUrl}}){{/if}}
-{{#if downloadUrl}}- [Download]({{downloadUrl}}){{/if}}
-{{#if issueTracker}}- [Getting Help, Reporting bugs]({{issueTracker}}){{/if}}
-{{#if license}}- [LICENSE]({{license}}){{/if}}
+{{#if installUrl}}-[Install]({{{installUrl}}}){{/if}}
+{{#if downloadUrl}}- [Download]({{{downloadUrl}}}){{/if}}
+{{#if issueTracker}}- [Getting Help, Reporting bugs]({{{issueTracker}}}){{/if}}
+{{#if license}}- [LICENSE]({{{license}}}){{/if}}
 - [Installation](INSTALL.md)
 - [About](about.md)
 
@@ -1084,7 +1135,7 @@ export const readmeMdText = `
 // Markdown
 export const searchMdText = `
 
-# {{name}}
+# {{{name}}}
 
 <link href="./pagefind/pagefind-ui.css" rel="stylesheet">
 <script src="./pagefind/pagefind-ui.js" type="text/javascript"></script>
@@ -1115,10 +1166,10 @@ window.addEventListener('DOMContentLoaded', (event) => {
 `;
 
 // Markdown
-export const installMdText = `Installation **{{name}}**
+export const installMdText = `Installation **{{{name}}}**
 ============================
 
-**{{name}}** {{{description}}}
+**{{{name}}}** {{{description}}}
 
 Quick install with curl or irm
 ------------------------------
@@ -1126,21 +1177,21 @@ Quick install with curl or irm
 There is an experimental installer.sh script that can be run with the following command to install latest table release. This may work for macOS, Linux and if you’re using Windows with the Unix subsystem. This would be run from your shell (e.g. Terminal on macOS).
 
 ~~~shell
-curl https://{{git_org_or_person}}.github.io/{{name}}/installer.sh | sh
+curl https://{{{git_org_or_person}}}.github.io/{{{name}}}/installer.sh | sh
 ~~~
 
-This will install the programs included in {{name}} in your ` + "`$HOME/bin`" +
+This will install the programs included in {{{name}}} in your ` + "`$HOME/bin`" +
   ` directory.
 
 If you are running Windows 10 or 11 use the Powershell command below.
 
 ~~~ps1
-irm https://{{git_org_or_person}}.github.io/{{name}}/installer.ps1 | iex
+irm https://{{{git_org_or_person}}}.github.io/{{{name}}}/installer.ps1 | iex
 ~~~
 
 ### If your are running macOS or Windows
 
-You may get security warnings if you are using macOS or Windows. See the notes for the specific operating system you're using to fix issues.
+You may get security warnings if you are using macOS or Windows. See the notes for the specific operating system you’re using to fix issues.
 
 - [INSTALL_NOTES_macOS.md](INSTALL_NOTES_macOS.md)
 - [INSTALL_NOTES_Windows.md](INSTALL_NOTES_Windows.md)
@@ -1151,18 +1202,18 @@ Installing from source
 ### Required software
 
 {{#each softwareRequirements}}
-- {{.}}
+- {{{.}}}
 {{/each}}
 
 ### Steps
 
-1. git clone https://github.com/{{git_org_or_person}}/{{name}}
-2. Change directory into the ` + "`" + `{{name}}` + "`" + ` directory
+1. git clone https://github.com/{{{git_org_or_person}}}/{{{name}}}
+2. Change directory into the ` + "`" + `{{{name}}}` + "`" + ` directory
 3. Make to build, test and install
 
 ~~~shell
-git clone https://github.com/{{git_org_or_person}}/{{name}}
-cd {{name}}
+git clone https://github.com/{{{git_org_or_person}}}/{{{name}}}
+cd {{{name}}}
 make
 make test
 make install
@@ -1172,19 +1223,19 @@ make install
 
 // Makefile
 export const denoMakefileText = `
-# generated with CMTools {{version}} {{releaseHash}}
+# generated with CMTools {{{version}}} {{{releaseHash}}}
 
 #
 # Simple Makefile for Deno based Projects built under POSIX.
 #
 
-PROJECT = {{name}}
+PROJECT = {{{name}}}
 
-PACKAGE = {{name}}
+PACKAGE = {{{name}}}
 
 PROGRAMS = <PROGRAM_LIST_GOES_HERE>
 
-GIT_GROUP = {{git_org_or_person}}
+GIT_GROUP = {{{git_org_or_person}}}
 
 VERSION = $(shell grep '"version":' codemeta.json | cut -d\\"  -f 4)
 
@@ -1362,14 +1413,14 @@ dist/Windows-arm64: .FORCE
 
 // Makefile
 export const goMakefileText = `
-# generated with CMTools {{version}} {{releaseHash}}
+# generated with CMTools {{{version}}} {{{releaseHash}}}
 
 #
 # Simple Makefile for Golang based Projects built under POSIX.
 #
-PROJECT = {{name}}
+PROJECT = {{{name}}}
 
-GIT_GROUP = {{git_org_or_person}}
+GIT_GROUP = {{{git_org_or_person}}}
 
 PROGRAMS = <PROGRAM_LISTS_GOES_HERE>
 
@@ -1571,12 +1622,12 @@ release: build installer.sh installer.ps1 save setup_dist distribute_docs dist/L
 `;
 
 export const websiteMakefileText = `
-# generated with CMTools {{version}} {{releaseHash}}
+# generated with CMTools {{{version}}} {{{releaseHash}}}
 
 #
 # Makefile for running pandoc on all Markdown docs ending in .md
 #
-PROJECT = {{name}}
+PROJECT = {{{name}}}
 
 PANDOC = \$(shell which pandoc)
 
@@ -1605,7 +1656,7 @@ clean:
 `;
 
 export const websitePs1Text = `<#
-generated with CMTools {{version}} {{releaseHash}}
+generated with CMTools {{{version}}} {{{releaseHash}}}
 
 .SYNOPSIS
 PowerShell script for running pandoc on all Markdown docs ending in .md
@@ -1653,11 +1704,11 @@ Build-HtmlPage -htmlPages $htmlPages -mdPages $mdPages
 `;
 
 export const publishBashText = `#!/bin/bash
-# generated with CMTools {{version}} {{releaseHash}}
+# generated with CMTools {{{version}}} {{{releaseHash}}}
 #
 
 #
-# Publish script for {{name}} for GitHub pages. It expect the gh-pages
+# Publish script for {{{name}}} for GitHub pages. It expect the gh-pages
 # branch to already exist.
 #
 
@@ -1692,7 +1743,7 @@ fi
 `;
 
 export const publishPs1Text = `<#
-generated with CMTools {{version}} {{releaseHash}}
+generated with CMTools {{{version}}} {{{releaseHash}}}
 
 .SYNOPSIS
 Publish script for GitHub pages. It expects the gh-pages branch to already exist.
@@ -1728,39 +1779,52 @@ if ($workingBranch -eq "gh-pages") {
 `;
 
 export const releaseBashText = `#!/bin/bash
-# generated with CMTools {{version}} {{releaseHash}}
+# generated with CMTools {{{version}}} {{{releaseHash}}}
 
 #
-# Release script for {{name}} on GitHub using gh cli.
+# Release script for {{{name}}} on GitHub using gh cli.
 #
-# shellcheck disable=SC2046
-REPO_ID="\$(basename \$(pwd))"
-GROUP_ID="\$(git config --get remote.origin.url | sed -E 's|.*(github\\.com[:/]|git@github\\.com:)([^/]+)/.*|\\2|')"
+REPO_ID="\${PWD##*/}"
+GROUP_ID="\$(git config --get remote.origin.url | sed -E 's#.*github\\.com[:/]([^/]+)/.*#\\1#')"
 REPO_URL="https://github.com/\${GROUP_ID}/\${REPO_ID}"
 echo "REPO_URL -> \${REPO_URL}"
 
 #
-# Generate a new draft release jq and gh
+# Generate a new draft release using jq and gh
 #
-RELEASE_TAG="v$(jq -r .version codemeta.json)"
-RELEASE_NOTES="$(jq -r .releaseNotes codemeta.json | tr '\\\`' "'" | tr '\\n' ' ')"
+RELEASE_TAG="v\$(jq -r .version codemeta.json)"
+if ! printf '%s' "\${RELEASE_TAG}" | grep -qE '^v[0-9a-zA-Z._-]+\$'; then
+    echo "error: version contains unexpected characters: \${RELEASE_TAG}"
+    exit 1
+fi
 echo "tag: \${RELEASE_TAG}, notes:"
 jq -r .releaseNotes codemeta.json >release_notes.tmp
 cat release_notes.tmp
 
+#
+# Generate checksums for distribution zip files
+#
+CHECKSUM_FILE="\${REPO_ID}-\${RELEASE_TAG}-checksums.txt"
+if command -v sha256sum >/dev/null 2>&1; then
+    sha256sum dist/*.zip | sed 's|dist/||' > "dist/\${CHECKSUM_FILE}"
+else
+    shasum -a 256 dist/*.zip | sed 's|dist/||' > "dist/\${CHECKSUM_FILE}"
+fi
+echo "Checksums written to dist/\${CHECKSUM_FILE}"
+
 # Now we're ready to push things.
 # shellcheck disable=SC2162
 read -r -p "Push release to GitHub with gh? (y/N) " YES_NO
-if [ "$YES_NO" = "y" ]; then
-	make save msg="prep for \${RELEASE_TAG}, \${RELEASE_NOTES}"
+if [ "\${YES_NO}" = "y" ]; then
+	make save msg="prep for \${RELEASE_TAG}"
 	# Now generate a draft release
 	echo "Pushing release \${RELEASE_TAG} to GitHub"
 	gh release create "\${RELEASE_TAG}" \\
- 		--draft \\
+		--draft \\
 		-F release_notes.tmp \\
 		--generate-notes
-	echo "Uploading distribution files"
-    gh release upload "\${RELEASE_TAG}"	dist/*.zip
+	echo "Uploading distribution files and checksums"
+	gh release upload "\${RELEASE_TAG}" dist/*.zip "dist/\${CHECKSUM_FILE}"
 
 	cat <<EOT
 
@@ -1769,50 +1833,62 @@ Now goto repo release and finalize draft.
 	\${REPO_URL}/releases
 
 EOT
-    rm release_notes.tmp
+	rm release_notes.tmp
 
 fi
 `;
 
 export const releasePs1Text = `<#
-generated with CMTools {{version}} {{releaseHash}}
+generated with CMTools {{{version}}} {{{releaseHash}}}
 
 .SYNOPSIS
-Release script for {{name}} on GitHub using gh CLI.
+Release script for {{{name}}} on GitHub using gh CLI.
 #>
 
 # Determine repository and group IDs
 $repoId = Split-Path -Leaf -Path (Get-Location)
-$groupId = (git config --get remote.origin.url) -replace '.*(github\\.com[:/]|git@github\\.com:)([^/]+)/.*', '$2'
-$repoUrl = "https://github.com/$groupId/$repoId"
-Write-Output "REPO_URL -> $repoUrl"
+$groupId = (git config --get remote.origin.url) -replace '.*github\\.com[:/]([^/]+)/.*', '$1'
+$repoUrl = "https://github.com/\$\{groupId\}/\$\{repoId\}"
+Write-Output "REPO_URL -> \$\{repoUrl\}"
 
-# Generate a new draft release using jq and gh
-$releaseTag = "v$(jq -r .version codemeta.json)"
-$releaseNotes = jq -r .releaseNotes codemeta.json | ForEach-Object { $_ -replace "\`n", " " -replace "\`'", "'" }
-Write-Output "tag: $releaseTag, notes:"
+# Generate release tag and notes
+$releaseTag = "v\$(jq -r .version codemeta.json)"
+if ($releaseTag -notmatch '^v[0-9a-zA-Z._-]+$') {
+    Write-Error "error: version contains unexpected characters: \$\{releaseTag\}"
+    exit 1
+}
+Write-Output "tag: \$\{releaseTag\}, notes:"
 jq -r .releaseNotes codemeta.json | Out-File -FilePath release_notes.tmp -Encoding utf8
 Get-Content release_notes.tmp
+
+# Generate checksums for distribution zip files
+$checksumFile = "\$\{repoId\}-\$\{releaseTag\}-checksums.txt"
+$hashes = Get-ChildItem -Path dist -Filter *.zip | ForEach-Object {
+    $hash = (Get-FileHash -Path \$_.FullName -Algorithm SHA256).Hash.ToLower()
+    "\$hash  \$(\$_.Name)"
+}
+$hashes | Out-File -FilePath "dist/\$\{checksumFile\}" -Encoding utf8
+Write-Output "Checksums written to dist/\$\{checksumFile\}"
 
 # Prompt user to push release to GitHub
 $yesNo = Read-Host -Prompt "Push release to GitHub with gh? (y/N)"
 if ($yesNo -eq "y") {
-    # Assuming 'make save' is a placeholder for a command you have
-    # Replace 'make save' with the appropriate PowerShell command or function
-    Write-Output "Preparing for $releaseTag, $releaseNotes"
-    # Create a draft release
-    Write-Output "Pushing release $releaseTag to GitHub"
-    gh release create "$releaseTag" \`
+    Write-Output "Saving working state for \$\{releaseTag\}"
+    git commit -am "prep for \$\{releaseTag\}"
+    git push
+    Write-Output "Pushing release \$\{releaseTag\} to GitHub"
+    gh release create "\$\{releaseTag\}" \`
         --draft \`
         --notes-file release_notes.tmp \`
         --generate-notes
-    Write-Output "Uploading distribution files"
-    gh release upload "$releaseTag" dist/*.zip
+    Write-Output "Uploading distribution files and checksums"
+    gh release upload "\$\{releaseTag\}" (Get-ChildItem dist/*.zip) "dist/\$\{checksumFile\}"
 
-    @"
+    Write-Output @"
+
 Now go to repo release and finalize draft.
 
-    $repoUrl/releases
+    \$\{repoUrl\}/releases
 
 "@
 

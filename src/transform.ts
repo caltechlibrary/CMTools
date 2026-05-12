@@ -102,7 +102,7 @@ export async function transform(
     const d = new Date();
     const year = `${d.getFullYear()}`;
     const month = `${d.getMonth() + 1}`.padStart(2, "0");
-    const day = `${d.getDate() + 1}`.padStart(2, "0");
+    const day = `${d.getDate()}`.padStart(2, "0");
     obj["dateModified"] = `${year}-${month}-${day}`;
   }
   (obj["releaseDate"] === undefined)

@@ -78,11 +78,11 @@
     "Pandoc >= 3.9",
     "Git >= 2.39"
   ],
-  "version": "0.0.43d",
+  "version": "0.0.44",
   "developmentStatus": "active",
   "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues",
   "downloadUrl": "https://github.com/caltechlibrary/CMTools/releases/latest",
-  "releaseNotes": "- Added generator for add-col-scope.lua\n- Update website.mak file to include add-col-scope.lua filter\n- Init will now add a site.css and add-col-scope.lua to list files generated automatically\n- Commented out pagefind from website.mak and website.ps1\n- Commented out search.md from nav generation in page.tmpl\n- Fixed rendering of suggested software versions in about.md\n- Fixed bug in render website.mak where is didn't escape the learing period of \".md\" when replacing with \".html\".\n- Added `-L` option to set the language\n- Fixed bug where -lang wasn't setting the project language\n- Fixed our GROUP_ID is calculated when generating release.bash and release.ps1",
+  "releaseNotes": "- Added generator for add-col-scope.lua\n- Update website.mak file to include add-col-scope.lua filter\n- Init will now add a site.css and add-col-scope.lua to list files generated automatically\n- Commented out pagefind from website.mak and website.ps1\n- Commented out search.md from nav generation in page.tmpl\n- Fixed rendering of suggested software versions in about.md\n- Fixed bug in render website.mak where is didn't escape the learing period of \".md\" when replacing with \".html\".\n- Added `-L` option to set the language\n- Fixed bug where -lang wasn't setting the project language\n- Fixed our GROUP_ID is calculated when generating release.bash and release.ps1\n- Fixing Handlebars escaping, shell injection risks\n- Added checksum support\n- Fixed logic bugs across generate_text.ts and transform.ts",
   "copyrightYear": 2025,
   "copyrightHolder": "California Institute of Technology"
 }

@@ -42,7 +42,7 @@ irm https://caltechlibrary.github.io/CMTools/installer.ps1 | iex
 
 ### If your are running macOS or Windows
 
-You may get security warnings if you are using macOS or Windows. See the notes for the specific operating system you're using to fix issues.
+You may get security warnings if you are using macOS or Windows. See the notes for the specific operating system you’re using to fix issues.
 
 - [INSTALL_NOTES_macOS.md](INSTALL_NOTES_macOS.md)
 - [INSTALL_NOTES_Windows.md](INSTALL_NOTES_Windows.md)
@@ -52,8 +52,8 @@ Installing from source
 
 ### Required software
 
-- Deno &gt;&#x3D; 2.7
-- CMTools &gt;&#x3D; 0.0.43
+- Deno >= 2.7
+- CMTools >= 0.0.43
 
 ### Steps
 
