@@ -78,7 +78,7 @@
     "Pandoc >= 3.9",
     "Git >= 2.39"
   ],
-  "version": "0.0.44",
+  "version": "0.0.44b",
   "developmentStatus": "active",
   "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues",
   "downloadUrl": "https://github.com/caltechlibrary/CMTools/releases/latest",

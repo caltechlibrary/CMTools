@@ -1,4 +1,4 @@
-%cmt(1) user manual | version 0.0.44 4c295db
+%cmt(1) user manual | version 0.0.44b 46e1583
 % R. S. Doiel
 % 2026-05-12
 
@@ -14,10 +14,12 @@ cmt [OPTIONS] INPUT_NAME [OUTPUT_NAME]
 
 cmt [OPTIONS] INPUT_NAME [OUTPUT_NAME OUTPUT_NAME ...]
 
+cmt --init deno-cli INPUT_NAME [EXECUTABLE_NAME ...]
+
 # DESCRIPTION
 
 cmt provides tooling for working with CodeMeta objects
-targeting your Python, Go, JavaScript or TypeScript build process.
+targeting your Python, Go, TypeScript, or documentation build process.
 
 cmt can be used to generate various code artifacts including the following.
 
@@ -51,18 +53,51 @@ Options come as the last parameter(s) on the command line.
 -l, --license
 : display license
 
--i, --init PROGRAMMING_LANGUAGE
-: initialize the project based on a programming language name.
-Supported languages/project types are "python", "go", "javascript",
-"typescript" and "deno".
+-i, --init PROJECT_TYPE
+: initialize the project based on a project type name.
+Supported project types are:
+
+  **go**
+  : Go language CLI or service. Generates version.go and a Go-specific Makefile.
+
+  **python**
+  : Python project. Generates version.py.
+
+  **deno-cli**
+  : Deno/TypeScript project that compiles to one or more CLI executables.
+  Generates version.ts and a Makefile with one `deno compile` target per
+  executable. Any extra arguments after the codemeta.json path are treated as
+  executable names; if none are given the project name from codemeta.json is used.
+  Automatically adds a "gen-code" task to deno.json.
+
+  **deno-bundle**
+  : Deno/TypeScript compiled to a single browser-side JavaScript bundle.
+  Generates a Makefile with a bundle build target. No version.ts is created.
+  Automatically adds a "gen-code" task to deno.json.
+
+  **deno-es-module**
+  : Deno/TypeScript shipped as ES modules without bundling. Generates a minimal
+  Makefile with lint and type-check targets only. No version.ts is created.
+  Automatically adds a "gen-code" task to deno.json.
+
+  **deno-webcomponent**
+  : Deno/TypeScript web component library. Generates a Makefile with targets for
+  running a custom elements manifest analyzer and building a demo page. No version.ts
+  is created. Automatically adds a "gen-code" task to deno.json.
+
+  **documentation** / **presentation**
+  : Documentation or presentation project. Generates standard files and a generic
+  Makefile but no version.* file. "presentation" is an alias for "documentation".
+
+  The following values are deprecated aliases kept for backward compatibility:
+  "deno" and "typescript" behave as "deno-cli"; "javascript" also behaves as "deno-cli".
 
 -L, --lang LANGUAGE
 : this sets the language to use when generating Makefile.
 
 # EXAMPLES
 
-Here's an example of rendering `CITATION.cff` from a `codemeta.json` file. The second version
-shows how to use the format option.
+Here's an example of rendering `CITATION.cff` from a `codemeta.json` file.
 
 ~~~
 cmt codemeta.json CITATION.cff
@@ -76,32 +111,54 @@ cmt codemeta.json version.py
 cmt codemeta.json version.go
 ~~~
 
-Here's an example of generating an "about.md" file from the CodeMeta file.
-
-~~~
-cmt codemeta.json about.md
-~~~
-
-You can also just stack the output files you need one after another.
-This is an example of creating the files to bootstrap a TypeScript project.
+You can stack output files to generate several at once.
 
 ~~~
 cmt codemeta.json about.md CITATION.cff version.ts
 ~~~
 
-The "--deno" option can trail the above command to update the deno.json file
-with a set of tasks to update the files you have specified.
-
-~~~
-cmt codemeta.json about.md CITATION.cff version.ts --deno
-~~~
-
-This will create a "gen-code" task that will rebuild those files based on
-the current contents of the CodeMeta file.
-
 ### Project Initialization
 
-cmt supports four languages at this time. It will generated the
-files needed to bootstrap the project based on the language chosen.
+Initialize a Go project:
+
+~~~
+cmt --init go codemeta.json
+~~~
+
+Initialize a Deno CLI project with a single executable named after the project:
+
+~~~
+cmt --init deno-cli codemeta.json
+~~~
+
+Initialize a Deno CLI project with two named executables:
+
+~~~
+cmt --init deno-cli codemeta.json mycmd myothercmd
+~~~
+
+Initialize a browser-side Deno project that bundles to a single JavaScript file:
+
+~~~
+cmt --init deno-bundle codemeta.json
+~~~
+
+Initialize a browser-side Deno project that ships as ES modules (no bundling):
+
+~~~
+cmt --init deno-es-module codemeta.json
+~~~
+
+Initialize a Deno web component library:
+
+~~~
+cmt --init deno-webcomponent codemeta.json
+~~~
+
+Initialize a documentation or presentation project (no version.* files):
+
+~~~
+cmt --init documentation codemeta.json
+~~~
 
 

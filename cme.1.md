@@ -1,4 +1,4 @@
-%cme(1) user manual | version 0.0.44 4c295db
+%cme(1) user manual | version 0.0.44b 46e1583
 % R. S. Doiel
 % 2026-05-12
 
@@ -51,8 +51,90 @@ the value includes spaces you need to wrap them in quotes. See the EXAMPLE below
 : display license
 
 -e, --editor
-: use the editor named in the EDITOR environment variable. If variable is unset then use 
+: use the editor named in the EDITOR environment variable. If variable is unset then use
 the default text editor. On Windows that is notepad.exe. On Linux and macOS it is nano.
+
+-p, --profiles
+: list the person and organization profiles available in the global configuration file
+(`~/.cmtoolsrc` or the path given by `--global-config`).
+
+-P, --person-lists
+: list the pre-defined person/organization lists available in the global configuration file.
+
+-A, --apply-license
+: select a license from the global configuration, write its text to `./LICENSE`,
+and update the `license` field in the codemeta.json file with the license URL
+(if one is configured).
+
+-g, --global-config PATH
+: load configuration from PATH, bypassing the directory walk-up search.
+
+# GLOBAL CONFIGURATION
+
+cme reads a configuration file that stores person/organization profiles, pre-defined
+team lists, and license templates. When editing person fields such as author, contributor,
+or maintainer, cme will offer to populate the field from a configured profile or list
+rather than requiring manual YAML entry. When editing the license field, cme will
+offer to apply a configured license and write `./LICENSE` automatically.
+
+Configuration is found by walking up from the current directory to the home directory,
+checking for `.cmtoolsrc` at each level (first found wins), then falling back to
+`~/.config/cmtools/config.yaml`. For example, from `~/WorkLab/myproject`:
+
+1. `~/WorkLab/myproject/.cmtoolsrc`
+2. `~/WorkLab/.cmtoolsrc`
+3. `~/.cmtoolsrc`
+4. `~/.config/cmtools/config.yaml`
+
+This lets you keep a work config in `~/WorkLab/.cmtoolsrc` and a personal config in
+`~/.cmtoolsrc` and have the right one apply automatically based on where you are working.
+
+Use `--global-config PATH` to bypass the walk and load a specific file instead.
+
+Example `~/.cmtoolsrc`:
+
+~~~yaml
+default_profile: rdoiel
+default_license: caltech
+
+profiles:
+  rdoiel:
+    type: Person
+    givenName: R. S.
+    familyName: Doiel
+    email: rdoiel@caltech.edu
+    id: https://orcid.org/0000-0003-0900-6903
+    affiliation:
+      type: Organization
+      name: Caltech Library
+  caltech-library:
+    type: Organization
+    name: Caltech Library
+    email: library@caltech.edu
+
+licenses:
+  caltech:
+    name: Caltech License
+    file: ~/.config/cmtools/licenses/caltech.txt
+  agpl3:
+    name: GNU Affero General Public License v3.0 or later
+    url: https://spdx.org/licenses/AGPL-3.0-or-later.html
+    text: |
+      GNU AFFERO GENERAL PUBLIC LICENSE
+      Version 3, 19 November 2007
+      ...
+
+person_lists:
+  dld-team:
+    - type: Person
+      givenName: R. S.
+      familyName: Doiel
+      id: https://orcid.org/0000-0003-0900-6903
+    - type: Person
+      givenName: Tom
+      familyName: Morrell
+      id: https://orcid.org/0000-0001-9266-5146
+~~~
 
 # EXAMPLES
 

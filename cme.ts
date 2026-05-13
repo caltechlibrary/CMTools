@@ -3,6 +3,17 @@ import { licenseText, releaseDate, releaseHash, version } from "./version.ts";
 import { cmeHelpText, fmtHelp } from "./helptext.ts";
 import { type AttributeType, CodeMeta, CodeMetaTerms } from "./src/codemeta.ts";
 import { editCodeMetaTerm } from "./src/codemeta_editor.ts";
+import {
+  formatProfile,
+  getLicense,
+  getLicenseNames,
+  getLicenseText,
+  getPersonList,
+  getPersonListNames,
+  getProfile,
+  getProfileNames,
+  loadConfig,
+} from "./src/config.ts";
 
 function getAttributeNames(terms: AttributeType[]): string[] {
   const names: string[] = [];
@@ -21,6 +32,10 @@ async function main() {
       version: "v",
       format: "f",
       editor: "e",
+      profiles: "p",
+      "person-lists": "P",
+      "apply-license": "A",
+      "global-config": "g",
     },
     default: {
       help: false,
@@ -28,6 +43,10 @@ async function main() {
       license: false,
       editor: false,
       attributes: false,
+      profiles: false,
+      "person-lists": false,
+      "apply-license": false,
+      "global-config": "",
     },
   });
   const args = app._;
@@ -47,6 +66,38 @@ async function main() {
     console.log(`${appName} ${version} ${releaseDate} ${releaseHash}`);
     Deno.exit(0);
   }
+
+  const configPath: string | undefined = app["global-config"] || undefined;
+
+  if (app.profiles) {
+    const config = await loadConfig(configPath);
+    if (!config || getProfileNames(config).length === 0) {
+      console.log("No profiles configured. Add them to ~/.cmtoolsrc");
+    } else {
+      console.log("Available profiles:");
+      for (const name of getProfileNames(config)) {
+        console.log(`  ${name}: ${formatProfile(getProfile(config, name)!)}`);
+      }
+    }
+    Deno.exit(0);
+  }
+
+  if (app["person-lists"]) {
+    const config = await loadConfig(configPath);
+    if (!config || getPersonListNames(config).length === 0) {
+      console.log("No person lists configured. Add them to ~/.cmtoolsrc");
+    } else {
+      console.log("Available person lists:");
+      for (const name of getPersonListNames(config)) {
+        const list = getPersonList(config, name)!;
+        console.log(
+          `  ${name}: ${list.length} ${list.length === 1 ? "entry" : "entries"}`,
+        );
+      }
+    }
+    Deno.exit(0);
+  }
+
   const codeMetaTermNames = getAttributeNames(CodeMetaTerms);
   if (app.attributes) {
     console.log("");
@@ -114,6 +165,46 @@ async function main() {
     console.log(`failed to process ${inputName} object`);
     Deno.exit(1);
   }
+
+  if (app["apply-license"]) {
+    const config = await loadConfig(configPath);
+    if (!config || getLicenseNames(config).length === 0) {
+      console.log("No licenses configured. Add them to ~/.cmtoolsrc");
+      Deno.exit(1);
+    }
+    const names = getLicenseNames(config);
+    console.log("Available licenses:");
+    for (let i = 0; i < names.length; i++) {
+      const lic = getLicense(config, names[i])!;
+      console.log(`  ${i + 1}. ${names[i]} (${lic.name})`);
+    }
+    const choice = prompt(`Select license (1-${names.length}): `);
+    if (choice === null) Deno.exit(0);
+    const idx = parseInt(choice) - 1;
+    if (idx < 0 || idx >= names.length) {
+      console.log("Invalid selection.");
+      Deno.exit(1);
+    }
+    const lic = getLicense(config, names[idx])!;
+    const text = await getLicenseText(lic);
+    if (text === null) {
+      console.log(`Error: could not read text for license "${names[idx]}"`);
+      Deno.exit(1);
+    }
+    await Deno.writeTextFile("LICENSE", text);
+    console.log("Wrote ./LICENSE");
+    if (lic.url) {
+      cm.patchObject({ license: lic.url });
+      src = JSON.stringify(cm.toObject(), null, 2);
+      try {
+        await Deno.copyFile(inputName, `${inputName}.bak`);
+      } catch (_err) { /* no existing file */ }
+      await Deno.writeTextFile(inputName, src);
+      console.log(`Updated license in ${inputName}`);
+    }
+    Deno.exit(0);
+  }
+
   if (Object.keys(attrValues).length > 0) {
     const obj: { [key: string]: string } = {};
     for (const key of Object.keys(attrValues)) {
@@ -131,7 +222,7 @@ async function main() {
   }
   if (attributeNames.length > 0) {
     for (const name of attributeNames) {
-      if (!await editCodeMetaTerm(cm, name, app.editor)) {
+      if (!await editCodeMetaTerm(cm, name, app.editor, configPath)) {
         console.info(`INFO: using previous value for ${name}`);
       }
     }

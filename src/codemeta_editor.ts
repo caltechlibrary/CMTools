@@ -8,6 +8,19 @@ import {
 } from "./codemeta.ts";
 import { PersonOrOrganization } from "./person_or_organization.ts";
 import { editTempData } from "./editor.ts";
+import {
+  formatProfile,
+  getLicense,
+  getLicenseNames,
+  getLicenseText,
+  getPersonList,
+  getPersonListNames,
+  getProfile,
+  getProfileNames,
+  loadConfig,
+  profileToPersonOrOrg,
+  type Profile,
+} from "./config.ts";
 
 function getAttributeByName(name: string): AttributeType | undefined {
   for (const attr of CodeMetaTerms) {
@@ -22,12 +35,9 @@ export async function editCodeMetaTerm(
   cm: CodeMeta,
   name: string,
   useEditor: boolean,
+  configPath?: string,
 ): Promise<boolean> {
   const attr = getAttributeByName(name);
-  // Prompt and get value back as string
-  // Inspect the attribute and determine what to of value
-  // Use CodeMeta patchObject similar to fromObject but for simple
-  // attribute update.
   if (attr === undefined) {
     return false;
   }
@@ -36,17 +46,114 @@ export async function editCodeMetaTerm(
   curVal = getStringFromObject(cm.toObject(), name);
   let val: string | undefined = undefined;
   console.log(`Default: ${name}: ${curVal}`);
+
   if (useEditor) {
     if (confirm(`Edit ${name}?`)) {
       let eVal = (curVal === undefined) ? "" : curVal;
-      //FIXME: if eVal is for a complex type and it is empty
-      // then I need to insert example text to use when editing the temp data.
       if (eVal === "" && (complexFieldList.indexOf(name) > -1)) {
         eVal = getExampleText(name);
       }
       val = await editTempData(eVal);
     }
   } else {
+    // --- Config-assisted paths ---
+
+    // License field: offer to apply from config
+    if (name === "license") {
+      const config = await loadConfig(configPath);
+      if (config && getLicenseNames(config).length > 0) {
+        const names = getLicenseNames(config);
+        console.log("\nAvailable licenses:");
+        for (let i = 0; i < names.length; i++) {
+          const lic = getLicense(config, names[i])!;
+          console.log(`  ${i + 1}. ${names[i]} (${lic.name})`);
+        }
+        console.log(`  ${names.length + 1}. Enter manually`);
+        console.log(`  q. Skip / keep existing`);
+        const choice = prompt(`Select (1-${names.length + 1}, or q): `);
+        if (choice === "q" || choice === null) return false;
+        const idx = parseInt(choice) - 1;
+        if (idx >= 0 && idx < names.length) {
+          const lic = getLicense(config, names[idx])!;
+          const text = await getLicenseText(lic);
+          if (text === null) {
+            console.log(`Warning: could not read text for license "${names[idx]}"`);
+          } else {
+            await Deno.writeTextFile("LICENSE", text);
+            console.log("Wrote ./LICENSE");
+          }
+          if (lic.url) {
+            obj[name] = lic.url;
+            return cm.patchObject(obj);
+          }
+          // No url configured — fall through to manual prompt for the URL value
+          console.log(`No URL configured for "${names[idx]}". Enter license URL manually.`);
+        }
+        // idx === names.length → "Enter manually"; fall through
+      }
+    }
+
+    // Person/org fields: offer profiles and pre-defined lists
+    if (
+      attr.type === "person_or_organization" ||
+      attr.type === "person_or_organization_list"
+    ) {
+      const config = await loadConfig(configPath);
+      if (config) {
+        const profileNames = getProfileNames(config);
+        const listNames = attr.type === "person_or_organization_list"
+          ? getPersonListNames(config)
+          : [];
+        if (profileNames.length > 0 || listNames.length > 0) {
+          let idx = 1;
+          if (profileNames.length > 0) {
+            console.log("\nAvailable profiles:");
+            for (const n of profileNames) {
+              console.log(`  ${idx++}. ${n} (${formatProfile(getProfile(config, n)!)})`);
+            }
+          }
+          if (listNames.length > 0) {
+            console.log("Pre-defined lists:");
+            for (const n of listNames) {
+              const count = getPersonList(config, n)!.length;
+              console.log(`  ${idx++}. ${n} (${count} ${count === 1 ? "person" : "people"})`);
+            }
+          }
+          const manualIdx = idx;
+          console.log(`  ${manualIdx}. Enter manually`);
+          console.log(`  q. Skip / keep existing`);
+          const choice = prompt(`Select (1-${manualIdx}, or q): `);
+          if (choice === "q" || choice === null) return false;
+          const chosen = parseInt(choice) - 1;
+          if (chosen >= 0 && chosen < manualIdx - 1) {
+            // Determine if it's a profile or a list
+            if (chosen < profileNames.length) {
+              const profile = getProfile(config, profileNames[chosen])!;
+              const personOrOrg = profileToPersonOrOrg(profile);
+              if (attr.type === "person_or_organization_list") {
+                const list: PersonOrOrganization[] = [personOrOrg];
+                while (confirm("Add another entry?")) {
+                  list.push(...(await pickPersonEntry(config, profileNames)));
+                }
+                obj[name] = list;
+              } else {
+                obj[name] = personOrOrg;
+              }
+              return cm.patchObject(obj);
+            } else {
+              // It's a list selection (only reachable for person_or_organization_list)
+              const listName = listNames[chosen - profileNames.length];
+              const profiles = getPersonList(config, listName)!;
+              obj[name] = profiles.map((p: Profile) => profileToPersonOrOrg(p));
+              return cm.patchObject(obj);
+            }
+          }
+          // chosen === manualIdx - 1 → "Enter manually"; fall through
+        }
+      }
+    }
+
+    // --- Original prompt path ---
     let pVal: string | null = "";
     if (complexFieldList.indexOf(name) > -1) {
       console.log(
@@ -60,7 +167,6 @@ export async function editCodeMetaTerm(
           lines.push(txt);
         }
       }
-      //FIXME: Need to distinguish from "no change" and "remove value(s)"
       txt = lines.join("\n").trim();
       if (txt === "") {
         pVal = null;
@@ -79,6 +185,7 @@ export async function editCodeMetaTerm(
       val = pVal;
     }
   }
+
   if (val === undefined || val === "") {
     return false;
   }
@@ -86,6 +193,25 @@ export async function editCodeMetaTerm(
     return false;
   }
   return cm.patchObject(obj);
+}
+
+// Prompt user to pick a single person/org entry from profiles (used in add-another loop).
+async function pickPersonEntry(
+  config: Parameters<typeof getProfileNames>[0],
+  profileNames: string[],
+): Promise<PersonOrOrganization[]> {
+  console.log("\nAvailable profiles:");
+  for (let i = 0; i < profileNames.length; i++) {
+    console.log(`  ${i + 1}. ${profileNames[i]} (${formatProfile(getProfile(config, profileNames[i])!)})`);
+  }
+  console.log(`  ${profileNames.length + 1}. Enter manually`);
+  const choice = prompt(`Select (1-${profileNames.length + 1}): `);
+  if (choice === null || choice === `${profileNames.length + 1}`) return [];
+  const idx = parseInt(choice) - 1;
+  if (idx >= 0 && idx < profileNames.length) {
+    return [profileToPersonOrOrg(getProfile(config, profileNames[idx])!)];
+  }
+  return [];
 }
 
 export function getStringFromObject(

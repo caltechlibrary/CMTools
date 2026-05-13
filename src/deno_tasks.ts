@@ -1,56 +1,54 @@
-/*
-const denoTasks: { [key: string]: string } = {};
-// Handle updating the deno.json file.
-if (isDeno) {
-let src: string | undefined = undefined;
-let doBackup: boolean = true;
-try {
-    src = await Deno.readTextFile("deno.json");
-} catch (_err) {
-    console.warn(`creating %cdeno.json`, GREEN);
-    doBackup = false;
-}
-if (src === undefined) {
-    src = `{"tasks":{}}`;
-}
+import { ERROR_COLOR, GREEN } from "./colors.ts";
 
-let denoJSON: { [key: string]: unknown } = {};
-try {
-    denoJSON = JSON.parse(src) as {[key: string]: {[key:string]: unknown}};
-} catch (err) {
+export async function addDenoTasks(
+  denoJsonPath: string = "deno.json",
+  sourceFile: string,
+  outputFiles: string[],
+): Promise<boolean> {
+  let src: string | undefined = undefined;
+  let doBackup = true;
+
+  try {
+    src = await Deno.readTextFile(denoJsonPath);
+  } catch (_err) {
+    console.log(`%ccreating ${denoJsonPath}`, GREEN);
+    doBackup = false;
+  }
+
+  if (src === undefined) {
+    src = `{"tasks":{}}`;
+  }
+
+  let denoJSON: { [key: string]: unknown } = {};
+  try {
+    denoJSON = JSON.parse(src) as { [key: string]: unknown };
+  } catch (err) {
     console.log(`deno.json error, %c${err}`, ERROR_COLOR);
-    Deno.exit(0);
-}
-const genCodeTasks: string[] = [];
-if (denoJSON.tasks === undefined || denoJSON.tasks === null) {
-    denoJSON.tasks = {} as {[key: string]: string};
-}
-const tasks: {[key:string]: string} = {};
-for (const taskName of Object.keys(denoTasks)) {
-    tasks[taskName] = denoTasks[taskName];
-    genCodeTasks.push(`deno task ${taskName}`);
-}
-if (genCodeTasks.length > 0) {
-    tasks["gen-code"] = (genCodeTasks as string[]).join(" ; ");
-}
-if (Object(tasks).keys().length > 0) {
-    denoJSON.tasks = tasks;
-}
-// Update deno.json file.
-if (doBackup) {
+    return false;
+  }
+
+  if (denoJSON.tasks === undefined || denoJSON.tasks === null) {
+    denoJSON.tasks = {};
+  }
+
+  const tasks = denoJSON.tasks as { [key: string]: string };
+  const filesArg = [sourceFile, ...outputFiles].join(" ");
+  tasks["gen-code"] = `deno run --allow-read --allow-write ./cmt.ts ${filesArg}`;
+  denoJSON.tasks = tasks;
+
+  if (doBackup) {
     try {
-    await Deno.copyFile("deno.json", "deno.json.bak");
+      await Deno.copyFile(denoJsonPath, `${denoJsonPath}.bak`);
     } catch (err) {
-    console.log(
-        `failed to backup deno.json aborting, %c${err}`,
+      console.log(
+        `failed to backup ${denoJsonPath} aborting, %c${err}`,
         ERROR_COLOR,
-    );
-    Deno.exit(1);
+      );
+      return false;
     }
+  }
+
+  await Deno.writeTextFile(denoJsonPath, JSON.stringify(denoJSON, null, 2));
+  console.log(`%cupdated ${denoJsonPath}`, GREEN);
+  return true;
 }
-src = JSON.stringify(denoJSON, null, 2);
-if (src !== undefined) {
-    Deno.writeTextFile("deno.json", src);
-}
-}
-*/

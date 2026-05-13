@@ -30,10 +30,12 @@ export const cmtHelpText =
 
 {app_name} [OPTIONS] INPUT_NAME [OUTPUT_NAME OUTPUT_NAME ...]
 
+{app_name} --init deno-cli INPUT_NAME [EXECUTABLE_NAME ...]
+
 # DESCRIPTION
 
 {app_name} provides tooling for working with CodeMeta objects
-targeting your Python, Go, JavaScript or TypeScript build process.
+targeting your Python, Go, TypeScript, or documentation build process.
 
 {app_name} can be used to generate various code artifacts including the following.
 
@@ -67,10 +69,44 @@ Options come as the last parameter(s) on the command line.
 -l, --license
 : display license
 
--i, --init PROGRAMMING_LANGUAGE
-: initialize the project based on a programming language name.
-Supported languages/project types are "python", "go", "javascript",
-"typescript" and "deno".
+-i, --init PROJECT_TYPE
+: initialize the project based on a project type name.
+Supported project types are:
+
+  **go**
+  : Go language CLI or service. Generates version.go and a Go-specific Makefile.
+
+  **python**
+  : Python project. Generates version.py.
+
+  **deno-cli**
+  : Deno/TypeScript project that compiles to one or more CLI executables.
+  Generates version.ts and a Makefile with one ` + "`deno compile`" + ` target per
+  executable. Any extra arguments after the codemeta.json path are treated as
+  executable names; if none are given the project name from codemeta.json is used.
+  Automatically adds a "gen-code" task to deno.json.
+
+  **deno-bundle**
+  : Deno/TypeScript compiled to a single browser-side JavaScript bundle.
+  Generates a Makefile with a bundle build target. No version.ts is created.
+  Automatically adds a "gen-code" task to deno.json.
+
+  **deno-es-module**
+  : Deno/TypeScript shipped as ES modules without bundling. Generates a minimal
+  Makefile with lint and type-check targets only. No version.ts is created.
+  Automatically adds a "gen-code" task to deno.json.
+
+  **deno-webcomponent**
+  : Deno/TypeScript web component library. Generates a Makefile with targets for
+  running a custom elements manifest analyzer and building a demo page. No version.ts
+  is created. Automatically adds a "gen-code" task to deno.json.
+
+  **documentation** / **presentation**
+  : Documentation or presentation project. Generates standard files and a generic
+  Makefile but no version.* file. "presentation" is an alias for "documentation".
+
+  The following values are deprecated aliases kept for backward compatibility:
+  "deno" and "typescript" behave as "deno-cli"; "javascript" also behaves as "deno-cli".
 
 -L, --lang LANGUAGE
 : this sets the language to use when generating Makefile.
@@ -78,8 +114,7 @@ Supported languages/project types are "python", "go", "javascript",
 # EXAMPLES
 
 Here's an example of rendering ` + "`CITATION.cff`" + ` from a ` +
-  "`codemeta.json`" + ` file. The second version
-shows how to use the format option.
+  "`codemeta.json`" + ` file.
 
 ~~~
 {app_name} codemeta.json CITATION.cff
@@ -94,33 +129,55 @@ Here's an example of rendering ` + "`version.ts`" + `, ` + "`version.py`" +
 {app_name} codemeta.json version.go
 ~~~
 
-Here's an example of generating an "about.md" file from the CodeMeta file.
-
-~~~
-{app_name} codemeta.json about.md
-~~~
-
-You can also just stack the output files you need one after another.
-This is an example of creating the files to bootstrap a TypeScript project.
+You can stack output files to generate several at once.
 
 ~~~
 {app_name} codemeta.json about.md CITATION.cff version.ts
 ~~~
 
-The "--deno" option can trail the above command to update the deno.json file
-with a set of tasks to update the files you have specified.
-
-~~~
-{app_name} codemeta.json about.md CITATION.cff version.ts --deno
-~~~
-
-This will create a "gen-code" task that will rebuild those files based on
-the current contents of the CodeMeta file.
-
 ### Project Initialization
 
-{app_name} supports four languages at this time. It will generated the
-files needed to bootstrap the project based on the language chosen.
+Initialize a Go project:
+
+~~~
+{app_name} --init go codemeta.json
+~~~
+
+Initialize a Deno CLI project with a single executable named after the project:
+
+~~~
+{app_name} --init deno-cli codemeta.json
+~~~
+
+Initialize a Deno CLI project with two named executables:
+
+~~~
+{app_name} --init deno-cli codemeta.json mycmd myothercmd
+~~~
+
+Initialize a browser-side Deno project that bundles to a single JavaScript file:
+
+~~~
+{app_name} --init deno-bundle codemeta.json
+~~~
+
+Initialize a browser-side Deno project that ships as ES modules (no bundling):
+
+~~~
+{app_name} --init deno-es-module codemeta.json
+~~~
+
+Initialize a Deno web component library:
+
+~~~
+{app_name} --init deno-webcomponent codemeta.json
+~~~
+
+Initialize a documentation or presentation project (no version.* files):
+
+~~~
+{app_name} --init documentation codemeta.json
+~~~
 
 `;
 
@@ -179,8 +236,90 @@ the value includes spaces you need to wrap them in quotes. See the EXAMPLE below
 : display license
 
 -e, --editor
-: use the editor named in the EDITOR environment variable. If variable is unset then use 
+: use the editor named in the EDITOR environment variable. If variable is unset then use
 the default text editor. On Windows that is notepad.exe. On Linux and macOS it is nano.
+
+-p, --profiles
+: list the person and organization profiles available in the global configuration file
+(` + "`~/.cmtoolsrc`" + ` or the path given by ` + "`--global-config`" + `).
+
+-P, --person-lists
+: list the pre-defined person/organization lists available in the global configuration file.
+
+-A, --apply-license
+: select a license from the global configuration, write its text to ` + "`./LICENSE`" + `,
+and update the ` + "`license`" + ` field in the codemeta.json file with the license URL
+(if one is configured).
+
+-g, --global-config PATH
+: load configuration from PATH, bypassing the directory walk-up search.
+
+# GLOBAL CONFIGURATION
+
+{app_name} reads a configuration file that stores person/organization profiles, pre-defined
+team lists, and license templates. When editing person fields such as author, contributor,
+or maintainer, {app_name} will offer to populate the field from a configured profile or list
+rather than requiring manual YAML entry. When editing the license field, {app_name} will
+offer to apply a configured license and write ` + "`./LICENSE`" + ` automatically.
+
+Configuration is found by walking up from the current directory to the home directory,
+checking for ` + "`.cmtoolsrc`" + ` at each level (first found wins), then falling back to
+` + "`~/.config/cmtools/config.yaml`" + `. For example, from ` + "`~/WorkLab/myproject`" + `:
+
+1. ` + "`~/WorkLab/myproject/.cmtoolsrc`" + `
+2. ` + "`~/WorkLab/.cmtoolsrc`" + `
+3. ` + "`~/.cmtoolsrc`" + `
+4. ` + "`~/.config/cmtools/config.yaml`" + `
+
+This lets you keep a work config in ` + "`~/WorkLab/.cmtoolsrc`" + ` and a personal config in
+` + "`~/.cmtoolsrc`" + ` and have the right one apply automatically based on where you are working.
+
+Use ` + "`--global-config PATH`" + ` to bypass the walk and load a specific file instead.
+
+Example ` + "`~/.cmtoolsrc`" + `:
+
+~~~yaml
+default_profile: rdoiel
+default_license: caltech
+
+profiles:
+  rdoiel:
+    type: Person
+    givenName: R. S.
+    familyName: Doiel
+    email: rdoiel@caltech.edu
+    id: https://orcid.org/0000-0003-0900-6903
+    affiliation:
+      type: Organization
+      name: Caltech Library
+  caltech-library:
+    type: Organization
+    name: Caltech Library
+    email: library@caltech.edu
+
+licenses:
+  caltech:
+    name: Caltech License
+    file: ~/.config/cmtools/licenses/caltech.txt
+  agpl3:
+    name: GNU Affero General Public License v3.0 or later
+    url: https://spdx.org/licenses/AGPL-3.0-or-later.html
+    text: |
+      GNU AFFERO GENERAL PUBLIC LICENSE
+      Version 3, 19 November 2007
+      ...
+
+person_lists:
+  dld-team:
+    - type: Person
+      givenName: R. S.
+      familyName: Doiel
+      id: https://orcid.org/0000-0003-0900-6903
+    - type: Person
+      givenName: Tom
+      familyName: Morrell
+      id: https://orcid.org/0000-0001-9266-5146
+~~~
 
 # EXAMPLES
 

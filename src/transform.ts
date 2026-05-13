@@ -50,9 +50,17 @@ function getMakefileText(
   const prefix: { [key: string]: string } = {
     "golang": goMakefileText,
     "go": goMakefileText,
+    // deno sub-types
+    "deno-cli": denoMakefileText,
+    "deno-bundle": denoBundleMakefileText,
+    "deno-es-module": denoEsModuleMakefileText,
+    "deno-webcomponent": denoWebComponentMakefileText,
+    // deprecated aliases
     "javascript": denoMakefileText,
     "typescript": denoMakefileText,
     "deno": denoMakefileText,
+    "documentation": documentationMakefileText,
+    "presentation": documentationMakefileText,
     //"python": pyMakefileText,
     //"bash": shMakefileText,
   };
@@ -71,9 +79,8 @@ function getMakePs1Text(
   const prefix: { [key: string]: string } = {
     "golang": goMakePs1Text,
     "go": goMakePs1Text,
-    //"javascript": denoMakefileText,
-    //"typescript": denoMakefileText,
-    //"deno": denoMakefileText,
+    "documentation": documentationMakePs1Text,
+    "presentation": documentationMakePs1Text,
     //"python": pyMakefileText,
     //"bash": shMakefileText,
   };
@@ -318,3 +325,18 @@ const releaseBashText = gText.releaseBashText;
 
 // PowerShell script
 const releasePs1Text = gText.releasePs1Text;
+
+// Makefile for documentation/presentation projects
+const documentationMakefileText = gText.documentationMakefileText;
+
+// make.ps1 for documentation/presentation projects
+const documentationMakePs1Text = gText.documentationMakePs1Text;
+
+// Makefile for deno-bundle projects
+const denoBundleMakefileText = gText.denoBundleMakefileText;
+
+// Makefile for deno-es-module projects
+const denoEsModuleMakefileText = gText.denoEsModuleMakefileText;
+
+// Makefile for deno-webcomponent projects
+const denoWebComponentMakefileText = gText.denoWebComponentMakefileText;

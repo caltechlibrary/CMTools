@@ -2323,3 +2323,231 @@ if ($action -eq "release") {
     Write-Host "Check the zip files, then do release.ps1 if all is OK"
 }
 `;
+
+// Makefile for documentation/presentation projects
+export const documentationMakefileText = `# generated with CMTools {{{version}}} {{{releaseHash}}}
+#
+# Makefile for {{{name}}} documentation project
+#
+PROJECT = {{{name}}}
+
+build: README.md about.md search.md CITATION.cff
+	@echo "$(PROJECT) documentation build complete"
+
+website:
+	make -f website.mak
+
+CITATION.cff: codemeta.json
+	cmt codemeta.json CITATION.cff
+
+README.md: codemeta.json
+	cmt codemeta.json README.md
+
+about.md: codemeta.json
+	cmt codemeta.json about.md
+
+search.md: codemeta.json
+	cmt codemeta.json search.md
+
+clean:
+	rm -f *.html
+
+.PHONY: build website clean
+`;
+
+// make.ps1 for documentation/presentation projects
+export const documentationMakePs1Text = `param (
+    [string]$action = "build"
+)
+
+$jsonContent = Get-Content -Raw -Path "codemeta.json" | ConvertFrom-Json
+$projectName = $jsonContent.name
+
+function Build-Docs {
+    Write-Host "Building $projectName documentation..."
+    cmt codemeta.json CITATION.cff
+    cmt codemeta.json README.md
+    cmt codemeta.json about.md
+    cmt codemeta.json search.md
+    Write-Host "Build complete"
+}
+
+function Build-Website {
+    if (Test-Path "website.ps1") {
+        ./website.ps1
+    } else {
+        Write-Host "No website.ps1 found, skipping website build"
+    }
+}
+
+function Clean-Docs {
+    Get-ChildItem -Filter "*.html" | Remove-Item -Force
+}
+
+switch ($action) {
+    "build"   { Build-Docs }
+    "website" { Build-Website }
+    "clean"   { Clean-Docs }
+    default   { Build-Docs }
+}
+`;
+
+// Makefile for deno-bundle projects (TypeScript → single browser-side JS bundle)
+export const denoBundleMakefileText = `# generated with CMTools {{{version}}} {{{releaseHash}}}
+#
+# Makefile for {{{name}}} browser-side bundle project
+#
+PROJECT = {{{name}}}
+
+GIT_GROUP = {{{git_org_or_person}}}
+
+VERSION = $(shell grep '"version":' codemeta.json | cut -d\\"  -f 4)
+
+BRANCH = $(shell git branch | grep '* ' | cut -d\  -f 2)
+
+RELEASE_DATE=$(shell date +'%Y-%m-%d')
+
+RELEASE_HASH=$(shell git log --pretty=format:%h -n 1)
+
+# Entry point TypeScript module (update to match your project)
+ENTRY = mod.ts
+
+# Output bundle filename
+BUNDLE = $(PROJECT).js
+
+build: CITATION.cff about.md $(BUNDLE)
+
+# NOTE: deno bundle was removed in Deno 2.x.
+# Replace this target with your preferred bundler (e.g. esbuild via Deno).
+$(BUNDLE): $(ENTRY)
+	deno run --allow-read --allow-write npm:esbuild $(ENTRY) --bundle --outfile=$(BUNDLE)
+
+CITATION.cff: codemeta.json
+	cmt codemeta.json CITATION.cff
+
+about.md: codemeta.json
+	cmt codemeta.json about.md
+
+check: .FORCE
+	deno check $(ENTRY)
+
+lint: .FORCE
+	deno lint
+
+test: .FORCE
+	deno task test
+
+status:
+	git status
+
+save:
+	if [ "$(msg)" != "" ]; then git commit -am "$(msg)"; else git commit -am "Quick Save"; fi
+	git push origin $(BRANCH)
+
+clean:
+	rm -f $(BUNDLE)
+
+.FORCE:
+`;
+
+// Makefile for deno-es-module projects (TypeScript shipped as ES modules, no bundling)
+export const denoEsModuleMakefileText = `# generated with CMTools {{{version}}} {{{releaseHash}}}
+#
+# Makefile for {{{name}}} ES module project
+#
+PROJECT = {{{name}}}
+
+GIT_GROUP = {{{git_org_or_person}}}
+
+VERSION = $(shell grep '"version":' codemeta.json | cut -d\\"  -f 4)
+
+BRANCH = $(shell git branch | grep '* ' | cut -d\  -f 2)
+
+RELEASE_DATE=$(shell date +'%Y-%m-%d')
+
+RELEASE_HASH=$(shell git log --pretty=format:%h -n 1)
+
+build: CITATION.cff about.md check
+
+CITATION.cff: codemeta.json
+	cmt codemeta.json CITATION.cff
+
+about.md: codemeta.json
+	cmt codemeta.json about.md
+
+check: .FORCE
+	deno check mod.ts
+
+lint: .FORCE
+	deno lint
+
+test: .FORCE
+	deno task test
+
+status:
+	git status
+
+save:
+	if [ "$(msg)" != "" ]; then git commit -am "$(msg)"; else git commit -am "Quick Save"; fi
+	git push origin $(BRANCH)
+
+clean:
+	@echo "Nothing to clean for ES module project"
+
+.FORCE:
+`;
+
+// Makefile for deno-webcomponent projects
+export const denoWebComponentMakefileText = `# generated with CMTools {{{version}}} {{{releaseHash}}}
+#
+# Makefile for {{{name}}} web component project
+#
+PROJECT = {{{name}}}
+
+GIT_GROUP = {{{git_org_or_person}}}
+
+VERSION = $(shell grep '"version":' codemeta.json | cut -d\\"  -f 4)
+
+BRANCH = $(shell git branch | grep '* ' | cut -d\  -f 2)
+
+RELEASE_DATE=$(shell date +'%Y-%m-%d')
+
+RELEASE_HASH=$(shell git log --pretty=format:%h -n 1)
+
+build: CITATION.cff about.md custom-elements.json check
+
+# Generates the custom elements manifest using @custom-elements-manifest/analyzer.
+# Requires: npm install -g @custom-elements-manifest/analyzer
+custom-elements.json: .FORCE
+	npx @custom-elements-manifest/analyzer analyze --globs "*.ts"
+
+CITATION.cff: codemeta.json
+	cmt codemeta.json CITATION.cff
+
+about.md: codemeta.json
+	cmt codemeta.json about.md
+
+check: .FORCE
+	deno check mod.ts
+
+lint: .FORCE
+	deno lint
+
+test: .FORCE
+	deno task test
+
+demo: .FORCE
+	@echo "Open demo/index.html in a browser to view component demos"
+
+status:
+	git status
+
+save:
+	if [ "$(msg)" != "" ]; then git commit -am "$(msg)"; else git commit -am "Quick Save"; fi
+	git push origin $(BRANCH)
+
+clean:
+	rm -f custom-elements.json
+
+.FORCE:
+`;

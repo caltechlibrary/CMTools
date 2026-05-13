@@ -4,6 +4,7 @@ import { cmtHelpText, fmtHelp } from "./helptext.ts";
 import { CodeMeta } from "./src/codemeta.ts";
 import { isSupportedFormat, transform } from "./src/transform.ts";
 import { ERROR_COLOR } from "./src/colors.ts";
+import { addDenoTasks } from "./src/deno_tasks.ts";
 
 async function main() {
   const appName = "cmt";
@@ -89,23 +90,40 @@ async function main() {
         outputNames.push("version.go");
         outputNames.push("Makefile");
         break;
-      case "deno":
-        lang = app.init.toLowerCase();
+      case "deno-cli":
+        lang = "deno-cli";
         outputNames.push("version.ts");
         outputNames.push("Makefile");
-        app.deno = true;
         break;
+      case "deno-bundle":
+        lang = "deno-bundle";
+        outputNames.push("Makefile");
+        break;
+      case "deno-es-module":
+        lang = "deno-es-module";
+        outputNames.push("Makefile");
+        break;
+      case "deno-webcomponent":
+        lang = "deno-webcomponent";
+        outputNames.push("Makefile");
+        break;
+      // deprecated aliases — kept for backward compatibility
+      case "deno":
       case "typescript":
-        lang = app.init.toLowerCase();
+        lang = "deno-cli";
         outputNames.push("version.ts");
         outputNames.push("Makefile");
-        app.deno = true;
         break;
       case "javascript":
-        lang = app.init.toLowerCase();
+        lang = "deno-cli";
         outputNames.push("version.js");
         outputNames.push("Makefile");
-        app.deno = true;
+        break;
+      case "documentation":
+      case "presentation":
+        lang = "documentation";
+        outputNames.push("Makefile");
+        outputNames.push("make.ps1");
         break;
       default:
         console.log(
@@ -161,6 +179,18 @@ async function main() {
       Deno.exit(1);
     }
     Deno.writeTextFile(outputName, txt);
+  }
+
+  if (app.init !== "" && lang.startsWith("deno")) {
+    const genCodeFiles = outputNames.filter((n) =>
+      n.startsWith("version.") || n === "about.md" || n === "CITATION.cff"
+    );
+    if (genCodeFiles.length > 0) {
+      const ok = await addDenoTasks("deno.json", inputName, genCodeFiles);
+      if (!ok) {
+        console.log("Warning: %cfailed to update deno.json gen-code task", ERROR_COLOR);
+      }
+    }
   }
 }
 
