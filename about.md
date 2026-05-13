@@ -1,26 +1,27 @@
 ---
 title: CMTools
-abstract: "[CodeMeta](https://codemeta.github.io) Tools provides a simple command line tool called `cmt` that can be used to generate project files and software artifacts. It provides a tool called `cme` to edit and manage the CodeMeta file.
+abstract: |-
+  [CodeMeta](https://codemeta.github.io) Tools provides a simple command line tool called `cmt` that can be used to generate project files and software artifacts. It provides a tool called `cme` to edit and manage the CodeMeta file.
 
-The project focuses on leveraging CodeMeta data, directory name and Git repo information for building and release software written in Python, Go, JavaScript or TypeScript. It was motivated by the practices in Caltech Library's Digital Development Group.
+  The project focuses on leveraging CodeMeta data, directory name and Git repo information for building and release software written in Python, Go, JavaScript or TypeScript. It was motivated by the practices in Caltech Library's Digital Development Group.
 
-The tools are intended to be run from the project root directory. `cmt` expects the file path of your codemeta.json file as well as one or more target files to be generated. The target file's extension determines the generated content. The tool can generate the following project files based on the contents of the codemeta.json file. `cme` expects the file path of your codemeta.json file and optionally the attributes of the CodeMeta object you wish to manage.
+  The tools are intended to be run from the project root directory. `cmt` expects the file path of your codemeta.json file as well as one or more target files to be generated. The target file's extension determines the generated content. The tool can generate the following project files based on the contents of the codemeta.json file. `cme` expects the file path of your codemeta.json file and optionally the attributes of the CodeMeta object you wish to manage.
 
-`cme` is used to create and manage "codemeta.json". `cmt` is used to generate the following.
+  `cme` is used to create and manage "codemeta.json". `cmt` is used to generate the following.
 
-- README.md
-- INSTALL.md
-- installer.sh
-- installer.ps1
-- CITATION.cff
-- version.ts, version.js, version.go or version.py
-- about.md
-- page.tmpl (Pandoc template) or page.hbs (handlebars template)
-- site.css
-- Makefile (for Go or Deno based projects)
-- website.mak
-- release.bash
-- publish.bash"
+  - README.md
+  - INSTALL.md
+  - installer.sh
+  - installer.ps1
+  - CITATION.cff
+  - version.ts, version.js, version.go or version.py
+  - about.md
+  - page.tmpl (Pandoc template) or page.hbs (handlebars template)
+  - site.css
+  - Makefile (for Go or Deno based projects)
+  - website.mak
+  - release.bash
+  - publish.bash
 authors:
   - family_name: Doiel
     given_name: R. S.
@@ -37,7 +38,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.44b
+version: 0.0.45
 license_url: https://caltechlibrary.github.io/CMTools/LICENSE
 operating_system:
   - Linux
@@ -54,13 +55,13 @@ keywords:
   - code generation
   - markdown generation
 
-date_released: 2025-05-12
+date_released: 2025-05-13
 ---
 
 About this software
 ===================
 
-## CMTools 0.0.44b
+## CMTools 0.0.45
 
 - Added generator for add-col-scope.lua
 - Update website.mak file to include add-col-scope.lua filter
@@ -75,6 +76,11 @@ About this software
 - Fixing Handlebars escaping, shell injection risks
 - Added checksum support
 - Fixed logic bugs across generate_text.ts and transform.ts
+- Updated documentation and presentation Makefile template to include status, save, website, clean-website rules and BRANCH variable, matching the Go project Makefile pattern
+- Updated release.bash template to upload GitHub release assets one at a time with per-file progress messages instead of a single bulk upload
+- Updated release.ps1 template with the same one-at-a-time upload approach using a foreach loop
+- Changed upload order in both release scripts to upload the checksum file first as an early network connectivity check, followed by the distribution zip files
+- Fixed issue where description in codemeta.json file is multi-paragraph and broke the YAML front matter in about.md
 
 ## Authors
 

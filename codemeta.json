@@ -42,8 +42,8 @@
     }
   ],
   "dateCreated": "2025-01-07",
-  "dateModified": "2026-05-12",
-  "datePublished": "2025-05-12",
+  "dateModified": "2026-05-13",
+  "datePublished": "2025-05-13",
   "description": "[CodeMeta](https://codemeta.github.io) Tools provides a simple command line tool called `cmt` that can be used to generate project files and software artifacts. It provides a tool called `cme` to edit and manage the CodeMeta file.\n\nThe project focuses on leveraging CodeMeta data, directory name and Git repo information for building and release software written in Python, Go, JavaScript or TypeScript. It was motivated by the practices in Caltech Library's Digital Development Group.\n\nThe tools are intended to be run from the project root directory. `cmt` expects the file path of your codemeta.json file as well as one or more target files to be generated. The target file's extension determines the generated content. The tool can generate the following project files based on the contents of the codemeta.json file. `cme` expects the file path of your codemeta.json file and optionally the attributes of the CodeMeta object you wish to manage.\n\n`cme` is used to create and manage \"codemeta.json\". `cmt` is used to generate the following.\n\n- README.md\n- INSTALL.md\n- installer.sh\n- installer.ps1\n- CITATION.cff\n- version.ts, version.js, version.go or version.py\n- about.md\n- page.tmpl (Pandoc template) or page.hbs (handlebars template)\n- site.css\n- Makefile (for Go or Deno based projects)\n- website.mak\n- release.bash\n- publish.bash",
   "funder": {
     "id": "https://ror.org/5dxps055",
@@ -78,11 +78,11 @@
     "Pandoc >= 3.9",
     "Git >= 2.39"
   ],
-  "version": "0.0.44b",
+  "version": "0.0.45",
   "developmentStatus": "active",
   "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues",
   "downloadUrl": "https://github.com/caltechlibrary/CMTools/releases/latest",
-  "releaseNotes": "- Added generator for add-col-scope.lua\n- Update website.mak file to include add-col-scope.lua filter\n- Init will now add a site.css and add-col-scope.lua to list files generated automatically\n- Commented out pagefind from website.mak and website.ps1\n- Commented out search.md from nav generation in page.tmpl\n- Fixed rendering of suggested software versions in about.md\n- Fixed bug in render website.mak where is didn't escape the learing period of \".md\" when replacing with \".html\".\n- Added `-L` option to set the language\n- Fixed bug where -lang wasn't setting the project language\n- Fixed our GROUP_ID is calculated when generating release.bash and release.ps1\n- Fixing Handlebars escaping, shell injection risks\n- Added checksum support\n- Fixed logic bugs across generate_text.ts and transform.ts",
+  "releaseNotes": "- Added generator for add-col-scope.lua\n- Update website.mak file to include add-col-scope.lua filter\n- Init will now add a site.css and add-col-scope.lua to list files generated automatically\n- Commented out pagefind from website.mak and website.ps1\n- Commented out search.md from nav generation in page.tmpl\n- Fixed rendering of suggested software versions in about.md\n- Fixed bug in render website.mak where is didn't escape the learing period of \".md\" when replacing with \".html\".\n- Added `-L` option to set the language\n- Fixed bug where -lang wasn't setting the project language\n- Fixed our GROUP_ID is calculated when generating release.bash and release.ps1\n- Fixing Handlebars escaping, shell injection risks\n- Added checksum support\n- Fixed logic bugs across generate_text.ts and transform.ts\n- Updated documentation and presentation Makefile template to include status, save, website, clean-website rules and BRANCH variable, matching the Go project Makefile pattern\n- Updated release.bash template to upload GitHub release assets one at a time with per-file progress messages instead of a single bulk upload\n- Updated release.ps1 template with the same one-at-a-time upload approach using a foreach loop\n- Changed upload order in both release scripts to upload the checksum file first as an early network connectivity check, followed by the distribution zip files\n- Fixed issue where description in codemeta.json file is multi-paragraph and broke the YAML front matter in about.md",
   "copyrightYear": 2025,
   "copyrightHolder": "California Institute of Technology"
 }

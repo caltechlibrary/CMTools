@@ -489,8 +489,9 @@ cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 type: software
 {{#if name}}title: {{{name}}}{{/if}}
-{{#if description}}abstract: "{{{description}}}"{{/if}}
-{{#if author}}authors:
+{{#if description}}abstract: |-
+{{{yaml_block description}}}
+{{/if}}{{#if author}}authors:
 {{#each author}}
   - family-names: {{{familyName}}}
     given-names: {{{givenName}}}{{#if id}}
@@ -589,8 +590,9 @@ func FmtHelp(src string, appName string, version string, releaseDate string, rel
 // Pandoc
 export const aboutMdText = `---
 {{#if name}}title: {{{name}}}{{/if}}
-{{#if description}}abstract: "{{{description}}}"{{/if}}
-{{#if author}}authors:
+{{#if description}}abstract: |-
+{{{yaml_block description}}}
+{{/if}}{{#if author}}authors:
 {{#each author}}
   - {{#if name}}name: {{{name}}}{{else}}family_name: {{{familyName}}}
     given_name: {{{givenName}}}{{/if}}{{#if id}}
@@ -1824,7 +1826,14 @@ if [ "\${YES_NO}" = "y" ]; then
 		-F release_notes.tmp \\
 		--generate-notes
 	echo "Uploading distribution files and checksums"
-	gh release upload "\${RELEASE_TAG}" dist/*.zip "dist/\${CHECKSUM_FILE}"
+	echo "  Starting upload: dist/\${CHECKSUM_FILE}"
+	gh release upload "\${RELEASE_TAG}" "dist/\${CHECKSUM_FILE}"
+	echo "  Completed upload: dist/\${CHECKSUM_FILE}"
+	for FILE in dist/*.zip; do
+		echo "  Starting upload: \${FILE}"
+		gh release upload "\${RELEASE_TAG}" "\${FILE}"
+		echo "  Completed upload: \${FILE}"
+	done
 
 	cat <<EOT
 
@@ -1882,7 +1891,14 @@ if ($yesNo -eq "y") {
         --notes-file release_notes.tmp \`
         --generate-notes
     Write-Output "Uploading distribution files and checksums"
-    gh release upload "\$\{releaseTag\}" (Get-ChildItem dist/*.zip) "dist/\$\{checksumFile\}"
+    Write-Output "  Starting upload: dist/\$\{checksumFile\}"
+    gh release upload "\$\{releaseTag\}" "dist/\$\{checksumFile\}"
+    Write-Output "  Completed upload: dist/\$\{checksumFile\}"
+    foreach ($file in (Get-ChildItem -Path dist -Filter *.zip)) {
+        Write-Output "  Starting upload: $($file.Name)"
+        gh release upload "\$\{releaseTag\}" $file.FullName
+        Write-Output "  Completed upload: $($file.Name)"
+    }
 
     Write-Output @"
 
@@ -2331,11 +2347,16 @@ export const documentationMakefileText = `# generated with CMTools {{{version}}}
 #
 PROJECT = {{{name}}}
 
+BRANCH = $(shell git branch | grep '* ' | cut -d\  -f 2)
+
 build: README.md about.md search.md CITATION.cff
 	@echo "$(PROJECT) documentation build complete"
 
-website:
+website: clean-website .FORCE
 	make -f website.mak
+
+#publish: website .FORCE
+#	./publish.bash
 
 CITATION.cff: codemeta.json
 	cmt codemeta.json CITATION.cff
@@ -2349,10 +2370,22 @@ about.md: codemeta.json
 search.md: codemeta.json
 	cmt codemeta.json search.md
 
-clean:
+status:
+	git status
+
+save:
+	@if [ "$(msg)" != "" ]; then git commit -am "$(msg)"; else git commit -am "Quick Save"; fi
+	git push origin $(BRANCH)
+
+clean-website:
 	rm -f *.html
 
-.PHONY: build website clean
+clean: clean-website
+	@echo "$(PROJECT) cleaned"
+
+.FORCE:
+
+.PHONY: build website status save clean-website clean
 `;
 
 // make.ps1 for documentation/presentation projects

@@ -2,6 +2,13 @@ import * as path from "@std/path";
 //import * as yaml from "@std/yaml";
 import Handlebars from "npm:handlebars";
 import { CodeMeta } from "./codemeta.ts";
+
+// Indent each line 2 spaces for use in YAML literal block scalars.
+// Blank lines are kept empty (not indented) to satisfy strict YAML parsers.
+Handlebars.registerHelper('yaml_block', (text: string): string => {
+  if (!text) return '';
+  return text.split('\n').map((line: string) => line.length > 0 ? '  ' + line : '').join('\n');
+});
 import { gitOrgOrPerson, gitReleaseHash } from "./gitcmds.ts";
 //import { version, releaseDate, releaseHash } from "./version.ts";
 import * as gText from "./generate_text.ts";

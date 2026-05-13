@@ -26,9 +26,9 @@ The tools are intended to be run from the project root directory. `cmt` expects 
 
 ## Release Notes
 
-- version: 0.0.43
+- version: 0.0.45
 - status: active
-- released: 2025-05-07
+- released: 2025-05-13
 
 - Added generator for add-col-scope.lua
 - Update website.mak file to include add-col-scope.lua filter
@@ -36,6 +36,17 @@ The tools are intended to be run from the project root directory. `cmt` expects 
 - Commented out pagefind from website.mak and website.ps1
 - Commented out search.md from nav generation in page.tmpl
 - Fixed rendering of suggested software versions in about.md
+- Fixed bug in render website.mak where is didn't escape the learing period of ".md" when replacing with ".html".
+- Added `-L` option to set the language
+- Fixed bug where -lang wasn't setting the project language
+- Fixed our GROUP_ID is calculated when generating release.bash and release.ps1
+- Fixing Handlebars escaping, shell injection risks
+- Added checksum support
+- Fixed logic bugs across generate_text.ts and transform.ts
+- Updated documentation and presentation Makefile template to include status, save, website, clean-website rules and BRANCH variable, matching the Go project Makefile pattern
+- Updated release.bash template to upload GitHub release assets one at a time with per-file progress messages instead of a single bulk upload
+- Updated release.ps1 template with the same one-at-a-time upload approach using a foreach loop
+- Changed upload order in both release scripts to upload the checksum file first as an early network connectivity check, followed by the distribution zip files
 
 
 ### Authors

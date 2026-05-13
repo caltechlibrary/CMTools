@@ -60,9 +60,9 @@ optionally the attributes of the CodeMeta object you wish to manage.</p>
 </ul>
 <h2 id="release-notes">Release Notes</h2>
 <ul>
-<li><p>version: 0.0.43</p></li>
+<li><p>version: 0.0.45</p></li>
 <li><p>status: active</p></li>
-<li><p>released: 2025-05-07</p></li>
+<li><p>released: 2025-05-13</p></li>
 <li><p>Added generator for add-col-scope.lua</p></li>
 <li><p>Update website.mak file to include add-col-scope.lua
 filter</p></li>
@@ -72,6 +72,28 @@ generated automatically</p></li>
 <li><p>Commented out search.md from nav generation in page.tmpl</p></li>
 <li><p>Fixed rendering of suggested software versions in
 about.md</p></li>
+<li><p>Fixed bug in render website.mak where is didn’t escape the
+learing period of “.md” when replacing with “.html”.</p></li>
+<li><p>Added <code>-L</code> option to set the language</p></li>
+<li><p>Fixed bug where -lang wasn’t setting the project
+language</p></li>
+<li><p>Fixed our GROUP_ID is calculated when generating release.bash and
+release.ps1</p></li>
+<li><p>Fixing Handlebars escaping, shell injection risks</p></li>
+<li><p>Added checksum support</p></li>
+<li><p>Fixed logic bugs across generate_text.ts and
+transform.ts</p></li>
+<li><p>Updated documentation and presentation Makefile template to
+include status, save, website, clean-website rules and BRANCH variable,
+matching the Go project Makefile pattern</p></li>
+<li><p>Updated release.bash template to upload GitHub release assets one
+at a time with per-file progress messages instead of a single bulk
+upload</p></li>
+<li><p>Updated release.ps1 template with the same one-at-a-time upload
+approach using a foreach loop</p></li>
+<li><p>Changed upload order in both release scripts to upload the
+checksum file first as an early network connectivity check, followed by
+the distribution zip files</p></li>
 </ul>
 <h3 id="authors">Authors</h3>
 <ul>

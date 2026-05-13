@@ -1,5 +1,5 @@
 <#
-generated with CMTools 0.0.44 4c295db
+generated with CMTools 0.0.45 d9a4b11
 
 .SYNOPSIS
 Release script for CMTools on GitHub using gh CLI.

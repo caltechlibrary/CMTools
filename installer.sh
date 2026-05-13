@@ -1,11 +1,11 @@
 #!/bin/sh
-# generated with CMTools 0.0.44b 46e1583
+# generated with CMTools 0.0.45 d9a4b11
 
 #
 # Set the package name and version to install
 #
 PACKAGE="CMTools"
-VERSION="0.0.44b"
+VERSION="0.0.45"
 GIT_GROUP="caltechlibrary"
 RELEASE="https://github.com/$GIT_GROUP/$PACKAGE/releases/tag/v$VERSION"
 if [ "$PKG_VERSION" != "" ]; then

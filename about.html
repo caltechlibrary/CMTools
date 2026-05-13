@@ -26,7 +26,7 @@
 </nav>
 <section id="main-content">
 <h1 id="about-this-software">About this software</h1>
-<h2 id="cmtools-0.0.44">CMTools 0.0.44</h2>
+<h2 id="cmtools-0.0.45">CMTools 0.0.45</h2>
 <ul>
 <li>Added generator for add-col-scope.lua</li>
 <li>Update website.mak file to include add-col-scope.lua filter</li>
@@ -44,6 +44,19 @@ release.ps1</li>
 <li>Fixing Handlebars escaping, shell injection risks</li>
 <li>Added checksum support</li>
 <li>Fixed logic bugs across generate_text.ts and transform.ts</li>
+<li>Updated documentation and presentation Makefile template to include
+status, save, website, clean-website rules and BRANCH variable, matching
+the Go project Makefile pattern</li>
+<li>Updated release.bash template to upload GitHub release assets one at
+a time with per-file progress messages instead of a single bulk
+upload</li>
+<li>Updated release.ps1 template with the same one-at-a-time upload
+approach using a foreach loop</li>
+<li>Changed upload order in both release scripts to upload the checksum
+file first as an early network connectivity check, followed by the
+distribution zip files</li>
+<li>Fixed issue where description in codemeta.json file is
+multi-paragraph and broke the YAML front matter in about.md</li>
 </ul>
 <h2 id="authors">Authors</h2>
 <ul>
@@ -58,22 +71,22 @@ release.ps1</li>
 <li><a href="https://orcid.org/0000-0003-0900-6903">R. S. Doiel</a></li>
 </ul>
 <p><a href="https://codemeta.github.io">CodeMeta</a> Tools provides a
-simple command line tool called `cmt` that can be used to generate
-project files and software artifacts. It provides a tool called `cme` to
-edit and manage the CodeMeta file.</p>
+simple command line tool called <code>cmt</code> that can be used to
+generate project files and software artifacts. It provides a tool called
+<code>cme</code> to edit and manage the CodeMeta file.</p>
 <p>The project focuses on leveraging CodeMeta data, directory name and
 Git repo information for building and release software written in
 Python, Go, JavaScript or TypeScript. It was motivated by the practices
-in Caltech Library's Digital Development Group.</p>
+in Caltech Library’s Digital Development Group.</p>
 <p>The tools are intended to be run from the project root directory.
-`cmt` expects the file path of your codemeta.json file as well as one or
-more target files to be generated. The target file's extension
-determines the generated content. The tool can generate the following
-project files based on the contents of the codemeta.json file. `cme`
-expects the file path of your codemeta.json file and optionally the
-attributes of the CodeMeta object you wish to manage.</p>
-<p>`cme` is used to create and manage "codemeta.json". `cmt` is used to
-generate the following.</p>
+<code>cmt</code> expects the file path of your codemeta.json file as
+well as one or more target files to be generated. The target file’s
+extension determines the generated content. The tool can generate the
+following project files based on the contents of the codemeta.json file.
+<code>cme</code> expects the file path of your codemeta.json file and
+optionally the attributes of the CodeMeta object you wish to manage.</p>
+<p><code>cme</code> is used to create and manage “codemeta.json”.
+<code>cmt</code> is used to generate the following.</p>
 <ul>
 <li><p>README.md</p></li>
 <li><p>INSTALL.md</p></li>
