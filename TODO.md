@@ -2,6 +2,9 @@
 
 ## Bugs
 
+- [ ] Installation documentation does not need to be generated for projects of type documentation and presentation
+- [ ] Makefile for documentation and presentation need to have save and status rules like those in Go Makefile
+
 ## Next Steps (coming features)
 
 - [x] CMTools should have a user global configuration (`~/.cmtoolsrc`) storing:
