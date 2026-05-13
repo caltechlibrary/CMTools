@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>CMTools</title>
+    <link rel="stylesheet" href="https://caltechlibrary.github.io/css/site.css">
+    <link rel="stylesheet" href="https://media.library.caltech.edu/cl-webcomponents/css/code-blocks.css">
+    <script type="module" src="https://media.library.caltech.edu/cl-webcomponents/copyToClipboard.js"></script>
+    <script type="module" src="https://media.library.caltech.edu/cl-webcomponents/footer-global.js"></script>
+</head>
+<body>
+<header>
+<a href="https://library.caltech.edu"><img src="https://media.library.caltech.edu/assets/caltechlibrary-logo.png" alt="Caltech Library logo"></a>
+</header>
+<a href="#main-content" class="visually-hidden">skip to main content</a>
+<nav>
+<ul>
+    <li><a href="/">All Library Apps</a></li>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="LICENSE">LICENSE</a></li>
+    <li><a href="INSTALL.html">INSTALL</a></li>
+    <li><a href="user_manual.html">User Manual</a></li>
+    <li><a href="about.html">About</a></li>
+    <!-- <li><a href="search.html">Search</a></li> -->
+    <li><a href="https://github.com/caltechlibrary/CMTools">Code Repository</a></li>
+</ul>
+</nav>
+<section id="main-content">
+<h1 id="cmtools-0.0.45-release-goals">CMTools 0.0.45 Release Goals</h1>
+<h2 id="overview">Overview</h2>
+<p>This document outlines the development plan for CMTools version
+0.0.45, focusing on four features:</p>
+<ol type="1">
+<li><strong>Global Configuration with Person/Organization
+Profiles</strong> (Priority 1 - High Impact)</li>
+<li><strong>Support for Non-Programming Projects</strong> (Priority 2 -
+Medium Impact)</li>
+<li><strong>Clean Up deno_tasks.ts</strong> (Priority 3 - Quick
+Win)</li>
+<li><strong>Deno Project Sub-types</strong> (Priority 4 - Replaces
+<code>--init deno/typescript/javascript</code>)</li>
+</ol>
+<p>This plan is based on actual codebase analysis of CMTools (commit
+8ad366b).</p>
+<hr />
+<h2 id="priority-1-global-configuration-system">Priority 1: Global
+Configuration System</h2>
+<h3 id="objective">Objective</h3>
+<p>Create a global configuration file that stores person/organization
+profiles, pre-defined person lists, and license templates. This reduces
+friction across three common <code>cme</code> tasks: populating
+author/contributor/maintainer fields, applying a standard license, and
+building team contributor lists.</p>
+<p><strong>User Stories</strong>: - As a Caltech Library developer, I
+want to select my pre-configured profile when editing the
+<code>author</code> field instead of typing YAML by hand. - As a
+developer with work and personal projects, I want to store a “caltech”
+and an “agpl3” license in my config and apply either with one command. -
+As a team lead, I want a “dld-team” person list I can apply to
+<code>contributor</code> in one step.</p>
+<h3 id="current-state-analysis">Current State Analysis</h3>
+<p>From <code>cme.ts</code>: - Person/organization fields (author,
+contributor, maintainer) use <code>editCodeMetaTerm()</code> from
+<code>src/codemeta_editor.ts</code>; currently require manual YAML entry
+(lines 44–68) - The <code>PersonOrOrganization</code> class in
+<code>src/person_or_organization.ts</code> already handles the data
+structure; <code>fromObject()</code> accepts both
+<code>id</code>/<code>@id</code> and
+<code>type</code>/<code>@type</code> forms</p>
+<h3 id="technical-design">Technical Design</h3>
+<h4 id="config-file-location">Config File Location</h4>
+<ul>
+<li>Primary: <code>~/.cmtoolsrc</code> (JSON format)</li>
+<li>Fallback: <code>~/.config/cmtools/config.json</code></li>
+<li>Override: <code>--global-config PATH</code> flag on
+<code>cme</code></li>
+</ul>
+<h4 id="config-file-schema">Config File Schema</h4>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;default_profile&quot;</span><span class="fu">:</span> <span class="st">&quot;rdoiel&quot;</span><span class="fu">,</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;default_license&quot;</span><span class="fu">:</span> <span class="st">&quot;caltech&quot;</span><span class="fu">,</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;profiles&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;rdoiel&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;Person&quot;</span><span class="fu">,</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;givenName&quot;</span><span class="fu">:</span> <span class="st">&quot;R. S.&quot;</span><span class="fu">,</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;familyName&quot;</span><span class="fu">:</span> <span class="st">&quot;Doiel&quot;</span><span class="fu">,</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;email&quot;</span><span class="fu">:</span> <span class="st">&quot;rdoiel@caltech.edu&quot;</span><span class="fu">,</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;https://orcid.org/0000-0003-0900-6903&quot;</span><span class="fu">,</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;affiliation&quot;</span><span class="fu">:</span> <span class="fu">{</span> <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;Organization&quot;</span><span class="fu">,</span> <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Caltech Library&quot;</span> <span class="fu">}</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;caltech-library&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;Organization&quot;</span><span class="fu">,</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Caltech Library&quot;</span><span class="fu">,</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;email&quot;</span><span class="fu">:</span> <span class="st">&quot;library@caltech.edu&quot;</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;licenses&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;caltech&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;Caltech License&quot;</span><span class="fu">,</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;file&quot;</span><span class="fu">:</span> <span class="st">&quot;~/.config/cmtools/licenses/caltech.txt&quot;</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">},</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;agpl3&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;name&quot;</span><span class="fu">:</span> <span class="st">&quot;GNU Affero General Public License v3.0 or later&quot;</span><span class="fu">,</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;url&quot;</span><span class="fu">:</span> <span class="st">&quot;https://spdx.org/licenses/AGPL-3.0-or-later.html&quot;</span><span class="fu">,</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>      <span class="dt">&quot;text&quot;</span><span class="fu">:</span> <span class="st">&quot;GNU AFFERO GENERAL PUBLIC LICENSE</span><span class="ch">\n</span><span class="st">Version 3, 19 November 2007</span><span class="ch">\n</span><span class="st">...&quot;</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">}</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">},</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="dt">&quot;person_lists&quot;</span><span class="fu">:</span> <span class="fu">{</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>    <span class="dt">&quot;dld-team&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>      <span class="fu">{</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;Person&quot;</span><span class="fu">,</span> <span class="dt">&quot;givenName&quot;</span><span class="fu">:</span> <span class="st">&quot;R. S.&quot;</span><span class="fu">,</span> <span class="dt">&quot;familyName&quot;</span><span class="fu">:</span> <span class="st">&quot;Doiel&quot;</span><span class="fu">,</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;https://orcid.org/0000-0003-0900-6903&quot;</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>      <span class="fu">{</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;type&quot;</span><span class="fu">:</span> <span class="st">&quot;Person&quot;</span><span class="fu">,</span> <span class="dt">&quot;givenName&quot;</span><span class="fu">:</span> <span class="st">&quot;Tom&quot;</span><span class="fu">,</span> <span class="dt">&quot;familyName&quot;</span><span class="fu">:</span> <span class="st">&quot;Morrell&quot;</span><span class="fu">,</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>        <span class="dt">&quot;id&quot;</span><span class="fu">:</span> <span class="st">&quot;https://orcid.org/0000-0001-9266-5146&quot;</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>      <span class="fu">}</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>    <span class="ot">]</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">}</span></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a><span class="fu">}</span></span></code></pre></div>
+<p><strong>License storage rules</strong> (both <code>file</code> and
+<code>text</code> are optional; at least one required): - If
+<code>file</code> is present, read text from the path (<code>~</code>
+expanded). Takes precedence over <code>text</code>. - If only
+<code>text</code> is present, use it directly. - <code>url</code> is
+optional; when present it is written to the <code>license</code> field
+in codemeta.json.</p>
+<p><strong>Person lists</strong> store inline person data (not
+references to profile names), so they are self-contained and don’t break
+if a profile is renamed.</p>
+<h3 id="implementation-tasks">Implementation Tasks</h3>
+<h4 id="task-1.1-create-srcconfig.ts-module-new-file">Task 1.1: Create
+<code>src/config.ts</code> Module (NEW FILE)</h4>
+<p><strong>Interfaces and exports</strong>:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">interface</span> Profile { <span class="co">/* PersonOrOrganization fields: type, givenName, familyName,</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">                              name, id, email, affiliation */</span> }</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">interface</span> License {</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  name<span class="op">:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  url<span class="op">?:</span> <span class="dt">string</span><span class="op">;</span>   <span class="co">// written to codemeta.json license field when present</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  file<span class="op">?:</span> <span class="dt">string</span><span class="op">;</span>  <span class="co">// path to license text file (~ expanded); takes precedence over text</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  text<span class="op">?:</span> <span class="dt">string</span><span class="op">;</span>  <span class="co">// inline license text</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">interface</span> Config {</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  default_profile<span class="op">?:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  default_license<span class="op">?:</span> <span class="dt">string</span><span class="op">;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  profiles<span class="op">:</span> { [key<span class="op">:</span> <span class="dt">string</span>]<span class="op">:</span> Profile }<span class="op">;</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  licenses<span class="op">:</span> { [key<span class="op">:</span> <span class="dt">string</span>]<span class="op">:</span> License }<span class="op">;</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  person_lists<span class="op">:</span> { [key<span class="op">:</span> <span class="dt">string</span>]<span class="op">:</span> Profile[] }<span class="op">;</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">function</span> <span class="fu">getConfigPath</span>(override<span class="op">?:</span> <span class="dt">string</span>)<span class="op">:</span> <span class="dt">string</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="fu">loadConfig</span>(configPath<span class="op">?:</span> <span class="dt">string</span>)<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span>Config <span class="op">|</span> <span class="dt">null</span><span class="op">&gt;</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="fu">saveConfig</span>(config<span class="op">:</span> Config<span class="op">,</span> configPath<span class="op">?:</span> <span class="dt">string</span>)<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span><span class="dt">boolean</span><span class="op">&gt;</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">function</span> <span class="fu">getProfileNames</span>(config<span class="op">:</span> Config)<span class="op">:</span> <span class="dt">string</span>[]</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">function</span> <span class="fu">getProfile</span>(config<span class="op">:</span> Config<span class="op">,</span> name<span class="op">:</span> <span class="dt">string</span>)<span class="op">:</span> Profile <span class="op">|</span> <span class="dt">undefined</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">function</span> <span class="fu">profileToPersonOrOrg</span>(profile<span class="op">:</span> Profile)<span class="op">:</span> PersonOrOrganization</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">function</span> <span class="fu">formatProfile</span>(profile<span class="op">:</span> Profile)<span class="op">:</span> <span class="dt">string</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">function</span> <span class="fu">getLicenseNames</span>(config<span class="op">:</span> Config)<span class="op">:</span> <span class="dt">string</span>[]</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">function</span> <span class="fu">getLicense</span>(config<span class="op">:</span> Config<span class="op">,</span> name<span class="op">:</span> <span class="dt">string</span>)<span class="op">:</span> License <span class="op">|</span> <span class="dt">undefined</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="fu">getLicenseText</span>(license<span class="op">:</span> License)<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span><span class="dt">string</span> <span class="op">|</span> <span class="dt">null</span><span class="op">&gt;</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">function</span> <span class="fu">getPersonListNames</span>(config<span class="op">:</span> Config)<span class="op">:</span> <span class="dt">string</span>[]</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">function</span> <span class="fu">getPersonList</span>(config<span class="op">:</span> Config<span class="op">,</span> name<span class="op">:</span> <span class="dt">string</span>)<span class="op">:</span> Profile[] <span class="op">|</span> <span class="dt">undefined</span></span></code></pre></div>
+<p><strong>Implementation Notes</strong>: - Use try/catch on
+<code>Deno.readTextFile</code> to detect missing file (not
+<code>Deno.statSync</code>) - Expand <code>~</code> in
+<code>license.file</code> using <code>Deno.env.get("HOME")</code> -
+<code>profileToPersonOrOrg</code> calls
+<code>new PersonOrOrganization(); p.fromObject(profile)</code> - If
+<code>config.profiles</code>, <code>config.licenses</code>, or
+<code>config.person_lists</code> are absent on load, default them to
+<code>{}</code></p>
+<h4 id="task-1.2-modify-cme.ts">Task 1.2: Modify
+<code>cme.ts</code></h4>
+<p>Add top-level import:</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  formatProfile<span class="op">,</span> getLicense<span class="op">,</span> getLicenseNames<span class="op">,</span> getLicenseText<span class="op">,</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  getPersonList<span class="op">,</span> getPersonListNames<span class="op">,</span> getProfile<span class="op">,</span> getProfileNames<span class="op">,</span> loadConfig<span class="op">,</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>} <span class="im">from</span> <span class="st">&quot;./src/config.ts&quot;</span><span class="op">;</span></span></code></pre></div>
+<p>Add CLI flags:</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>alias<span class="op">:</span> {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ... existing ...</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  profiles<span class="op">:</span> <span class="st">&quot;p&quot;</span><span class="op">,</span>            <span class="co">// NEW: list available profiles</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;person-lists&#39;</span><span class="op">:</span> <span class="st">&quot;P&quot;</span><span class="op">,</span>      <span class="co">// NEW: list available person lists</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;apply-license&#39;</span><span class="op">:</span> <span class="st">&quot;A&quot;</span><span class="op">,</span>     <span class="co">// NEW: write ./LICENSE from config and update codemeta.json</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;global-config&#39;</span><span class="op">:</span> <span class="st">&quot;g&quot;</span><span class="op">,</span>     <span class="co">// NEW: override config file path</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>}<span class="op">,</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="cf">default</span><span class="op">:</span> {</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ... existing ...</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  profiles<span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;person-lists&#39;</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;apply-license&#39;</span><span class="op">:</span> <span class="kw">false</span><span class="op">,</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>  <span class="st">&#39;global-config&#39;</span><span class="op">:</span> <span class="st">&quot;&quot;</span><span class="op">,</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>}<span class="op">,</span></span></code></pre></div>
+<p>Add handlers (before attribute editing loop):</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">// --profiles: list configured profiles</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (app<span class="op">.</span><span class="at">profiles</span>) {</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> config <span class="op">=</span> <span class="cf">await</span> <span class="fu">loadConfig</span>(app[<span class="st">&#39;global-config&#39;</span>] <span class="op">||</span> <span class="kw">undefined</span>)<span class="op">;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="op">!</span>config <span class="op">||</span> <span class="fu">getProfileNames</span>(config)<span class="op">.</span><span class="at">length</span> <span class="op">===</span> <span class="dv">0</span>) {</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">&quot;No profiles configured. Add them to ~/.cmtoolsrc&quot;</span>)<span class="op">;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="kw">const</span> name <span class="kw">of</span> <span class="fu">getProfileNames</span>(config)) {</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>      <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="vs">`  </span><span class="sc">${</span>name<span class="sc">}</span><span class="vs">: </span><span class="sc">${</span><span class="fu">formatProfile</span>(<span class="fu">getProfile</span>(config<span class="op">,</span> name)<span class="op">!</span>)<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  Deno<span class="op">.</span><span class="fu">exit</span>(<span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">// --person-lists: list configured person lists</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (app[<span class="st">&#39;person-lists&#39;</span>]) {</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> config <span class="op">=</span> <span class="cf">await</span> <span class="fu">loadConfig</span>(app[<span class="st">&#39;global-config&#39;</span>] <span class="op">||</span> <span class="kw">undefined</span>)<span class="op">;</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="op">!</span>config <span class="op">||</span> <span class="fu">getPersonListNames</span>(config)<span class="op">.</span><span class="at">length</span> <span class="op">===</span> <span class="dv">0</span>) {</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">&quot;No person lists configured. Add them to ~/.cmtoolsrc&quot;</span>)<span class="op">;</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (<span class="kw">const</span> name <span class="kw">of</span> <span class="fu">getPersonListNames</span>(config)) {</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> list <span class="op">=</span> <span class="fu">getPersonList</span>(config<span class="op">,</span> name)<span class="op">!;</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>      <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="vs">`  </span><span class="sc">${</span>name<span class="sc">}</span><span class="vs">: </span><span class="sc">${</span>list<span class="op">.</span><span class="at">length</span><span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>list<span class="op">.</span><span class="at">length</span> <span class="op">===</span> <span class="dv">1</span> <span class="op">?</span> <span class="st">&quot;entry&quot;</span> <span class="op">:</span> <span class="st">&quot;entries&quot;</span><span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>  Deno<span class="op">.</span><span class="fu">exit</span>(<span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="co">// --apply-license: write ./LICENSE from config and update codemeta.json</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (app[<span class="st">&#39;apply-license&#39;</span>]) {</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> config <span class="op">=</span> <span class="cf">await</span> <span class="fu">loadConfig</span>(app[<span class="st">&#39;global-config&#39;</span>] <span class="op">||</span> <span class="kw">undefined</span>)<span class="op">;</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="op">!</span>config <span class="op">||</span> <span class="fu">getLicenseNames</span>(config)<span class="op">.</span><span class="at">length</span> <span class="op">===</span> <span class="dv">0</span>) {</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">&quot;No licenses configured. Add them to ~/.cmtoolsrc&quot;</span>)<span class="op">;</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    Deno<span class="op">.</span><span class="fu">exit</span>(<span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ... (selection menu + file write + codemeta update — see Task 1.3 helper)</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>  Deno<span class="op">.</span><span class="fu">exit</span>(<span class="dv">0</span>)<span class="op">;</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<h4 id="task-1.3-update-srccodemeta_editor.ts">Task 1.3: Update
+<code>src/codemeta_editor.ts</code></h4>
+<p>Update <code>editCodeMetaTerm()</code> signature to accept an
+optional config path:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="fu">editCodeMetaTerm</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  cm<span class="op">:</span> CodeMeta<span class="op">,</span> name<span class="op">:</span> <span class="dt">string</span><span class="op">,</span> useEditor<span class="op">:</span> <span class="dt">boolean</span><span class="op">,</span> configPath<span class="op">?:</span> <span class="dt">string</span><span class="op">,</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>)<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span><span class="dt">boolean</span><span class="op">&gt;</span></span></code></pre></div>
+<p><strong>Person/organization fields</strong> — inside the non-editor
+path, before the YAML prompt, show a unified menu of individual profiles
+AND pre-defined lists:</p>
+<pre><code>Available profiles:
+  1. rdoiel (R. S. Doiel, Caltech Library)
+  2. caltech-library (Caltech Library)
+Pre-defined lists:
+  3. dld-team  (2 people)
+  4. Enter manually
+  q. Skip / keep existing</code></pre>
+<ul>
+<li>Selecting a profile populates a single
+<code>PersonOrOrganization</code> (for
+<code>person_or_organization</code>) or starts a list that the user can
+extend entry by entry (for
+<code>person_or_organization_list</code>)</li>
+<li>Selecting a person list populates the full list at once (only valid
+for <code>person_or_organization_list</code>; prompt confirms before
+overwriting)</li>
+<li>“Enter manually” falls through to the existing YAML prompt</li>
+</ul>
+<p><strong>License field</strong> — when
+<code>name === "license"</code>, before the normal string prompt:</p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> config <span class="op">=</span> <span class="cf">await</span> <span class="fu">loadConfig</span>(configPath)<span class="op">;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (config <span class="op">&amp;&amp;</span> <span class="fu">getLicenseNames</span>(config)<span class="op">.</span><span class="at">length</span> <span class="op">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Show license menu. On selection:</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   1. Read license text via getLicenseText()</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   2. Write text to ./LICENSE</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   3. If license.url exists, set obj[&quot;license&quot;] = license.url</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">//   4. Return cm.patchObject(obj)</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">// &quot;Enter manually&quot; falls through to existing prompt</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Extract the license-apply logic into a shared helper
+<code>applyLicenseFromConfig(config, licenseName, cm)</code> so both
+<code>--apply-license</code> in <code>cme.ts</code> and the
+<code>editCodeMetaTerm</code> license path call the same function.</p>
+<h3 id="files-to-createmodify">Files to Create/Modify</h3>
+<table>
+<thead>
+<tr>
+<th scope="col">File</th>
+<th scope="col">Action</th>
+<th scope="col">Lines</th>
+<th scope="col">Dependencies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/config.ts</code></td>
+<td>Create</td>
+<td>~220</td>
+<td><code>person_or_organization.ts</code></td>
+</tr>
+<tr>
+<td><code>cme.ts</code></td>
+<td>Modify</td>
+<td>~60</td>
+<td><code>config.ts</code></td>
+</tr>
+<tr>
+<td><code>src/codemeta_editor.ts</code></td>
+<td>Modify</td>
+<td>~80</td>
+<td><code>config.ts</code></td>
+</tr>
+<tr>
+<td><code>helptext.ts</code></td>
+<td>Modify</td>
+<td>~25</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<h3 id="testing-strategy">Testing Strategy</h3>
+<ol type="1">
+<li>Config load: missing file, valid file, file with missing optional
+sections</li>
+<li><code>getLicenseText</code>: <code>file</code> path (with
+<code>~</code> expansion), <code>text</code> inline, both present (file
+wins)</li>
+<li>Profile selection: single pick, list build (add another loop),
+person list apply</li>
+<li>License apply: writes <code>./LICENSE</code>, updates
+<code>license</code> URL in codemeta when <code>url</code> present</li>
+<li><code>--profiles</code>, <code>--person-lists</code>,
+<code>--apply-license</code> flags work standalone</li>
+<li>Backward compatibility: all existing behaviour unchanged when no
+config file exists</li>
+</ol>
+<hr />
+<h2 id="priority-2-non-programming-project-support">Priority 2:
+Non-Programming Project Support</h2>
+<h3 id="objective-1">Objective</h3>
+<p>Allow <code>cmt</code> to initialize and support non-programming
+projects (documentation, presentations) as first-class citizens.</p>
+<p><strong>User Story</strong>: As a documentation author, I want to run
+<code>cmt --init documentation codemeta.json</code> and get appropriate
+files (README.md, about.md, Makefile) without JavaScript-specific files
+(version.ts, deno.json).</p>
+<h3 id="current-state-analysis-1">Current State Analysis</h3>
+<p>From <code>cmt.ts</code>: - <code>--init</code> flag (line 11)
+accepts: <code>python</code>, <code>go</code>, <code>deno</code>,
+<code>typescript</code>, <code>javascript</code> - Language detection
+(lines 44-52): checks output filenames, defaults to
+<code>javascript</code> - Each init type adds specific files:
+version.{ext}, Makefile (lines 64-95)</p>
+<p>From <code>transform.ts</code>: - <code>isSupportedFormat()</code>
+(line 11) lists all supported output formats -
+<code>getMakefileText()</code> (line 26) maps lang to Makefile template
+- Currently supports: <code>golang</code>/<code>go</code>,
+<code>javascript</code>/<code>typescript</code>/<code>deno</code></p>
+<h3 id="technical-design-1">Technical Design</h3>
+<h4 id="approach-extend---init-with-new-case-values">Approach: Extend
+<code>--init</code> with new case values</h4>
+<p>Add <code>documentation</code> and <code>presentation</code> as new
+valid values for the existing <code>--init</code> flag. This avoids
+introducing a <code>--type</code> flag that would overlap confusingly
+with <code>--lang</code>.</p>
+<p><strong>New <code>--init</code> values</strong>:
+<code>documentation</code>, <code>presentation</code></p>
+<h4 id="file-generation-for-documentation-projects">File Generation for
+Documentation Projects</h4>
+<p>When <code>--init documentation</code> or
+<code>--init presentation</code>: - <code>lang = "documentation"</code>
+- Output files: README.md, about.md, search.md, CITATION.cff,
+INSTALL.md, INSTALL_NOTES_macOS.md, INSTALL_NOTES_Windows.md,
+installer.ps1, installer.sh, page.tmpl, links-to-html.lua,
+add-col-scope.lua, website.mak, website.ps1, site.css, Makefile,
+make.ps1 - <strong>Excludes</strong>: version.ts, version.js,
+version.go, version.py - Makefile uses generic documentation template
+(tabs required for recipe lines)</p>
+<h3 id="implementation-tasks-1">Implementation Tasks</h3>
+<h4 id="task-2.1-modify-cmt.ts">Task 2.1: Modify
+<code>cmt.ts</code></h4>
+<p>No new flags needed. Add two new cases to the existing
+<code>--init</code> switch (lines 82–116):</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="st">&quot;documentation&quot;</span><span class="op">:</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="st">&quot;presentation&quot;</span><span class="op">:</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  lang <span class="op">=</span> <span class="st">&quot;documentation&quot;</span><span class="op">;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  outputNames<span class="op">.</span><span class="fu">push</span>(<span class="st">&quot;Makefile&quot;</span>)<span class="op">;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  outputNames<span class="op">.</span><span class="fu">push</span>(<span class="st">&quot;make.ps1&quot;</span>)<span class="op">;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="cf">break</span><span class="op">;</span></span></code></pre></div>
+<p>The existing filename-based <code>lang</code> detection (lines 44–62)
+is unchanged. Documentation/presentation projects are only activated via
+<code>--init</code>; there is no filename extension that implies
+them.</p>
+<h4 id="task-2.2-modify-srctransform.ts">Task 2.2: Modify
+<code>src/transform.ts</code></h4>
+<p>Update <code>getMakefileText()</code> (line 26):</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">function</span> <span class="fu">getMakefileText</span>(lang<span class="op">:</span> <span class="dt">string</span>)<span class="op">:</span> <span class="dt">string</span> <span class="op">|</span> <span class="dt">undefined</span> {</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> prefix<span class="op">:</span> { [key<span class="op">:</span> <span class="dt">string</span>]<span class="op">:</span> <span class="dt">string</span> } <span class="op">=</span> {</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;golang&quot;</span><span class="op">:</span> goMakefileText<span class="op">,</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;go&quot;</span><span class="op">:</span> goMakefileText<span class="op">,</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;javascript&quot;</span><span class="op">:</span> denoMakefileText<span class="op">,</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;typescript&quot;</span><span class="op">:</span> denoMakefileText<span class="op">,</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;deno&quot;</span><span class="op">:</span> denoMakefileText<span class="op">,</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;documentation&quot;</span><span class="op">:</span> documentationMakefileText<span class="op">,</span> <span class="co">// NEW</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">// ... rest of function</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>Add <code>documentationMakefileText</code> template.
+<strong>Important</strong>: recipe lines must use hard tab characters,
+not spaces. The template also needs to be added to
+<code>generate_text.ts</code> (per the completed TODO item requiring
+generated text to live there, not in <code>transform.ts</code>):</p>
+<pre><code># Makefile for documentation projects
+# Generated by cmt
+
+.PHONY: all build website clean
+
+all: build website
+
+build: README.md about.md search.md CITATION.cff
+&lt;TAB&gt;@echo &quot;Build complete&quot;
+
+website:
+&lt;TAB&gt;make -f website.mak
+
+clean:
+&lt;TAB&gt;rm -f *.html
+&lt;TAB&gt;rm -rf _build
+
+README.md: codemeta.json
+&lt;TAB&gt;cmt codemeta.json README.md
+
+about.md: codemeta.json
+&lt;TAB&gt;cmt codemeta.json about.md
+
+search.md: codemeta.json
+&lt;TAB&gt;cmt codemeta.json search.md
+
+CITATION.cff: codemeta.json
+&lt;TAB&gt;cmt codemeta.json CITATION.cff</code></pre>
+<p>(Replace <code>&lt;TAB&gt;</code> with a literal tab character in the
+actual source.)</p>
+<p>Also add <code>"documentation"</code> to the
+<code>isSupportedFormat()</code> format list in
+<code>transform.ts</code> for <code>Makefile</code> (already there) and
+<code>make.ps1</code> (already there). No new format entries needed
+since both Makefile and make.ps1 are already recognized formats.</p>
+<h4 id="task-2.3-update-helptext.ts">Task 2.3: Update
+<code>helptext.ts</code></h4>
+<p>Add documentation for the new <code>--init documentation</code> and
+<code>--init presentation</code> options in <code>cmtHelpText</code>. No
+<code>--type</code> flag to document.</p>
+<h3 id="files-to-createmodify-1">Files to Create/Modify</h3>
+<table>
+<thead>
+<tr>
+<th scope="col">File</th>
+<th scope="col">Action</th>
+<th scope="col">Lines</th>
+<th scope="col">Dependencies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cmt.ts</code></td>
+<td>Modify</td>
+<td>~8</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>src/transform.ts</code></td>
+<td>Modify</td>
+<td>~40</td>
+<td><code>generate_text.ts</code></td>
+</tr>
+<tr>
+<td><code>src/generate_text.ts</code></td>
+<td>Modify</td>
+<td>~40</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>helptext.ts</code></td>
+<td>Modify</td>
+<td>~10</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<h3 id="testing-strategy-1">Testing Strategy</h3>
+<ol type="1">
+<li><code>cmt --init documentation codemeta.json</code> generates
+correct files including Makefile and make.ps1</li>
+<li><code>cmt --init presentation codemeta.json</code> works and
+produces the same file set</li>
+<li>Backward compatibility: <code>--init javascript</code> still
+works</li>
+<li>No version.* files generated for documentation or presentation
+type</li>
+<li>Generated Makefile uses hard tabs (not spaces) for recipe lines</li>
+</ol>
+<hr />
+<h2 id="priority-3-clean-up-deno_tasks.ts">Priority 3: Clean Up
+deno_tasks.ts</h2>
+<h3 id="objective-2">Objective</h3>
+<p>Complete the implementation of <code>src/deno_tasks.ts</code> which
+is currently fully commented out with partial code.</p>
+<h3 id="current-state-analysis-2">Current State Analysis</h3>
+<p><strong>Actual code in <code>src/deno_tasks.ts</code></strong> (56
+lines, fully commented):</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">/*</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">const denoTasks: { [key: string]: string } = {};</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">// Handle updating the deno.json file.</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">if (isDeno) {</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">let src: string | undefined = undefined;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">let doBackup: boolean = true;</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">try {</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">    src = await Deno.readTextFile(&quot;deno.json&quot;);</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">} catch (_err) {</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">    console.warn(`creating %cdeno.json`, GREEN);</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">    doBackup = false;</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">}</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">if (src === undefined) {</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">    src = `{&quot;tasks&quot;:{}}`;</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co">}</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co">let denoJSON: { [key: string]: unknown } = {};</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="co">try {</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co">    denoJSON = JSON.parse(src) as {[key: string]: {[key:string]: unknown}};</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co">} catch (err) {</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co">    console.log(`deno.json error, %c${err}`, ERROR_COLOR);</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="co">    Deno.exit(0);</span></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="co">}</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="co">const genCodeTasks: string[] = [];</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="co">if (denoJSON.tasks === undefined || denoJSON.tasks === null) {</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="co">    denoJSON.tasks = {} as {[key: string]: string};</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="co">}</span></span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="co">const tasks: {[key:string]: string} = {};</span></span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="co">for (const taskName of Object.keys(denoTasks)) {</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a><span class="co">    tasks[taskName] = denoTasks[taskName];</span></span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a><span class="co">    genCodeTasks.push(`deno task ${taskName}`);</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="co">}</span></span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="co">if (genCodeTasks.length &gt; 0) {</span></span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="co">    tasks[&quot;gen-code&quot;] = (genCodeTasks as string[]).join(&quot; ; &quot;);</span></span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="co">}</span></span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a><span class="co">if (Object(tasks).keys().length &gt; 0) {</span></span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a><span class="co">    denoJSON.tasks = tasks;</span></span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a><span class="co">}</span></span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a><span class="co">// Update deno.json file.</span></span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a><span class="co">if (doBackup) {</span></span>
+<span id="cb12-40"><a href="#cb12-40" aria-hidden="true" tabindex="-1"></a><span class="co">    try {</span></span>
+<span id="cb12-41"><a href="#cb12-41" aria-hidden="true" tabindex="-1"></a><span class="co">    await Deno.copyFile(&quot;deno.json&quot;, &quot;deno.json.bak&quot;);</span></span>
+<span id="cb12-42"><a href="#cb12-42" aria-hidden="true" tabindex="-1"></a><span class="co">    } catch (err) {</span></span>
+<span id="cb12-43"><a href="#cb12-43" aria-hidden="true" tabindex="-1"></a><span class="co">    console.log(</span></span>
+<span id="cb12-44"><a href="#cb12-44" aria-hidden="true" tabindex="-1"></a><span class="co">        `failed to backup deno.json aborting, %c${err}`,</span></span>
+<span id="cb12-45"><a href="#cb12-45" aria-hidden="true" tabindex="-1"></a><span class="co">        ERROR_COLOR,</span></span>
+<span id="cb12-46"><a href="#cb12-46" aria-hidden="true" tabindex="-1"></a><span class="co">    );</span></span>
+<span id="cb12-47"><a href="#cb12-47" aria-hidden="true" tabindex="-1"></a><span class="co">    Deno.exit(1);</span></span>
+<span id="cb12-48"><a href="#cb12-48" aria-hidden="true" tabindex="-1"></a><span class="co">    }</span></span>
+<span id="cb12-49"><a href="#cb12-49" aria-hidden="true" tabindex="-1"></a><span class="co">}</span></span>
+<span id="cb12-50"><a href="#cb12-50" aria-hidden="true" tabindex="-1"></a><span class="co">src = JSON.stringify(denoJSON, null, 2);</span></span>
+<span id="cb12-51"><a href="#cb12-51" aria-hidden="true" tabindex="-1"></a><span class="co">if (src !== undefined) {</span></span>
+<span id="cb12-52"><a href="#cb12-52" aria-hidden="true" tabindex="-1"></a><span class="co">    Deno.writeTextFile(&quot;deno.json&quot;, src);</span></span>
+<span id="cb12-53"><a href="#cb12-53" aria-hidden="true" tabindex="-1"></a><span class="co">}</span></span>
+<span id="cb12-54"><a href="#cb12-54" aria-hidden="true" tabindex="-1"></a><span class="co">}</span></span>
+<span id="cb12-55"><a href="#cb12-55" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span></code></pre></div>
+<p><strong>Issues identified</strong>: - References undefined:
+<code>isDeno</code>, <code>denoTasks</code>, <code>GREEN</code>,
+<code>ERROR_COLOR</code> - Syntax error:
+<code>Object(tasks).keys()</code> should be
+<code>Object.keys(tasks)</code> - Uses global <code>denoTasks</code>
+object that’s never populated - <code>GREEN</code> and
+<code>ERROR_COLOR</code> are defined in <code>src/colors.ts</code> - In
+<code>cmt.ts</code>: <code>app.deno = true</code> is set for
+<code>--init deno</code> but never used - Help text mentions: “The –deno
+option can trail the above command to update the deno.json file”</p>
+<h3 id="technical-design-2">Technical Design</h3>
+<p>Simplify the approach: create a single <code>addDenoTasks()</code>
+function that takes explicit parameters rather than using global
+state.</p>
+<h3 id="implementation-tasks-2">Implementation Tasks</h3>
+<h4 id="task-3.1-rewrite-srcdeno_tasks.ts">Task 3.1: Rewrite
+<code>src/deno_tasks.ts</code></h4>
+<p><strong>File</strong>: <code>CMTools/src/deno_tasks.ts</code>
+(rewrite existing)</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { ERROR_COLOR<span class="op">,</span> GREEN } <span class="im">from</span> <span class="st">&quot;./colors.ts&quot;</span><span class="op">;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="im">export</span> <span class="kw">async</span> <span class="kw">function</span> <span class="fu">addDenoTasks</span>(</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  denoJsonPath<span class="op">:</span> <span class="dt">string</span> <span class="op">=</span> <span class="st">&quot;deno.json&quot;</span><span class="op">,</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  sourceFile<span class="op">:</span> <span class="dt">string</span><span class="op">,</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  outputFiles<span class="op">:</span> <span class="dt">string</span>[]<span class="op">,</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>)<span class="op">:</span> <span class="bu">Promise</span><span class="op">&lt;</span><span class="dt">boolean</span><span class="op">&gt;</span> {</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> src<span class="op">:</span> <span class="dt">string</span> <span class="op">|</span> <span class="dt">undefined</span> <span class="op">=</span> <span class="kw">undefined</span><span class="op">;</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> doBackup<span class="op">:</span> <span class="dt">boolean</span> <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="cf">try</span> {</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>    src <span class="op">=</span> <span class="cf">await</span> Deno<span class="op">.</span><span class="fu">readTextFile</span>(denoJsonPath)<span class="op">;</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">catch</span> (_err) {</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="vs">`%ccreating </span><span class="sc">${</span>denoJsonPath<span class="sc">}</span><span class="vs">`</span><span class="op">,</span> GREEN)<span class="op">;</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>    doBackup <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (src <span class="op">===</span> <span class="kw">undefined</span>) {</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>    src <span class="op">=</span> <span class="vs">`{&quot;tasks&quot;:{}}`</span><span class="op">;</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> denoJSON<span class="op">:</span> { [key<span class="op">:</span> <span class="dt">string</span>]<span class="op">:</span> <span class="dt">unknown</span> } <span class="op">=</span> {}<span class="op">;</span></span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>  <span class="cf">try</span> {</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a>    denoJSON <span class="op">=</span> <span class="bu">JSON</span><span class="op">.</span><span class="fu">parse</span>(src) <span class="im">as</span> { [key<span class="op">:</span> <span class="dt">string</span>]<span class="op">:</span> <span class="dt">unknown</span> }<span class="op">;</span></span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">catch</span> (err) {</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a>    <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="vs">`deno.json error, %c</span><span class="sc">${</span>err<span class="sc">}</span><span class="vs">`</span><span class="op">,</span> ERROR_COLOR)<span class="op">;</span></span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (denoJSON<span class="op">.</span><span class="at">tasks</span> <span class="op">===</span> <span class="kw">undefined</span> <span class="op">||</span> denoJSON<span class="op">.</span><span class="at">tasks</span> <span class="op">===</span> <span class="kw">null</span>) {</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a>    denoJSON<span class="op">.</span><span class="at">tasks</span> <span class="op">=</span> {}<span class="op">;</span></span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-34"><a href="#cb13-34" aria-hidden="true" tabindex="-1"></a>  <span class="co">// deno.json tasks are plain strings, not objects</span></span>
+<span id="cb13-35"><a href="#cb13-35" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> tasks <span class="op">=</span> denoJSON<span class="op">.</span><span class="at">tasks</span> <span class="im">as</span> { [key<span class="op">:</span> <span class="dt">string</span>]<span class="op">:</span> <span class="dt">string</span> }<span class="op">;</span></span>
+<span id="cb13-36"><a href="#cb13-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-37"><a href="#cb13-37" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> filesArg <span class="op">=</span> [sourceFile<span class="op">,</span> <span class="op">...</span>outputFiles]<span class="op">.</span><span class="fu">join</span>(<span class="st">&quot; &quot;</span>)<span class="op">;</span></span>
+<span id="cb13-38"><a href="#cb13-38" aria-hidden="true" tabindex="-1"></a>  tasks[<span class="st">&quot;gen-code&quot;</span>] <span class="op">=</span> <span class="vs">`deno run --allow-read --allow-write ./cmt.ts </span><span class="sc">${</span>filesArg<span class="sc">}</span><span class="vs">`</span><span class="op">;</span></span>
+<span id="cb13-39"><a href="#cb13-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-40"><a href="#cb13-40" aria-hidden="true" tabindex="-1"></a>  denoJSON<span class="op">.</span><span class="at">tasks</span> <span class="op">=</span> tasks<span class="op">;</span></span>
+<span id="cb13-41"><a href="#cb13-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-42"><a href="#cb13-42" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (doBackup) {</span>
+<span id="cb13-43"><a href="#cb13-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span> {</span>
+<span id="cb13-44"><a href="#cb13-44" aria-hidden="true" tabindex="-1"></a>      <span class="cf">await</span> Deno<span class="op">.</span><span class="fu">copyFile</span>(denoJsonPath<span class="op">,</span> <span class="vs">`</span><span class="sc">${</span>denoJsonPath<span class="sc">}</span><span class="vs">.bak`</span>)<span class="op">;</span></span>
+<span id="cb13-45"><a href="#cb13-45" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">catch</span> (err) {</span>
+<span id="cb13-46"><a href="#cb13-46" aria-hidden="true" tabindex="-1"></a>      <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="vs">`failed to backup </span><span class="sc">${</span>denoJsonPath<span class="sc">}</span><span class="vs"> aborting, %c</span><span class="sc">${</span>err<span class="sc">}</span><span class="vs">`</span><span class="op">,</span> ERROR_COLOR)<span class="op">;</span></span>
+<span id="cb13-47"><a href="#cb13-47" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb13-48"><a href="#cb13-48" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb13-49"><a href="#cb13-49" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb13-50"><a href="#cb13-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-51"><a href="#cb13-51" aria-hidden="true" tabindex="-1"></a>  <span class="cf">await</span> Deno<span class="op">.</span><span class="fu">writeTextFile</span>(denoJsonPath<span class="op">,</span> <span class="bu">JSON</span><span class="op">.</span><span class="fu">stringify</span>(denoJSON<span class="op">,</span> <span class="kw">null</span><span class="op">,</span> <span class="dv">2</span>))<span class="op">;</span></span>
+<span id="cb13-52"><a href="#cb13-52" aria-hidden="true" tabindex="-1"></a>  <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="vs">`%cupdated </span><span class="sc">${</span>denoJsonPath<span class="sc">}</span><span class="vs">`</span><span class="op">,</span> GREEN)<span class="op">;</span></span>
+<span id="cb13-53"><a href="#cb13-53" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb13-54"><a href="#cb13-54" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p><strong>Key Design Decisions</strong>: - Single exported function
+with explicit parameters (no global state) - Task values are plain
+strings (matches deno.json format — the original plan used
+<code>{ cmd, desc }</code> objects which Deno does not accept) - Fixes
+<code>Object.keys()</code> syntax error from original commented code -
+Creates backup before modifying; existing tasks are preserved - Caller
+is responsible for passing only the files that should be in gen-code
+(see Task 3.2)</p>
+<h4 id="task-3.2-integrate-with-cmt.ts">Task 3.2: Integrate with
+<code>cmt.ts</code></h4>
+<p>Remove the ad-hoc <code>app.deno = true</code> assignments from the
+<code>--init</code> switch cases. Replace with an automatic check after
+the switch: if <code>lang</code> starts with <code>"deno"</code>, call
+<code>addDenoTasks()</code>. No new CLI flag is needed — the project
+type already encodes this.</p>
+<p>Add top-level import:</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> { addDenoTasks } <span class="im">from</span> <span class="st">&quot;./src/deno_tasks.ts&quot;</span><span class="op">;</span></span></code></pre></div>
+<p>After the output file generation loop (around line 164), add:</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (app<span class="op">.</span><span class="at">init</span> <span class="op">!==</span> <span class="st">&quot;&quot;</span> <span class="op">&amp;&amp;</span> lang<span class="op">.</span><span class="fu">startsWith</span>(<span class="st">&quot;deno&quot;</span>)) {</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Automatically update deno.json for all deno-* project types.</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Only pass source-derived files (version.*, about.md, CITATION.cff),</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">// not installer scripts or templates.</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> genCodeFiles <span class="op">=</span> outputNames<span class="op">.</span><span class="fu">filter</span>((n) <span class="kw">=&gt;</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    n<span class="op">.</span><span class="fu">startsWith</span>(<span class="st">&quot;version.&quot;</span>) <span class="op">||</span> n <span class="op">===</span> <span class="st">&quot;about.md&quot;</span> <span class="op">||</span> n <span class="op">===</span> <span class="st">&quot;CITATION.cff&quot;</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  )<span class="op">;</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (genCodeFiles<span class="op">.</span><span class="at">length</span> <span class="op">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> ok <span class="op">=</span> <span class="cf">await</span> <span class="fu">addDenoTasks</span>(<span class="st">&quot;deno.json&quot;</span><span class="op">,</span> inputName<span class="op">,</span> genCodeFiles)<span class="op">;</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>ok) <span class="bu">console</span><span class="op">.</span><span class="fu">log</span>(<span class="st">&quot;Warning: failed to update deno.json gen-code task&quot;</span>)<span class="op">;</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>The <code>--deno/-D</code> flag is <strong>not added</strong>. The
+project type (<code>--init deno-*</code>) is sufficient signal; a
+separate flag would be redundant and confusing alongside the new
+sub-types.</p>
+<h4 id="task-3.3-add-tests">Task 3.3: Add Tests</h4>
+<p>Create <code>test/deno_tasks_test.ts</code> with tests for: -
+Creating deno.json from scratch - Merging with existing tasks<br />
+- Backup file creation - Error handling</p>
+<h3 id="files-to-createmodify-2">Files to Create/Modify</h3>
+<table>
+<thead>
+<tr>
+<th scope="col">File</th>
+<th scope="col">Action</th>
+<th scope="col">Lines</th>
+<th scope="col">Dependencies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>src/deno_tasks.ts</code></td>
+<td>Rewrite</td>
+<td>~65</td>
+<td><code>colors.ts</code></td>
+</tr>
+<tr>
+<td><code>cmt.ts</code></td>
+<td>Modify</td>
+<td>~8</td>
+<td><code>deno_tasks.ts</code></td>
+</tr>
+<tr>
+<td><code>test/deno_tasks_test.ts</code></td>
+<td>Create</td>
+<td>~90</td>
+<td><code>@std/testing</code>, <code>@std/fs</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="priority-4-deno-project-sub-types">Priority 4: Deno Project
+Sub-types</h2>
+<h3 id="objective-3">Objective</h3>
+<p>Replace the undifferentiated <code>--init deno</code>,
+<code>--init typescript</code>, and <code>--init javascript</code>
+values with explicit sub-type labels that reflect how the project’s
+TypeScript is delivered: as a compiled CLI, a bundled browser script,
+bare ES modules, or a web component library.</p>
+<h3 id="current-state-analysis-3">Current State Analysis</h3>
+<p>From <code>cmt.ts</code> switch (lines 82–116): -
+<code>case "deno"</code> / <code>"typescript"</code> /
+<code>"javascript"</code>: all set <code>lang</code> to their literal
+value, push <code>version.ts</code> or <code>version.js</code>, push
+<code>Makefile</code>, and set <code>app.deno = true</code> - All three
+produce the same <code>denoMakefileText</code> Makefile (via
+<code>getMakefileText</code>) - They differ only in the version file
+extension - The old values are kept as <strong>deprecated
+aliases</strong> mapping to <code>deno-cli</code> for backward
+compatibility</p>
+<h3 id="technical-design-3">Technical Design</h3>
+<h4 id="new---init-values">New <code>--init</code> values</h4>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+<col style="width: 16%" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col">Value</th>
+<th scope="col">Replaces</th>
+<th scope="col">Lang set to</th>
+<th scope="col">version.*</th>
+<th scope="col">Makefile template</th>
+<th scope="col">deno.json gen-code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>deno-cli</code></td>
+<td><code>deno</code>, <code>typescript</code></td>
+<td><code>deno-cli</code></td>
+<td><code>version.ts</code></td>
+<td><code>denoCliMakefileText</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>deno-bundle</code></td>
+<td><code>javascript</code> (partially)</td>
+<td><code>deno-bundle</code></td>
+<td>none</td>
+<td><code>denoBundleMakefileText</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>deno-es-module</code></td>
+<td>—</td>
+<td><code>deno-es-module</code></td>
+<td>none</td>
+<td><code>denoEsModuleMakefileText</code></td>
+<td>yes</td>
+</tr>
+<tr>
+<td><code>deno-webcomponent</code></td>
+<td>—</td>
+<td><code>deno-webcomponent</code></td>
+<td>none</td>
+<td><code>denoWebComponentMakefileText</code></td>
+<td>yes</td>
+</tr>
+</tbody>
+</table>
+<p>Deprecated aliases <code>deno</code>, <code>typescript</code>,
+<code>javascript</code> are kept in the switch but set
+<code>lang = "deno-cli"</code> so behaviour is unchanged and
+<code>lang.startsWith("deno")</code> fires for gen-code.</p>
+<h4 id="executable-names-for-deno-cli">Executable names for
+<code>deno-cli</code></h4>
+<p>Extra positional arguments after the codemeta.json path are treated
+as executable names:</p>
+<pre><code>cmt --init deno-cli codemeta.json mycmd myothercmd</code></pre>
+<p>If none are supplied, fall back to the <code>name</code> field from
+codemeta.json. The names are passed into the Makefile template as a list
+so <code>deno compile</code> targets are generated per executable.</p>
+<h3 id="implementation-tasks-3">Implementation Tasks</h3>
+<h4 id="task-4.1-modify-cmt.ts">Task 4.1: Modify
+<code>cmt.ts</code></h4>
+<p>Replace the three old cases and add four new ones in the
+<code>--init</code> switch:</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Deprecated aliases — keep for backward compatibility</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="st">&quot;deno&quot;</span><span class="op">:</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="st">&quot;typescript&quot;</span><span class="op">:</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  lang <span class="op">=</span> <span class="st">&quot;deno-cli&quot;</span><span class="op">;</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  outputNames<span class="op">.</span><span class="fu">push</span>(<span class="st">&quot;version.ts&quot;</span>)<span class="op">;</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  outputNames<span class="op">.</span><span class="fu">push</span>(<span class="st">&quot;Makefile&quot;</span>)<span class="op">;</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="st">&quot;javascript&quot;</span><span class="op">:</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  lang <span class="op">=</span> <span class="st">&quot;deno-cli&quot;</span><span class="op">;</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  outputNames<span class="op">.</span><span class="fu">push</span>(<span class="st">&quot;version.js&quot;</span>)<span class="op">;</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  outputNames<span class="op">.</span><span class="fu">push</span>(<span class="st">&quot;Makefile&quot;</span>)<span class="op">;</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="co">// New sub-types</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="st">&quot;deno-cli&quot;</span><span class="op">:</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  lang <span class="op">=</span> <span class="st">&quot;deno-cli&quot;</span><span class="op">;</span></span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>  outputNames<span class="op">.</span><span class="fu">push</span>(<span class="st">&quot;version.ts&quot;</span>)<span class="op">;</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>  outputNames<span class="op">.</span><span class="fu">push</span>(<span class="st">&quot;Makefile&quot;</span>)<span class="op">;</span></span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Remaining positional args after codemeta.json are executable names.</span></span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Collect them now before the general outputNames loop runs.</span></span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>  <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="st">&quot;deno-bundle&quot;</span><span class="op">:</span></span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>  lang <span class="op">=</span> <span class="st">&quot;deno-bundle&quot;</span><span class="op">;</span></span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>  outputNames<span class="op">.</span><span class="fu">push</span>(<span class="st">&quot;Makefile&quot;</span>)<span class="op">;</span></span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>  <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="st">&quot;deno-es-module&quot;</span><span class="op">:</span></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a>  lang <span class="op">=</span> <span class="st">&quot;deno-es-module&quot;</span><span class="op">;</span></span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a>  outputNames<span class="op">.</span><span class="fu">push</span>(<span class="st">&quot;Makefile&quot;</span>)<span class="op">;</span></span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>  <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span> <span class="st">&quot;deno-webcomponent&quot;</span><span class="op">:</span></span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>  lang <span class="op">=</span> <span class="st">&quot;deno-webcomponent&quot;</span><span class="op">;</span></span>
+<span id="cb17-32"><a href="#cb17-32" aria-hidden="true" tabindex="-1"></a>  outputNames<span class="op">.</span><span class="fu">push</span>(<span class="st">&quot;Makefile&quot;</span>)<span class="op">;</span></span>
+<span id="cb17-33"><a href="#cb17-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">// custom-elements.json is generated by external tooling; CMTools provides the</span></span>
+<span id="cb17-34"><a href="#cb17-34" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Makefile target that calls it, not the file itself.</span></span>
+<span id="cb17-35"><a href="#cb17-35" aria-hidden="true" tabindex="-1"></a>  <span class="cf">break</span><span class="op">;</span></span></code></pre></div>
+<p>For <code>deno-cli</code>, parse executable names from the remaining
+positional args. These need to be captured before the general args loop
+(around line 119) consumes them as output file names. One approach:
+check <code>app.init === "deno-cli"</code> after the switch and pull
+names that don’t end in a known extension.</p>
+<h4 id="task-4.2-add-makefile-templates-to-srcgenerate_text.ts">Task
+4.2: Add Makefile templates to <code>src/generate_text.ts</code></h4>
+<p>Four new templates (all with hard tab characters for recipe
+lines):</p>
+<p><strong><code>denoCliMakefileText</code></strong> — parameterised per
+executable. Targets: <code>build</code>, <code>compile</code>, one
+<code>deno compile --output bin/{name}</code> target per executable,
+<code>test</code>, <code>clean</code>. Use a placeholder like
+<code>{executables}</code> that <code>transform()</code> expands, or
+generate the compile targets dynamically in <code>cmt.ts</code> before
+calling <code>transform()</code>.</p>
+<p><strong><code>denoBundleMakefileText</code></strong> — targets:
+<code>build</code> (calls <code>deno bundle</code> or equivalent),
+<code>test</code>, <code>clean</code>. Uses a placeholder for the
+entry-point <code>.ts</code> and output <code>.js</code> filename.</p>
+<p><strong><code>denoEsModuleMakefileText</code></strong> — minimal:
+<code>lint</code> (<code>deno lint</code>), <code>check</code>
+(<code>deno check</code>), <code>test</code> (<code>deno test</code>),
+<code>clean</code>. No compile or bundle step.</p>
+<p><strong><code>denoWebComponentMakefileText</code></strong> — targets:
+<code>build</code> (calls manifest analyzer to generate
+<code>custom-elements.json</code>), <code>demo</code> (builds demo
+HTML), <code>test</code>, <code>clean</code>.</p>
+<h4 id="task-4.3-update-srctransform.ts">Task 4.3: Update
+<code>src/transform.ts</code></h4>
+<p>Extend <code>getMakefileText()</code> to map the four new lang
+values:</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode typescript"><code class="sourceCode typescript"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> prefix<span class="op">:</span> { [key<span class="op">:</span> <span class="dt">string</span>]<span class="op">:</span> <span class="dt">string</span> } <span class="op">=</span> {</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;golang&quot;</span><span class="op">:</span> goMakefileText<span class="op">,</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;go&quot;</span><span class="op">:</span> goMakefileText<span class="op">,</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;deno-cli&quot;</span><span class="op">:</span> denoCliMakefileText<span class="op">,</span>    <span class="co">// replaces javascript/typescript/deno</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;deno-bundle&quot;</span><span class="op">:</span> denoBundleMakefileText<span class="op">,</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;deno-es-module&quot;</span><span class="op">:</span> denoEsModuleMakefileText<span class="op">,</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;deno-webcomponent&quot;</span><span class="op">:</span> denoWebComponentMakefileText<span class="op">,</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;documentation&quot;</span><span class="op">:</span> documentationMakefileText<span class="op">,</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Keep old keys as aliases during transition</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;javascript&quot;</span><span class="op">:</span> denoCliMakefileText<span class="op">,</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;typescript&quot;</span><span class="op">:</span> denoCliMakefileText<span class="op">,</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;deno&quot;</span><span class="op">:</span> denoCliMakefileText<span class="op">,</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span></code></pre></div>
+<h4 id="task-4.4-update-helptext.ts">Task 4.4: Update
+<code>helptext.ts</code></h4>
+<p>Already done in an earlier update — <code>--init</code> lists all
+four <code>deno-*</code> sub-types with descriptions. Verify deprecated
+values are noted as aliases.</p>
+<h3 id="files-to-createmodify-3">Files to Create/Modify</h3>
+<table>
+<thead>
+<tr>
+<th scope="col">File</th>
+<th scope="col">Action</th>
+<th scope="col">Lines</th>
+<th scope="col">Dependencies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cmt.ts</code></td>
+<td>Modify</td>
+<td>~30</td>
+<td><code>deno_tasks.ts</code></td>
+</tr>
+<tr>
+<td><code>src/generate_text.ts</code></td>
+<td>Modify</td>
+<td>~120</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>src/transform.ts</code></td>
+<td>Modify</td>
+<td>~15</td>
+<td><code>generate_text.ts</code></td>
+</tr>
+<tr>
+<td><code>helptext.ts</code></td>
+<td>Already updated</td>
+<td>—</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<h3 id="testing-strategy-2">Testing Strategy</h3>
+<ol type="1">
+<li><code>cmt --init deno-cli codemeta.json mycmd</code> generates
+version.ts, Makefile with compile target for <code>mycmd</code>, and
+updates deno.json</li>
+<li><code>cmt --init deno-cli codemeta.json cmd1 cmd2</code> produces
+two compile targets</li>
+<li><code>cmt --init deno-bundle codemeta.json</code> generates Makefile
+with bundle target, no version.ts</li>
+<li><code>cmt --init deno-es-module codemeta.json</code> generates
+minimal Makefile, no version.ts</li>
+<li><code>cmt --init deno-webcomponent codemeta.json</code> generates
+Makefile with manifest and demo targets</li>
+<li>Deprecated <code>--init deno</code> still works and produces same
+output as <code>--init deno-cli</code></li>
+<li>All deno-* types update deno.json gen-code task automatically</li>
+</ol>
+<hr />
+<h2 id="work-order-recommendation">Work Order Recommendation</h2>
+<ol type="1">
+<li><strong>deno_tasks.ts cleanup</strong> (Priority 3) - Quick win, ~1
+day
+<ul>
+<li>Lowest risk, well-contained changes</li>
+<li>Must land before Priority 4 since Priority 4 depends on
+<code>addDenoTasks()</code></li>
+</ul></li>
+<li><strong>Deno sub-types</strong> (Priority 4) - ~2-3 days
+<ul>
+<li>Builds directly on Priority 3</li>
+<li>Replaces/deprecates old init values; no other priorities depend on
+it</li>
+</ul></li>
+<li><strong>Non-Programming Project Support</strong> (Priority 2) - ~1-2
+days
+<ul>
+<li>Independent of Priorities 3 and 4; can proceed in parallel if
+needed</li>
+<li>Straightforward: two new switch cases and one new Makefile
+template</li>
+</ul></li>
+<li><strong>Global Configuration</strong> (Priority 1) - Highest impact,
+~3-4 days
+<ul>
+<li>Most complex; can be done last without blocking other work</li>
+<li>Requires careful profile selection UI design</li>
+</ul></li>
+</ol>
+<hr />
+<h2 id="acceptance-criteria">Acceptance Criteria</h2>
+<h3 id="global-configuration-priority-1">Global Configuration (Priority
+1)</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" /><code>src/config.ts</code> created
+with <code>Profile</code>, <code>License</code>, <code>Config</code>
+interfaces and all I/O functions</label></li>
+<li><label><input type="checkbox" /><code>getLicenseText()</code> reads
+from <code>file</code> path (with <code>~</code> expansion) or inline
+<code>text</code>; <code>file</code> wins when both present</label></li>
+<li><label><input type="checkbox" /><code>cme --profiles</code> lists
+configured profiles</label></li>
+<li><label><input type="checkbox" /><code>cme --person-lists</code>
+lists configured person lists</label></li>
+<li><label><input
+type="checkbox" /><code>cme --apply-license codemeta.json</code> writes
+<code>./LICENSE</code> and updates <code>license</code> URL in
+codemeta</label></li>
+<li><label><input type="checkbox" />Editing
+author/contributor/maintainer shows unified menu of profiles and person
+lists</label></li>
+<li><label><input type="checkbox" />Single profile selection works for
+<code>person_or_organization</code> fields</label></li>
+<li><label><input type="checkbox" />Person list selection works for
+<code>person_or_organization_list</code> fields (applies whole list at
+once)</label></li>
+<li><label><input type="checkbox" />List build (add-another loop) works
+for <code>person_or_organization_list</code> fields</label></li>
+<li><label><input type="checkbox" />Editing <code>license</code> field
+prompts to apply from config; writes <code>./LICENSE</code> on
+selection</label></li>
+<li><label><input type="checkbox" />Manual entry fallback works for all
+field types</label></li>
+<li><label><input type="checkbox" />All behaviour unchanged when no
+config file exists</label></li>
+<li><label><input type="checkbox" /><code>helptext.ts</code> updated for
+new flags</label></li>
+</ul>
+<h3 id="non-programming-projects-priority-2">Non-Programming Projects
+(Priority 2)</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" /><code>--init documentation</code>
+generates correct files including Makefile and make.ps1</label></li>
+<li><label><input type="checkbox" /><code>--init presentation</code>
+generates the same file set as documentation</label></li>
+<li><label><input type="checkbox" />Generic Makefile template added with
+hard tabs (not spaces)</label></li>
+<li><label><input type="checkbox" />No version.* files generated for
+documentation or presentation type</label></li>
+<li><label><input type="checkbox" />Backward compatibility maintained
+(<code>--init javascript</code> etc. unchanged)</label></li>
+<li><label><input type="checkbox" />Help text updated</label></li>
+</ul>
+<h3 id="deno_tasks.ts-priority-3">deno_tasks.ts (Priority 3)</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" /><code>src/deno_tasks.ts</code>
+rewritten with working <code>addDenoTasks()</code> function</label></li>
+<li><label><input type="checkbox" />Ad-hoc <code>app.deno = true</code>
+assignments removed from <code>cmt.ts</code>; replaced with automatic
+<code>lang.startsWith("deno")</code> check</label></li>
+<li><label><input type="checkbox" />No <code>--deno</code> flag added
+(project type encodes this implicitly)</label></li>
+<li><label><input type="checkbox" /><code>cmt.ts</code> calls
+<code>addDenoTasks()</code> automatically for all
+<code>--init deno-*</code> types, passing only regeneratable
+files</label></li>
+<li><label><input type="checkbox" />deno.json tasks are plain strings
+(not objects)</label></li>
+<li><label><input type="checkbox" />Creates/updates deno.json with
+gen-code task</label></li>
+<li><label><input type="checkbox" />Backup file created before
+modification</label></li>
+<li><label><input type="checkbox" />Existing tasks
+preserved</label></li>
+<li><label><input type="checkbox" /><code>helptext.ts</code> updated:
+<code>--deno</code> example removed; <code>--init</code> lists all
+deno-* types with note about automatic gen-code task</label></li>
+<li><label><input type="checkbox" />Tests pass</label></li>
+</ul>
+<hr />
+<h3 id="deno-sub-types-priority-4">Deno Sub-types (Priority 4)</h3>
+<ul class="task-list">
+<li><label><input type="checkbox" /><code>--init deno-cli</code>
+generates version.ts, Makefile with per-executable compile targets, and
+updates deno.json</label></li>
+<li><label><input type="checkbox" /><code>--init deno-bundle</code>
+generates Makefile with bundle target; no version.ts</label></li>
+<li><label><input type="checkbox" /><code>--init deno-es-module</code>
+generates minimal Makefile; no version.ts</label></li>
+<li><label><input
+type="checkbox" /><code>--init deno-webcomponent</code> generates
+Makefile with manifest and demo targets; no version.ts</label></li>
+<li><label><input type="checkbox" />Deprecated <code>--init deno</code>,
+<code>--init typescript</code>, <code>--init javascript</code> still
+work (alias to <code>deno-cli</code>)</label></li>
+<li><label><input type="checkbox" />All <code>deno-*</code> types
+automatically update deno.json gen-code task</label></li>
+<li><label><input type="checkbox" /><code>helptext.ts</code> documents
+all four sub-types and notes deprecated aliases</label></li>
+</ul>
+<hr />
+<h2 id="success-metrics">Success Metrics</h2>
+<ul>
+<li>User can pre-configure profiles, person lists, and licenses in
+<code>~/.cmtoolsrc</code> and apply them from <code>cme</code> without
+typing YAML by hand</li>
+<li><code>cme --apply-license codemeta.json</code> writes
+<code>./LICENSE</code> and updates the codemeta <code>license</code>
+URL</li>
+<li>User can initialize documentation/presentation projects with
+<code>cmt --init documentation</code></li>
+<li>User can initialize any of four Deno project sub-types and get the
+appropriate Makefile and deno.json tasks automatically</li>
+<li>Deprecated <code>--init deno/typescript/javascript</code> values
+continue to work unchanged</li>
+<li>No breaking changes to existing functionality</li>
+<li>All existing tests still pass</li>
+</ul>
+</section>
+<footer-global></footer-global>
+</body>
+</html>
