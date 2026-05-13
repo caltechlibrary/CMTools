@@ -61,31 +61,23 @@
 
 ## Next session: cme interactive mode
 
-- [ ] **Funder organizations in config**: The `funder` codemeta field is a
-      `person_or_organization_list` — funding bodies (NSF, NIH, Caltech, etc.) are a
-      natural fit for the config. Decide whether to add a dedicated `funders` section to
-      `.cmtoolsrc` alongside `profiles` and `person_lists`, or whether organization profiles
-      and person lists already cover this adequately.
+- [x] **Funder organizations in config**: `funder` is `person_or_organization` type.
+      Existing `profiles` in `.cmtoolsrc` already handle org entries (set `type: Organization`
+      with `name` and optional `id`). No dedicated `funders` section needed.
 - [ ] **End-to-end review of interactive mode**: When `cme codemeta.json` is run with no
       attribute names it iterates all CodeMetaTerms. Verify that the config-aware menus
       (profiles, person lists, licenses) appear correctly for every relevant field in that
       full loop, not just when an individual attribute is named explicitly.
-- [ ] **Skip / keep-existing UX in the full loop**: In the interactive loop, fields that
-      already have a value show `Default: name: <value>`. The user needs a clear, consistent
-      way to skip (keep existing) across all field types — simple fields, complex YAML fields,
-      and the new config-menu fields — without the flow feeling inconsistent.
+- [x] **Skip / keep-existing UX in the full loop**: `.` now skips for all field types.
+      Complex YAML fields prompt says "Enter '.' on an empty line to skip/keep existing."
+      Simple fields prompt says "Enter or '.' to keep current." Config menus already use `q`.
 - [ ] **`--init` + `cme` handoff**: After `cmt --init deno-cli codemeta.json` generates the
       skeleton files, the natural next step is `cme codemeta.json` to fill in metadata.
       Make sure that flow works cleanly end-to-end with the config in place.
-- [ ] **Auto-derive `issueTracker` from `codeRepository`**: When `codeRepository` is known
-      and `issueTracker` is empty, calculate the issues URL automatically. For GitHub
-      (`github.com/org/repo`) append `/issues`; same pattern applies to GitLab and Codeberg.
-      Either auto-populate silently when `cme` writes the file, or prompt to confirm when
-      the user edits the `issueTracker` field and the derived URL can be offered as a default.
-- [ ] **Default `codeRepository` from `.git/config` remote origin**: When `cme` is run in
-      a directory containing `.git/config` and `codeRepository` is empty, offer the remote
-      origin URL as the default value. `src/gitcmds.ts` already has a private
-      `getRemoteOriginURL()` that runs `git config --get remote.origin.url` — export it
-      and normalise the result (convert `git@github.com:org/repo.git` SSH form to
-      `https://github.com/org/repo`, strip trailing `.git`). This feeds naturally into the
-      `issueTracker` auto-derive above.
+- [x] **Auto-derive `issueTracker` from `codeRepository`**: When `issueTracker` is empty
+      and `cm.codeRepository` is set, `/issues` is appended and offered as the prompt
+      default. Works across GitHub, GitLab, and Codeberg (all use the same path pattern).
+- [x] **Default `codeRepository` from `.git/config` remote origin**: `getRemoteOriginURL()`
+      is now exported from `src/gitcmds.ts` with SSH→HTTPS normalization and `.git` stripping
+      via `normalizeRemoteURL()`. When `codeRepository` is empty the git remote is offered
+      as the suggested default in the `cme` prompt.

@@ -38,7 +38,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.45
+version: 0.0.45b
 license_url: https://caltechlibrary.github.io/CMTools/LICENSE
 operating_system:
   - Linux
@@ -61,7 +61,7 @@ date_released: 2025-05-13
 About this software
 ===================
 
-## CMTools 0.0.45
+## CMTools 0.0.45b
 
 - Added generator for add-col-scope.lua
 - Update website.mak file to include add-col-scope.lua filter

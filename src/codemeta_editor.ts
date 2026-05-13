@@ -21,6 +21,7 @@ import {
   profileToPersonOrOrg,
   type Profile,
 } from "./config.ts";
+import { getRemoteOriginURL } from "./gitcmds.ts";
 
 function getAttributeByName(name: string): AttributeType | undefined {
   for (const attr of CodeMetaTerms) {
@@ -153,11 +154,29 @@ export async function editCodeMetaTerm(
       }
     }
 
+    // --- Suggested defaults for empty URL fields ---
+    let suggestedDefault = "";
+    if (name === "codeRepository" && (curVal === undefined || curVal === "")) {
+      const gitUrl = await getRemoteOriginURL();
+      if (gitUrl) {
+        suggestedDefault = gitUrl;
+        console.log(`  (suggested from git remote: ${gitUrl})`);
+      }
+    }
+    if (name === "issueTracker" && (curVal === undefined || curVal === "")) {
+      const repoUrl = cm.codeRepository
+        .replace(/^git\+/, "").replace(/\.git$/, "").trim();
+      if (repoUrl) {
+        suggestedDefault = `${repoUrl}/issues`;
+        console.log(`  (derived from codeRepository: ${suggestedDefault})`);
+      }
+    }
+
     // --- Original prompt path ---
     let pVal: string | null = "";
     if (complexFieldList.indexOf(name) > -1) {
       console.log(
-        `Enter YAML for ${name}. Enter period '.' on an empty line when done.`,
+        `Enter YAML for ${name}. Enter '.' on an empty line to skip/keep existing.`,
       );
       const lines: string[] = [];
       let txt: string | null = "";
@@ -174,10 +193,10 @@ export async function editCodeMetaTerm(
         pVal = txt;
       }
     } else {
-      pVal = prompt(
-        `Enter ${name} (press enter, to accept current value): `,
-        "",
-      );
+      const hint = suggestedDefault
+        ? `Enter ${name} (Enter to accept suggestion, '.' to skip): `
+        : `Enter ${name} (Enter or '.' to keep current): `;
+      pVal = prompt(hint, suggestedDefault);
     }
     if (pVal === null) {
       val = undefined;
@@ -186,7 +205,7 @@ export async function editCodeMetaTerm(
     }
   }
 
-  if (val === undefined || val === "") {
+  if (val === undefined || val === "" || val === ".") {
     return false;
   }
   if (setObjectFromString(obj, name, val.trim(), attr.type) === false) {
