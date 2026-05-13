@@ -122,6 +122,10 @@ async function main() {
       case "documentation":
       case "presentation":
         lang = "documentation";
+        outputNames = outputNames.filter((n) =>
+          !["INSTALL.md", "INSTALL_NOTES_macOS.md", "INSTALL_NOTES_Windows.md",
+            "installer.ps1", "installer.sh"].includes(n)
+        );
         outputNames.push("Makefile");
         outputNames.push("make.ps1");
         break;
