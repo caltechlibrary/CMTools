@@ -2,19 +2,10 @@
 
 ## Bugs
 
-- [x] Installation documentation does not need to be generated for projects of type documentation and presentation
-- [x] Makefile for documentation and presentation need to have save and status rules like those in Go Makefile
+- [ ] When using `--init` for presentation the add-col-scope.lua file isn't being generated
 
 ## Next Steps (coming features)
 
-- [x] CMTools should have a user global configuration (`~/.cmtoolsrc`) storing:
-      person/org profiles (for author/contributor/maintainer fields), pre-defined person
-      lists (e.g. a whole team applied at once), and license templates (inline text or path
-      to file). `cme` flags: `--profiles`, `--person-lists`, `--apply-license`, `--global-config`.
-      Config is YAML. Search walks up from cwd to home directory (first `.cmtoolsrc` found wins).
-- [x] I need to support no-programming projects, like writing presentations and documentation projects
-      I want to be able to pass an initialization label to generate the basic files include Makefile, webmake.mak
-      so the usual things are in place.
 - [ ] There is additional metadata outside the codemeta.json file like
       executable files basenames that would be helpful and are not captured,
       what's the right way to do this without adding another "project" file to a

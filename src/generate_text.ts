@@ -1318,7 +1318,6 @@ htdocs: .FORCE
 
 test: .FORCE
 	deno task test
-	deno task editor_test.ts
 
 install: build
 	@echo "Installing programs in $(PREFIX)/bin"
