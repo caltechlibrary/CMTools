@@ -125,17 +125,17 @@ clean:
 installers: INSTALL.md installer.sh installer.ps1
 
 INSTALL.md: .FORCE
-	deno run --allow-read --allow-write --allow-run cmt.ts codemeta.json INSTALL.md
+	deno run --allow-read --allow-write --allow-run --allow-env cmt.ts codemeta.json INSTALL.md
 
 installer.sh: .FORCE
-	deno run --allow-read --allow-write --allow-run cmt.ts codemeta.json installer.sh
+	deno run --allow-read --allow-write --allow-run --allow-env cmt.ts codemeta.json installer.sh
 
 installer.ps1: .FORCE
-	deno run --allow-read --allow-write --allow-run cmt.ts codemeta.json installer.ps1
+	deno run --allow-read --allow-write --allow-run --allow-env cmt.ts codemeta.json installer.ps1
 
 project_scripts: website.mak website.ps1 release.bash release.ps1 publish.bash publish.ps1
-	deno run --allow-read --allow-write --allow-run cmt.ts codemeta.json website.mak release.bash publish.bash
-	deno run --allow-read --allow-write --allow-run cmt.ts codemeta.json website.ps1 release.ps1 publish.ps1
+	deno run --allow-read --allow-write --allow-run --allow-env cmt.ts codemeta.json website.mak release.bash publish.bash
+	deno run --allow-read --allow-write --allow-run --allow-env cmt.ts codemeta.json website.ps1 release.ps1 publish.ps1
 
 release: clean build man website project_scripts distribute_docs dist/Linux-x86_64 dist/Linux-aarch64 dist/macOS-x86_64 dist/macOS-arm64 dist/Windows-x86_64 dist/Windows-arm64
 	printf "\n\tReady to do ./release.bash\n"
