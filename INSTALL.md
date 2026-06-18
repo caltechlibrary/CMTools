@@ -52,8 +52,8 @@ Installing from source
 
 ### Required software
 
-- Deno >= 2.7
-- CMTools >= 0.0.43
+- Deno >= 2.8
+- CMTools >= 0.0.46
 
 ### Steps
 

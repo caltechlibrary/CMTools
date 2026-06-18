@@ -38,7 +38,7 @@ maintainer:
     id: https://orcid.org/0000-0003-0900-6903
 
 repository_code: git+https://github.com/caltechlibrary/CMTools
-version: 0.0.45b
+version: 0.0.46
 license_url: https://caltechlibrary.github.io/CMTools/LICENSE
 operating_system:
   - Linux
@@ -55,32 +55,24 @@ keywords:
   - code generation
   - markdown generation
 
-date_released: 2025-05-13
+date_released: 2026-06-18
 ---
 
 About this software
 ===================
 
-## CMTools 0.0.45b
+## CMTools 0.0.46
 
-- Added generator for add-col-scope.lua
-- Update website.mak file to include add-col-scope.lua filter
-- Init will now add a site.css and add-col-scope.lua to list files generated automatically
-- Commented out pagefind from website.mak and website.ps1
-- Commented out search.md from nav generation in page.tmpl
-- Fixed rendering of suggested software versions in about.md
-- Fixed bug in render website.mak where is didn't escape the learing period of ".md" when replacing with ".html".
-- Added `-L` option to set the language
-- Fixed bug where -lang wasn't setting the project language
-- Fixed our GROUP_ID is calculated when generating release.bash and release.ps1
-- Fixing Handlebars escaping, shell injection risks
-- Added checksum support
-- Fixed logic bugs across generate_text.ts and transform.ts
-- Updated documentation and presentation Makefile template to include status, save, website, clean-website rules and BRANCH variable, matching the Go project Makefile pattern
-- Updated release.bash template to upload GitHub release assets one at a time with per-file progress messages instead of a single bulk upload
-- Updated release.ps1 template with the same one-at-a-time upload approach using a foreach loop
-- Changed upload order in both release scripts to upload the checksum file first as an early network connectivity check, followed by the distribution zip files
-- Fixed issue where description in codemeta.json file is multi-paragraph and broke the YAML front matter in about.md
+- Added global configuration system (~/.cmtoolsrc): profiles, licenses, person lists
+- New `cme` flags: --profiles, --person-lists, --apply-license, --global-config
+- New `--init` sub-types for Deno projects: deno-cli, deno-bundle, deno-es-module, deno-webcomponent
+- Added non-programming project types: --init documentation, --init presentation
+- Executable names now persisted to project-level .cmtoolsrc for seamless re-generation
+- Refactored format registration: FormatGenerator/registerGenerator pattern in transform.ts
+- Separate page templates for Caltech Library org vs personal/other projects
+- Added <footer> to personal page template for A11y compliance
+- Fixed Makefile generation for Go programs
+- Fixed Makefile and make.ps1 generation for deno-cli projects
 
 ## Authors
 
@@ -137,8 +129,8 @@ The tools are intended to be run from the project root directory. `cmt` expects 
 
 ## Software Requirements
 
-- Deno >= 2.7
-- CMTools >= 0.0.43
+- Deno >= 2.8
+- CMTools >= 0.0.46
 
 
 ## Software Suggestions
