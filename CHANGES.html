@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <title>CMTools</title>
+    <link rel="stylesheet" href="https://caltechlibrary.github.io/css/site.css">
+    <link rel="stylesheet" href="https://media.library.caltech.edu/cl-webcomponents/css/code-blocks.css">
+    <script type="module" src="https://media.library.caltech.edu/cl-webcomponents/copyToClipboard.js"></script>
+    <script type="module" src="https://media.library.caltech.edu/cl-webcomponents/footer-global.js"></script>
+</head>
+<body>
+<header>
+<a href="https://library.caltech.edu"><img src="https://media.library.caltech.edu/assets/caltechlibrary-logo.png" alt="Caltech Library logo"></a>
+</header>
+<a href="#main-content" class="visually-hidden">skip to main content</a>
+<nav>
+<ul>
+    <li><a href="/">All Library Apps</a></li>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="LICENSE">LICENSE</a></li>
+    <li><a href="INSTALL.html">INSTALL</a></li>
+    <li><a href="user_manual.html">User Manual</a></li>
+    <li><a href="about.html">About</a></li>
+    <!-- <li><a href="search.html">Search</a></li> -->
+    <li><a href="https://github.com/caltechlibrary/CMTools">Code Repository</a></li>
+</ul>
+</nav>
+<section id="main-content">
+<h1 id="changes">CHANGES</h1>
+<h2 id="v0.0.46-2026-06-18">v0.0.46 (2026-06-18)</h2>
+<ul>
+<li>Added global configuration system (<code>~/.cmtoolsrc</code>):
+profiles, licenses, person lists</li>
+<li>New <code>cme</code> flags: <code>--profiles</code>,
+<code>--person-lists</code>, <code>--apply-license</code>,
+<code>--global-config</code></li>
+<li>New <code>--init</code> sub-types for Deno projects:
+<code>deno-cli</code>, <code>deno-bundle</code>,
+<code>deno-es-module</code>, <code>deno-webcomponent</code></li>
+<li>Added non-programming project types:
+<code>--init documentation</code>, <code>--init presentation</code></li>
+<li>Executable names now persisted to project-level
+<code>.cmtoolsrc</code> for seamless re-generation</li>
+<li>Refactored format registration:
+<code>FormatGenerator</code>/<code>registerGenerator</code> pattern in
+<code>transform.ts</code></li>
+<li>Separate page templates for Caltech Library org vs personal/other
+projects</li>
+<li>Added <code>&lt;footer&gt;</code> to personal page template for A11y
+compliance</li>
+<li>Fixed Makefile generation for Go programs</li>
+<li>Fixed Makefile and <code>make.ps1</code> generation for deno-cli
+projects</li>
+</ul>
+<h2 id="v0.0.44-2026-05-12">v0.0.44 (2026-05-12)</h2>
+<ul>
+<li>Added generator for <code>add-col-scope.lua</code></li>
+<li>Updated <code>website.mak</code> to include
+<code>add-col-scope.lua</code> filter</li>
+<li>Init now adds <code>site.css</code> and
+<code>add-col-scope.lua</code> to the list of files generated
+automatically</li>
+<li>Commented out pagefind from <code>website.mak</code> and
+<code>website.ps1</code></li>
+<li>Commented out <code>search.md</code> from nav generation in
+<code>page.tmpl</code></li>
+<li>Fixed rendering of suggested software versions in
+<code>about.md</code></li>
+<li>Fixed bug in <code>website.mak</code> where the leading
+<code>.</code> of <code>.md</code> wasn’t escaped when replacing with
+<code>.html</code></li>
+<li>Added <code>-L</code> option to set the language</li>
+<li>Fixed bug where <code>--lang</code> wasn’t setting the project
+language</li>
+<li>Fixed how <code>GROUP_ID</code> is calculated when generating
+<code>release.bash</code> and <code>release.ps1</code></li>
+<li>Fixed Handlebars escaping and shell injection risks</li>
+<li>Added checksum support</li>
+<li>Fixed logic bugs across <code>generate_text.ts</code> and
+<code>transform.ts</code></li>
+</ul>
+<h2 id="v0.0.43c-2026-05-12">v0.0.43c (2026-05-12)</h2>
+<ul>
+<li>Added generator for <code>add-col-scope.lua</code></li>
+<li>Updated <code>website.mak</code> to include
+<code>add-col-scope.lua</code> filter</li>
+<li>Init now adds <code>site.css</code> and
+<code>add-col-scope.lua</code> to the list of files generated
+automatically</li>
+<li>Commented out pagefind from <code>website.mak</code> and
+<code>website.ps1</code></li>
+<li>Commented out <code>search.md</code> from nav generation in
+<code>page.tmpl</code></li>
+<li>Fixed rendering of suggested software versions in
+<code>about.md</code></li>
+<li>Fixed bug in <code>website.mak</code> where the leading
+<code>.</code> of <code>.md</code> wasn’t escaped when replacing with
+<code>.html</code></li>
+<li>Added <code>-L</code> option to set the language</li>
+<li>Fixed bug where <code>--lang</code> wasn’t setting the project
+language</li>
+</ul>
+<h2 id="v0.0.43-2026-05-07">v0.0.43 (2026-05-07)</h2>
+<ul>
+<li>Added generator for <code>add-col-scope.lua</code></li>
+<li>Updated <code>website.mak</code> to include
+<code>add-col-scope.lua</code> filter</li>
+<li>Init now adds <code>site.css</code> and
+<code>add-col-scope.lua</code> to the list of files generated
+automatically</li>
+<li>Commented out pagefind from <code>website.mak</code> and
+<code>website.ps1</code></li>
+<li>Commented out <code>search.md</code> from nav generation in
+<code>page.tmpl</code></li>
+<li>Fixed rendering of suggested software versions in
+<code>about.md</code></li>
+</ul>
+<h2 id="v0.0.42-2026-05-07">v0.0.42 (2026-05-07)</h2>
+<ul>
+<li>Improved <code>page.tmpl</code> generation</li>
+<li>Added support for <code>site.css</code> generation</li>
+</ul>
+<h2 id="v0.0.41-2026-05-07">v0.0.41 (2026-05-07)</h2>
+<ul>
+<li>Improved <code>about.md</code> layout</li>
+</ul>
+<h2 id="v0.0.40-2025-08-06">v0.0.40 (2025-08-06)</h2>
+<ul>
+<li>Updated page templates generated for Caltech Library</li>
+</ul>
+<h2 id="v0.0.39-2025-08-06">v0.0.39 (2025-08-06)</h2>
+<ul>
+<li>Corrected CodeMeta version number (was incorrectly set to
+v0.0.34)</li>
+<li>Fixed issue #33: updated <code>search.md</code> generator to include
+proper path handling and process <code>?q=&lt;SEARCH_TERM&gt;</code> URL
+strings</li>
+</ul>
+<h2 id="v0.0.38-2025-08-01">v0.0.38 (2025-08-01)</h2>
+<ul>
+<li>Removed deprecated <code>--deno</code> option (issue #30)</li>
+<li>Added <code>links-to-html.lua</code>, <code>website.mak</code>, and
+<code>website.ps1</code> to defaults when using
+<code>cmt --init</code></li>
+<li>Removed <code>--format</code> option; output format is now
+determined by filename</li>
+<li>Fixed issue #32: problem generating
+<code>INSTALL_NOTES_Windows.md</code></li>
+<li>Fixed issue #28: problem with <code>-d</code> and generating
+<code>links-to-html.lua</code></li>
+<li>Resolved issue #26: untangled code in <code>src/transform.ts</code>
+and <code>src/generate_text.ts</code></li>
+</ul>
+<h2 id="v0.0.37-2025-07-28">v0.0.37 (2025-07-28)</h2>
+<ul>
+<li>Fixed formatting when generating <code>README.md</code> with runtime
+platform information</li>
+<li>Added support for generating <code>links-to-html.lua</code> for use
+with Pandoc website generation</li>
+</ul>
+<h2 id="v0.0.36-2025-07-24">v0.0.36 (2025-07-24)</h2>
+<ul>
+<li>Added generation of <code>INSTALL_NOTES_macOS.md</code> and
+<code>INSTALL_NOTES_Windows.md</code> to guide users through unsigned
+executable handling</li>
+</ul>
+<h2 id="v0.0.35-2025-07-09">v0.0.35 (2025-07-09)</h2>
+<ul>
+<li>Fixed issue #27: generated <code>version.go</code> and
+<code>version.py</code> had TypeScript syntax for the version
+string</li>
+</ul>
+<h2 id="v0.0.34-2025-07-07">v0.0.34 (2025-07-07)</h2>
+<ul>
+<li>Updated generated <code>README.md</code></li>
+<li>Copyedits in documentation</li>
+<li>Bumped minimum required Deno version to 2.4</li>
+</ul>
+<h2 id="v0.0.33-2025-06-10">v0.0.33 (2025-06-10)</h2>
+<ul>
+<li>Added generators for <code>website.ps1</code>,
+<code>release.ps1</code>, <code>publish.ps1</code></li>
+<li>Fixed typo in generated <code>installer.ps1</code></li>
+<li>Fixed issue #25 with <code>installer.ps1</code></li>
+</ul>
+<h2 id="v0.0.32-2025-06-06">v0.0.32 (2025-06-06)</h2>
+<ul>
+<li>Added generators for <code>website.ps1</code>,
+<code>release.ps1</code>, <code>publish.ps1</code></li>
+<li>Fixed typo in generated <code>installer.ps1</code></li>
+</ul>
+<h2 id="v0.0.31-2025-06-06">v0.0.31 (2025-06-06)</h2>
+<ul>
+<li>Improved <code>installer.ps1</code> to support both
+<code>.tar.gz</code> and <code>.zip</code> files by checking file
+extensions</li>
+</ul>
+<h2 id="v0.0.30-2025-06-05">v0.0.30 (2025-06-05)</h2>
+<ul>
+<li>Fixed bug in generating <code>installer.ps1</code></li>
+</ul>
+<h2 id="v0.0.29-2025-05-27">v0.0.29 (2025-05-27)</h2>
+<ul>
+<li>Fixed bug where <code>softwareSuggestions</code> attribute was not
+being propagated</li>
+<li>Added example text for complex fields</li>
+</ul>
+<h2 id="v0.0.28-2025-05-25">v0.0.28 (2025-05-25)</h2>
+<ul>
+<li>Fixed bug where <code>softwareSuggestions</code> attribute was not
+being propagated</li>
+</ul>
+<h2 id="v0.0.27-2025-05-08">v0.0.27 (2025-05-08)</h2>
+<ul>
+<li>Fixed support for rendering <code>website.mak</code></li>
+<li>Improved <code>release.bash</code> output: split release creation
+from file upload</li>
+<li>Fixed handling of embedded backticks in description</li>
+</ul>
+<h2 id="v0.0.26-2025-05-07">v0.0.26 (2025-05-07)</h2>
+<ul>
+<li>Added <code>--lang</code> option to specify the language for
+Makefile flavor (Go and Deno supported)</li>
+<li>Added support for generating <code>search.md</code>, a search page
+using PageFind indexes</li>
+</ul>
+<h2 id="v0.0.25-2025-05-05">v0.0.25 (2025-05-05)</h2>
+<ul>
+<li>Fixed bug in generating <code>installer.ps1</code> where path was
+wrong</li>
+<li>Improved test code</li>
+<li>Updated <code>metadatatools</code> dependency to v0.0.5</li>
+<li>Minimum Deno version is now 2.3</li>
+</ul>
+<h2 id="v0.0.24-2025-04-21">v0.0.24 (2025-04-21)</h2>
+<ul>
+<li>Fixed duplicate <code>copyrightYear</code> and
+<code>copyrightHolder</code> handling</li>
+</ul>
+<h2 id="v0.0.23-2025-04-10">v0.0.23 (2025-04-10)</h2>
+<ul>
+<li>Fixed missing <code>copyrightYear</code> and
+<code>copyrightHolder</code> handling</li>
+</ul>
+<h2 id="v0.0.22-2025-04-04">v0.0.22 (2025-04-04)</h2>
+<ul>
+<li>Fixed release rule in Makefile to include man pages</li>
+</ul>
+<h2 id="v0.0.21-2025-04-03">v0.0.21 (2025-04-03)</h2>
+<ul>
+<li>Fixed bug in rendering Markdown about document</li>
+</ul>
+<h2 id="v0.0.20-2025-03-31">v0.0.20 (2025-03-31)</h2>
+<ul>
+<li>Fixed bug where HTML entities were unnecessarily encoded when
+rendering <code>LICENSE</code> into <code>version.ts</code></li>
+</ul>
+<h2 id="v0.0.19-2025-03-04">v0.0.19 (2025-03-04)</h2>
+<ul>
+<li>Fixes to generating <code>about.md</code></li>
+</ul>
+<h2 id="v0.0.18-2025-02-12">v0.0.18 (2025-02-12)</h2>
+<ul>
+<li>Fixed Makefile for Go and Deno which required extra documents</li>
+<li>Added <code>DOCS</code> variable to generated Makefiles to control
+what is included in the release rule</li>
+</ul>
+<h2 id="v0.0.17-2025-02-11">v0.0.17 (2025-02-11)</h2>
+<ul>
+<li>Fixed formatting in <code>about.md</code> generation</li>
+<li>Improved Deno Makefile output</li>
+<li>Colorized error output</li>
+<li>Added <code>--init</code> option to simplify bootstrapping Python,
+Go, TypeScript, and JavaScript projects</li>
+</ul>
+<h2 id="v0.0.16-2025-02-11">v0.0.16 (2025-02-11)</h2>
+<ul>
+<li>Fixed typo in editor setup for <code>softwareRequirements</code>
+(issue #6)</li>
+<li>Added experimental generation of Makefile for Go and Deno
+projects</li>
+</ul>
+<h2 id="v0.0.15-2025-02-10">v0.0.15 (2025-02-10)</h2>
+<ul>
+<li>Fixed handling of generating <code>installer.sh</code></li>
+</ul>
+<h2 id="v0.0.14-2025-02-03">v0.0.14 (2025-02-03)</h2>
+<ul>
+<li>The <code>--editor</code> option now uses the editor named in the
+<code>EDITOR</code> environment variable</li>
+</ul>
+<h2 id="v0.0.13-2025-02-03">v0.0.13 (2025-02-03)</h2>
+<ul>
+<li>Added support for rendering <code>README.md</code>,
+<code>INSTALL.md</code>, <code>installer.sh</code>,
+<code>installer.ps1</code></li>
+</ul>
+<h2 id="v0.0.11-2025-01-29">v0.0.11 (2025-01-29)</h2>
+<ul>
+<li>Fixed editing <code>operatingSystem</code> attribute in
+<code>cme</code></li>
+</ul>
+<h2 id="v0.0.10-2025-01-29">v0.0.10 (2025-01-29)</h2>
+<ul>
+<li>Simplified command line options in <code>cme</code></li>
+</ul>
+<h2 id="v0.0.9-2025-01-28">v0.0.9 (2025-01-28)</h2>
+<ul>
+<li>Improved output formats</li>
+<li>Minor bug fixes</li>
+</ul>
+<h2 id="v0.0.8-2025-01-28">v0.0.8 (2025-01-28)</h2>
+<ul>
+<li>Improved text prompts</li>
+<li>Minor bug fixes</li>
+</ul>
+<h2 id="v0.0.7-2025-01-27">v0.0.7 (2025-01-27)</h2>
+<ul>
+<li>Improved <code>CITATION.cff</code> generation (issue #4)</li>
+</ul>
+<h2 id="v0.0.6-2025-01-27">v0.0.6 (2025-01-27)</h2>
+<ul>
+<li>Proof-of-concept CodeMeta tooling: edit <code>codemeta.json</code>
+and build code artifacts</li>
+</ul>
+<h2 id="v0.0.4-2025-01-15">v0.0.4 (2025-01-15)</h2>
+<ul>
+<li>Proof of concept: use <code>codemeta.json</code> in your build
+process</li>
+<li>Added missing <code>version.js</code> support</li>
+</ul>
+<h2 id="v0.0.3-2025-01-13">v0.0.3 (2025-01-13)</h2>
+<ul>
+<li>Proof of concept: use <code>codemeta.json</code> in your build
+process</li>
+<li>Added missing <code>version.js</code> support</li>
+</ul>
+<h2 id="v0.0.2-2025-01-10">v0.0.2 (2025-01-10)</h2>
+<ul>
+<li>Proof of concept: use <code>codemeta.json</code> in your build
+process</li>
+<li>Added people list normalization</li>
+</ul>
+<h2 id="v0.0.1-2025-01-10">v0.0.1 (2025-01-10)</h2>
+<ul>
+<li>Initial proof of concept: use <code>codemeta.json</code> in your
+build process</li>
+</ul>
+</section>
+<footer-global></footer-global>
+</body>
+</html>
