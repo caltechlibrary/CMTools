@@ -1,12 +1,12 @@
 {
   "tasks": {
     "build": "deno task version.ts ; deno task docs ; deno task compile",
-    "version.ts": "deno run --allow-read --allow-write --allow-run cmt.ts codemeta.json version.ts",
+    "version.ts": "deno run --allow-read --allow-write --allow-run --allow-env cmt.ts codemeta.json version.ts",
     "compile": "deno task cmt.ts ; deno task cme.ts",
     "cmt.ts": "deno compile --allow-read --allow-write --allow-run --allow-env --output ./bin/cmt cmt.ts ;",
     "cme.ts": "deno compile --allow-read --allow-write --allow-run --allow-env --output ./bin/cme cme.ts",
     "docs": "deno task cmt.1.md ; deno task cme.1.md ; deno task manpages",
-    "cmt.1.md": "deno run  --allow-read --allow-write --allow-run cmt.ts --help > cmt.1.md",
+    "cmt.1.md": "deno run --allow-read --allow-write --allow-run --allow-env cmt.ts --help > cmt.1.md",
     "cme.1.md": "deno run --allow-read --allow-write --allow-run --allow-env cme.ts  --help > cme.1.md",
     "manpages": "deno run --allow-read --allow-write --allow-run ./bldutils/mk_manpage.ts cmt 1",
     "website": " deno task index.html ; deno task user_manual.html ; deno task cmt.1.html ; deno task about.html ; deno task INSTALL.html",
@@ -15,7 +15,7 @@
     "about.html": "deno run --allow-read --allow-write ./bldutils/mk_html.ts about.md",
     "INSTALL.html": "deno run --allow-read --allow-write ./bldutils/mk_html.ts INSTALL.md",
     "about.md": "cmt codemeta.json about.md",
-    "CITATION.cff": "deno run --allow-read --allow-write --allow-run cmt.ts codemeta.json CITATION.cff",
+    "CITATION.cff": "deno run --allow-read --allow-write --allow-run --allow-env cmt.ts codemeta.json CITATION.cff",
     "gen-code": "deno task version.ts ; deno task about.md ; deno task CITATION.cff ",
     "dist_linux_x86_64": "deno task dist_linux_x86_64_cmt ; deno task dist_linux_x86_64_cme",
     "dist_linux_x86_64_cmt": "deno compile --allow-read --allow-write --allow-run --allow-env --output dist/bin/cmt --target x86_64-unknown-linux-gnu cmt.ts",
