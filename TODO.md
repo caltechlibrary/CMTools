@@ -9,7 +9,7 @@
 - [ ] There is additional metadata outside the codemeta.json file like
       executable files basenames that would be helpful and are not captured,
       what's the right way to do this without adding another "project" file to a
-      repository
+      repository?
 - [ ] For deno projects I have three general types, each have their own set of
       project artifacts. Use hyphenated sub-type labels for `--init`:
   1. `--init deno-cli`: CLI executable(s). Extra CLI args after codemeta.json

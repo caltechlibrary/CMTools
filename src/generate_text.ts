@@ -1357,7 +1357,7 @@ clean:
 	if [ -d dist ]; then rm -fR dist/*; fi
 
 release: clean build man website installer.bash installer.ps1 distribute_docs dist/Linux-x86_64 dist/Linux-aarch64 dist/macOS-x86_64 dist/macOS-arm64 dist/Windows-x86_64 dist/Windows-arm64
-	@printf "\nready to run\n\n\trelease.bash\n\n"
+	@printf "\\nready to run\\n\\n\\trelease.bash\\n\\n"
 
 setup_dist: .FORCE
 	@rm -fR dist
@@ -1616,7 +1616,7 @@ distribute_docs:
 	@for DNAME in $(DOCS); do cp -vR $$DNAME dist/; done
 
 release: build installer.sh installer.ps1 save setup_dist distribute_docs dist/Linux-x86_64 dist/Linux-aarch64 dist/macOS-x86_64 dist/macOS-arm64 dist/Windows-x86_64 dist/Windows-arm64 dist/Linux-armv7l
-	@printf "\nready to run\n\n\trelease.bash\n\n"
+	@printf "\\nready to run\\n\\n\\trelease.bash\\n\\n"
 
 
 .FORCE:
@@ -1825,11 +1825,11 @@ if [ "\${YES_NO}" = "y" ]; then
 		-F release_notes.tmp \\
 		--generate-notes
 	echo "Uploading distribution files and checksums"
-	echo "  Starting upload: dist/\${CHECKSUM_FILE}"
+	echo "Starting upload: dist/\${CHECKSUM_FILE}\n\t"
 	gh release upload "\${RELEASE_TAG}" "dist/\${CHECKSUM_FILE}"
 	echo "  Completed upload: dist/\${CHECKSUM_FILE}"
 	for FILE in dist/*.zip; do
-		echo "  Starting upload: \${FILE}"
+		echo "Starting upload: \${FILE}\n\t"
 		gh release upload "\${RELEASE_TAG}" "\${FILE}"
 		echo "  Completed upload: \${FILE}"
 	done
@@ -2031,6 +2031,9 @@ export const goMakePs1Text = `param (
     [string]$action = "build"
 )
 
+# List of programs to build (each must have a matching cmd/<name>/ directory)
+$programs = @("<PROGRAM_NAME>")
+
 $jsonContent = Get-Content -Raw -Path "codemeta.json" | ConvertFrom-Json
 $projectName = $jsonContent.name
 $versionNo = $jsonContent.version
@@ -2040,12 +2043,12 @@ function Make-Man {
     foreach ($file in $markdownFiles) {
         $manName = [System.IO.Path]::GetFileNameWithoutExtension($file.Name)
 
-        if (-not (Test-Path -Path man\man1)) {
-            New-Item -ItemType Directory -Path man\man1 | Out-Null
+        if (-not (Test-Path -Path man\\man1)) {
+            New-Item -ItemType Directory -Path man\\man1 | Out-Null
         }
 
-        Write-Host "Rending $file as man\man1\$manName"
-        pandoc -f Markdown -t man -o man\man1\$manName -s $file
+        Write-Host "Rendering $file as man\\man1\\$manName"
+        pandoc -f Markdown -t man -o man\\man1\\$manName -s $file
     }
 }
 
@@ -2132,36 +2135,35 @@ if ($action -eq "man") {
 
 # Default build action
 if ($action -eq "build") {
-    Write-Host "Building antenna..."
-    Build-It -OutPath bin/antenna.exe -SourcePath cmd\antenna\antenna.go
-    if ($LASTEXITCODE -ne 0) {
-        Write-Error "Build failed"
-        exit $LASTEXITCODE
+    foreach ($prog in $programs) {
+        Write-Host "Building $prog..."
+        Build-It -OutPath "bin\\$prog.exe" -SourcePath ".\\cmd\\$prog"
+        if ($LASTEXITCODE -ne 0) {
+            Write-Error "Build failed for $prog"
+            exit $LASTEXITCODE
+        }
+        Write-Host "Generating help documentation for $prog..."
+        & ".\\bin\\$prog.exe" --help > "$prog.1.md"
     }
-
-    Write-Host "Generating help documentation..."
-    .\bin\antenna.exe --help > antenna.1.md
     Write-Host "Build and documentation generation complete."
 }
 
 # Install action
 if ($action -eq "install") {
     $binDir = Join-Path $HOME "bin"
-    $exePath = Join-Path $PSScriptRoot "bin\antenna.exe"
-    $destPath = Join-Path $binDir "antenna.exe"
-    Build-It -OutPath $exePath -SourcePath cmd\antenna\antenna.go
-
-    # Create bin directory if it doesn't exist
     if (-not (Test-Path $binDir)) {
         Write-Host "Creating $binDir directory..."
         New-Item -ItemType Directory -Path $binDir | Out-Null
     }
+    foreach ($prog in $programs) {
+        $exePath = "bin\\$prog.exe"
+        $destPath = Join-Path $binDir "$prog.exe"
+        Build-It -OutPath $exePath -SourcePath ".\\cmd\\$prog"
+        Write-Host "Copying $prog.exe to $binDir..."
+        Copy-Item -Path $exePath -Destination $destPath -Force
+    }
 
-    # Copy executable
-    Write-Host "Copying antenna.exe to $binDir..."
-    Copy-Item -Path $exePath -Destination $destPath -Force
-
-    # Check if $HOME\bin is in PATH
+    # Check if $HOME\\bin is in PATH
     $pathEnv = [Environment]::GetEnvironmentVariable("PATH", "User")
     if ($pathEnv -notlike "*$binDir*") {
         Write-Host "\`n$binDir is not in your PATH. To add it, run the following command:"
@@ -2183,158 +2185,48 @@ if ($action -eq "release") {
     Write-Host "Created directory: $releasePath"
 
     # Copy in the documentation files
-    copy README.md dist\
-    copy INSTALL.md dist\
-    copy codemeta.json dist\
-    copy LICENSE dist\
-    copy *.?.md dist\
-    copy -Recurse man dist\
+    Copy-Item README.md dist
+    Copy-Item INSTALL.md dist
+    Copy-Item codemeta.json dist
+    Copy-Item LICENSE dist
+    Copy-Item *.?.md dist
+    Copy-Item -Recurse man dist
 
-    # Build Windows on x86_64
-    New-Item -ItemType Directory -Path "$releasePath\bin"
-    Build-It -OutPath dist\bin\antenna.exe \`
-      -SourcePath cmd\antenna\antenna.go \`
-      -TargetOS windows \`
-      -TargetArch amd64
-    cd dist
-    # Get all items (files and directories) in the current directory
-    $filesToZip = @(
-        "bin\",
-        "man\",
-        "*.md",
-        "codemeta.json",
-        "INSTALL.md",
-        "LICENSE",
-        "README.md"
+    $platforms = @(
+        @{ OS = "windows"; Arch = "amd64"; Label = "Windows-x86_64"; Ext = ".exe" },
+        @{ OS = "windows"; Arch = "arm64"; Label = "Windows-arm64";  Ext = ".exe" },
+        @{ OS = "darwin";  Arch = "amd64"; Label = "macOS-x86_64";   Ext = "" },
+        @{ OS = "darwin";  Arch = "arm64"; Label = "macOS-arm64";    Ext = "" },
+        @{ OS = "linux";   Arch = "amd64"; Label = "Linux-x86_64";   Ext = "" },
+        @{ OS = "linux";   Arch = "arm64"; Label = "Linux-arm64";    Ext = "" }
     )
-    $targetZip = "$projectName-v$versionNo-Windows-x86_64.zip"
-    if (Test-Path -Path $targetZip) {
-        Remove-Item -Path "$targetZip" -Force
-    }
-    # Zip everything, preserving paths
-    Compress-Archive -Path $filesToZip -DestinationPath  $targetZip -CompressionLevel Optimal
-    cd ..
-    Remove-Item -Path "dist\bin" -Recurse -Force
 
-    # Build Windows on arm64
-    New-Item -ItemType Directory -Path "$releasePath\bin"
-    Build-It -OutPath dist\bin\antenna.exe \`
-      -SourcePath cmd\antenna\antenna.go \`
-      -TargetOS windows \`
-      -TargetArch arm64
-    cd dist
-    $filesToZip = @(
-        "bin\",
-        "man\",
-        "*.md",
-        "codemeta.json",
-        "INSTALL.md",
-        "LICENSE",
-        "README.md"
-    )
-    $targetZip = "$projectName-v$versionNo-Windows-arm64.zip"
-    if (Test-Path -Path $targetZip) {
-        Remove-Item -Path "$targetZip" -Force
+    foreach ($platform in $platforms) {
+        New-Item -ItemType Directory -Path "$releasePath\\bin"
+        foreach ($prog in $programs) {
+            Build-It -OutPath "dist\\bin\\$prog$($platform.Ext)" \`
+              -SourcePath ".\\cmd\\$prog" \`
+              -TargetOS $platform.OS \`
+              -TargetArch $platform.Arch
+        }
+        cd dist
+        $filesToZip = @(
+            "bin",
+            "man",
+            "*.md",
+            "codemeta.json",
+            "INSTALL.md",
+            "LICENSE",
+            "README.md"
+        )
+        $targetZip = "$projectName-v$versionNo-$($platform.Label).zip"
+        if (Test-Path -Path $targetZip) {
+            Remove-Item -Path "$targetZip" -Force
+        }
+        Compress-Archive -Path $filesToZip -DestinationPath $targetZip -CompressionLevel Optimal
+        cd ..
+        Remove-Item -Path "dist\\bin" -Recurse -Force
     }
-    Compress-Archive -Path $filesToZip -DestinationPath  $targetZip -CompressionLevel Optimal
-    cd ..
-    Remove-Item -Path "dist\bin" -Recurse -Force
-
-    # Build macOS on x86_64
-    New-Item -ItemType Directory -Path "$releasePath\bin"
-    Build-It -OutPath dist\bin\antenna \`
-      -SourcePath cmd\antenna\antenna.go \`
-      -TargetOS darwin \`
-      -TargetArch amd64
-    cd dist
-    $filesToZip = @(
-        "bin\",
-        "man\",
-        "*.md",
-        "codemeta.json",
-        "INSTALL.md",
-        "LICENSE",
-        "README.md"
-    )
-    $targetZip = "$projectName-v$versionNo-macOS-x86_64.zip"
-    if (Test-Path -Path $targetZip) {
-        Remove-Item -Path "$targetZip" -Force
-    }
-    Compress-Archive -Path $filesToZip -DestinationPath  $targetZip -CompressionLevel Optimal
-    cd ..
-    Remove-Item -Path "dist\bin" -Recurse -Force
-
-    # Build macOS on arm64
-    New-Item -ItemType Directory -Path "$releasePath\bin"
-    Build-It -OutPath dist\bin\antenna \`
-      -SourcePath cmd\antenna\antenna.go \`
-      -TargetOS darwin \`
-      -TargetArch arm64
-    cd dist
-    $filesToZip = @(
-        "bin\",
-        "man\",
-        "*.md",
-        "codemeta.json",
-        "INSTALL.md",
-        "LICENSE",
-        "README.md"
-    )
-    $targetZip = "$projectName-v$versionNo-macOS-arm64.zip"
-    if (Test-Path -Path $targetZip) {
-        Remove-Item -Path "$targetZip" -Force
-    }
-    Compress-Archive -Path $filesToZip -DestinationPath  $targetZip -CompressionLevel Optimal
-    cd ..
-    Remove-Item -Path "dist\bin" -Recurse -Force
-
-    # Build Linux on x86_64
-    New-Item -ItemType Directory -Path "$releasePath\bin"
-    Build-It -OutPath dist\bin\antenna \`
-      -SourcePath cmd\antenna\antenna.go \`
-      -TargetOS linux \`
-      -TargetArch amd64
-    cd dist
-    $filesToZip = @(
-        "bin\",
-        "man\",
-        "*.md",
-        "codemeta.json",
-        "INSTALL.md",
-        "LICENSE",
-        "README.md"
-    )
-    $targetZip = "$projectName-v$versionNo-Linux-x86_64.zip"
-    if (Test-Path -Path $targetZip) {
-        Remove-Item -Path "$targetZip" -Force
-    }
-    Compress-Archive -Path $filesToZip -DestinationPath  $targetZip -CompressionLevel Optimal
-    cd ..
-    Remove-Item -Path "dist\bin" -Recurse -Force
-
-    # Build Linux on arm64
-    New-Item -ItemType Directory -Path "$releasePath\bin"
-    Build-It -OutPath dist\bin\antenna \`
-      -SourcePath cmd\antenna\antenna.go \`
-      -TargetOS linux \`
-      -TargetArch arm64
-    cd dist
-    $filesToZip = @(
-        "bin\",
-        "man\",
-        "*.md",
-        "codemeta.json",
-        "INSTALL.md",
-        "LICENSE",
-        "README.md"
-    )
-    $targetZip = "$projectName-v$versionNo-Linux-arm64.zip"
-    if (Test-Path -Path $targetZip) {
-        Remove-Item -Path "$targetZip" -Force
-    }
-    Compress-Archive -Path $filesToZip -DestinationPath  $targetZip -CompressionLevel Optimal
-    cd ..
-    Remove-Item -Path "dist\bin" -Recurse -Force
     Write-Host "Check the zip files, then do release.ps1 if all is OK"
 }
 `;
