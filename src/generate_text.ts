@@ -703,7 +703,6 @@ export const pageHbsText = `<!DOCTYPE html>
 <a href="#main-content" class="visually-hidden">skip to main content</a>
 <nav>
 <ul>
-    <li><a href="/">All Library Apps</a></li>
     <li><a href="index.html">Home</a></li>
     <li><a href="LICENSE">LICENSE</a></li>
     <li><a href="INSTALL.html">INSTALL</a></li>
@@ -716,6 +715,9 @@ export const pageHbsText = `<!DOCTYPE html>
 <section id="main-content">
 $$content$$
 </section>
+<footer>
+<p>{{project_name}}</p>
+</footer>
 </body>
 </html>`;
 
@@ -1235,7 +1237,7 @@ PROJECT = {{{name}}}
 
 PACKAGE = {{{name}}}
 
-PROGRAMS = <PROGRAM_LIST_GOES_HERE>
+PROGRAMS = {{{executables}}}
 
 GIT_GROUP = {{{git_org_or_person}}}
 

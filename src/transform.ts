@@ -1,116 +1,105 @@
 import * as path from "@std/path";
-//import * as yaml from "@std/yaml";
 import Handlebars from "npm:handlebars";
 import { CodeMeta } from "./codemeta.ts";
+import { gitOrgOrPerson, gitReleaseHash } from "./gitcmds.ts";
+import * as gText from "./generate_text.ts";
 
 // Indent each line 2 spaces for use in YAML literal block scalars.
 // Blank lines are kept empty (not indented) to satisfy strict YAML parsers.
-Handlebars.registerHelper('yaml_block', (text: string): string => {
-  if (!text) return '';
-  return text.split('\n').map((line: string) => line.length > 0 ? '  ' + line : '').join('\n');
+Handlebars.registerHelper("yaml_block", (text: string): string => {
+  if (!text) return "";
+  return text
+    .split("\n")
+    .map((line: string) => (line.length > 0 ? "  " + line : ""))
+    .join("\n");
 });
-import { gitOrgOrPerson, gitReleaseHash } from "./gitcmds.ts";
-//import { version, releaseDate, releaseHash } from "./version.ts";
-import * as gText from "./generate_text.ts";
+
+// ---------------------------------------------------------------------------
+// Generator registry
+// ---------------------------------------------------------------------------
+
+/** Function that renders a format given the template context and project lang. */
+export type RenderFn = (
+  obj: { [key: string]: unknown },
+  lang: string,
+) => string | undefined;
+
+/** A registered output format with its render function. */
+export interface FormatGenerator {
+  format: string;
+  render: RenderFn;
+}
+
+const _generators = new Map<string, FormatGenerator>();
+
+/**
+ * Register a new output format.
+ * Call this once per format — typically at the bottom of this file or in a
+ * separate generator module.  Adding a new format only requires:
+ *   1. Add template text to generate_text.ts (or a new module).
+ *   2. Call registerGenerator() here (or import a self-registering module).
+ */
+export function registerGenerator(gen: FormatGenerator): void {
+  _generators.set(gen.format, gen);
+}
 
 export function isSupportedFormat(format: string | undefined): boolean {
-  if (format === undefined) {
-    return false;
-  }
-  return [
-    "README.md",
-    "INSTALL.md",
-    "INSTALL_NOTES_macOS.md",
-    "INSTALL_NOTES_Windows.md",
-    "CITATION.cff",
-    "search.md",
-    "about.md",
-    "Makefile",
-    "make.ps1",
-    "installer.sh",
-    "installer.ps1",
-    "website.mak",
-    "website.ps1",
-    "links-to-html.lua",
-	"add-col-scope.lua",
-    "publish.bash",
-    "publish.ps1",
-    "release.bash",
-    "release.ps1",
-    "version.ts",
-    "version.js",
-    "version.go",
-    "version.py",
-    "deno-tasks.json",
-    "page.tmpl",
-    "page.hbs",
-	"site.css",
-  ].indexOf(format) > -1;
+  if (format === undefined) return false;
+  return _generators.has(format);
 }
 
-// FIXME: need to handle the special case renderings for README.md,
-// INSTALL.md and the installer scripts.
+// ---------------------------------------------------------------------------
+// Private helpers used by Makefile / make.ps1 generators
+// ---------------------------------------------------------------------------
 
-function getMakefileText(
-  lang: string,
-): string | undefined {
-  const prefix: { [key: string]: string } = {
-    "golang": goMakefileText,
-    "go": goMakefileText,
-    // deno sub-types
-    "deno-cli": denoMakefileText,
-    "deno-bundle": denoBundleMakefileText,
-    "deno-es-module": denoEsModuleMakefileText,
-    "deno-webcomponent": denoWebComponentMakefileText,
-    // deprecated aliases
-    "javascript": denoMakefileText,
-    "typescript": denoMakefileText,
-    "deno": denoMakefileText,
-    "documentation": documentationMakefileText,
-    "presentation": documentationMakefileText,
-    //"python": pyMakefileText,
-    //"bash": shMakefileText,
+function getMakefileText(lang: string): string | undefined {
+  const map: { [key: string]: string } = {
+    "golang": gText.goMakefileText,
+    "go": gText.goMakefileText,
+    "deno-cli": gText.denoMakefileText,
+    "deno-bundle": gText.denoBundleMakefileText,
+    "deno-es-module": gText.denoEsModuleMakefileText,
+    "deno-webcomponent": gText.denoWebComponentMakefileText,
+    "javascript": gText.denoMakefileText,
+    "typescript": gText.denoMakefileText,
+    "deno": gText.denoMakefileText,
+    "documentation": gText.documentationMakefileText,
+    "presentation": gText.documentationMakefileText,
   };
-  if (lang === "") {
-    return denoMakefileText;
-  }
-  if (prefix[lang.toLowerCase()] === undefined) {
-    return undefined;
-  }
-  return prefix[lang.toLowerCase()];
+  if (lang === "") return gText.denoMakefileText;
+  return map[lang.toLowerCase()];
 }
 
-function getMakePs1Text(
-  lang: string,
-): string | undefined {
-  const prefix: { [key: string]: string } = {
-    "golang": goMakePs1Text,
-    "go": goMakePs1Text,
-    "documentation": documentationMakePs1Text,
-    "presentation": documentationMakePs1Text,
-    //"python": pyMakefileText,
-    //"bash": shMakefileText,
+function getMakePs1Text(lang: string): string | undefined {
+  const map: { [key: string]: string } = {
+    "golang": gText.goMakePs1Text,
+    "go": gText.goMakePs1Text,
+    "documentation": gText.documentationMakePs1Text,
+    "presentation": gText.documentationMakePs1Text,
   };
-  if (lang === "") {
-    return goMakePs1Text;
-  }
-  if (prefix[lang.toLowerCase()] === undefined) {
-    return undefined;
-  }
-  return prefix[lang.toLowerCase()];
+  if (lang === "") return gText.goMakePs1Text;
+  return map[lang.toLowerCase()];
 }
 
+// ---------------------------------------------------------------------------
+// Core transform function
+// ---------------------------------------------------------------------------
 
 export async function transform(
   cm: CodeMeta,
   format: string,
   lang: string,
+  executables: string[] = [],
 ): Promise<string | undefined> {
-  if (!isSupportedFormat(format)) {
-    return undefined;
-  }
+  const gen = _generators.get(format);
+  if (!gen) return undefined;
+
+  // Build template context
   const obj: { [key: string]: unknown } = cm.toObject();
   obj["project_name"] = path.basename(Deno.cwd());
+  obj["executables"] = executables.length > 0
+    ? executables.join(" ")
+    : "<PROGRAM_LIST_GOES_HERE>";
   obj["releaseHash"] = await gitReleaseHash();
   if (obj["dateModified"] === undefined || obj["dateModified"] === "") {
     const d = new Date();
@@ -119,122 +108,24 @@ export async function transform(
     const day = `${d.getDate()}`.padStart(2, "0");
     obj["dateModified"] = `${year}-${month}-${day}`;
   }
-  (obj["releaseDate"] === undefined)
-    ? obj["releaseDate"] = obj["dateModified"]
-    : "";
+  if (obj["releaseDate"] === undefined) {
+    obj["releaseDate"] = obj["dateModified"];
+  }
   obj["git_org_or_person"] = await gitOrgOrPerson();
-  let licenseText: string = "";
+  let licenseText = "";
   try {
     licenseText = await Deno.readTextFile("LICENSE");
   } catch (err) {
     console.log(`warning: missing license file, ${err}`);
-    licenseText = "";
   }
-  if (licenseText !== undefined && licenseText !== "") {
+  if (licenseText !== "") {
     obj["licenseText"] = licenseText;
   }
   if (cm.codeRepository !== "") {
     obj["repositoryLink"] = cm.codeRepository.replace("git+https", "https");
   }
-  //FIXME: If generating deno tasks or page templates I need to
-  // prompt for choices.
-  // deno tasks I need to know the name(s) of the executables and the source module for compile statement
-  // for page templates I need to know if I'm pulling CaltechLibrary defaults or the generic version.
 
-  let makefileTemplate: string | undefined = "";
-  let makePs1Template: string | undefined = "";
-  switch (format) {
-    case "README.md":
-      return renderTemplate(obj, readmeMdText);
-    case "INSTALL.md":
-      return renderTemplate(obj, installMdText);
-    case "INSTALL_NOTES_macOS.md":
-      return renderTemplate(obj, installNotesMacOSMdText);
-    case "INSTALL_NOTES_Windows.md":
-      return renderTemplate(obj, installNotesWindowsMdText);
-    case "search.md":
-      return renderTemplate(obj, searchMdText);
-    case "Makefile":
-      makefileTemplate = getMakefileText(lang);
-      if (makefileTemplate === undefined) {
-        return undefined;
-      }
-      return renderTemplate(obj, makefileTemplate);
-    case "make.ps1":
-      makePs1Template = getMakePs1Text(lang);
-      if (makePs1Template === undefined) {
-        return undefined;
-      }
-      return renderTemplate(obj, makePs1Template);
-    case "website.mak":
-      return renderTemplate(obj, websiteMakefileText);
-    case "website.ps1":
-      return renderTemplate(obj, websitePs1Text);
-    case "release.bash":
-      return renderTemplate(obj, releaseBashText);
-    case "release.ps1":
-      return renderTemplate(obj, releasePs1Text);
-    case "publish.bash":
-      return renderTemplate(obj, publishBashText);
-    case "publish.ps1":
-      return renderTemplate(obj, publishPs1Text);
-    case "links-to-html.lua":
-      return renderTemplate(obj, linksToHtmlLuaText);
-	case "add-col-scope.lua":
-      return renderTemplate(obj, addColScopeLuaText);
-    case "deno-tasks.json":
-      return renderTemplate(obj, denoTasksText);
-    case "CITATION.cff":
-      return renderTemplate(obj, citationCffText);
-    case "version.ts":
-      return renderTemplate(obj, versionTsText);
-    case "version.js":
-      return renderTemplate(obj, versionJsText);
-    case "version.go":
-      return renderTemplate(obj, versionGoText);
-    case "version.py":
-      return renderTemplate(obj, versionPyText);
-    case "about.md":
-      return renderTemplate(obj, aboutMdText);
-	case "site.css":
-      return renderTemplate(obj, siteCssText);
-    case "installer.sh":
-      return renderTemplate(obj, installerShText);
-    case "installer.ps1":
-      return renderTemplate(obj, installerPs1Text);
-    case "page.hbs":
-      if (
-        obj["git_org_or_person"] !== undefined &&
-        obj["git_org_or_person"] !== null &&
-        (obj["git_org_or_person"] as string).toLowerCase() === "caltechlibrary"
-      ) {
-        return renderTemplate(obj, clPageHbsText)?.replace(
-          "$$content$$",
-          "${body}",
-        );
-      }
-      return renderTemplate(obj, pageHbsText)?.replace(
-        "$$content$$",
-        "{{{content}}}",
-      );
-    case "page.tmpl": // render as Pandoc template
-      if (
-        obj["git_org_or_person"] !== undefined &&
-        obj["git_org_or_person"] !== null &&
-        (obj["git_org_or_person"] as string).toLowerCase() === "caltechlibrary"
-      ) {
-        return renderTemplate(obj, clPageHbsText)?.replace(
-          "$$content$$",
-          "${body}",
-        );
-      }
-      return renderTemplate(obj, pageHbsText)?.replace(
-        "$$content$$",
-        "${body}",
-      );
-    default:
-      return undefined;
-  }
+  return gen.render(obj, lang);
 }
 
 export function renderTemplate(
@@ -249,101 +140,154 @@ export function renderTemplate(
   return template(obj);
 }
 
-// site.css
-const siteCssText = gText.siteCssText;
+// ---------------------------------------------------------------------------
+// Built-in format registrations
+// To add a new format:
+//   1. Add its template text to generate_text.ts (or a new module).
+//   2. Add a registerGenerator() call below.
+// ---------------------------------------------------------------------------
 
-// CITATION.cff
-const citationCffText = gText.citationCffText;
-
-// TypeScript
-const versionTsText = gText.versionTsText;
-
-// JavaScript
-const versionJsText = gText.versionJsText;
-
-// Python
-const versionPyText = gText.versionPyText;
-
-// Go
-const versionGoText = gText.versionGoText;
-
-// Pandoc
-const aboutMdText = gText.aboutMdText;
-
-// HTML
-const pageHbsText = gText.pageHbsText;
-
-// HTML
-const clPageHbsText = gText.clPageHbsText;
-
-// Bash
-const installerShText = gText.installerShText;
-
-// Powershell
-const installerPs1Text = gText.installerPs1Text;
-
-// Markdown
-const readmeMdText = gText.readmeMdText;
-
-// Markdown
-const searchMdText = gText.searchMdText;
-
-// Markdown
-const installMdText = gText.installMdText;
-
-// Markdown
-const installNotesMacOSMdText = gText.installNotesMacOSMdText;
-
-// Markdown
-const installNotesWindowsMdText = gText.installNotesWindowsMdText;
-
-// Makefile
-const denoMakefileText = gText.denoMakefileText;
-
-// Makefile
-const goMakefileText = gText.goMakefileText;
-
-// Makefile
-const websiteMakefileText = gText.websiteMakefileText;
-
-// make.ps1
-const goMakePs1Text = gText.goMakePs1Text;
-
-// PowerShell script
-const websitePs1Text = gText.websitePs1Text;
-
-// links-to-html.lua
-const linksToHtmlLuaText = gText.linksToHtmlLuaText;
-
-// add-col-scope.lua
-const addColScopeLuaText = gText.addColScopeLuaText;
-
-// deno-tasks
-const denoTasksText = gText.denoTasksText;
-
-// Bash script
-const publishBashText = gText.publishBashText;
-
-// PowerShell script
-const publishPs1Text = gText.publishPs1Text;
-
-// Bash script
-const releaseBashText = gText.releaseBashText;
-
-// PowerShell script
-const releasePs1Text = gText.releasePs1Text;
-
-// Makefile for documentation/presentation projects
-const documentationMakefileText = gText.documentationMakefileText;
-
-// make.ps1 for documentation/presentation projects
-const documentationMakePs1Text = gText.documentationMakePs1Text;
-
-// Makefile for deno-bundle projects
-const denoBundleMakefileText = gText.denoBundleMakefileText;
-
-// Makefile for deno-es-module projects
-const denoEsModuleMakefileText = gText.denoEsModuleMakefileText;
-
-// Makefile for deno-webcomponent projects
-const denoWebComponentMakefileText = gText.denoWebComponentMakefileText;
+registerGenerator({
+  format: "README.md",
+  render: (obj) => renderTemplate(obj, gText.readmeMdText),
+});
+registerGenerator({
+  format: "INSTALL.md",
+  render: (obj) => renderTemplate(obj, gText.installMdText),
+});
+registerGenerator({
+  format: "INSTALL_NOTES_macOS.md",
+  render: (obj) => renderTemplate(obj, gText.installNotesMacOSMdText),
+});
+registerGenerator({
+  format: "INSTALL_NOTES_Windows.md",
+  render: (obj) => renderTemplate(obj, gText.installNotesWindowsMdText),
+});
+registerGenerator({
+  format: "CITATION.cff",
+  render: (obj) => renderTemplate(obj, gText.citationCffText),
+});
+registerGenerator({
+  format: "search.md",
+  render: (obj) => renderTemplate(obj, gText.searchMdText),
+});
+registerGenerator({
+  format: "about.md",
+  render: (obj) => renderTemplate(obj, gText.aboutMdText),
+});
+registerGenerator({
+  format: "Makefile",
+  render: (obj, lang) => {
+    const tmpl = getMakefileText(lang);
+    if (tmpl === undefined) return undefined;
+    return renderTemplate(obj, tmpl);
+  },
+});
+registerGenerator({
+  format: "make.ps1",
+  render: (obj, lang) => {
+    const tmpl = getMakePs1Text(lang);
+    if (tmpl === undefined) return undefined;
+    return renderTemplate(obj, tmpl);
+  },
+});
+registerGenerator({
+  format: "installer.sh",
+  render: (obj) => renderTemplate(obj, gText.installerShText),
+});
+registerGenerator({
+  format: "installer.ps1",
+  render: (obj) => renderTemplate(obj, gText.installerPs1Text),
+});
+registerGenerator({
+  format: "website.mak",
+  render: (obj) => renderTemplate(obj, gText.websiteMakefileText),
+});
+registerGenerator({
+  format: "website.ps1",
+  render: (obj) => renderTemplate(obj, gText.websitePs1Text),
+});
+registerGenerator({
+  format: "links-to-html.lua",
+  render: (obj) => renderTemplate(obj, gText.linksToHtmlLuaText),
+});
+registerGenerator({
+  format: "add-col-scope.lua",
+  render: (obj) => renderTemplate(obj, gText.addColScopeLuaText),
+});
+registerGenerator({
+  format: "publish.bash",
+  render: (obj) => renderTemplate(obj, gText.publishBashText),
+});
+registerGenerator({
+  format: "publish.ps1",
+  render: (obj) => renderTemplate(obj, gText.publishPs1Text),
+});
+registerGenerator({
+  format: "release.bash",
+  render: (obj) => renderTemplate(obj, gText.releaseBashText),
+});
+registerGenerator({
+  format: "release.ps1",
+  render: (obj) => renderTemplate(obj, gText.releasePs1Text),
+});
+registerGenerator({
+  format: "version.ts",
+  render: (obj) => renderTemplate(obj, gText.versionTsText),
+});
+registerGenerator({
+  format: "version.js",
+  render: (obj) => renderTemplate(obj, gText.versionJsText),
+});
+registerGenerator({
+  format: "version.go",
+  render: (obj) => renderTemplate(obj, gText.versionGoText),
+});
+registerGenerator({
+  format: "version.py",
+  render: (obj) => renderTemplate(obj, gText.versionPyText),
+});
+registerGenerator({
+  format: "deno-tasks.json",
+  render: (obj) => renderTemplate(obj, gText.denoTasksText),
+});
+registerGenerator({
+  format: "site.css",
+  render: (obj) => renderTemplate(obj, gText.siteCssText),
+});
+registerGenerator({
+  format: "page.hbs",
+  render: (obj) => {
+    const isCL =
+      (obj["git_org_or_person"] as string | undefined)?.toLowerCase() ===
+      "caltechlibrary";
+    if (isCL) {
+      return renderTemplate(obj, gText.clPageHbsText)?.replace(
+        "$$content$$",
+        "${body}",
+      );
+    }
+    return renderTemplate(obj, gText.pageHbsText)?.replace(
+      "$$content$$",
+      "{{{content}}}",
+    );
+  },
+});
+registerGenerator({
+  format: "page.tmpl",
+  render: (obj) => {
+    const isCL =
+      (obj["git_org_or_person"] as string | undefined)?.toLowerCase() ===
+      "caltechlibrary";
+    if (isCL) {
+      return renderTemplate(obj, gText.clPageHbsText)?.replace(
+        "$$content$$",
+        "${body}",
+      );
+    }
+    return renderTemplate(obj, gText.pageHbsText)?.replace(
+      "$$content$$",
+      "${body}",
+    );
+  },
+});

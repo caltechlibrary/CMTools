@@ -24,6 +24,7 @@ export interface Config {
   profiles: { [key: string]: Profile };
   licenses: { [key: string]: License };
   person_lists: { [key: string]: Profile[] };
+  executables?: string[];
 }
 
 // Builds the ordered list of .cmtoolsrc paths to try.
@@ -76,6 +77,7 @@ async function tryLoadPath(path: string): Promise<Config | null> {
       profiles: raw.profiles ?? {},
       licenses: raw.licenses ?? {},
       person_lists: raw.person_lists ?? {},
+      executables: raw.executables,
     };
   } catch (_err) {
     return null;
@@ -83,14 +85,35 @@ async function tryLoadPath(path: string): Promise<Config | null> {
 }
 
 export async function loadConfig(configPath?: string): Promise<Config | null> {
-  // Explicit override bypasses the search entirely.
+  // Explicit path bypasses the search and merge entirely.
   if (configPath) return tryLoadPath(configPath);
-  // Otherwise try each path in priority order, return first match.
+
+  // Collect all configs in priority order (highest-priority first).
+  const configs: Config[] = [];
   for (const path of configSearchPaths()) {
     const config = await tryLoadPath(path);
-    if (config !== null) return config;
+    if (config !== null) configs.push(config);
   }
-  return null;
+
+  if (configs.length === 0) return null;
+  if (configs.length === 1) return configs[0];
+
+  // Merge: for scalar fields the highest-priority (first) config wins.
+  // For maps, entries are merged — higher-priority entries override on key
+  // collision, lower-priority entries serve as fallbacks.
+  // Object.assign applied lowest-to-highest so the last write wins.
+  const rev = [...configs].reverse();
+  return {
+    default_profile: configs.find((c) => c.default_profile !== undefined)
+      ?.default_profile,
+    default_license: configs.find((c) => c.default_license !== undefined)
+      ?.default_license,
+    executables: configs.find((c) => c.executables !== undefined)
+      ?.executables,
+    profiles: Object.assign({}, ...rev.map((c) => c.profiles)),
+    licenses: Object.assign({}, ...rev.map((c) => c.licenses)),
+    person_lists: Object.assign({}, ...rev.map((c) => c.person_lists)),
+  };
 }
 
 export async function saveConfig(

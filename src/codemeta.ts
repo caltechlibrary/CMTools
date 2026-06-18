@@ -9,6 +9,7 @@ export const complexFieldList = [
   "maintainer",
   "contributor",
   "funder",
+  "publisher",
   "softwareRequirements",
   "softwareSuggestions",
   "programmingLanguage",
@@ -76,8 +77,8 @@ export const CodeMetaTerms: AttributeType[] = [
   ),
   new AttributeType(
     "funder",
-    "person_or_organization",
-    "A person or organization that supports (sponsors) something through some kind of financial contribution.",
+    "person_or_organization_list",
+    "A person or organization that supports (sponsors) something through some kind of financial contribution. (enter as YAML list)",
   ),
   new AttributeType("funding", "text", "Funding source (e.g. specific grant)"),
   new AttributeType(
@@ -102,8 +103,8 @@ export const CodeMetaTerms: AttributeType[] = [
   ),
   new AttributeType(
     "copyrightHolder",
-    "person_or_organization",
-    "The party holding the legal copyright to the CreativeWork. ",
+    "text",
+    "The party holding the legal copyright to the CreativeWork.",
   ),
   new AttributeType(
     "version",
@@ -272,6 +273,10 @@ export class CodeMeta implements CodeMetaInterface {
   developmentStatus: string = "";
   copyrightYear?: number | undefined;
   copyrightHolder?: string | undefined;
+  installUrl: string = "";
+  processorRequirements: string = "";
+  referencePublication: string = "";
+  publisher: PersonOrOrganization[] = [];
 
   toObject(): { [key: string]: unknown } {
     //FIXME: Only build an `{[key: string]: string}` minimal object
@@ -346,6 +351,16 @@ export class CodeMeta implements CodeMetaInterface {
     (this.copyrightHolder === undefined || this.copyrightHolder === "")
       ? ""
       : obj["copyrightHolder"] = this.copyrightHolder;
+    (this.installUrl === "") ? "" : obj["installUrl"] = this.installUrl;
+    (this.processorRequirements === "")
+      ? ""
+      : obj["processorRequirements"] = this.processorRequirements;
+    (this.referencePublication === "")
+      ? ""
+      : obj["referencePublication"] = this.referencePublication;
+    (this.publisher === undefined || this.publisher.length === 0)
+      ? ""
+      : obj["publisher"] = this.publisher;
     return obj;
   }
 
@@ -487,6 +502,22 @@ export class CodeMeta implements CodeMetaInterface {
     (obj["copyrightHolder"] === undefined)
       ? ""
       : this.copyrightHolder = obj["copyrightHolder"] as string;
+    (obj["installUrl"] === undefined)
+      ? ""
+      : this.installUrl = obj["installUrl"] as string;
+    (obj["processorRequirements"] === undefined)
+      ? ""
+      : this.processorRequirements = obj["processorRequirements"] as string;
+    (obj["referencePublication"] === undefined)
+      ? ""
+      : this.referencePublication = obj["referencePublication"] as string;
+    if (obj["publisher"] === undefined) {
+      this.publisher = [];
+    } else {
+      this.publisher = normalizePersonOrOrgList(
+        obj["publisher"] as PersonOrOrganization[],
+      );
+    }
     return true;
   }
 
@@ -569,7 +600,9 @@ export class CodeMeta implements CodeMetaInterface {
       ? ""
       : this.keywords = obj["keywords"] as string[];
     (obj["name"] === undefined) ? "" : this.name = obj["name"] as string;
-    (obj["operatingSystem"] === undefined) ? "" : obj["operatingSystem"];
+    (obj["operatingSystem"] === undefined)
+      ? ""
+      : this.operatingSystem = obj["operatingSystem"] as string[];
     if (obj["programmingLanguage"] === undefined) {
       // do nothing.
     } else {
@@ -633,6 +666,28 @@ export class CodeMeta implements CodeMetaInterface {
     (obj["copyrightHolder"] === undefined)
       ? ""
       : this.copyrightHolder = obj["copyrightHolder"] as string;
+    if (obj["installUrl"] === undefined) {
+      // do nothing.
+    } else {
+      this.installUrl = obj["installUrl"] as string;
+    }
+    if (obj["processorRequirements"] === undefined) {
+      // do nothing.
+    } else {
+      this.processorRequirements = obj["processorRequirements"] as string;
+    }
+    if (obj["referencePublication"] === undefined) {
+      // do nothing.
+    } else {
+      this.referencePublication = obj["referencePublication"] as string;
+    }
+    if (obj["publisher"] === undefined) {
+      // do nothing.
+    } else {
+      this.publisher = normalizePersonOrOrgList(
+        obj["publisher"] as PersonOrOrganization[],
+      );
+    }
     return true;
   }
 }
