@@ -71,7 +71,7 @@
   "relatedLink": "https://caltechlibrary.github.io/CMTools",
   "softwareRequirements": [
     "Deno >= 2.8",
-    "CMTools >= 0.0.43"
+    "CMTools >= 0.0.46"
   ],
   "softwareSuggestions": [
     "GNU Make >= 3.81",
@@ -82,7 +82,7 @@
   "developmentStatus": "active",
   "issueTracker": "git+https://github.com/caltechlibrary/CMTools/issues",
   "downloadUrl": "https://github.com/caltechlibrary/CMTools/releases/latest",
-  "releaseNotes": "- Bug fixes",
+  "releaseNotes": "- Added global configuration system (~/.cmtoolsrc): profiles, licenses, person lists\n- New `cme` flags: --profiles, --person-lists, --apply-license, --global-config\n- New `--init` sub-types for Deno projects: deno-cli, deno-bundle, deno-es-module, deno-webcomponent\n- Added non-programming project types: --init documentation, --init presentation\n- Executable names now persisted to project-level .cmtoolsrc for seamless re-generation\n- Refactored format registration: FormatGenerator/registerGenerator pattern in transform.ts\n- Separate page templates for Caltech Library org vs personal/other projects\n- Added <footer> to personal page template for A11y compliance\n- Fixed Makefile generation for Go programs\n- Fixed Makefile and make.ps1 generation for deno-cli projects",
   "copyrightYear": 2025,
   "copyrightHolder": "California Institute of Technology"
 }
