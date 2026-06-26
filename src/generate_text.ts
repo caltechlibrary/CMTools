@@ -1522,7 +1522,7 @@ refresh:
 	git fetch origin
 	git pull origin $(BRANCH)
 
-#publish: build website .FORCE
+#publish: website .FORCE
 #	./publish.bash
 
 clean:
