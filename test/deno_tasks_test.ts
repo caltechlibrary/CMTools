@@ -12,7 +12,9 @@ Deno.test("addDenoTasks creates deno.json from scratch", async () => {
   const result = JSON.parse(src);
   assertEquals(
     result.tasks["gen-code"],
-    "deno run --allow-read --allow-write ./cmt.ts codemeta.json version.ts",
+    // `cmt` on PATH, not `deno run ./cmt.ts` — a consuming project has no
+    // cmt.ts of its own. See decisions/ DR-0013.
+    "cmt codemeta.json version.ts",
   );
 
   await Deno.remove(tmp, { recursive: true });
@@ -35,7 +37,7 @@ Deno.test("addDenoTasks preserves existing tasks", async () => {
   assertEquals(result.tasks["build"], "deno task compile");
   assertEquals(
     result.tasks["gen-code"],
-    "deno run --allow-read --allow-write ./cmt.ts codemeta.json version.ts about.md",
+    "cmt codemeta.json version.ts about.md",
   );
 
   await Deno.remove(tmp, { recursive: true });

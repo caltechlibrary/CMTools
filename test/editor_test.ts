@@ -1,5 +1,7 @@
 import { assertEquals, assertNotEquals } from "@std/assert";
 import * as edit from "../src/editor.ts";
+// setObjectFromString moved to codemeta_editor.ts in the 2025-07-30 re-org.
+import * as cmEdit from "../src/codemeta_editor.ts";
 
 function testEditorFromEnv() {
   // Set a temporary environment value.
@@ -43,7 +45,7 @@ function testSetObjectFromString() {
   let key: string = "a";
   let val: string = "one";
   let obj: { [key: string]: any } = {};
-  let ok: boolean = edit.setObjectFromString(obj, key, val, "text");
+  let ok: boolean = cmEdit.setObjectFromString(obj, key, val, "text");
   assertEquals(ok, true, `expected true for obj.a of type text`);
   assertNotEquals(
     obj["a"],
@@ -58,7 +60,7 @@ function testSetObjectFromString() {
   expected = 2;
   key = "b";
   val = "2";
-  ok = edit.setObjectFromString(obj, key, val, "number");
+  ok = cmEdit.setObjectFromString(obj, key, val, "number");
   assertEquals(ok, true, `expected true for obj.b of type number`);
   assertNotEquals(
     obj["b"],
@@ -73,7 +75,7 @@ function testSetObjectFromString() {
   val = "2025-01-21";
   expected = val;
   key = "c";
-  ok = edit.setObjectFromString(obj, key, val, "date");
+  ok = cmEdit.setObjectFromString(obj, key, val, "date");
   assertEquals(ok, true, `expected true for obj.c of type date`);
   assertNotEquals(
     obj["c"],
@@ -88,7 +90,7 @@ function testSetObjectFromString() {
   val = "https://doi.org/10.1089/ast.2023.0002";
   expected = URL.parse(val);
   key = "d";
-  ok = edit.setObjectFromString(obj, key, val, "url");
+  ok = cmEdit.setObjectFromString(obj, key, val, "url");
   assertEquals(ok, true, `expected true for obj.d of type url`);
   assertNotEquals(
     obj["d"],
@@ -105,7 +107,7 @@ function testSetObjectFromString() {
 - two
 - three`;
   key = "e";
-  ok = edit.setObjectFromString(obj, key, val, "text_list");
+  ok = cmEdit.setObjectFromString(obj, key, val, "text_list");
   assertEquals(ok, true, `expected true for obj.e of type text_list`);
   assertNotEquals(
     obj["e"],
