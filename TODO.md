@@ -50,4 +50,33 @@ are fixed yet; each names the record carrying the reasoning.
 
 ## Next Steps (coming features)
 
+- [ ] **A `cmt`-written file's header does not say which lifecycle it belongs
+      to.** `cmt` has two kinds of output: files regenerated on demand from
+      `codemeta.json` (`version.go`, `README.md`, `about.md`, `CITATION.cff`),
+      where any edit is overwritten and that is the point; and files scaffolded
+      once at project initialisation (`Makefile`, `website.mak`, `publish.*`,
+      `release.*`, `page.tmpl`), which the project owns from then on and is
+      expected to edit.
+
+      Both get the same `# generated with CMTools <version> <hash>` header, so
+      the file itself does not say which it is. A reader — or an agent — can
+      reasonably read "generated" as "safe to regenerate" and destroy work.
+      This happened on 2026-08-26 in `~/Laboratory/knowledge`, whose `Makefile`
+      carries a hand-added `KB_TOPICS` variable and `kb-topics-help` target
+      that generate one man page per CLI verb. It was nearly regenerated on the
+      strength of the header alone, and the loss would have been quiet twice
+      over: `MAN_PAGES_1` is a shell glob over the `.1.md` files that already
+      exist, so `make man` would then have stopped producing verb pages and
+      still reported success.
+
+      Small fix: make the scaffolded-once header say so — something like
+      `# scaffolded by CMTools <version> <hash>; owned by this project, not
+      regenerated` — so the distinction travels with the file rather than
+      living only in a workspace `CLAUDE.md`.
+
+      (An earlier draft of this item asked for protected regions and a
+      codemeta-driven extension point. Both were premature: they solve
+      clobbering during repeated regeneration, which is not something `cmt`
+      does to these files. The header wording is the real gap.)
+
 ## Next session: cme interactive mode
