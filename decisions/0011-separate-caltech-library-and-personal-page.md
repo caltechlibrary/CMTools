@@ -12,9 +12,7 @@ superseded_by: []
 relates_to: ["0002"]
 initiative: ""
 session: ""
-decisions:
-  - "page.tmpl is generated from one of two templates depending on whether the project is a Caltech Library project"
-  - "The personal template gains a <footer> element for A11y landmark compliance"
+decisions: ["page.tmpl is generated from one of two templates depending on whether the project is a Caltech Library project", "The personal template gains a <footer> element for A11y landmark compliance"]
 tags: [templates, website, a11y]
 uuid: "01a03af1-e5cb-73c6-a794-931ff5e70bd8"
 origin_host: "MACMINI-RD.local"

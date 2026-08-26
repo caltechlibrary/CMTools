@@ -12,13 +12,7 @@ superseded_by: ["0008"]
 relates_to: ["0008", "0009"]
 initiative: ""
 session: ""
-decisions:
-  - "Config lives at ~/.cmtoolsrc, with ~/.config/cmtools/ as fallback and --global-config as override"
-  - "A license may carry `file` or inline `text`; `file` wins when both are present"
-  - "`url`, when present, is what gets written to the codemeta `license` field"
-  - "Person lists store inline person data, not references to profile names"
-  - "One unified selection menu shows individual profiles and pre-defined lists together"
-  - "License-apply logic is one shared helper called by both --apply-license and the editor path"
+decisions: ["Config lives at ~/.cmtoolsrc, with ~/.config/cmtools/ as fallback and --global-config as override", "A license may carry `file` or inline `text`; `file` wins when both are present", "`url`, when present, is what gets written to the codemeta `license` field", "Person lists store inline person data, not references to profile names", "One unified selection menu shows individual profiles and pre-defined lists together", "License-apply logic is one shared helper called by both --apply-license and the editor path"]
 tags: [config, cme, profiles, licenses]
 uuid: "01a03af1-e5cb-73c6-a794-9317965df3a0"
 origin_host: "MACMINI-RD.local"

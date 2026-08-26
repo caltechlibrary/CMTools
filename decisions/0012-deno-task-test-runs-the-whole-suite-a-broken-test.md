@@ -12,10 +12,7 @@ superseded_by: []
 relates_to: ["0005", "0013"]
 initiative: ""
 session: agents/hand-off/2026-08-25T233000Z-cmtools-decision-records-pilot-and-hidden-test-suite-defects.spmd
-decisions:
-  - "`test` invokes `deno test` with the union permission set and lets Deno discover the files"
-  - "Per-file tasks are kept, and now exist for all six test files"
-  - "`;` chaining is removed so a failure propagates"
+decisions: ["`test` invokes `deno test` with the union permission set and lets Deno discover the files", "Per-file tasks are kept, and now exist for all six test files", "`;` chaining is removed so a failure propagates"]
 tags: [testing, deno, tasks, tdd]
 uuid: "01a03af1-e5cb-73c6-a794-9320fc9a4c15"
 origin_host: "MACMINI-RD.local"

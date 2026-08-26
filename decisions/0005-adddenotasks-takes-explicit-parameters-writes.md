@@ -12,11 +12,7 @@ superseded_by: []
 relates_to: ["0002", "0006"]
 initiative: ""
 session: ""
-decisions:
-  - "One exported function with explicit parameters, replacing global state"
-  - "deno.json task values are plain strings, not { cmd, desc } objects"
-  - "deno.json is backed up to deno.json.bak before modification; existing tasks are preserved"
-  - "No --deno flag; the --init deno-* project type is the signal"
+decisions: ["One exported function with explicit parameters, replacing global state", "deno.json task values are plain strings, not { cmd, desc } objects", "deno.json is backed up to deno.json.bak before modification; existing tasks are preserved", "No --deno flag; the --init deno-* project type is the signal"]
 tags: [deno, tasks, codegen]
 uuid: "01a03af1-e5cb-73c6-a794-93194231d204"
 origin_host: "MACMINI-RD.local"

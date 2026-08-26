@@ -12,11 +12,7 @@ superseded_by: []
 relates_to: ["0003", "0009"]
 initiative: ""
 session: ""
-decisions:
-  - "YAML, not JSON, as the config file format"
-  - "Every .cmtoolsrc from cwd up to $HOME is collected and merged, not just the first one found"
-  - "Scalar fields take the first match; map fields merge lowest-to-highest so project-level keys win"
-  - "~/.config/cmtools/config.yaml is appended as a final fallback"
+decisions: ["YAML, not JSON, as the config file format", "Every .cmtoolsrc from cwd up to $HOME is collected and merged, not just the first one found", "Scalar fields take the first match; map fields merge lowest-to-highest so project-level keys win", "~/.config/cmtools/config.yaml is appended as a final fallback"]
 tags: [config, yaml, precedence]
 uuid: "01a03af1-e5cb-73c6-a794-931c837a1c2e"
 origin_host: "MACMINI-RD.local"
