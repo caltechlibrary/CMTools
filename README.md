@@ -1,4 +1,5 @@
 
+This project is deprecated and will eventually be archive, RSD 2026-08-28
 
 # CMTools
 
