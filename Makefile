@@ -40,7 +40,7 @@ PREFIX = $(HOME)
 
 TS_MODS = $(shell ls -1 *.ts | grep -v _test.ts | grep -v deps.ts | grep -v version.ts)
 
-build: version.ts CITATION.cff INSTALL.md about.md bin compile installer.sh installer.ps1
+build: version.ts CITATION.cff INSTALL.md bin compile installer.sh installer.ps1
 
 bin: .FORCE
 	mkdir -p bin
@@ -70,9 +70,6 @@ $(MAN_PAGES_1): .FORCE
 
 CITATION.cff: codemeta.json
 	deno task CITATION.cff
-
-about.md: codemeta.json
-	deno task about.md
 
 status:
 	git status
