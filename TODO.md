@@ -79,4 +79,43 @@ are fixed yet; each names the record carrying the reasoning.
       clobbering during repeated regeneration, which is not something `cmt`
       does to these files. The header wording is the real gap.)
 
+- [ ] **The generated `website.mak` publishes every root Markdown file,
+      including `TODO.md`.** `websiteMakefileText` in `src/generate_text.ts`
+      sets `MD_PAGES = $(shell ls -1 *.md)` with no exclusions, so every
+      Markdown file at the repository root becomes a website page. A `TODO.md`
+      is an internal working document — unfixed bugs, half-formed feature
+      requests, notes to self — and publishing it is rarely what the author
+      intended.
+
+      Found 2026-08-26 filing a feature request into
+      `~/Laboratory/knowledge/TODO.md`: the file would have been rendered to
+      `TODO.html` by `make website` and pushed live by `publish.bash`, with
+      nothing in the build naming it.
+
+      Suggested: give the generated `website.mak` a variable for the exclusion
+      list, defaulting to `TODO.md`, and filter on it in pure make rather than
+      a second `ls`:
+
+      ```make
+      # Internal notes, not website pages. Kept out of the build so they stay unpublished.
+      NO_PUBLISH = TODO.md
+
+      MD_PAGES = $(filter-out $(NO_PUBLISH),$(shell ls -1 *.md))
+
+      HTML_PAGES = $(patsubst %.md,%.html,$(MD_PAGES))
+      ```
+
+      That is what was applied by hand in `~/Laboratory/knowledge` and dry-run
+      verified (32 pandoc invocations, `TODO` absent from the plan). A variable
+      rather than a hardcoded name because the next project will want a
+      different file excluded, and a list is easier to extend than a pipeline.
+      `denoMakefileText` carries a commented-out `grep -v 'nav.md'` on its own
+      `HTML_PAGES` line, so per-project exclusions were contemplated once
+      already and dropped.
+
+      Scope: per the item above, `website.mak` is scaffolded once and owned by
+      the project thereafter, so this only reaches newly initialised projects.
+      Existing ones need the edit by hand — which is an argument for making the
+      default right, since nobody revisits a build file that appears to work.
+
 ## Next session: cme interactive mode
