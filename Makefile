@@ -88,9 +88,6 @@ website: $(HTML_PAGES) .FORCE
 presentations: .FORCE
 	cd presentations && make || exit 1
 
-publish: website .FORCE
-	./publish.bash
-
 htdocs: .FORCE
 	deno task htdocs
 	deno task transpile
