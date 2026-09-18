@@ -1,4 +1,7 @@
 {
+  "fmt": {
+    "indentWidth": 2
+  },
   "tasks": {
     "build": "deno task version.ts ; deno task docs ; deno task compile",
     "version.ts": "deno run --allow-read --allow-write --allow-run --allow-env cmt.ts codemeta.json version.ts",
